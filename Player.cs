@@ -10,21 +10,19 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Player : Component
+    public class Player
     {
-        public Vector2 Velocity;
-        public float Speed = 60f;
+        public float WalkSpeed = 60f;
         public bool Hit = false;
 
-        public Sprite Sprite;
         public StateMachine StateMachine;
 
-        public string Direction = "Down";
-
         public Input Input;
+        public MapEntity MapEntity;
+        public SwordHitbox SwordHitbox;
 
             
-        public Player(Texture2D playerTexture)
+        public Player(Texture2D playerTexture, GraphicsDeviceManager graphics)
         {
             Input = new Input()
             {
@@ -50,17 +48,16 @@ namespace MonoGameTestGame
                 { "SwordHitLeft", new Animation(playerTexture, 5, 3, 8, false, 0.04f) },
             };
 
-            Sprite = new Sprite(animations)
+            Sprite sprite = new Sprite(animations);
+            Hitbox hitbox = new Hitbox(graphics, 14, 14);
+
+            MapEntity = new MapEntity(sprite, hitbox)
             {
                 Position = new Vector2(100, 100),
-                Input = new Input()
-                {
-                    Up = Keys.W,
-                    Right = Keys.D,
-                    Down = Keys.S,
-                    Left = Keys.A
-                }
+                Moving = true
             };
+
+            SwordHitbox = new SwordHitbox(graphics, 18, 8) { Color = Color.Black };
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -73,49 +70,31 @@ namespace MonoGameTestGame
         }
 
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             StateMachine.Update(gameTime);
-            Sprite.Update(gameTime);
+            SwordHitbox.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void DetermineInputVelocity(GameTime gameTime)
         {
-            Sprite.Draw(spriteBatch);
-        }
-
-        public void DetermineInputVelocity()
-        {
-            Velocity = Vector2.Zero;
-
             if (Keyboard.GetState().IsKeyDown(Input.Up))
-                Velocity.Y = -Speed;
+                MapEntity.Velocity.Y = -WalkSpeed;
             if (Keyboard.GetState().IsKeyDown(Input.Down))
-                Velocity.Y = Speed;
+                MapEntity.Velocity.Y = WalkSpeed;
             if (Keyboard.GetState().IsKeyDown(Input.Left))
-                Velocity.X = -Speed;
+                MapEntity.Velocity.X = -WalkSpeed;
             if (Keyboard.GetState().IsKeyDown(Input.Right))
-                Velocity.X = Speed;
+                MapEntity.Velocity.X = WalkSpeed;
+            
+            MapEntity.Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //MapEntity.Velocity.Normalize();
         }
 
         public void DetermineHitInput()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 Hit = true;
-        }
-
-        public void Move(GameTime gameTime)
-        {
-            Sprite.Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (Velocity.Y < 0)
-                Direction = "Up";
-            if (Velocity.X > 0)
-                Direction = "Right";
-            if (Velocity.Y > 0)
-                Direction = "Down";
-            if (Velocity.X < 0)
-                Direction = "Left";
         }
     }
 }

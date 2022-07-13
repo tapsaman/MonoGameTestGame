@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +24,6 @@ namespace MonoGameTestGame.Sprites
 
     #region Properties
 
-    public Input Input;
-
     public Vector2 Position
     {
       get { return _position; }
@@ -39,7 +36,13 @@ namespace MonoGameTestGame.Sprites
       }
     }
 
-
+    public Rectangle Rectangle
+    {
+      get
+      {
+        return new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
+      }
+    }
 
     #endregion
 
@@ -66,6 +69,12 @@ namespace MonoGameTestGame.Sprites
     {
       _animations = animations;
       _animationManager = new AnimationManager(_animations.First().Value);
+    }
+
+    public Sprite(Dictionary<string, Animation> animations, string initialAnimationName)
+    {
+      _animations = animations;
+      _animationManager = new AnimationManager(_animations[initialAnimationName]);
     }
 
     public Sprite(Texture2D texture)

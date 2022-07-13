@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameTestGame.Controls;
+using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
 using MonoGameTestGame.Sprites;
 
@@ -16,8 +17,10 @@ namespace MonoGameTestGame
         float ballSpeed;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private List<Sprite> _sprites;
         private List<Component> _gameComponents;
+        private MapEntity[] _mapEntities;
+        private TileMap _tileMap;
+        private Player _player;
 
         public Game1()
         {
@@ -48,7 +51,10 @@ namespace MonoGameTestGame
 
         protected override void LoadContent()
         {
+            StaticData.Content = Content;
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _tileMap = StaticData.TileMap = new ZeldaMap();
 
             // TODO: use this.Content to load your game content here
             ballTexture = Content.Load<Texture2D>("ball");
@@ -56,7 +62,10 @@ namespace MonoGameTestGame
             var playerTexture_ = Content.Load<Texture2D>("rm2k-sheet01");
             var playerTexture = Content.Load<Texture2D>("linktothepast-spritesheet");
 
-            var player = new Player(playerTexture);
+            _player = new Player(playerTexture, _graphics);
+            Enemy enemy = new Enemy(playerTexture, _graphics);
+
+            StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
             /*Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
             {
                 { "WalkUp", new Animation(playerTexture, 8, 4) },
@@ -102,14 +111,25 @@ namespace MonoGameTestGame
 
             _gameComponents = new List<Component>()
             {
-                quitButton,
-                player
+                quitButton
             };
+            _mapEntities = new MapEntity[]
+            {
+                enemy.MapEntity,
+                _player.MapEntity
+            };
+
+            StaticData.Content = null;
         }
 
         private void QuitButton_Click(object sender, EventArgs e)
         {
             Exit();
+        }
+
+        protected override void UnloadContent()
+        {
+            base.UnloadContent();
         }
 
         private void MoveBall(GameTime gameTime)
@@ -142,9 +162,15 @@ namespace MonoGameTestGame
 
         protected override void Update(GameTime gameTime)
         {
+            _player.Update(gameTime);
+
             foreach (var component in _gameComponents)
             {
                 component.Update(gameTime);
+            }
+            foreach (var mapEntity in _mapEntities)
+            {
+                mapEntity.Update(gameTime, _mapEntities, _tileMap);
             }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -159,6 +185,7 @@ namespace MonoGameTestGame
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+            _tileMap.Draw(_spriteBatch);
             //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
             _spriteBatch.Draw(
                 ballTexture,
@@ -175,6 +202,12 @@ namespace MonoGameTestGame
             {
                 component.Draw(gameTime, _spriteBatch);
             }
+            foreach (var mapEntity in _mapEntities)
+            {
+                mapEntity.Draw(_spriteBatch);
+            }
+            _player.SwordHitbox.Draw(_spriteBatch);
+            _spriteBatch.DrawString(StaticData.Font, _player.MapEntity.Position.ToString(), new Vector2(500, 300), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);

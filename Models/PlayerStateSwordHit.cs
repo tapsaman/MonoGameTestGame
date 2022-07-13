@@ -12,7 +12,8 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            Player.Sprite.SetAnimation("SwordHit" + Player.Direction);
+            Player.MapEntity.Sprite.SetAnimation("SwordHit" + Player.MapEntity.Direction);
+            Player.SwordHitbox.StartHit(Player.MapEntity.Position, Player.MapEntity.Direction);
         }
 
         public override void Update(GameTime gameTime)
@@ -23,6 +24,7 @@ namespace MonoGameTestGame.Models
             {
                 _elapsedHitTime = 0f;
                 Player.Hit = false;
+                Player.SwordHitbox.EndHit();
                 stateMachine.TransitionTo("Idle");
             }
         }

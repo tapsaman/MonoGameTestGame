@@ -11,13 +11,12 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            Console.WriteLine("Enter Walk" + Player.Direction);
-            Player.Sprite.SetAnimation("Walk" + Player.Direction);
+            Player.MapEntity.Sprite.SetAnimation("Walk" + Player.MapEntity.Direction);
         }
 
         public override void Update(GameTime gameTime)
         {
-            Player.DetermineInputVelocity();
+            Player.DetermineInputVelocity(gameTime);
             Player.DetermineHitInput();
             
 
@@ -25,14 +24,13 @@ namespace MonoGameTestGame.Models
             {
                 stateMachine.TransitionTo("SwordHit");
             }
-            else if (Player.Velocity.X == 0 && Player.Velocity.Y == 0)
+            else if (Player.MapEntity.Velocity.X == 0 && Player.MapEntity.Velocity.Y == 0)
             {
                 stateMachine.TransitionTo("Idle");
             }
             else
             {
-                Player.Move(gameTime);
-                Player.Sprite.SetAnimation("Walk" + Player.Direction);
+                Player.MapEntity.Sprite.SetAnimation("Walk" + Player.MapEntity.Direction);
             }
         }
 

@@ -56,6 +56,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/File.spritefont;Fonts/TestFont.spritefont
 
+#begin Fonts/TestFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TestFont.spritefont
+
 #begin linktothepast-spritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -68,6 +75,18 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast-spritesheet.png
 
+#begin linktothepast-tiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast-tiles.png
+
 #begin rm2k-sheet01.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -79,4 +98,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:rm2k-sheet01.png
+
+#begin Tilemap/exampleTileset.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tilemap/exampleTileset.png
 
