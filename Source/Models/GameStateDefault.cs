@@ -14,11 +14,9 @@ namespace MonoGameTestGame.Models
 
         public override void Update(GameTime gameTime)
         {
-            Scene.Player.Update(gameTime);
-
             foreach (var mapEntity in Scene.MapEntities)
             {
-                mapEntity.Update(gameTime, Scene.MapEntities, Scene.TileMap);
+                mapEntity.Update(gameTime);
             }
         }
 

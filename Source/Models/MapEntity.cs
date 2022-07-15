@@ -5,7 +5,7 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class MapEntity
+    public abstract class MapEntity
     {
         public Vector2 Velocity;
         public Sprite Sprite;
@@ -13,7 +13,7 @@ namespace MonoGameTestGame
         public Hitbox Hitbox;
         public bool Interactable { get; protected set; } = false;
         public bool Hittable { get; protected set; } = false;
-        public bool BlockedByTerrain { get; protected set; } = false;
+        public bool Colliding { get; protected set; } = true;
         
         public event Action Trigger;
         public bool HasTrigger()
@@ -52,11 +52,8 @@ namespace MonoGameTestGame
         public MapEntity(Vector2 position)
         {
             Sprite = new Sprite();
+            Hitbox = new Hitbox();
             Position = position;
-        }
-        public MapEntity(Sprite sprite)
-        {
-            Sprite = sprite;
         }
         public MapEntity(Sprite sprite, Hitbox hitbox)
         {
@@ -64,23 +61,21 @@ namespace MonoGameTestGame
             Hitbox = hitbox;
         }
 
-        public void Update(GameTime gameTime, MapEntity[] mapEntities, TileMap tileMap)
+        public virtual void Update(GameTime gameTime)
         {
             if (Moving) {
-                Move(gameTime, mapEntities, tileMap);
+                Move(gameTime);
             }
             Sprite.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (Hitbox != null) {
-                Hitbox.Draw(spriteBatch);
-            }
+            Hitbox.Draw(spriteBatch);
             Sprite.Draw(spriteBatch);
         }
 
-        public void Move(GameTime gameTime, MapEntity[] mapEntities, TileMap tileMap)
+        public void Move(GameTime gameTime)
         {
             if (Velocity.Y < 0)
                 Direction = Direction.Up;
@@ -91,42 +86,20 @@ namespace MonoGameTestGame
             if (Velocity.X < 0)
                 Direction = Direction.Left;
 
-            if (Hitbox != null)
+            if (Colliding)
             {
-                foreach (var mapEntity in mapEntities)
+                foreach (var mapEntity in StaticData.Scene.CollidingEntities)
                 {
-                    if (mapEntity != this && mapEntity.Hitbox != null)
+                    if (mapEntity != this)
                     {
-                        if (Velocity.Y > 0 && IsTouchingTop(mapEntity))
-                            Velocity.Y = 0; 
-                        if (Velocity.X < 0 && IsTouchingRight(mapEntity))
-                            Velocity.X = 0;
-                        if (Velocity.Y < 0 && IsTouchingBottom(mapEntity))
-                            Velocity.Y = 0;
-                        if (Velocity.X > 0 && IsTouchingLeft(mapEntity))
-                            Velocity.X = 0;
+                        DetermineCollision(mapEntity);
                     }
                 }
-                if (tileMap != null)
-                {
-                    DetermineCollision(tileMap);
-                }
+                DetermineCollision(StaticData.Scene.TileMap);
             }
 
             Position += Velocity;
             Velocity = Vector2.Zero;
-        }
-
-        public Rectangle GetTouchArea()
-        {
-            if (Direction == Direction.Up)
-                return new Rectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top - 5, Hitbox.Rectangle.Width, 5);
-            if (Direction == Direction.Right)
-                return new Rectangle(Hitbox.Rectangle.Right, Hitbox.Rectangle.Top, 5, Hitbox.Rectangle.Height);
-            if (Direction == Direction.Down)
-                return new Rectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Bottom, Hitbox.Rectangle.Width, 5);
-            
-            return new Rectangle(Hitbox.Rectangle.Left - 5, Hitbox.Rectangle.Top, 5, Hitbox.Rectangle.Height);
         }
 
         protected bool IsTouchingLeft(MapEntity mapEntity)
@@ -156,6 +129,17 @@ namespace MonoGameTestGame
             Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Bottom &&
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Left &&
             Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Right;
+        }
+        private void DetermineCollision(MapEntity mapEntity)
+        {
+            if (Velocity.Y > 0 && IsTouchingTop(mapEntity))
+                Velocity.Y = 0; 
+            if (Velocity.X < 0 && IsTouchingRight(mapEntity))
+                Velocity.X = 0;
+            if (Velocity.Y < 0 && IsTouchingBottom(mapEntity))
+                Velocity.Y = 0;
+            if (Velocity.X > 0 && IsTouchingLeft(mapEntity))
+                Velocity.X = 0;
         }
         private void DetermineCollision(TileMap tileMap)
         {
@@ -195,47 +179,6 @@ namespace MonoGameTestGame
                         Velocity.Y = 0;
                 }
             }
-        }
-        protected bool IsTouchingLeftWall(TileMap tileMap)
-        {
-            float newX = Position.X + Velocity.X;
-            int currentTileX = tileMap.ConvertX(Position.X);
-            int newTileX = tileMap.ConvertX(newX);
-            if (newX < currentTileX) {
-                //return tileMap.CheckCollision(new Rectangle((int)newX, Hitbox.Rectangle.Top, 1, Hitbox.Rectangle.Height));
-            }
-            return false;
-            Vector2 movingTo = new Vector2(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top) + Velocity;
-            return tileMap.CheckCollision(movingTo);
-        }
-        protected bool IsTouchingTopWall(TileMap tileMap)
-        {
-            Vector2 movingTo = new Vector2(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top) + Velocity;
-            return tileMap.CheckCollision(movingTo);
-        }
-        protected bool IsTouchingRightWall(TileMap tileMap)
-        {
-            Vector2 movingTo = new Vector2(Hitbox.Rectangle.Right, Hitbox.Rectangle.Bottom) + Velocity;
-            return tileMap.CheckCollision(movingTo);
-        }
-        protected bool IsTouchingBottomWall(TileMap tileMap)
-        {
-            Vector2 movingTo = new Vector2(Hitbox.Rectangle.Right, Hitbox.Rectangle.Bottom) + Velocity;
-            return tileMap.CheckCollision(movingTo);
-        }
-
-        protected bool TopIsColliding(MapEntity mapEntity) 
-        {
-            return Hitbox.Rectangle.Top + Velocity.Y < mapEntity.Hitbox.Rectangle.Bottom &&
-                Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Bottom &&
-                Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Left &&
-                Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Right;
-        }
-
-        protected bool TopIsColliding(TileMap tileMap) 
-        {
-            Vector2 movingTo = new Vector2(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top) + Velocity;
-            return tileMap.CheckCollision(movingTo);
         }
     }
 }

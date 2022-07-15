@@ -10,12 +10,10 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Enemy
-    {
-
-        public MapEntity MapEntity;
-            
-        public Enemy()
+    public class Enemy : MapEntity
+    {       
+        public Enemy(Vector2 position)
+            : base(position)
         {
             var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet-og");
             Animation.DefaultFrameWidth = Animation.DefaultFrameHeight = 30;
@@ -36,20 +34,17 @@ namespace MonoGameTestGame
                 { "SwordHitLeft", new Animation(texture, 5, 3, 8, false, 0.04f) },
             };
 
-            Sprite sprite = new Sprite(animations, "WalkRight");
-            Hitbox hitbox = new Hitbox(18, 22);
-            hitbox.Color = Color.Red;
-
-            MapEntity = new MapEntity(sprite, hitbox)
-            {
-                Position = new Vector2(300, 100),
-                SpriteOffset = new Vector2(-2, -2)
-            };
-
-            MapEntity.Trigger += Trigger;
+            Sprite.SetAnimations(animations, "WalkRight");
+            Hitbox.Load (18, 22);
+            Hitbox.Color = Color.Red;
+            SpriteOffset = new Vector2(-2, -2);
+            Trigger += TriggerTest;
+            Interactable = true;
+            Hittable = false;
+            Colliding = true;
         }
 
-        private void Trigger()
+        private void TriggerTest()
         {
             Sys.Log("triggered");
         }

@@ -7,18 +7,25 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Player
+    public class Player : MapEntity
     {
-        public float WalkSpeed = 60f;
-        public bool Hit = false;
+        public bool Hitting = false;
+        private float _walkSpeed = 60f;
+        private const int _touchAreaLength = 10;
 
         private StateMachine _stateMachine;
 
-        public MapEntity MapEntity;
         public SwordHitbox SwordHitbox;
             
-        public Player()
+        public Player(Vector2 position)
+            : base(position)
         {
+            Interactable = false;
+            Hittable = false;
+            Colliding = true;
+            Moving = true;
+            SpriteOffset = new Vector2(-13, -24);
+
             var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet");
 
             Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
@@ -37,15 +44,8 @@ namespace MonoGameTestGame
                 { "SwordHitRight",  new Animation(texture, 5, 7, 0, false, 0.04f) },
             };
 
-            Hitbox hitbox = new Hitbox(14, 14);
-            Sprite sprite = new Sprite(animations);
-
-            MapEntity = new MapEntity(sprite, hitbox)
-            {
-                Position = new Vector2(100, 100),
-                Moving = true,
-                SpriteOffset = new Vector2(-13, -24)
-            };
+            Hitbox.Load(14, 14);
+            Sprite.SetAnimations(animations);
 
             SwordHitbox = new SwordHitbox(14, 14) { Color = Color.Black };
 
@@ -60,27 +60,28 @@ namespace MonoGameTestGame
         }
 
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             _stateMachine.Update(gameTime);
             SwordHitbox.Update(gameTime);
+            base.Update(gameTime);
         }
 
         public void DetermineInputVelocity(GameTime gameTime)
         {
             if (Input.IsPressed(Input.Up))
-                MapEntity.Velocity.Y = -1;
+                Velocity.Y = -1;
             if (Input.IsPressed(Input.Down))
-                MapEntity.Velocity.Y = 1;
+                Velocity.Y = 1;
             if (Input.IsPressed(Input.Left))
-                MapEntity.Velocity.X = -1;
+                Velocity.X = -1;
             if (Input.IsPressed(Input.Right))
-                MapEntity.Velocity.X = 1;
+                Velocity.X = 1;
             
-            if (MapEntity.Velocity != Vector2.Zero)
+            if (Velocity != Vector2.Zero)
             {
                 //MapEntity.Velocity.Normalize();
-                MapEntity.Velocity *= WalkSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Velocity *= _walkSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 
@@ -91,22 +92,34 @@ namespace MonoGameTestGame
 
             if (Input.JustPressed(Input.A))
             {
-                var touchArea = MapEntity.GetTouchArea();
+                var touchArea = GetTouchArea();
 
-                foreach (var mapEntity in StaticData.Scene.MapEntities)
+                foreach (var mapEntity in StaticData.Scene.InteractableEntities)
                 {
-                    if (mapEntity.Hitbox != null && touchArea.Intersects(mapEntity.Hitbox.Rectangle) && mapEntity.HasTrigger())
+                    if (touchArea.Intersects(mapEntity.Hitbox.Rectangle))
                     {
                         mapEntity.InvokeTrigger();
                         return;
                     }
                 }
-                Hit = true;
+                Hitting = true;
             }
             else
             {
                 //Hit = true;
             } 
+        }
+
+        private Rectangle GetTouchArea()
+        {
+            if (Direction == Direction.Up)
+                return new Rectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top - _touchAreaLength, Hitbox.Rectangle.Width, _touchAreaLength);
+            if (Direction == Direction.Right)
+                return new Rectangle(Hitbox.Rectangle.Right, Hitbox.Rectangle.Top, _touchAreaLength, Hitbox.Rectangle.Height);
+            if (Direction == Direction.Down)
+                return new Rectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Bottom, Hitbox.Rectangle.Width, _touchAreaLength);
+            
+            return new Rectangle(Hitbox.Rectangle.Left - _touchAreaLength, Hitbox.Rectangle.Top, _touchAreaLength, Hitbox.Rectangle.Height);
         }
     }
 }

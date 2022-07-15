@@ -21,6 +21,8 @@ namespace MonoGameTestGame
         private List<Component> _gameComponents;
         private DialogManager _dialogManager;
         private Scene _scene;
+        private RenderTarget2D _nativeRenderTarget; 
+        private Rectangle _actualScreenRectangle;
 
         public Game1()
         {
@@ -31,12 +33,11 @@ namespace MonoGameTestGame
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            ballSpeed = 250f;
+            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, StaticData.NativeWidth, StaticData.NativeHeight);
+            _actualScreenRectangle = new Rectangle(0, 0, StaticData.BackBufferWidth, StaticData.BackBufferHeight);
 
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 600;
+            _graphics.PreferredBackBufferWidth = StaticData.BackBufferWidth;
+            _graphics.PreferredBackBufferHeight = StaticData.BackBufferHeight;
             //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
@@ -137,10 +138,11 @@ namespace MonoGameTestGame
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //_spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateScale(1f));
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _scene.Draw(_spriteBatch);
             //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
             /*_spriteBatch.Draw(
@@ -160,6 +162,14 @@ namespace MonoGameTestGame
             }
             
             _dialogManager.Draw(_spriteBatch);
+            _spriteBatch.End();
+
+            // after drawing the game at native resolution we can render _nativeRenderTarget to the backbuffer!
+            // First set the GraphicsDevice target back to the backbuffer
+            GraphicsDevice.SetRenderTarget(null);
+            // RenderTarget2D inherits from Texture2D so we can render it just like a texture
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _spriteBatch.Draw(_nativeRenderTarget, _actualScreenRectangle, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
             _spriteBatch.End();
 
             base.Draw(gameTime);

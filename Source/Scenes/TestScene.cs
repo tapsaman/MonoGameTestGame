@@ -18,23 +18,20 @@ namespace MonoGameTestGame
             //MediaPlayer.Play(song);
             MediaPlayer.Volume = 0.2f;
             MediaPlayer.IsRepeating = true;
-            TileMap = new ZeldaMap();
+            TileMap = new TestMap();
 
-            Player = new Player();
-            Enemy enemy = new Enemy();
+            Player = new Player(new Vector2(100, 100));
+            Enemy enemy = new Enemy(new Vector2(TileMap.ConvertTileX(22), TileMap.ConvertTileY(22)));
             Bat bat = new Bat(new Vector2(250, 200));
 
-            enemy.MapEntity.Trigger += StartEnemyDialog;
+            enemy.Trigger += StartEnemyDialog;
 
             DialogManager = new DialogManager();
             DialogManager.DialogEnd += QuitDialog;
 
-            MapEntities = new MapEntity[]
-            {
-                enemy.MapEntity,
-                bat,
-                Player.MapEntity
-            };
+            Add(enemy);
+            Add(Player);
+            Add(bat);
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -59,7 +56,7 @@ namespace MonoGameTestGame
 
             Player.SwordHitbox.Draw(spriteBatch);
             DialogManager.Draw(spriteBatch);
-            spriteBatch.DrawString(StaticData.Font, Player.MapEntity.Position.ToString(), new Vector2(500, 300), Color.Black);
+            spriteBatch.DrawString(StaticData.Font, Player.Position.ToString(), new Vector2(500, 300), Color.Black);
         }
         private void StartEnemyDialog()
         {

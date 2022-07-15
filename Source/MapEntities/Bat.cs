@@ -14,6 +14,10 @@ namespace MonoGameTestGame
         public Bat(Vector2 position)
             : base(position)
         {
+            Interactable = false;
+            Hittable = true;
+            Colliding = false;
+            
             var texture = StaticData.Content.Load<Texture2D>("linktothepast-enemysprites");
             Animation.DefaultFrameWidth = Animation.DefaultFrameHeight = 34;
 

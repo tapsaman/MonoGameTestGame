@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.9" tiledversion="1.9.0" name="linktothepast" tilewidth="16" tileheight="16" tilecount="2030" columns="58">
- <image source="../linktothepast-tiles.png" trans="ffffff" width="934" height="562"/>
+ <image source="../../linktothepast-tiles.png" trans="ffffff" width="934" height="562"/>
  <tile id="0" class="Ground"/>
  <tile id="7" class="Ground"/>
  <tile id="8" class="Ground"/>

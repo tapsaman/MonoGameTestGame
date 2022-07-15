@@ -8,18 +8,17 @@ namespace MonoGameTestGame
 {
     public class Hitbox
     {
-        private Texture2D _hitbox;
+        private Texture2D _texture;
         private Color[] _data;
         private int _width;
         private int _height;
         public Vector2 Position;
         public Color Color = Color.Blue;
         public bool Enabled = true;
+        public Hitbox() {}
         public Hitbox(int width, int height)
         {
-            _width = width;
-            _height = height;
-            Load(_width, _height);
+            Load(width, height);
         }
         ~Hitbox()
         {
@@ -29,23 +28,24 @@ namespace MonoGameTestGame
         {
             _width = width;
             _height = height;
-            _hitbox = new Texture2D(StaticData.Graphics.GraphicsDevice, _width, _height);
+            _texture = new Texture2D(StaticData.Graphics.GraphicsDevice, _width, _height);
             _data = new Color[_width * _height];
             for (int i = 0; i < _data.Length; i++)
             {
                 _data[i] = Color.White;
             }
-            _hitbox.SetData(_data);
+            _texture.SetData(_data);
         }
         // TODO run on scene unload
         public void Unload()
         {
-            _hitbox.Dispose();
+            if (_texture != null)
+                _texture.Dispose();
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Enabled)
-                spriteBatch.Draw(_hitbox, Position, Color * 0.5f);
+                spriteBatch.Draw(_texture, Position, Color * 0.5f);
         }
         public Rectangle Rectangle
         {

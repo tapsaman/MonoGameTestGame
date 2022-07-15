@@ -8,7 +8,6 @@ namespace MonoGameTestGame
 {
     public abstract class TileMap
     {
-        private SpriteBatch _spriteBatch;
         protected TiledMap _map;
         protected TiledTileset _tileset;
         protected Texture2D _tilesetTexture;
@@ -116,7 +115,7 @@ namespace MonoGameTestGame
 
         public bool CheckHorizontalCollision(int x, int topY, int bottomY)
         {
-            Console.WriteLine("CheckHorizontalCollision");
+            //Console.WriteLine("CheckHorizontalCollision");
             for (int i = topY; i < bottomY + 1; i++)
             {
                 if (CheckCollision(x, i)) {
@@ -128,7 +127,7 @@ namespace MonoGameTestGame
 
         public bool CheckVerticalCollision(int y, int leftX, int rightX)
         {
-            Console.WriteLine("CheckVerticalCollision");
+            //Console.WriteLine("CheckVerticalCollision");
             for (int i = leftX; i < rightX + 1; i++)
             {
                 if (CheckCollision(i, y)) {

@@ -5,48 +5,41 @@ namespace MonoGameTestGame
 {
     public abstract class DialogBox
     {
-        public Texture2D _bgTexture;
-        public Texture2D _arrowTexture;
-        public abstract void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow);
+        protected Texture2D _bgTexture;
+        protected Texture2D _arrowTexture;
+        protected int _height;
+        protected Vector2 _arrowOffset;
+        protected Vector2 _nameOffset;
+        protected Vector2 _textOffset;
+
+        public abstract void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false);
     }
 
     public class FantasyDialogBox : DialogBox
     {
         public FantasyDialogBox()
         {
-            _bgTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy");
-            _arrowTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-arrow");
+            _bgTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-scaled");
+            _arrowTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
+            _height = _bgTexture.Height;
+            _arrowOffset = new Vector2(230,210);
+            _nameOffset = new Vector2(44,4);
+            _textOffset = new Vector2(10,20);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow)
+        public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false)
         {
-            spriteBatch.Draw(
-                _bgTexture,
-                new Vector2(50, 350),
-                null,
-                Color.White,
-                0f,
-                Vector2.Zero,
-                0.5f,
-                SpriteEffects.None,
-                0f
-            );
+            var position = new Vector2(0, top ? 0 : StaticData.NativeHeight - _height);
+
+            spriteBatch.Draw(_bgTexture, position, Color.White);
+
             if (drawArrow)
             {
-                spriteBatch.Draw(
-                    _arrowTexture,
-                    new Vector2(400, 430),
-                    null,
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    0.5f,
-                    SpriteEffects.None,
-                    0f
-                );
+                spriteBatch.Draw(_arrowTexture, position + _arrowOffset, Color.White);
             }
-            spriteBatch.DrawString(StaticData.Font, name, new Vector2(150, 360), Color.White);
-            spriteBatch.DrawString(StaticData.Font, text, new Vector2(75, 390), Color.Black);
+
+            spriteBatch.DrawString(StaticData.Font, name, position + _nameOffset, Color.White);
+            spriteBatch.DrawString(StaticData.Font, text, position + _textOffset, Color.Black);
         }
     }
 }

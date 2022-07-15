@@ -1,6 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame.Models
 {
@@ -12,8 +10,8 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            Player.MapEntity.Sprite.SetAnimation("SwordHit" + Player.MapEntity.Direction);
-            Player.SwordHitbox.StartHit(Player.MapEntity.Hitbox.Rectangle, Player.MapEntity.Direction);
+            Player.Sprite.SetAnimation("SwordHit" + Player.Direction);
+            Player.SwordHitbox.StartHit(Player.Hitbox.Rectangle, Player.Direction);
         }
 
         public override void Update(GameTime gameTime)
@@ -23,7 +21,7 @@ namespace MonoGameTestGame.Models
             if (_elapsedHitTime > HitTime)
             {
                 _elapsedHitTime = 0f;
-                Player.Hit = false;
+                Player.Hitting = false;
                 Player.SwordHitbox.EndHit();
                 stateMachine.TransitionTo("Idle");
             }
