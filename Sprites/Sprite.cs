@@ -48,33 +48,11 @@ namespace MonoGameTestGame.Sprites
 
     #region Methods
 
-    public virtual void Draw(SpriteBatch spriteBatch)
+    public Sprite() {}
+    
+    public Sprite(Dictionary<string, Animation> animations, string initialAnimationName = "")
     {
-      if (_texture != null)
-        spriteBatch.Draw(_texture, Position, Color.White);
-      else if (_animationManager != null)
-        _animationManager.Draw(spriteBatch);
-      else throw new Exception("This ain't right..!");
-    }
-
-    public void SetAnimation(string animationName = null)
-    {
-      if (animationName == null)
-        _animationManager.Stop();
-      else
-        _animationManager.Play(_animations[animationName]);
-    }
-
-    public Sprite(Dictionary<string, Animation> animations)
-    {
-      _animations = animations;
-      _animationManager = new AnimationManager(_animations.First().Value);
-    }
-
-    public Sprite(Dictionary<string, Animation> animations, string initialAnimationName)
-    {
-      _animations = animations;
-      _animationManager = new AnimationManager(_animations[initialAnimationName]);
+      SetAnimations(animations, initialAnimationName);
     }
 
     public Sprite(Texture2D texture)
@@ -85,6 +63,29 @@ namespace MonoGameTestGame.Sprites
     public virtual void Update(GameTime gameTime)
     {
       _animationManager.Update(gameTime);
+    }
+
+    public virtual void Draw(SpriteBatch spriteBatch)
+    {
+      if (_texture != null)
+        spriteBatch.Draw(_texture, Position, Color.White);
+      else if (_animationManager != null)
+        _animationManager.Draw(spriteBatch);
+      else throw new Exception("No texture or animations defined for sprite");
+    }
+
+    public void SetAnimation(string animationName = null)
+    {
+      if (animationName == null)
+        _animationManager.Stop();
+      else
+        _animationManager.Play(_animations[animationName]);
+    }
+
+    public void SetAnimations(Dictionary<string, Animation> animations, string initialAnimationName = "")
+    {
+      _animations = animations;
+      _animationManager = new AnimationManager(initialAnimationName == "" ? _animations.First().Value : _animations[initialAnimationName]);
     }
 
     #endregion

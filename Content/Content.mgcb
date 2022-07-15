@@ -49,6 +49,30 @@
 /processorParam:TextureFormat=Color
 /build:Button.png
 
+#begin dialogbox-fantasy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:dialogbox-fantasy.png
+
+#begin dialogbox-fantasy-arrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:dialogbox-fantasy-arrow.png
+
 #begin Fonts/File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -63,6 +87,78 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TestFont.spritefont
 
+#begin linktothepast-darkworld.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:linktothepast-darkworld.mp3
+
+#begin linktothepast-enemysprites.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast-enemysprites.png
+
+#begin linktothepast-sfx/chest open.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/chest open.wav
+
+#begin linktothepast-sfx/cursor.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/cursor.wav
+
+#begin linktothepast-sfx/enemy dies.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/enemy dies.wav
+
+#begin linktothepast-sfx/enemy hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/enemy hit.wav
+
+#begin linktothepast-sfx/error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/error.wav
+
+#begin linktothepast-sfx/menu close.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/menu close.wav
+
+#begin linktothepast-sfx/menu open.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/menu open.wav
+
+#begin linktothepast-sfx/message finish.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/message finish.wav
+
+#begin linktothepast-sfx/message.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/message.wav
+
 #begin linktothepast-spritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -74,6 +170,42 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:linktothepast-spritesheet.png
+
+#begin linktothepast-spritesheet-evil.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast-spritesheet-evil.png
+
+#begin linktothepast-spritesheet-og.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast-spritesheet-og.png
+
+#begin linktothepast-spritesheet-red.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast-spritesheet-red.png
 
 #begin linktothepast-tiles.png
 /importer:TextureImporter

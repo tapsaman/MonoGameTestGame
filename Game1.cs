@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGameTestGame.Controls;
 using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
@@ -18,13 +19,12 @@ namespace MonoGameTestGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<Component> _gameComponents;
-        private MapEntity[] _mapEntities;
-        private TileMap _tileMap;
-        private Player _player;
+        private DialogManager _dialogManager;
+        private Scene _scene;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            StaticData.Graphics = _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -52,58 +52,20 @@ namespace MonoGameTestGame
         protected override void LoadContent()
         {
             StaticData.Content = Content;
-
+            StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
+            SFX.Load();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _tileMap = StaticData.TileMap = new ZeldaMap();
+            StaticData.Scene = _scene = new TestScene();
+            _scene.Load();
+            _dialogManager = new DialogManager();
+            _dialogManager.Load(new Dialog("terve", "mitä äijä?"));
 
             // TODO: use this.Content to load your game content here
             ballTexture = Content.Load<Texture2D>("ball");
 
-            var playerTexture_ = Content.Load<Texture2D>("rm2k-sheet01");
-            var playerTexture = Content.Load<Texture2D>("linktothepast-spritesheet");
-
-            _player = new Player(playerTexture, _graphics);
-            Enemy enemy = new Enemy(playerTexture, _graphics);
-
-            StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
-            /*Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
-            {
-                { "WalkUp", new Animation(playerTexture, 8, 4) },
-                { "WalkRight", new Animation(playerTexture, 6, 4, 8) },
-                { "WalkDown", new Animation(playerTexture, 8, 1) },
-                { "WalkLeft", new Animation(playerTexture, 6, 1, 8) },
-                { "SwordDown", new Animation(playerTexture, 6, 3, 0, false) },
-            };
-
-            _sprites = new List<Sprite>()
-            {
-                new Sprite(animations)
-                {
-                    Position = new Vector2(100, 100),
-                    Input = new Input()
-                    {
-                        Up = Keys.W,
-                        Right = Keys.D,
-                        Down = Keys.S,
-                        Left = Keys.A
-                    }
-                },
-                new Sprite(animations)
-                {
-                    Position = new Vector2(150, 100),
-                    Input = new Input()
-                    {
-                        Up = Keys.Up,
-                        Right = Keys.Right,
-                        Down = Keys.Down,
-                        Left = Keys.Left
-                    }
-                }
-            };*/
-
             var quitButton = new Button(Content.Load<Texture2D>("Button"), Content.Load<SpriteFont>("Fonts/TestFont"))
             {
-                Position = new Vector2(350, 200),
+                Position = new Vector2(350, 285),
                 Text = "Quit"
             };
 
@@ -113,11 +75,7 @@ namespace MonoGameTestGame
             {
                 quitButton
             };
-            _mapEntities = new MapEntity[]
-            {
-                enemy.MapEntity,
-                _player.MapEntity
-            };
+            
 
             StaticData.Content = null;
         }
@@ -162,15 +120,13 @@ namespace MonoGameTestGame
 
         protected override void Update(GameTime gameTime)
         {
-            _player.Update(gameTime);
+            Input.Update();
+            _scene.Update(gameTime);
+            _dialogManager.Update(gameTime);
 
             foreach (var component in _gameComponents)
             {
                 component.Update(gameTime);
-            }
-            foreach (var mapEntity in _mapEntities)
-            {
-                mapEntity.Update(gameTime, _mapEntities, _tileMap);
             }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -183,11 +139,11 @@ namespace MonoGameTestGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            //_spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateScale(1f));
             _spriteBatch.Begin();
-            _tileMap.Draw(_spriteBatch);
+            _scene.Draw(_spriteBatch);
             //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
-            _spriteBatch.Draw(
+            /*_spriteBatch.Draw(
                 ballTexture,
                 ballPosition,
                 null,
@@ -197,17 +153,13 @@ namespace MonoGameTestGame
                 Vector2.One,
                 SpriteEffects.None,
                 0f
-            );
+            );*/
             foreach (var component in _gameComponents)
             {
                 component.Draw(gameTime, _spriteBatch);
             }
-            foreach (var mapEntity in _mapEntities)
-            {
-                mapEntity.Draw(_spriteBatch);
-            }
-            _player.SwordHitbox.Draw(_spriteBatch);
-            _spriteBatch.DrawString(StaticData.Font, _player.MapEntity.Position.ToString(), new Vector2(500, 300), Color.Black);
+            
+            _dialogManager.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

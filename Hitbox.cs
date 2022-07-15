@@ -10,15 +10,13 @@ namespace MonoGameTestGame
     {
         private Texture2D _hitbox;
         private Color[] _data;
-        private GraphicsDeviceManager _graphics;
         private int _width;
         private int _height;
         public Vector2 Position;
         public Color Color = Color.Blue;
         public bool Enabled = true;
-        public Hitbox(GraphicsDeviceManager graphics, int width, int height)
+        public Hitbox(int width, int height)
         {
-            _graphics = graphics;
             _width = width;
             _height = height;
             Load(_width, _height);
@@ -31,7 +29,7 @@ namespace MonoGameTestGame
         {
             _width = width;
             _height = height;
-            _hitbox = new Texture2D(_graphics.GraphicsDevice, _width, _height);
+            _hitbox = new Texture2D(StaticData.Graphics.GraphicsDevice, _width, _height);
             _data = new Color[_width * _height];
             for (int i = 0; i < _data.Length; i++)
             {
@@ -47,7 +45,7 @@ namespace MonoGameTestGame
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Enabled)
-                spriteBatch.Draw(_hitbox, Position, Color);
+                spriteBatch.Draw(_hitbox, Position, Color * 0.5f);
         }
         public Rectangle Rectangle
         {

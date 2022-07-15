@@ -4,6 +4,8 @@ namespace MonoGameTestGame.Models
 {
     public class Animation
     {
+        public static int DefaultFrameWidth = 40;
+        public static int DefaultFrameHeight = 50;
         public int CurrentFrame;
         public int FrameCount;
         public int FrameHeight; //{ get { return Texture.Height; }}
@@ -25,8 +27,8 @@ namespace MonoGameTestGame.Models
             TextureXPos = textureXPos;
             IsLooping = isLooping;
             FrameDuration = frameDuration;
-            FrameWidth = 30;
-            FrameHeight = 30;
+            FrameWidth = DefaultFrameWidth;
+            FrameHeight = DefaultFrameHeight;
         }
     }
 }

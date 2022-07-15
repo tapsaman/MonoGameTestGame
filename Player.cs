@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGameTestGame.Controls;
 using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
 using MonoGameTestGame.Sprites;
@@ -15,49 +12,42 @@ namespace MonoGameTestGame
         public float WalkSpeed = 60f;
         public bool Hit = false;
 
-        public StateMachine StateMachine;
+        private StateMachine _stateMachine;
 
-        public Input Input;
         public MapEntity MapEntity;
         public SwordHitbox SwordHitbox;
-
             
-        public Player(Texture2D playerTexture, GraphicsDeviceManager graphics)
+        public Player()
         {
-            Input = new Input()
-            {
-                Up = Keys.W,
-                Right = Keys.D,
-                Down = Keys.S,
-                Left = Keys.A
-            };
+            var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet");
 
             Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
             {
-                { "IdleUp", new Animation(playerTexture, 1, 4, 3) },
-                { "IdleRight", new Animation(playerTexture, 1, 4, 12) },
-                { "IdleDown", new Animation(playerTexture, 1, 0, 1) },
-                { "IdleLeft", new Animation(playerTexture, 1, 1, 12) },
-                { "WalkUp", new Animation(playerTexture, 8, 4) },
-                { "WalkRight", new Animation(playerTexture, 6, 4, 8) },
-                { "WalkDown", new Animation(playerTexture, 8, 1) },
-                { "WalkLeft", new Animation(playerTexture, 6, 1, 8) },
-                { "SwordHitUp", new Animation(playerTexture, 5, 6, 0, false, 0.04f) },
-                { "SwordHitRight", new Animation(playerTexture, 5, 6, 8, false, 0.04f) },
-                { "SwordHitDown", new Animation(playerTexture, 6, 3, 0, false, 0.04f) },
-                { "SwordHitLeft", new Animation(playerTexture, 5, 3, 8, false, 0.04f) },
+                { "IdleDown",       new Animation(texture, 1, 0, 1) },
+                { "IdleUp",         new Animation(texture, 1, 1, 3) },
+                { "IdleLeft",       new Animation(texture, 1, 2, 3) },
+                { "IdleRight",      new Animation(texture, 1, 3, 3) },
+                { "WalkDown",       new Animation(texture, 8, 0) },
+                { "WalkUp",         new Animation(texture, 8, 1) },
+                { "WalkLeft",       new Animation(texture, 6, 2) },
+                { "WalkRight",      new Animation(texture, 6, 3) },
+                { "SwordHitDown",   new Animation(texture, 6, 4, 0, false, 0.04f) },
+                { "SwordHitUp",     new Animation(texture, 5, 5, 0, false, 0.04f) },
+                { "SwordHitLeft",   new Animation(texture, 5, 6, 0, false, 0.04f) },
+                { "SwordHitRight",  new Animation(texture, 5, 7, 0, false, 0.04f) },
             };
 
+            Hitbox hitbox = new Hitbox(14, 14);
             Sprite sprite = new Sprite(animations);
-            Hitbox hitbox = new Hitbox(graphics, 14, 14);
 
             MapEntity = new MapEntity(sprite, hitbox)
             {
                 Position = new Vector2(100, 100),
-                Moving = true
+                Moving = true,
+                SpriteOffset = new Vector2(-13, -24)
             };
 
-            SwordHitbox = new SwordHitbox(graphics, 18, 8) { Color = Color.Black };
+            SwordHitbox = new SwordHitbox(14, 14) { Color = Color.Black };
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -66,35 +56,57 @@ namespace MonoGameTestGame
                 { "SwordHit", new PlayerStateSwordHit(this) }
             };
 
-            StateMachine = new StateMachine(states, "Idle");
+            _stateMachine = new StateMachine(states, "Idle");
         }
 
 
         public void Update(GameTime gameTime)
         {
-            StateMachine.Update(gameTime);
+            _stateMachine.Update(gameTime);
             SwordHitbox.Update(gameTime);
         }
 
         public void DetermineInputVelocity(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Input.Up))
-                MapEntity.Velocity.Y = -WalkSpeed;
-            if (Keyboard.GetState().IsKeyDown(Input.Down))
-                MapEntity.Velocity.Y = WalkSpeed;
-            if (Keyboard.GetState().IsKeyDown(Input.Left))
-                MapEntity.Velocity.X = -WalkSpeed;
-            if (Keyboard.GetState().IsKeyDown(Input.Right))
-                MapEntity.Velocity.X = WalkSpeed;
+            if (Input.IsPressed(Input.Up))
+                MapEntity.Velocity.Y = -1;
+            if (Input.IsPressed(Input.Down))
+                MapEntity.Velocity.Y = 1;
+            if (Input.IsPressed(Input.Left))
+                MapEntity.Velocity.X = -1;
+            if (Input.IsPressed(Input.Right))
+                MapEntity.Velocity.X = 1;
             
-            MapEntity.Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //MapEntity.Velocity.Normalize();
+            if (MapEntity.Velocity != Vector2.Zero)
+            {
+                //MapEntity.Velocity.Normalize();
+                MapEntity.Velocity *= WalkSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
         }
 
         public void DetermineHitInput()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (!Input.IsPressed(Input.A))
+                return;
+
+            if (Input.JustPressed(Input.A))
+            {
+                var touchArea = MapEntity.GetTouchArea();
+
+                foreach (var mapEntity in StaticData.Scene.MapEntities)
+                {
+                    if (mapEntity.Hitbox != null && touchArea.Intersects(mapEntity.Hitbox.Rectangle) && mapEntity.HasTrigger())
+                    {
+                        mapEntity.InvokeTrigger();
+                        return;
+                    }
+                }
                 Hit = true;
+            }
+            else
+            {
+                //Hit = true;
+            } 
         }
     }
 }

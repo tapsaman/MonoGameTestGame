@@ -18,7 +18,6 @@ namespace MonoGameTestGame.Models
         {
             Player.DetermineInputVelocity(gameTime);
             Player.DetermineHitInput();
-            
 
             if (Player.Hit)
             {

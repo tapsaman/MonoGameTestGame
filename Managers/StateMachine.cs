@@ -22,7 +22,6 @@ namespace MonoGameTestGame.Managers
         }
         public Dictionary<string, State> _states;
 
-
         public StateMachine(Dictionary<string, State> states, string initialStateName)
         {
             States = states;
@@ -39,7 +38,7 @@ namespace MonoGameTestGame.Managers
         {
             if (!States.ContainsKey(newStateName))
             {
-                Console.WriteLine("StateMachine attempted to tranition to undefined state '" + newStateName + "'");
+                Sys.LogError("StateMachine attempted to transition to undefined state '" + newStateName + "'");
             }
             else
             {

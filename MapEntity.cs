@@ -14,8 +14,21 @@ namespace MonoGameTestGame
     {
         public Vector2 Velocity;
         public Sprite Sprite;
-        public string Direction = "Down";
+        public Direction Direction = Direction.Down;
         public Hitbox Hitbox;
+        public bool Interactable { get; protected set; } = false;
+        public bool Hittable { get; protected set; } = false;
+        public bool BlockedByTerrain { get; protected set; } = false;
+        
+        public event Action Trigger;
+        public bool HasTrigger()
+        {
+            return Trigger != null;
+        }
+        public void InvokeTrigger()
+        {
+            Trigger.Invoke();
+        }
         private Vector2 _position;
         public Vector2 Position
         {
@@ -23,14 +36,29 @@ namespace MonoGameTestGame
             set
             {
                 _position = value;
-                Sprite.Position = _position;
+                Sprite.Position = _position + _spriteOffset;
 
                 if (Hitbox != null)
                 Hitbox.Position = _position;
             }
         }
+        private Vector2 _spriteOffset = Vector2.Zero;
+        public Vector2 SpriteOffset
+        {
+            get { return _spriteOffset; }
+            set
+            {
+                _spriteOffset = value;
+                Sprite.Position = _position + _spriteOffset;
+            }
+        }
         public bool Moving = false;
 
+        public MapEntity(Vector2 position)
+        {
+            Sprite = new Sprite();
+            Position = position;
+        }
         public MapEntity(Sprite sprite)
         {
             Sprite = sprite;
@@ -60,13 +88,13 @@ namespace MonoGameTestGame
         public void Move(GameTime gameTime, MapEntity[] mapEntities, TileMap tileMap)
         {
             if (Velocity.Y < 0)
-                Direction = "Up";
+                Direction = Direction.Up;
             if (Velocity.X > 0)
-                Direction = "Right";
+                Direction = Direction.Right;
             if (Velocity.Y > 0)
-                Direction = "Down";
+                Direction = Direction.Down;
             if (Velocity.X < 0)
-                Direction = "Left";
+                Direction = Direction.Left;
 
             if (Hitbox != null)
             {
@@ -92,6 +120,18 @@ namespace MonoGameTestGame
 
             Position += Velocity;
             Velocity = Vector2.Zero;
+        }
+
+        public Rectangle GetTouchArea()
+        {
+            if (Direction == Direction.Up)
+                return new Rectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top - 5, Hitbox.Rectangle.Width, 5);
+            if (Direction == Direction.Right)
+                return new Rectangle(Hitbox.Rectangle.Right, Hitbox.Rectangle.Top, 5, Hitbox.Rectangle.Height);
+            if (Direction == Direction.Down)
+                return new Rectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Bottom, Hitbox.Rectangle.Width, 5);
+            
+            return new Rectangle(Hitbox.Rectangle.Left - 5, Hitbox.Rectangle.Top, 5, Hitbox.Rectangle.Height);
         }
 
         protected bool IsTouchingLeft(MapEntity mapEntity)

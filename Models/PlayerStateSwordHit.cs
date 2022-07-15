@@ -13,7 +13,7 @@ namespace MonoGameTestGame.Models
         public override void Enter()
         {
             Player.MapEntity.Sprite.SetAnimation("SwordHit" + Player.MapEntity.Direction);
-            Player.SwordHitbox.StartHit(Player.MapEntity.Position, Player.MapEntity.Direction);
+            Player.SwordHitbox.StartHit(Player.MapEntity.Hitbox.Rectangle, Player.MapEntity.Direction);
         }
 
         public override void Update(GameTime gameTime)
