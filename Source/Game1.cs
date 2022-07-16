@@ -55,6 +55,7 @@ namespace MonoGameTestGame
             StaticData.Content = Content;
             StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
             SFX.Load();
+            BitmapFontRenderer.Load();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             StaticData.Scene = _scene = new TestScene();
             _scene.Load();
@@ -162,6 +163,7 @@ namespace MonoGameTestGame
             }
             
             _dialogManager.Draw(_spriteBatch);
+            BitmapFontRenderer.DrawString(_spriteBatch, "zeldan seikkailut mikä mikä maassa", new Vector2(0,0), Color.Blue);
             _spriteBatch.End();
 
             // after drawing the game at native resolution we can render _nativeRenderTarget to the backbuffer!

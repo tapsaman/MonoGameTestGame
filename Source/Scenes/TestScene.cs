@@ -10,7 +10,7 @@ namespace MonoGameTestGame
     public class TestScene : Scene
     {
         private StateMachine _stateMachine;
-        private Dialog _enemyDialog = new Dialog("asdasd", "fuu \"fuu\" ä'ä'-.,!#¤%&/()=?");
+        private Dialog _enemyDialog = new Dialog("Sample text", "Simo ruumishuoneelta moi.\nOletko ajatellut kuolla?\nNyt se nimittäin kannattaa.");
 
         public override void Load()
         {
@@ -60,7 +60,7 @@ namespace MonoGameTestGame
         }
         private void StartEnemyDialog()
         {
-            DialogManager.Load(_enemyDialog);
+            DialogManager.Load(_enemyDialog, true);
             _stateMachine.TransitionTo("Dialog");
         }
         private void QuitDialog()

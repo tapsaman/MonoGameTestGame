@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\bin\Debug\netcoreapp3.1\MonoGameTestGame.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -97,12 +98,28 @@
 /processorParam:TextureFormat=Color
 /build:dialogbox-fantasy-scaled.png
 
+#begin Fonts/bitmapfonttest.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Fonts/bitmapfonttest.xml
+
+#begin Fonts/bitmapfonttest_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/bitmapfonttest_0.png
+
 #begin Fonts/TestFont.spritefont
 /importer:FontDescriptionImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
+/processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=NoChange
+/processorParam:TextureFormat=Compressed
 /build:Fonts/TestFont.spritefont
 
 #begin linktothepast-darkworld.mp3

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Microsoft.Xna.Framework">
+  <Asset Type="MonoGameTestGame.BitmapFont">
+    <FontName>asdasd</FontName>
+    <InnerFonts>
+      <Asset Type="MonoGameTestGame.BitmapFont">
+        <FontName>perse</FontName>
+      </Asset>
+    </InnerFonts>
+  </Asset>
+</XnaContent>

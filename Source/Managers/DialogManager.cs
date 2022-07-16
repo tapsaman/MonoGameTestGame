@@ -16,10 +16,11 @@ namespace MonoGameTestGame.Managers
         private bool _typing = false;
         private bool _running = false;
         private bool _displayArrow = false;
+        private bool _topDialogBox = false;
         public event Action DialogEnd;
         public DialogBox DialogBox = new FantasyDialogBox();
 
-        public void Load(Dialog dialog)
+        public void Load(Dialog dialog, bool topDialogBox = false)
         {
             _dialog = dialog;
             _dialogMessageIndex = 0;
@@ -29,6 +30,7 @@ namespace MonoGameTestGame.Managers
             _running = true;
             _typing = true;
             _displayArrow = false;
+            _topDialogBox = topDialogBox;
         }
 
         private void Next()
@@ -109,7 +111,7 @@ namespace MonoGameTestGame.Managers
         {
             if (!_running) return;
 
-            DialogBox.Draw(spriteBatch, "Friend", _currentString, _displayArrow);
+            DialogBox.Draw(spriteBatch, "Friend", _currentString, _displayArrow, _topDialogBox);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame
 {
@@ -22,9 +23,9 @@ namespace MonoGameTestGame
             _bgTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-scaled");
             _arrowTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
             _height = _bgTexture.Height;
-            _arrowOffset = new Vector2(230,210);
-            _nameOffset = new Vector2(44,4);
-            _textOffset = new Vector2(10,20);
+            _arrowOffset = new Vector2(230,50);
+            _nameOffset = new Vector2(44,2);
+            _textOffset = new Vector2(10,17);
         }
 
         public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false)
@@ -38,8 +39,11 @@ namespace MonoGameTestGame
                 spriteBatch.Draw(_arrowTexture, position + _arrowOffset, Color.White);
             }
 
-            spriteBatch.DrawString(StaticData.Font, name, position + _nameOffset, Color.White);
-            spriteBatch.DrawString(StaticData.Font, text, position + _textOffset, Color.Black);
+            //spriteBatch.DrawString(StaticData.Font, name, position + _nameOffset, Color.White);
+            //spriteBatch.DrawString(StaticData.Font, text, position + _textOffset, Color.Black);
+
+            BitmapFontRenderer.DrawString(spriteBatch, name, position + _nameOffset, Color.White);
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, Color.Black);
         }
     }
 }
