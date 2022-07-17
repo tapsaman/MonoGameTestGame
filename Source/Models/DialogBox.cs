@@ -16,6 +16,37 @@ namespace MonoGameTestGame
         public abstract void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false);
     }
 
+    public class LinkToThePastDialogBox : DialogBox
+    {
+        public LinkToThePastDialogBox()
+        {
+            _bgTexture = StaticData.Content.Load<Texture2D>("linktothepast-dialogbox");
+            _arrowTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
+            _height = _bgTexture.Height;
+            _arrowOffset = new Vector2(230,50);
+            _textOffset = new Vector2(8,6);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false)
+        {
+            var position = new Vector2(33, top ? 18 : StaticData.NativeHeight - _height - 18);
+
+            spriteBatch.Draw(_bgTexture, position, Color.White);
+
+            if (drawArrow)
+            {
+                spriteBatch.Draw(_arrowTexture, position + _arrowOffset, Color.White);
+            }
+
+            if (name != null && name != "")
+            {
+                text = name.ToUpper() + ":  " + text;
+            }
+            
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset);
+        }
+    }
+
     public class FantasyDialogBox : DialogBox
     {
         public FantasyDialogBox()
@@ -42,8 +73,8 @@ namespace MonoGameTestGame
             //spriteBatch.DrawString(StaticData.Font, name, position + _nameOffset, Color.White);
             //spriteBatch.DrawString(StaticData.Font, text, position + _textOffset, Color.Black);
 
-            BitmapFontRenderer.DrawString(spriteBatch, name, position + _nameOffset, Color.White);
-            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, Color.Black);
+            BitmapFontRenderer.DrawString(spriteBatch, name, position + _nameOffset);
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset);
         }
     }
 }

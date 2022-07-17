@@ -6,13 +6,9 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Bat : MapEntity
+    public class Bat : Character
     {
-
-        public MapEntity MapEntity;
-            
-        public Bat(Vector2 position)
-            : base(position)
+        public Bat()
         {
             Interactable = false;
             Hittable = true;
@@ -27,7 +23,7 @@ namespace MonoGameTestGame
             };
 
             Sprite.SetAnimations(animations, "Default");
-            Hitbox = new Hitbox(14, 14);
+            Hitbox.Load(14, 14);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-2, -2);
         }

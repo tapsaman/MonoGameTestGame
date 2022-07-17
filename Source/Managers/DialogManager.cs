@@ -18,7 +18,7 @@ namespace MonoGameTestGame.Managers
         private bool _displayArrow = false;
         private bool _topDialogBox = false;
         public event Action DialogEnd;
-        public DialogBox DialogBox = new FantasyDialogBox();
+        public DialogBox DialogBox = new LinkToThePastDialogBox();
 
         public void Load(Dialog dialog, bool topDialogBox = false)
         {
@@ -111,7 +111,7 @@ namespace MonoGameTestGame.Managers
         {
             if (!_running) return;
 
-            DialogBox.Draw(spriteBatch, "Friend", _currentString, _displayArrow, _topDialogBox);
+            DialogBox.Draw(spriteBatch, _dialog.Title, _currentString, _displayArrow, _topDialogBox);
         }
     }
 }

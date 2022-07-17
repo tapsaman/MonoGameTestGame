@@ -15,37 +15,13 @@ namespace MonoGameTestGame.Managers
         <Item><Key>$1</Key><Value>$2 $3 $4 $5 $6 $7 $8</Value></Item>
     */
 
-    public class BitmapFontChar
-    {
-        public Rectangle SourceRectangle;
-        public Vector2 Offset;
-        public int XAdvance;
-        public BitmapFontChar(int[] props)
-        {
-            SourceRectangle = new Rectangle(props[0], props[1], props[2], props[3]);
-            Offset = new Vector2(props[4], props[5]);
-            XAdvance = props[6];
-        }
-    }
+    
 
     public static class BitmapFontRenderer
     {
-        private static Dictionary<int, BitmapFontChar> _chars;
-        private static Texture2D _texture;
-        public static void Load()
-        {
-            //_font = StaticData.Content.Load<BitmapFont>("Fonts/bitmapfonttest");
-            Dictionary<int, int[]> rawCharData = StaticData.Content.Load<Dictionary<int, int[]>>("Fonts/bitmapfonttest");
-            _chars = new Dictionary<int, BitmapFontChar>();
-            _texture = StaticData.Content.Load<Texture2D>("Fonts/bitmapfonttest_0");
+        public static BitmapFont Font;
 
-            foreach(var item in rawCharData)
-            {
-                _chars[item.Key] = new BitmapFontChar(item.Value);
-            }
-        }
-
-        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
+        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position)
         {
             var startPosition = position;
 
@@ -55,20 +31,30 @@ namespace MonoGameTestGame.Managers
                 {
                     // New line character
                     position.X = startPosition.X;
-                    position.Y += 12;
+                    position.Y += Font.LineHeight;
                 }
                 else
-                { 
-                    var c = _chars[code];
+                {
+                    BitmapFontChar c;
+
+                    if (!Font.Chars.ContainsKey(code))
+                    {
+                        Sys.LogError("Undefined symbol at " + code + " (" + (char)code + ") for " + Font.ToString());
+                        c = Font.Chars[Font.UndefinedSymbolCode];
+                    }
+                    else
+                    {
+                        c = Font.Chars[code];
+                    }
 
                     spriteBatch.Draw(
-                        _texture,
+                        Font.Texture,
                         position + c.Offset,
                         c.SourceRectangle,
-                        color
+                        Color.White
                     );
 
-                    position.X += c.XAdvance;
+                    position.X += c.XAdvance + Font.LetterSpacing;
                 }
             }
         }

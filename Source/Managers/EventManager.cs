@@ -8,6 +8,11 @@ namespace MonoGameTestGame.Managers
         private Event[] _eventList;
         private bool _lastEventDone = false;
 
+        public void Load(Event singleEvent)
+        {
+            Load(new Event[] { singleEvent });
+        }
+        
         public void Load(Event[] eventList)
         {
             _eventList = eventList;

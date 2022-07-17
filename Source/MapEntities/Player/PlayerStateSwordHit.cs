@@ -10,6 +10,7 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
+            SFX.Sword1.Play();
             Player.Sprite.SetAnimation("SwordHit" + Player.Direction);
             Player.SwordHitbox.StartHit(Player.Hitbox.Rectangle, Player.Direction);
         }

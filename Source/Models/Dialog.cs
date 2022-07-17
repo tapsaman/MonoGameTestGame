@@ -5,6 +5,7 @@ namespace MonoGameTestGame
 {
     public class Dialog
     {
+        public string Title;
         public string[] Messages;
 
         public Dialog(params string[] messages)

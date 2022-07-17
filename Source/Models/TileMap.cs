@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,13 +9,14 @@ namespace MonoGameTestGame
 {
     public abstract class TileMap
     {
-        protected TiledMap _map;
+        protected TiledMap _map; // TODO Replace with _tiles?
         protected TiledTileset _tileset;
         protected Texture2D _tilesetTexture;
         private int _tileWidth;
         private int _tileHeight;
         private int _tilesetTilesWide;
         private int _tilesetTilesHeight;
+        private Dictionary<int, Dictionary<int, TileMapTile>> _tiles;
 
         /*
         Should load fields _map, _tileset, _tilesetTexture
@@ -30,53 +32,67 @@ namespace MonoGameTestGame
 
             // Amount of tiles on each row (left right)
             _tilesetTilesWide = _tileset.Columns;
-            // Amount of tiels on each column (up down)
+            // Amount of tiles on each column (up down)
             _tilesetTilesHeight = _tileset.TileCount / _tileset.Columns;
 
-            // Print "Sun" to the debug console. This is an object in "Object Layer 1".
-            //System.Diagnostics.Debug.WriteLine(_map.Layers[1].objects[0].name);
+            _tiles = new Dictionary<int, Dictionary<int, TileMapTile>>();
+
+            LoadTiles(0);
+            LoadTiles(1);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void LoadTiles(int layerIndex = 0)
         {
-            for (var i = 0; i < _map.Layers[0].data.Length; i++)
+            _tiles[layerIndex] = new Dictionary<int, TileMapTile>();
+
+            for (var i = 0; i < _map.Layers[layerIndex].data.Length; i++)
             {
-                int gid = _map.Layers[0].data[i];
+                int gid = _map.Layers[layerIndex].data[i];
 
                 // Empty tile, do nothing
                 if (gid == 0)
+                    continue;
+
+                int tileFrame = gid - 1;
+
+                var tile = _map.GetTiledTile(_map.Tilesets[0], _tileset, gid);
+
+                if (gid == 1068)
                 {
-
+                    Console.WriteLine("tile 1068 " + tile);
+                    Console.WriteLine(tile);
                 }
-                else
+                
+                int column = tileFrame % _tilesetTilesWide;
+                int row = (int)Math.Floor((double)tileFrame / (double)_tilesetTilesWide);
+
+                float x = (i % _map.Width) * _map.TileWidth;
+                float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
+
+                Rectangle tilesetRec = new Rectangle(_tileWidth * column, _tileHeight * row, _tileWidth, _tileHeight);
+
+                _tiles[layerIndex][i] = new TileMapTile()
                 {
-                    // Tileset tile ID
-                    // Looking at the exampleTileset.png
-                    // 0 = Blue
-                    // 1 = Green
-                    // 2 = Dark Yellow
-                    // 3 = Magenta
-                    int tileFrame = gid - 1;
+                    Position = new Vector2((int)x, (int)y),
+                    DrawRectangle = new Rectangle((int)x, (int)y, _tileWidth, _tileHeight),
+                    SourceRectangle = tilesetRec
+                };
+            }
+        }
 
-                    // Print the tile type into the debug console.
-                    // This assumes only one (1) `tiled tileset` is being used, so getting the first one.
-                    var tile = _map.GetTiledTile(_map.Tilesets[0], _tileset, gid);
-                    if (tile != null) {
-                        // This should print "Grass" for each grass tile in the map each draw call
-                        // so six (6) times.
-                        //System.Diagnostics.Debug.WriteLine(tile.type);
-                    }
-                 
-                    int column = tileFrame % _tilesetTilesWide;
-                    int row = (int)Math.Floor((double)tileFrame / (double)_tilesetTilesWide);
+        public void Draw(SpriteBatch spriteBatch, int layerIndex = 0)
+        {
+            for (var i = 0; i < _map.Layers[layerIndex].data.Length; i++)
+            {
+                int gid = _map.Layers[layerIndex].data[i];
 
-                    float x = (i % _map.Width) * _map.TileWidth;
-                    float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
+                // Empty tile, do nothing
+                if (gid == 0)
+                    continue;
 
-                    Rectangle tilesetRec = new Rectangle(_tileWidth * column, _tileHeight * row, _tileWidth, _tileHeight);
+                TileMapTile tile = _tiles[layerIndex][i];
 
-                    spriteBatch.Draw(_tilesetTexture, new Rectangle((int)x, (int)y, _tileWidth, _tileHeight), tilesetRec, Color.White);
-                }
+                spriteBatch.Draw(_tilesetTexture, tile.Position, tile.SourceRectangle, Color.White);
             }
         }
 
@@ -89,6 +105,7 @@ namespace MonoGameTestGame
             int index = x + y * _map.Width;
             int gid = _map.Layers[0].data[index];
             var tile = _map.GetTiledTile(_map.Tilesets[0], _tileset, gid);
+            
             //Console.WriteLine(x + "," + y + "=" + index + "::" + gid + "::" + (tile != null ? tile.ToString() : "null"));
             if (tile != null && tile.properties.Length != 0 && tile.properties[0].name == "IsBlocking")
             {
@@ -161,6 +178,18 @@ namespace MonoGameTestGame
         public float ConvertTileY(int tileY)
         {
             return tileY * _tileHeight;
+        }
+        public Vector2 GetPosition(int tileX, int tileY)
+        {
+            return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
+        }
+
+        private class TileMapTile
+        {
+            public Vector2 Position;
+            public Rectangle DrawRectangle;
+            public Rectangle SourceRectangle;
+            public bool IsBlocking = false; 
         }
     }
 }

@@ -7,8 +7,14 @@ log:
 * 15.7 - player inherits map entity, new map, using upscaled snes resolution
 * 16.7 - bitmap fonts coz spritefonts suck (blurry in small scale)
 * 16.7 - event system init
+* 17.7 - split map entities to characters and event triggers, zelda style bitmap font and dialog box, nicer tilemap rendering
 
 roadmap:
 * enemy with ai and states
 * scene management
 * event logic for cut scenes etc. ("simple enum code solution" or maybe yarn spinner?)
+
+small stuff todo:
+* walk sfx
+* new class MapObject between map entity & character?
+* tilemap animations

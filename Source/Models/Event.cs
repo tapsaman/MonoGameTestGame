@@ -61,18 +61,17 @@ namespace MonoGameTestGame.Models
 
     public class FaceEvent : Event
     {
-        public MapEntity Target;
+        public Character Target;
         public Direction? FaceTo;
         public MapEntity FaceTowards;
-        private int _updated = 0;
 
-        public FaceEvent(MapEntity target, Direction faceto)
+        public FaceEvent(Character target, Direction faceto)
             : base(EventType.Text)
         {
             Target = target;
             FaceTo = faceto;
         }
-        public FaceEvent(MapEntity target, MapEntity faceTowards)
+        public FaceEvent(Character target, MapEntity faceTowards)
             : base(EventType.Text)
         {
             Target = target;

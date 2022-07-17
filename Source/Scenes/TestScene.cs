@@ -9,77 +9,62 @@ namespace MonoGameTestGame
 {
     public class TestScene : Scene
     {
-        private Dialog _enemyDialog = new Dialog("Sample text", "Simo ruumishuoneelta moi.\nOletko ajatellut kuolla?\nNyt se nimittäin kannattaa.");
         private Event[] _enemyEvents;
+        private Event _signEvent;
 
         public override void Load()
         {
-            Song song = StaticData.Content.Load<Song>("linktothepast-darkworld");
-            //MediaPlayer.Play(song);
+            var song = StaticData.Content.Load<Song>("linktothepast-darkworld");
+            MediaPlayer.Play(song);
             MediaPlayer.Volume = 0.2f;
             MediaPlayer.IsRepeating = true;
             TileMap = new TestMap();
 
-            Player = new Player(new Vector2(100, 100));
-            Enemy enemy = new Enemy(new Vector2(TileMap.ConvertTileX(22), TileMap.ConvertTileY(22)));
-            Bat bat = new Bat(new Vector2(250, 200));
+            Player = new Player();
+            Player.Position = new Vector2(100, 100);
 
+            var enemy = new Enemy();
+            enemy.Position = new Vector2(TileMap.ConvertTileX(22), TileMap.ConvertTileY(22));
             enemy.Trigger += StartEnemyDialog;
 
-            DialogManager = new DialogManager();
-            DialogManager.DialogEnd += QuitDialog;
+            var bat = new Bat();
+            bat.Position = new Vector2(180, 200);
+
+            var signEventTrigger = new EventTrigger(TileMap.GetPosition(9, 4), 14, 14);
+            _signEvent = new TextEvent(new Dialog("ZELDA'S TENT HOME"), signEventTrigger);
+            signEventTrigger.Trigger += ReadSign;
 
             Add(enemy);
             Add(Player);
-            //Add(bat);
+            Add(bat);
+            Add(signEventTrigger);
 
-            Dictionary<string, State> states = new Dictionary<string, State>()
+            var enemyDialog = new Dialog(
+                "Sample text",
+                "Simo ruumishuoneelta\nmoi. Oletko ajatellut kuolla?\nNyt se nimittäin kannattaa."
+            )
             {
-                { "Default", new GameStateDefault(this) },
-                { "Dialog", new GameStateDialog(this) }
+                Title = "Friend"
             };
 
-            StateMachine = new StateMachine(states, "Default");
-            EventManager = new EventManager();
             _enemyEvents = new Event[]
             {
                 new FaceEvent(enemy, Player),
-                new TextEvent(_enemyDialog, enemy),
+                new TextEvent(enemyDialog, enemy),
                 new FaceEvent(enemy, Direction.Down)
             };
         }
-        public override void Update(GameTime gameTime)
-        {
-            EventManager.Update();
-            StateMachine.Update(gameTime);
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            TileMap.Draw(spriteBatch);
-            CollidingEntities.Sort();
-
-            foreach (var mapEntity in CollidingEntities)
-            {
-                mapEntity.Draw(spriteBatch);
-            }
-            foreach (var mapEntity in UncollidingEntities)
-            {
-                mapEntity.Draw(spriteBatch);
-            }
-
-            Player.SwordHitbox.Draw(spriteBatch);
-            DialogManager.Draw(spriteBatch);
-            spriteBatch.DrawString(StaticData.Font, Player.Position.ToString(), new Vector2(500, 300), Color.Black);
-        }
+        
         private void StartEnemyDialog()
         {
             //DialogManager.Load(_enemyDialog, true);
             //StateMachine.TransitionTo("Dialog");
             EventManager.Load(_enemyEvents);
         }
-        private void QuitDialog()
+
+        private void ReadSign()
         {
-            StateMachine.TransitionTo("Default");
+            EventManager.Load(_signEvent);
         }
     }
 }

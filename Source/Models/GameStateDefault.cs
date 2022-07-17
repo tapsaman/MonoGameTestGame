@@ -1,20 +1,15 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame.Models
 {
     public class GameStateDefault : GameState
     {
         public GameStateDefault(Scene scene) : base(scene) {}
-        public override void Enter()
-        {
-            
-        }
+        public override void Enter() {}
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var mapEntity in Scene.MapEntities)
+            foreach (var mapEntity in Scene.Characters)
             {
                 mapEntity.Update(gameTime);
             }

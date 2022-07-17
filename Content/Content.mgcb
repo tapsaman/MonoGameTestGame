@@ -10,7 +10,6 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\bin\Debug\netcoreapp3.1\MonoGameTestGame.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -115,6 +114,23 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/bitmapfonttest_0.png
 
+#begin Fonts/linktothepast/linktothepast.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Fonts/linktothepast/linktothepast.xml
+
+#begin Fonts/linktothepast/linktothepast_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/linktothepast/linktothepast_0.png
+
 #begin Fonts/TestFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -127,6 +143,18 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:linktothepast-darkworld.mp3
+
+#begin linktothepast-dialogbox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast-dialogbox.png
 
 #begin linktothepast-enemysprites.png
 /importer:TextureImporter
@@ -146,11 +174,29 @@
 /processorParam:Quality=Best
 /build:linktothepast-sfx/chest open.wav
 
+#begin linktothepast-sfx/chest open.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/chest open.wav
+
 #begin linktothepast-sfx/cursor.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast-sfx/cursor.wav
+
+#begin linktothepast-sfx/cursor.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/cursor.wav
+
+#begin linktothepast-sfx/enemy dies.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/enemy dies.wav
 
 #begin linktothepast-sfx/enemy dies.wav
 /importer:WavImporter
@@ -164,11 +210,41 @@
 /processorParam:Quality=Best
 /build:linktothepast-sfx/enemy hit.wav
 
+#begin linktothepast-sfx/enemy hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/enemy hit.wav
+
 #begin linktothepast-sfx/error.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast-sfx/error.wav
+
+#begin linktothepast-sfx/error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/error.wav
+
+#begin linktothepast-sfx/fighter sword 1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/fighter sword 1.wav
+
+#begin linktothepast-sfx/fighter sword 2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/fighter sword 2.wav
+
+#begin linktothepast-sfx/menu close.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/menu close.wav
 
 #begin linktothepast-sfx/menu close.wav
 /importer:WavImporter
@@ -182,6 +258,18 @@
 /processorParam:Quality=Best
 /build:linktothepast-sfx/menu open.wav
 
+#begin linktothepast-sfx/menu open.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/menu open.wav
+
+#begin linktothepast-sfx/message finish.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/message finish.wav
+
 #begin linktothepast-sfx/message finish.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -193,6 +281,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast-sfx/message.wav
+
+#begin linktothepast-sfx/message.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/message.wav
+
+#begin linktothepast-sfx/walk grass.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast-sfx/walk grass.wav
 
 #begin linktothepast-spritesheet.png
 /importer:TextureImporter
@@ -245,7 +345,7 @@
 #begin linktothepast-tiles.png
 /importer:TextureImporter
 /processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyColor=255,255,255,255
 /processorParam:ColorKeyEnabled=True
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True

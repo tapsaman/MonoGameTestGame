@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGameTestGame.Controls;
-using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
 using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Enemy : MapEntity
+    public class Enemy : Character
     {       
-        public Enemy(Vector2 position)
-            : base(position)
+        public Enemy()
         {
             /*
             var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet-og");

@@ -7,16 +7,15 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Player : MapEntity
+    public class Player : Character
     {
         public bool Hitting = false;
-        private float _walkSpeed = 60f;
+        private float _walkSpeed = 80f;
         private const int _touchAreaLength = 10;
 
         public SwordHitbox SwordHitbox;
             
-        public Player(Vector2 position)
-            : base(position)
+        public Player()
         {
             Interactable = false;
             Hittable = false;
@@ -105,7 +104,7 @@ namespace MonoGameTestGame
             else
             {
                 //Hit = true;
-            } 
+            }
         }
 
         private Rectangle GetTouchArea()
