@@ -31,5 +31,10 @@ namespace MonoGameTestGame
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-2, -2);
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            Sprite.Update(gameTime);
+        }
     }
 }

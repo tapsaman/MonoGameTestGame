@@ -1,21 +1,22 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameTestGame.Managers;
 using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public abstract class MapEntity
+    public abstract class MapEntity : IComparable<MapEntity>
     {
         public Vector2 Velocity;
         public Sprite Sprite;
-        public Direction Direction = Direction.Down;
+        public virtual Direction Direction { get; set; } = Direction.Down;
         public Hitbox Hitbox;
         public bool Interactable { get; protected set; } = false;
         public bool Hittable { get; protected set; } = false;
         public bool Colliding { get; protected set; } = true;
-        
         public event Action Trigger;
+        protected StateMachine StateMachine;
         public bool HasTrigger()
         {
             return Trigger != null;
@@ -48,6 +49,14 @@ namespace MonoGameTestGame
             }
         }
         public bool Moving = false;
+        public bool Walking = false;
+        public bool WalkingStill = true;
+
+        // Comparison method to sort entities by Y position
+        public int CompareTo(MapEntity mapEntity)
+        {
+            return Position.Y < mapEntity.Position.Y ? 0 : 1;
+        }
 
         public MapEntity(Vector2 position)
         {
@@ -63,10 +72,21 @@ namespace MonoGameTestGame
 
         public virtual void Update(GameTime gameTime)
         {
+            if (StateMachine == null)
+            {
+                Sys.Log("facing " + Direction.ToString());
+                if (WalkingStill || Velocity != Vector2.Zero) {
+                    Sprite.SetAnimation("Walk" + Direction);
+                }
+                else {
+                    Sprite.SetAnimation("Idle" + Direction);
+                }
+            }
             if (Moving) {
                 Move(gameTime);
             }
             Sprite.Update(gameTime);
+            Velocity = Vector2.Zero;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -99,31 +119,30 @@ namespace MonoGameTestGame
             }
 
             Position += Velocity;
-            Velocity = Vector2.Zero;
         }
 
-        protected bool IsTouchingLeft(MapEntity mapEntity)
+        private bool IsTouchingLeft(MapEntity mapEntity)
         {
             return Hitbox.Rectangle.Right + Velocity.X > mapEntity.Hitbox.Rectangle.Left &&
                 Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Left &&
                 Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Top &&
                 Hitbox.Rectangle.Top < mapEntity.Hitbox.Rectangle.Bottom;
         }
-        protected bool IsTouchingRight(MapEntity mapEntity)
+        private bool IsTouchingRight(MapEntity mapEntity)
         {
         return Hitbox.Rectangle.Left + Velocity.X < mapEntity.Hitbox.Rectangle.Right &&
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Right &&
             Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Top &&
             Hitbox.Rectangle.Top < mapEntity.Hitbox.Rectangle.Bottom;
         }
-        protected bool IsTouchingTop(MapEntity mapEntity) 
+        private bool IsTouchingTop(MapEntity mapEntity) 
         {
         return Hitbox.Rectangle.Bottom + Velocity.Y > mapEntity.Hitbox.Rectangle.Top &&
             Hitbox.Rectangle.Top < mapEntity.Hitbox.Rectangle.Top &&
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Left &&
             Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Right;
         }
-        protected bool IsTouchingBottom(MapEntity mapEntity) 
+        private bool IsTouchingBottom(MapEntity mapEntity) 
         {
         return Hitbox.Rectangle.Top + Velocity.Y < mapEntity.Hitbox.Rectangle.Bottom &&
             Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Bottom &&

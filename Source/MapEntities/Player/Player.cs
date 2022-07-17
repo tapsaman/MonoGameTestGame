@@ -13,8 +13,6 @@ namespace MonoGameTestGame
         private float _walkSpeed = 60f;
         private const int _touchAreaLength = 10;
 
-        private StateMachine _stateMachine;
-
         public SwordHitbox SwordHitbox;
             
         public Player(Vector2 position)
@@ -56,13 +54,13 @@ namespace MonoGameTestGame
                 { "SwordHit", new PlayerStateSwordHit(this) }
             };
 
-            _stateMachine = new StateMachine(states, "Idle");
+            StateMachine = new StateMachine(states, "Idle");
         }
 
 
         public override void Update(GameTime gameTime)
         {
-            _stateMachine.Update(gameTime);
+            StateMachine.Update(gameTime);
             SwordHitbox.Update(gameTime);
             base.Update(gameTime);
         }

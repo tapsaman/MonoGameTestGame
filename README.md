@@ -6,7 +6,9 @@ log:
 * 15.7 - dialogs, static input class, sounds/music, better sprites
 * 15.7 - player inherits map entity, new map, using upscaled snes resolution
 * 16.7 - bitmap fonts coz spritefonts suck (blurry in small scale)
+* 16.7 - event system init
 
 roadmap:
-* enemy character or second player
+* enemy with ai and states
 * scene management
+* event logic for cut scenes etc. ("simple enum code solution" or maybe yarn spinner?)

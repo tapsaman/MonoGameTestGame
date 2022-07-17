@@ -9,8 +9,8 @@ namespace MonoGameTestGame
 {
     public class TestScene : Scene
     {
-        private StateMachine _stateMachine;
         private Dialog _enemyDialog = new Dialog("Sample text", "Simo ruumishuoneelta moi.\nOletko ajatellut kuolla?\nNyt se nimittäin kannattaa.");
+        private Event[] _enemyEvents;
 
         public override void Load()
         {
@@ -31,7 +31,7 @@ namespace MonoGameTestGame
 
             Add(enemy);
             Add(Player);
-            Add(bat);
+            //Add(bat);
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -39,17 +39,30 @@ namespace MonoGameTestGame
                 { "Dialog", new GameStateDialog(this) }
             };
 
-            _stateMachine = new StateMachine(states, "Default");
+            StateMachine = new StateMachine(states, "Default");
+            EventManager = new EventManager();
+            _enemyEvents = new Event[]
+            {
+                new FaceEvent(enemy, Player),
+                new TextEvent(_enemyDialog, enemy),
+                new FaceEvent(enemy, Direction.Down)
+            };
         }
         public override void Update(GameTime gameTime)
         {
-            _stateMachine.Update(gameTime);
+            EventManager.Update();
+            StateMachine.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             TileMap.Draw(spriteBatch);
+            CollidingEntities.Sort();
 
-            foreach (var mapEntity in MapEntities)
+            foreach (var mapEntity in CollidingEntities)
+            {
+                mapEntity.Draw(spriteBatch);
+            }
+            foreach (var mapEntity in UncollidingEntities)
             {
                 mapEntity.Draw(spriteBatch);
             }
@@ -60,12 +73,13 @@ namespace MonoGameTestGame
         }
         private void StartEnemyDialog()
         {
-            DialogManager.Load(_enemyDialog, true);
-            _stateMachine.TransitionTo("Dialog");
+            //DialogManager.Load(_enemyDialog, true);
+            //StateMachine.TransitionTo("Dialog");
+            EventManager.Load(_enemyEvents);
         }
         private void QuitDialog()
         {
-            _stateMachine.TransitionTo("Default");
+            StateMachine.TransitionTo("Default");
         }
     }
 }

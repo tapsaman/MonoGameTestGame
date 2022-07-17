@@ -12,5 +12,9 @@ namespace MonoGameTestGame
         {
             Console.WriteLine("*ERROR* " + message);
         }
+        public static void Debug(string message)
+        {
+            Console.WriteLine("*DEBUG* " + message);
+        }
     }
 }
