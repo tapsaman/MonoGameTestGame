@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
 using MonoGameTestGame.Sprites;
 
@@ -19,18 +20,27 @@ namespace MonoGameTestGame
 
             Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
             {
-                { "Default", new Animation(texture, 3) }
+                { "Default", new Animation(texture, 3) },
+                { "TakenDamage", new Animation(texture, 1) }
             };
 
             Sprite.SetAnimations(animations, "Default");
-            Hitbox.Load(14, 14);
+            Hitbox.Load(24, 10);
             Hitbox.Color = Color.Red;
-            SpriteOffset = new Vector2(-2, -2);
+            SpriteOffset = new Vector2(-5, -14);
+
+            Dictionary<string, State> states = new Dictionary<string, State>()
+            {
+                { "Default", new BatStateDefault(this) }
+            };
+
+            StateMachine = new StateMachine(states, "Default");
         }
 
         public override void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
+            StateMachine.Update(gameTime);
         }
     }
 }

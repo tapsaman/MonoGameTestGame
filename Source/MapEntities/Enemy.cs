@@ -32,6 +32,8 @@ namespace MonoGameTestGame
             SpriteOffset = new Vector2(-2, -2);
             */
             var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet-red");
+            Animation.DefaultFrameWidth = 40;
+            Animation.DefaultFrameHeight = 50;
 
             Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
             {

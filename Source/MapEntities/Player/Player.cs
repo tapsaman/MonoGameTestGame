@@ -10,7 +10,7 @@ namespace MonoGameTestGame
     public class Player : Character
     {
         public bool Hitting = false;
-        private float _walkSpeed = 80f;
+        private float _walkSpeed = 70f;
         private const int _touchAreaLength = 10;
 
         public SwordHitbox SwordHitbox;
@@ -59,13 +59,15 @@ namespace MonoGameTestGame
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             StateMachine.Update(gameTime);
             SwordHitbox.Update(gameTime);
-            base.Update(gameTime);
         }
 
         public void DetermineInputVelocity(GameTime gameTime)
         {
+            Velocity = Vector2.Zero;
+
             if (Input.IsPressed(Input.Up))
                 Velocity.Y = -1;
             if (Input.IsPressed(Input.Down))
@@ -100,6 +102,7 @@ namespace MonoGameTestGame
                     }
                 }
                 Hitting = true;
+                Velocity = Vector2.Zero;
             }
             else
             {

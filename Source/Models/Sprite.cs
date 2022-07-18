@@ -65,12 +65,12 @@ namespace MonoGameTestGame.Sprites
       _animationManager.Update(gameTime);
     }
 
-    public virtual void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
     {
       if (_texture != null)
-        spriteBatch.Draw(_texture, Position, Color.White);
+        spriteBatch.Draw(_texture, Position + offset, Color.White);
       else if (_animationManager != null)
-        _animationManager.Draw(spriteBatch);
+        _animationManager.Draw(spriteBatch, offset);
       else throw new Exception("No texture or animations defined for sprite");
     }
 

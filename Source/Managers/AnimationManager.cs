@@ -54,11 +54,11 @@ namespace MonoGameTestGame.Managers
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
             spriteBatch.Draw(
                 _animation.Texture,
-                Position,
+                Position + offset,
                 new Rectangle(
                     _animation.CurrentFrame * _animation.FrameWidth + _animation.TextureXPos * _animation.FrameWidth,
                     _animation.TextureYPos * _animation.FrameHeight,

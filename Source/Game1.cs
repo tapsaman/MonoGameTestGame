@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGameTestGame.Controls;
 using MonoGameTestGame.Managers;
+using MonoGameTestGame.Manangers;
 using MonoGameTestGame.Models;
 using MonoGameTestGame.Sprites;
 
@@ -15,11 +16,10 @@ namespace MonoGameTestGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private List<Component> _gameComponents;
         private DialogManager _dialogManager;
-        private Scene _scene;
         private RenderTarget2D _nativeRenderTarget; 
         private Rectangle _actualScreenRectangle;
+        private SceneManager _sceneManager;
 
         public Game1()
         {
@@ -47,38 +47,42 @@ namespace MonoGameTestGame
             base.Initialize();
         }
 
+        private Button _startButton;
+
         protected override void LoadContent()
         {
             StaticData.Content = Content;
             StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
             SFX.Load();
             BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            StaticData.Scene = _scene = new TestScene();
-            _scene.Load();
+            StaticData.SceneManager = _sceneManager = new SceneManager();
+            Player player = new Player() { Position = new Vector2(100, 100) };
+            _sceneManager.Player = player;
+            _sceneManager.CurrentScene = StaticData.Scene = new TestScene(player);
+            StaticData.SpriteBatch = _spriteBatch = new SpriteBatch(GraphicsDevice);
             _dialogManager = new DialogManager();
-            _dialogManager.Load(new Dialog("terve", "mitä äijä?"));
 
-            var quitButton = new Button(Content.Load<Texture2D>("Button"), Content.Load<SpriteFont>("Fonts/TestFont"))
+            _startButton = new Button(Content.Load<Texture2D>("Button"), Content.Load<SpriteFont>("Fonts/TestFont"))
             {
-                Position = new Vector2(350, 285),
-                Text = "Quit"
+                Text = "START"
             };
-
-            quitButton.Click += QuitButton_Click;
-
-            _gameComponents = new List<Component>()
-            {
-                quitButton
-            };
+            _startButton.Click += StartButton_Click;
             
-
-            StaticData.Content = null;
+            //StaticData.Content = null;
         }
 
-        private void QuitButton_Click(object sender, EventArgs e)
+        private void StartButton_Click(object sender, EventArgs e)
         {
-            Exit();
+            Start();
+        }
+
+        private void Start()
+        {
+            started = true;
+            _dialogManager.Load(new Dialog("terve", "mitä äijä?"));
+            SFX.MessageFinish.Play();
+            _sceneManager.CurrentScene.Start();
+            _startButton = null;
         }
 
         protected override void UnloadContent()
@@ -86,19 +90,31 @@ namespace MonoGameTestGame
             base.UnloadContent();
         }
 
+        private Vector2 _titlePosition = new Vector2(StaticData.NativeWidth, 0);
+        private bool started = false;
+
         protected override void Update(GameTime gameTime)
         {
             Input.Update();
-            _scene.Update(gameTime);
-            _dialogManager.Update(gameTime);
 
-            foreach (var component in _gameComponents)
+            if (!started)
             {
-                component.Update(gameTime);
+                _startButton.Update(gameTime);
+                
+                if (Input.JustPressed(Input.Start)) {
+                    Start();
+                }
+
+                return;
             }
+
+            _sceneManager.Update(gameTime);
+            _dialogManager.Update(gameTime);
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            _titlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
 
             base.Update(gameTime);
         }
@@ -110,26 +126,15 @@ namespace MonoGameTestGame
 
             //_spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateScale(1f));
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _scene.Draw(_spriteBatch);
-            //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
-            /*_spriteBatch.Draw(
-                ballTexture,
-                ballPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(ballTexture.Width / 2, ballTexture.Height / 2),
-                Vector2.One,
-                SpriteEffects.None,
-                0f
-            );*/
-            foreach (var component in _gameComponents)
+            _sceneManager.Draw(_spriteBatch);
+
+            if (!started)
             {
-                component.Draw(gameTime, _spriteBatch);
+                _startButton.Draw(gameTime, _spriteBatch);
             }
             
             _dialogManager.Draw(_spriteBatch);
-            BitmapFontRenderer.DrawString(_spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", new Vector2(0,0));
+            BitmapFontRenderer.DrawString(_spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _titlePosition);
             _spriteBatch.End();
 
             // after drawing the game at native resolution we can render _nativeRenderTarget to the backbuffer!

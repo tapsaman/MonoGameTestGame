@@ -38,9 +38,7 @@ namespace MonoGameTestGame
         protected StateMachine StateMachine;
         private Vector2 _position;
         private Vector2 _spriteOffset = Vector2.Zero;
-        
        
-
         // Comparison method to sort entities by Y position
         public int CompareTo(MapEntity mapEntity)
         {
@@ -74,13 +72,13 @@ namespace MonoGameTestGame
                 Move(gameTime);
             }
             Sprite.Update(gameTime);
-            Velocity = Vector2.Zero;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             Hitbox.Draw(spriteBatch);
-            Sprite.Draw(spriteBatch);
+            Sprite.Draw(spriteBatch, StaticData.Scene.DrawOffset);
+            Console.WriteLine(StaticData.Scene.DrawOffset);
         }
 
         public void Move(GameTime gameTime)

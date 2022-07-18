@@ -11,17 +11,14 @@ namespace MonoGameTestGame
     {
         private Event[] _enemyEvents;
         private Event _signEvent;
+        private Song _song;
 
-        public override void Load()
+        public TestScene(Player player): base(player) {}
+
+        protected override void Load()
         {
-            var song = StaticData.Content.Load<Song>("linktothepast-darkworld");
-            MediaPlayer.Play(song);
-            MediaPlayer.Volume = 0.2f;
-            MediaPlayer.IsRepeating = true;
+            _song = StaticData.Content.Load<Song>("linktothepast-darkworld");
             TileMap = new TestMap();
-
-            Player = new Player();
-            Player.Position = new Vector2(100, 100);
 
             var enemy = new Enemy();
             enemy.Position = new Vector2(TileMap.ConvertTileX(22), TileMap.ConvertTileY(22));
@@ -35,7 +32,6 @@ namespace MonoGameTestGame
             signEventTrigger.Trigger += ReadSign;
 
             Add(enemy);
-            Add(Player);
             Add(bat);
             Add(signEventTrigger);
 
@@ -53,6 +49,14 @@ namespace MonoGameTestGame
                 new TextEvent(enemyDialog, enemy),
                 new FaceEvent(enemy, Direction.Down)
             };
+        }
+
+        public override void Start()
+        {
+            MediaPlayer.Play(_song);
+            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.IsRepeating = true;
+            base.Start();
         }
         
         private void StartEnemyDialog()

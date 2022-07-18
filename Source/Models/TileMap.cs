@@ -4,22 +4,29 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
+using System.Linq;
 
 namespace MonoGameTestGame
 {
     public abstract class TileMap
-    {
+    { 
+        public int DrawWidth { get; private set; }
+        public int DrawHeight { get; private set; }
         protected TiledMap _map; // TODO Replace with _tiles?
         protected TiledTileset _tileset;
         protected Texture2D _tilesetTexture;
+        protected Dictionary<Direction, MapCode> _nextMaps;
         private int _tileWidth;
         private int _tileHeight;
         private int _tilesetTilesWide;
         private int _tilesetTilesHeight;
-        private Dictionary<int, Dictionary<int, TileMapTile>> _tiles;
+        private int _width;
+        private int _height;
+        private Dictionary<int, Dictionary<int, Tile>> _tiles;
+        private Dictionary<int, TileAnimation> _tileAnimations;
 
         /*
-        Should load fields _map, _tileset, _tilesetTexture
+        Should load fields _map, _tileset, _tilesetTexture, _nextMaps
         */
         public abstract void Load();
 
@@ -35,15 +42,29 @@ namespace MonoGameTestGame
             // Amount of tiles on each column (up down)
             _tilesetTilesHeight = _tileset.TileCount / _tileset.Columns;
 
-            _tiles = new Dictionary<int, Dictionary<int, TileMapTile>>();
+            _tiles = new Dictionary<int, Dictionary<int, Tile>>();
+            _tileAnimations = new Dictionary<int, TileAnimation>();
+
+            _width = _map.Width;
+            _height = _map.Height;
+            DrawWidth = _width * _tileWidth;
+            DrawHeight = _height * _tileHeight;
 
             LoadTiles(0);
             LoadTiles(1);
         }
 
+        private Rectangle TileFrameToSourceRectangle(int tileFrame)
+        {
+            int column = tileFrame % _tilesetTilesWide;
+            int row = (int)Math.Floor((double)tileFrame / (double)_tilesetTilesWide);
+
+            return new Rectangle(_tileWidth * column, _tileHeight * row, _tileWidth, _tileHeight);
+        }
+
         public void LoadTiles(int layerIndex = 0)
         {
-            _tiles[layerIndex] = new Dictionary<int, TileMapTile>();
+            _tiles[layerIndex] = new Dictionary<int, Tile>();
 
             for (var i = 0; i < _map.Layers[layerIndex].data.Length; i++)
             {
@@ -53,34 +74,65 @@ namespace MonoGameTestGame
                 if (gid == 0)
                     continue;
 
-                int tileFrame = gid - 1;
-
-                var tile = _map.GetTiledTile(_map.Tilesets[0], _tileset, gid);
-
-                if (gid == 1068)
-                {
-                    Console.WriteLine("tile 1068 " + tile);
-                    Console.WriteLine(tile);
-                }
-                
-                int column = tileFrame % _tilesetTilesWide;
-                int row = (int)Math.Floor((double)tileFrame / (double)_tilesetTilesWide);
+                var tiledTile = _map.GetTiledTile(_map.Tilesets[0], _tileset, gid);
+                Rectangle sourceRectangle = TileFrameToSourceRectangle(gid - 1);
 
                 float x = (i % _map.Width) * _map.TileWidth;
                 float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
 
-                Rectangle tilesetRec = new Rectangle(_tileWidth * column, _tileHeight * row, _tileWidth, _tileHeight);
-
-                _tiles[layerIndex][i] = new TileMapTile()
+                var tile = new Tile()
                 {
                     Position = new Vector2((int)x, (int)y),
                     DrawRectangle = new Rectangle((int)x, (int)y, _tileWidth, _tileHeight),
-                    SourceRectangle = tilesetRec
+                    SourceRectangle = sourceRectangle
                 };
+
+                _tiles[layerIndex][i] = tile;
+
+                if (tiledTile != null && tiledTile.animation.Length != 0)
+                {
+                    if (!_tileAnimations.ContainsKey(gid))
+                    {
+                        var frames = new List<Rectangle>();
+
+                        foreach (var item in tiledTile.animation)
+                        {
+                            frames.Add(TileFrameToSourceRectangle(item.tileid));
+                        }
+
+                        var tileAnimation = new TileAnimation()
+                        {
+                            FrameDuration = (float)tiledTile.animation[0].duration / 1000,
+                            AnimatedTileIndexes = new List<int>() { i },
+                            Frames = frames
+                        };
+                        _tileAnimations[gid] = tileAnimation;
+                    }
+                    else
+                    {
+                        _tileAnimations[gid].AnimatedTileIndexes.Add(i);
+                    }
+                }
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, int layerIndex = 0)
+        public void Update(GameTime gameTime)
+        {
+            foreach (var tileAnimation in _tileAnimations.Values)
+            {
+                tileAnimation.Update(gameTime, _tiles[0]);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, int layerIndex, Vector2 drawOffset)
+        {
+            foreach (var tile in _tiles[layerIndex].Values)
+            {
+                spriteBatch.Draw(_tilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
+            }
+        }
+
+        public void _Draw(SpriteBatch spriteBatch, int layerIndex = 0)
         {
             for (var i = 0; i < _map.Layers[layerIndex].data.Length; i++)
             {
@@ -90,7 +142,7 @@ namespace MonoGameTestGame
                 if (gid == 0)
                     continue;
 
-                TileMapTile tile = _tiles[layerIndex][i];
+                Tile tile = _tiles[layerIndex][i];
 
                 spriteBatch.Draw(_tilesetTexture, tile.Position, tile.SourceRectangle, Color.White);
             }
@@ -132,7 +184,19 @@ namespace MonoGameTestGame
 
         public bool CheckHorizontalCollision(int x, int topY, int bottomY)
         {
-            //Console.WriteLine("CheckHorizontalCollision");
+            if (x < 0)
+            {
+                if (_nextMaps.ContainsKey(Direction.Left))
+                    StaticData.SceneManager.GoTo(Direction.Left, _nextMaps[Direction.Left]);
+                return true;   
+            }
+            if (x >= _width)
+            {
+                if (_nextMaps.ContainsKey(Direction.Right))
+                    StaticData.SceneManager.GoTo(Direction.Right, _nextMaps[Direction.Right]);
+                return true;
+            }
+
             for (int i = topY; i < bottomY + 1; i++)
             {
                 if (CheckCollision(x, i)) {
@@ -184,12 +248,44 @@ namespace MonoGameTestGame
             return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
         }
 
-        private class TileMapTile
+        private class Tile
         {
             public Vector2 Position;
             public Rectangle DrawRectangle;
             public Rectangle SourceRectangle;
             public bool IsBlocking = false; 
+        }
+
+        private class TileAnimation
+        {
+            public List<int> AnimatedTileIndexes;
+            public List<Rectangle> Frames;
+            public float FrameDuration;
+            private float _elapsedTime = 0;
+            private int _currentIndex = 0;
+
+            public void Update(GameTime gameTime, Dictionary<int, Tile> tiles)
+            {
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_elapsedTime > FrameDuration)
+                {
+                    _elapsedTime = 0;
+                    _currentIndex++;
+
+                    if (_currentIndex >= Frames.Count)
+                    {
+                        _currentIndex = 0;
+                    }
+
+                    var frame = Frames[_currentIndex];
+
+                    foreach (var index in AnimatedTileIndexes)
+                    {
+                        tiles[index].SourceRectangle = frame;
+                    }
+                }
+            }
         }
     }
 }

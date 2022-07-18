@@ -7,4 +7,11 @@ namespace MonoGameTestGame
         Down,
         Left
     }
+
+    public enum MapCode
+    {
+        A1,
+        A2,
+        B1
+    }
 }

@@ -1,7 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
-
 namespace MonoGameTestGame.Models
 {
     public abstract class PlayerState : State
@@ -11,5 +7,5 @@ namespace MonoGameTestGame.Models
         {
             Player = player;
         }
-    } 
+    }
 }

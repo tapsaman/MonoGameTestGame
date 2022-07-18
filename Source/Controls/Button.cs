@@ -35,6 +35,7 @@ namespace MonoGameTestGame.Controls
         {
             _texture = texture;
             _font = font;
+            Position = new Vector2(StaticData.NativeWidth / 2 - _texture.Width / 2, StaticData.NativeHeight / 2 - _texture.Height / 2);
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -58,7 +59,7 @@ namespace MonoGameTestGame.Controls
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var mouseRectangle = new Rectangle(_currentMouse.X / 3, _currentMouse.Y / 3, 1, 1);
 
             _isHovering = false;
 

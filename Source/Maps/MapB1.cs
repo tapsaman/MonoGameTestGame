@@ -4,16 +4,16 @@ using TiledCS;
 
 namespace MonoGameTestGame
 {
-    public class TestMap : TileMap
+    public class MapB1 : TileMap
     {
         public override void Load()
         {
-            _map = new TiledMap(StaticData.Content.RootDirectory + "\\TiledProjects\\testmap\\testmap.tmx");
+            _map = new TiledMap(StaticData.Content.RootDirectory + "\\TiledProjects\\testmap\\B1.tmx");
             _tileset = new TiledTileset(StaticData.Content.RootDirectory + "\\TiledProjects\\testmap\\testmap.tsx");
             _tilesetTexture = StaticData.Content.Load<Texture2D>("linktothepast-tiles");
             _nextMaps = new Dictionary<Direction, MapCode>()
             {
-                { Direction.Right, MapCode.B1 }
+                { Direction.Left, MapCode.A1 }
             };
         }
     }
