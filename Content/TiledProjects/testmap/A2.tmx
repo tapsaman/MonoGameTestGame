@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="138">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="161">
  <tileset firstgid="1" source="linktothepast-tiles.tsx"/>
  <tileset firstgid="8121" source="linktothepast-objects.tsx"/>
  <layer id="1" name="Ground" width="32" height="30">
@@ -113,6 +113,28 @@
   <object id="134" gid="8121" x="192" y="192" width="16" height="16"/>
   <object id="135" gid="8121" x="176" y="176" width="16" height="16"/>
   <object id="136" gid="8121" x="176" y="192" width="16" height="16"/>
+  <object id="138" gid="8121" x="160" y="176" width="16" height="16"/>
+  <object id="139" gid="8121" x="144" y="176" width="16" height="16"/>
+  <object id="140" gid="8121" x="160" y="192" width="16" height="16"/>
+  <object id="142" gid="8121" x="144" y="192" width="16" height="16"/>
+  <object id="143" gid="8121" x="128" y="192" width="16" height="16"/>
+  <object id="144" gid="8121" x="128" y="176" width="16" height="16"/>
+  <object id="145" gid="8121" x="112" y="176" width="16" height="16"/>
+  <object id="146" gid="8121" x="112" y="192" width="16" height="16"/>
+  <object id="147" gid="8121" x="96" y="192" width="16" height="16"/>
+  <object id="148" gid="8121" x="96" y="176" width="16" height="16"/>
+  <object id="149" gid="8121" x="80" y="192" width="16" height="16"/>
+  <object id="150" gid="8121" x="80" y="176" width="16" height="16"/>
+  <object id="151" gid="8121" x="64" y="176" width="16" height="16"/>
+  <object id="152" gid="8121" x="64" y="192" width="16" height="16"/>
+  <object id="153" gid="8121" x="48" y="192" width="16" height="16"/>
+  <object id="154" gid="8121" x="48" y="176" width="16" height="16"/>
+  <object id="155" gid="8121" x="32" y="176" width="16" height="16"/>
+  <object id="156" gid="8121" x="32" y="192" width="16" height="16"/>
+  <object id="157" gid="8121" x="16" y="192" width="16" height="16"/>
+  <object id="158" gid="8121" x="16" y="176" width="16" height="16"/>
+  <object id="159" gid="8121" x="0" y="176" width="16" height="16"/>
+  <object id="160" gid="8121" x="0" y="192" width="16" height="16"/>
  </objectgroup>
  <layer id="2" name="Top" width="32" height="30">
   <data encoding="csv">

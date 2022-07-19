@@ -14,4 +14,10 @@ namespace MonoGameTestGame
         A2,
         B1
     }
+
+    public enum EventStore
+    {
+        Scene,
+        Game
+    }
 }

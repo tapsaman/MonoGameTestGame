@@ -26,6 +26,7 @@ namespace MonoGameTestGame
         private int _tilesetTilesWide;
         private int _tilesetTilesHeight;
         public Dictionary<int, Dictionary<int, Tile>> Tiles;
+        public List<Object> Objects;
         private Dictionary<int, TileAnimation> _tileAnimations;
 
         /*
@@ -53,8 +54,9 @@ namespace MonoGameTestGame
             DrawWidth = Width * _tileWidth;
             DrawHeight = Height * _tileHeight;
 
-            LoadTiles(0);
-            LoadTiles(1);
+            LoadTiles(GroundLayer);
+            LoadTiles(TopLayer);
+            LoadObjects(_map.Layers[ObjectLayer]);
         }
 
         private Rectangle TileFrameToSourceRectangle(int tileFrame)
@@ -65,7 +67,7 @@ namespace MonoGameTestGame
             return new Rectangle(_tileWidth * column, _tileHeight * row, _tileWidth, _tileHeight);
         }
 
-        public void LoadTiles(int layerIndex = 0)
+        private void LoadTiles(int layerIndex)
         {
             Tiles[layerIndex] = new Dictionary<int, Tile>();
 
@@ -103,9 +105,9 @@ namespace MonoGameTestGame
                     foreach(var item in tiledTile.properties)
                     {
                         if (item.name == "IsBlocking" && item.value == "true")
+                        {
                             tile.IsBlocking = true;
-                        else if (item.name == "Type")
-                            tile.TypeName = item.value;
+                        }
                     }
 
                     // Process Tiled animations
@@ -136,6 +138,20 @@ namespace MonoGameTestGame
                         }
                     }
                 }
+            }
+        }
+
+        private void LoadObjects(TiledLayer tiledLayer)
+        {
+            Objects = new List<Object>();
+
+            foreach (var item in tiledLayer.objects)
+            {
+                Objects.Add(new Object()
+                {
+                    TypeName = item.name,
+                    Position = new Vector2(item.x, item.y)
+                });
             }
         }
 
@@ -302,8 +318,13 @@ namespace MonoGameTestGame
             public Rectangle DrawRectangle;
             public Rectangle SourceRectangle;
             public bool IsBlocking = false;
-            public string TypeName;
         }
+
+        public class Object
+        {
+            public string TypeName;
+            public Vector2 Position;
+        } 
 
         private class TileAnimation
         {

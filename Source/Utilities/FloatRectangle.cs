@@ -35,6 +35,13 @@ namespace MonoGameTestGame
         {
             get { return Y + Height; }
         }
+        public Vector2 Center
+        {
+            get 
+            { 
+                return new Vector2((X + Width) / 2, (Y + Height) / 2); 
+            }
+        }
         public bool Intersects(FloatRectangle r)
         {
             return !(r.Left > Right
@@ -43,12 +50,21 @@ namespace MonoGameTestGame
                 || r.Bottom < Top
             );
         }
-        public Vector2 Center
+        public bool Intersects(Vector2 v)
         {
-            get 
-            { 
-                return new Vector2((X + Width) / 2, (Y + Height) / 2); 
-            }
+            return !(v.X > Right
+                || v.X < Left
+                || v.Y > Bottom
+                || v.Y < Top
+            );
+        }
+        public bool Intersects(Point p)
+        {
+            return !(p.X > Right
+                || p.X < Left
+                || p.Y > Bottom
+                || p.Y < Top
+            );
         }
     }
 }

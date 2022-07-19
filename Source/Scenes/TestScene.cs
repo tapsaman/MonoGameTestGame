@@ -35,19 +35,40 @@ namespace MonoGameTestGame
             Add(bat);
             Add(signEventTrigger);
 
-            var enemyDialog = new Dialog(
-                "Sample text",
+            var enemyDialog1 = new Dialog(
+                "Hi Zelda. Good thing your awake.\nZelda has been capture again!\nLooks Like Ganondorf is at it again!",
                 "Simo ruumishuoneelta\nmoi. Oletko ajatellut kuolla?\nNyt se nimittäin kannattaa."
             )
             {
-                Title = "Friend"
+                Title = "Erkki"
+            };
+
+            var enemyDialog2 = new Dialog(
+                "Sample text"
+            )
+            {
+                Title = "Erkki"
             };
 
             _enemyEvents = new Event[]
             {
-                new FaceEvent(enemy, Player),
-                new TextEvent(enemyDialog, enemy),
-                new FaceEvent(enemy, Direction.Down)
+                new ConditionEvent(EventStore.Scene, "spoken to erkki")
+                {
+                    IfFalse = new Event[]
+                    {
+                        new FaceEvent(enemy, Player),
+                        new TextEvent(enemyDialog1, enemy),
+                        new FaceEvent(enemy, Direction.Down),
+                        new SaveValueEvent(EventStore.Scene, "spoken to erkki", true)
+                    },
+                    IfTrue = new Event[]
+                    {
+                        new FaceEvent(enemy, Player),
+                        new TextEvent(enemyDialog2, enemy),
+                        new FaceEvent(enemy, Direction.Down)
+                    }
+                }
+                
             };
         }
 

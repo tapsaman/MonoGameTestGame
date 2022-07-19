@@ -6,58 +6,21 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public abstract class Character : MapEntity, IComparable<MapEntity>
+    public abstract class Character : MapObject
     {
         public Vector2 Velocity;
-        public Sprite Sprite;
         public virtual Direction Direction { get; set; } = Direction.Down;
-        public bool Hittable { get; protected set; } = false;
-        public bool Colliding { get; protected set; } = true;
         public bool Moving = false;
         public bool Walking = false;
         public bool WalkingStill = true;
-        public override Vector2 Position
-        {
-            get { return _position; }
-            set
-            {
-                _position = value;
-                Sprite.Position = _position + _spriteOffset;
-                Hitbox.Position = _position;
-            }
-        }
-        public Vector2 SpriteOffset
-        {
-            get { return _spriteOffset; }
-            set
-            {
-                _spriteOffset = value;
-                Sprite.Position = _position + _spriteOffset;
-            }
-        }
         protected StateMachine StateMachine;
-        private Vector2 _position;
-        private Vector2 _spriteOffset = Vector2.Zero;
-       
-        // Comparison method to sort entities by Y position
-        public int CompareTo(MapEntity mapEntity)
-        {
-            if (Position.Y < mapEntity.Position.Y)
-                return 0;
-            if (Position.Y > mapEntity.Position.Y)
-                return 1;
-            if (Index < mapEntity.Index)
-                return 0;
-            
-            return 1;
-        }
 
         public Character()
         {
             Sprite = new Sprite();
         }
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (StateMachine == null)
             {
@@ -72,12 +35,6 @@ namespace MonoGameTestGame
                 Move(gameTime);
             }
             Sprite.Update(gameTime);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            Hitbox.Draw(spriteBatch);
-            Sprite.Draw(spriteBatch, StaticData.Scene.DrawOffset);
         }
 
         public void Move(GameTime gameTime)

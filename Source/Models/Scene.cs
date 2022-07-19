@@ -9,31 +9,34 @@ namespace MonoGameTestGame
 {
     public abstract class Scene
     {
+        public DataStore SceneData;
         public StateMachine StateMachine;
         public EventManager EventManager;
         public TileMap TileMap;
         public Player Player;
         public DialogManager DialogManager;
         public List<MapEntity> InteractableEntities { get; private set; }
-        public List<Character> Characters { get; private set; }
-        public List<Character> HittableEntities { get; private set; }
-        public List<Character> CollidingEntities { get; private set; }
-        public List<Character> UncollidingEntities { get; private set; }
+        public List<MapObject> MapObjects { get; private set; }
+        public List<MapObject> HittableEntities { get; private set; }
+        public List<MapObject> CollidingEntities { get; private set; }
+        public List<MapObject> UncollidingEntities { get; private set; }
         public bool Paused = false;
         public Vector2 DrawOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
+        private List<MapObject> _removeAfterUpdate;
 
         protected abstract void Load();
 
         public Scene(Player player)
         {
-            //MapEntities = new List<MapEntity>();
+            SceneData = new DataStore();
+            MapObjects = new List<MapObject>();
             InteractableEntities = new List<MapEntity>();
-            Characters = new List<Character>();
-            HittableEntities = new List<Character>();
-            CollidingEntities = new List<Character>();
-            UncollidingEntities = new List<Character>();
+            HittableEntities = new List<MapObject>();
+            CollidingEntities = new List<MapObject>();
+            UncollidingEntities = new List<MapObject>();
+            _removeAfterUpdate = new List<MapObject>();
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -52,11 +55,11 @@ namespace MonoGameTestGame
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
 
-            foreach(var item in TileMap.Tiles[TileMap.GroundLayer])
+            foreach(var obj in TileMap.Objects)
             {
-                if (item.Value.TypeName == "Bush")
+                if (obj.TypeName == "Bush")
                 {
-                    
+                    Add(new Bush() { Position = obj.Position });
                 }
             }
         }
@@ -73,11 +76,19 @@ namespace MonoGameTestGame
             
             EventManager.Update();
             StateMachine.Update(gameTime);
-            TileMap.Update(gameTime);
-            CollidingEntities.Sort();
+            TileMap.Update(gameTime);  
+            //CollidingEntities.Sort();
+            CollidingEntities.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
 
             if (Player.Velocity != Vector2.Zero)
                 UpdateCamera(Player.Position);
+
+            foreach (var mapEntity in _removeAfterUpdate)
+            {
+                Remove(mapEntity);
+            }
+
+            _removeAfterUpdate.Clear();
         }
 
         public void UpdateCamera(Vector2 targetPosition)
@@ -121,54 +132,58 @@ namespace MonoGameTestGame
             }
         }
 
-        public void Add(Character character)
+        public void Add(MapObject mapobject)
         {
-            Add((MapEntity)character);
+            Add((MapEntity)mapobject);
 
-            Characters.Add(character);
+            MapObjects.Add(mapobject);
 
-            if (character.Hittable)
+            if (mapobject.Hittable)
             {
-                HittableEntities.Add(character);
+                HittableEntities.Add(mapobject);
             }
-            if (character.Colliding)
+            if (mapobject.Colliding)
             {
-                CollidingEntities.Add(character);
+                CollidingEntities.Add(mapobject);
             }
             else
             {
-                UncollidingEntities.Add(character);
+                UncollidingEntities.Add(mapobject);
             }
         }
 
         public void Remove(MapEntity mapEntity)
         {
-            //MapEntities.Remove(mapEntity);
-
             if (mapEntity.Interactable)
             {
                 InteractableEntities.Remove(mapEntity);
             }
         }
 
-        public void Remove(Character character)
+        public void Remove(MapObject mapobject)
         {
-            Remove((MapEntity)character);
+            Remove((MapEntity)mapobject);
 
-            Characters.Remove(character);
+            MapObjects.Remove(mapobject);
 
-            if (character.Hittable)
+            if (mapobject.Hittable)
             {
-                HittableEntities.Remove(character);
+                HittableEntities.Remove(mapobject);
             }
-            if (character.Colliding)
+            if (mapobject.Colliding)
             {
-                CollidingEntities.Remove(character);
+                CollidingEntities.Remove(mapobject);
             }
             else
             {
-                UncollidingEntities.Remove(character);
+                UncollidingEntities.Remove(mapobject);
             }
+        }
+
+        /* Set map entities to be removed after updates */
+        public void SetToRemove(MapObject mapEntity)
+        {
+            _removeAfterUpdate.Add(mapEntity);
         }
 
         private void QuitDialog()

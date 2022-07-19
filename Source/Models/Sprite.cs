@@ -19,6 +19,7 @@ namespace MonoGameTestGame.Sprites
     protected Vector2 _position;
 
     protected Texture2D _texture;
+    protected Rectangle _sourceRectangle; 
 
     #endregion
 
@@ -49,26 +50,17 @@ namespace MonoGameTestGame.Sprites
     #region Methods
 
     public Sprite() {}
-    
-    public Sprite(Dictionary<string, Animation> animations, string initialAnimationName = "")
-    {
-      SetAnimations(animations, initialAnimationName);
-    }
-
-    public Sprite(Texture2D texture)
-    {
-      _texture = texture;
-    }
 
     public virtual void Update(GameTime gameTime)
     {
-      _animationManager.Update(gameTime);
+      if (_animationManager != null)
+        _animationManager.Update(gameTime);
     }
 
     public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
     {
       if (_texture != null)
-        spriteBatch.Draw(_texture, Position + offset, Color.White);
+        spriteBatch.Draw (_texture, Position + offset, _sourceRectangle, Color.White);
       else if (_animationManager != null)
         _animationManager.Draw(spriteBatch, offset);
       else throw new Exception("No texture or animations defined for sprite");
@@ -80,6 +72,18 @@ namespace MonoGameTestGame.Sprites
         _animationManager.Stop();
       else
         _animationManager.Play(_animations[animationName]);
+    }
+
+    public void SetTexture(Texture2D texture)
+    {
+      _texture = texture;
+      _sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+    }
+
+    public void SetTexture(Texture2D texture, Rectangle sourceRectangle)
+    {
+      _texture = texture;
+      _sourceRectangle = sourceRectangle;
     }
 
     public void SetAnimations(Dictionary<string, Animation> animations, string initialAnimationName = "")

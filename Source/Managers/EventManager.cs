@@ -4,6 +4,7 @@ namespace MonoGameTestGame.Managers
 {
     public class EventManager
     {
+        public bool Done = true;
         private int _eventIndex; 
         private Event[] _eventList;
         private bool _lastEventDone = false;
@@ -15,6 +16,7 @@ namespace MonoGameTestGame.Managers
         
         public void Load(Event[] eventList)
         {
+            Done = false;
             _eventList = eventList;
             _eventIndex = 0;
             InitEvent(0);
@@ -57,6 +59,7 @@ namespace MonoGameTestGame.Managers
             }
             else
             {
+                Done = true;
                 Unload();
             }
         }

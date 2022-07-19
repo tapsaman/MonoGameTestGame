@@ -10,12 +10,14 @@ log:
 * 17.7 - split map entities to characters and event triggers, zelda style bitmap font and dialog box, nicer tilemap rendering
 * 18.7. - scene management and new map
 * 19.7. - moving "camera" to player, float rectangles to fix collision bugs (xna rectangles use int)
+* 20.7. - condition and save value events, event data storage (only for bools atm), MapObject class (for bushes) and using Tiled map object layer
 
 roadmap:
 * enemy with ai and states
-* hitting enemies/bushess
+* hitting enemies/bushes
+* animation effects (bush leaves on hit)
 * animation events (falling to hole)
 
 small stuff todo:
-* new class MapObject between map entity & character?
-* conditional events
+* destoying bushes
+* camera should (probably) pan to expected x,y before scene transition

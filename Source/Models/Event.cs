@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame.Models
 {
@@ -8,8 +9,9 @@ namespace MonoGameTestGame.Models
         Text,
         Move,
         Face,
-        Animate, // should be Misc?
-        Condition
+        Animate,
+        Condition,
+        SaveValue
     }
 
     public abstract class Event
@@ -103,6 +105,82 @@ namespace MonoGameTestGame.Models
         {
             // End on first update so we get one rendering before next event 
             WhenDone?.Invoke();
+        }
+
+        public override void Exit() {}
+    }
+
+    public class SaveValueEvent : Event
+    {
+        private EventStore _eventStore;
+        private string _id;
+        private bool _value;
+
+        public SaveValueEvent(EventStore eventStore, string id, bool value)
+            : base(EventType.SaveValue)
+        {
+            _eventStore = eventStore;
+            _id = id;
+            _value = value;
+        }
+
+        public override void Enter()
+        {
+            DataStore dataStore = StaticData.Scene.SceneData;
+
+            dataStore.Save(_id, _value);
+
+            WhenDone?.Invoke();
+        }
+
+        public override void Update() {}
+
+        public override void Exit() {}
+    }
+
+    public class ConditionEvent : Event
+    {
+        public EventStore EventStore;
+        public string BasedOnID;
+        public bool Value;
+        public Event[] IfTrue; 
+        public Event[] IfFalse;
+        private EventManager _eventManager;
+
+        public ConditionEvent(EventStore eventStore, string id)
+            : base(EventType.Condition)
+        {
+            EventStore = eventStore;
+            BasedOnID = id;
+        }
+
+        public override void Enter()
+        {
+            DataStore dataStore = StaticData.Scene.SceneData;
+            bool condition = dataStore.Get(BasedOnID);
+
+            if (condition && IfTrue != null)
+            {
+                _eventManager = new EventManager();
+                _eventManager.Load(IfTrue);
+            }
+            else if (!condition && IfFalse != null)
+            {
+                _eventManager = new EventManager();
+                _eventManager.Load(IfFalse);
+            }
+            else
+            {
+                WhenDone?.Invoke();
+            }
+        }
+
+        public override void Update()
+        {
+            if (_eventManager == null || _eventManager.Done)
+                WhenDone?.Invoke();
+            else
+                _eventManager.Update();
         }
 
         public override void Exit() {}

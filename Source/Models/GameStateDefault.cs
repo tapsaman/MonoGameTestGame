@@ -9,7 +9,7 @@ namespace MonoGameTestGame.Models
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var mapEntity in Scene.Characters)
+            foreach (var mapEntity in Scene.MapObjects)
             {
                 mapEntity.Update(gameTime);
             }
