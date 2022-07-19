@@ -59,7 +59,7 @@ namespace MonoGameTestGame.Controls
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(_currentMouse.X / 3, _currentMouse.Y / 3, 1, 1);
+            var mouseRectangle = new Rectangle(_currentMouse.X / StaticData.NativeSizeMultiplier, _currentMouse.Y / StaticData.NativeSizeMultiplier, 1, 1);
 
             _isHovering = false;
 

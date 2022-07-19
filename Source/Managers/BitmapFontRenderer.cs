@@ -35,17 +35,13 @@ namespace MonoGameTestGame.Managers
                 }
                 else
                 {
-                    BitmapFontChar c;
-
                     if (!Font.Chars.ContainsKey(code))
                     {
                         Sys.LogError("Undefined symbol at " + code + " (" + (char)code + ") for " + Font.ToString());
-                        c = Font.Chars[Font.UndefinedSymbolCode];
+                        Font.Chars[code] = Font.Chars[Font.UndefinedSymbolCode];
                     }
-                    else
-                    {
-                        c = Font.Chars[code];
-                    }
+
+                    BitmapFontChar c = Font.Chars[code];
 
                     spriteBatch.Draw(
                         Font.Texture,

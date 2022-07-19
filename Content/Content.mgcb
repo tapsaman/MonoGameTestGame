@@ -294,18 +294,6 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast-spritesheet-red.png
 
-#begin linktothepast-tiles.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,255,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:linktothepast-tiles.png
-
 #begin rm2k-sheet01.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -317,6 +305,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:rm2k-sheet01.png
+
+#begin TiledProjects/testmap/linktothepast-objects.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TiledProjects/testmap/linktothepast-objects.png
+
+#begin TiledProjects/testmap/linktothepast-tiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,255,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TiledProjects/testmap/linktothepast-tiles.png
 
 #begin Tilemap/exampleTileset.png
 /importer:TextureImporter

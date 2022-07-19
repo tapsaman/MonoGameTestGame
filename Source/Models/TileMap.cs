@@ -9,10 +9,15 @@ using System.Linq;
 namespace MonoGameTestGame
 {
     public abstract class TileMap
-    { 
+    {
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public int DrawWidth { get; private set; }
         public int DrawHeight { get; private set; }
-        protected TiledMap _map; // TODO Replace with _tiles?
+        public ushort GroundLayer { get; protected set; } = 0;
+        public ushort TopLayer { get; protected set; } = 1;
+        public ushort ObjectLayer { get; protected set; } = 2;
+        protected TiledMap _map; // TODO Replace with Tiles?
         protected TiledTileset _tileset;
         protected Texture2D _tilesetTexture;
         protected Dictionary<Direction, MapCode> _nextMaps;
@@ -20,9 +25,7 @@ namespace MonoGameTestGame
         private int _tileHeight;
         private int _tilesetTilesWide;
         private int _tilesetTilesHeight;
-        private int _width;
-        private int _height;
-        private Dictionary<int, Dictionary<int, Tile>> _tiles;
+        public Dictionary<int, Dictionary<int, Tile>> Tiles;
         private Dictionary<int, TileAnimation> _tileAnimations;
 
         /*
@@ -33,7 +36,7 @@ namespace MonoGameTestGame
         public TileMap()
         {
             Load();
-
+            
             _tileWidth = _tileset.TileWidth;
             _tileHeight = _tileset.TileHeight;
 
@@ -42,13 +45,13 @@ namespace MonoGameTestGame
             // Amount of tiles on each column (up down)
             _tilesetTilesHeight = _tileset.TileCount / _tileset.Columns;
 
-            _tiles = new Dictionary<int, Dictionary<int, Tile>>();
+            Tiles = new Dictionary<int, Dictionary<int, Tile>>();
             _tileAnimations = new Dictionary<int, TileAnimation>();
 
-            _width = _map.Width;
-            _height = _map.Height;
-            DrawWidth = _width * _tileWidth;
-            DrawHeight = _height * _tileHeight;
+            Width = _map.Width;
+            Height = _map.Height;
+            DrawWidth = Width * _tileWidth;
+            DrawHeight = Height * _tileHeight;
 
             LoadTiles(0);
             LoadTiles(1);
@@ -64,7 +67,7 @@ namespace MonoGameTestGame
 
         public void LoadTiles(int layerIndex = 0)
         {
-            _tiles[layerIndex] = new Dictionary<int, Tile>();
+            Tiles[layerIndex] = new Dictionary<int, Tile>();
 
             for (var i = 0; i < _map.Layers[layerIndex].data.Length; i++)
             {
@@ -80,6 +83,11 @@ namespace MonoGameTestGame
                 float x = (i % _map.Width) * _map.TileWidth;
                 float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
 
+                if (layerIndex == 0 && i == 10)
+                {
+                    Sys.Log(tiledTile.ToString());
+                }
+
                 var tile = new Tile()
                 {
                     Position = new Vector2((int)x, (int)y),
@@ -87,30 +95,45 @@ namespace MonoGameTestGame
                     SourceRectangle = sourceRectangle
                 };
 
-                _tiles[layerIndex][i] = tile;
+                Tiles[layerIndex][i] = tile;
 
-                if (tiledTile != null && tiledTile.animation.Length != 0)
+                if (tiledTile != null)
                 {
-                    if (!_tileAnimations.ContainsKey(gid))
+                    // Process Tiled custom properties
+                    foreach(var item in tiledTile.properties)
                     {
-                        var frames = new List<Rectangle>();
-
-                        foreach (var item in tiledTile.animation)
-                        {
-                            frames.Add(TileFrameToSourceRectangle(item.tileid));
-                        }
-
-                        var tileAnimation = new TileAnimation()
-                        {
-                            FrameDuration = (float)tiledTile.animation[0].duration / 1000,
-                            AnimatedTileIndexes = new List<int>() { i },
-                            Frames = frames
-                        };
-                        _tileAnimations[gid] = tileAnimation;
+                        if (item.name == "IsBlocking" && item.value == "true")
+                            tile.IsBlocking = true;
+                        else if (item.name == "Type")
+                            tile.TypeName = item.value;
                     }
-                    else
+
+                    // Process Tiled animations
+                    if (tiledTile.animation.Length != 0)
                     {
-                        _tileAnimations[gid].AnimatedTileIndexes.Add(i);
+                        if (!_tileAnimations.ContainsKey(gid))
+                        {
+                            // Create new animation
+                            var frames = new List<Rectangle>();
+
+                            foreach (var item in tiledTile.animation)
+                            {
+                                frames.Add(TileFrameToSourceRectangle(item.tileid));
+                            }
+
+                            var tileAnimation = new TileAnimation()
+                            {
+                                FrameDuration = (float)tiledTile.animation[0].duration / 1000,
+                                AnimatedTileIndexes = new List<int>() { i },
+                                Frames = frames
+                            };
+                            _tileAnimations[gid] = tileAnimation;
+                        }
+                        else
+                        {
+                            // Add tile index to previous animation
+                            _tileAnimations[gid].AnimatedTileIndexes.Add(i);
+                        }
                     }
                 }
             }
@@ -120,13 +143,13 @@ namespace MonoGameTestGame
         {
             foreach (var tileAnimation in _tileAnimations.Values)
             {
-                tileAnimation.Update(gameTime, _tiles[0]);
+                tileAnimation.Update(gameTime, Tiles[0]);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, int layerIndex, Vector2 drawOffset)
         {
-            foreach (var tile in _tiles[layerIndex].Values)
+            foreach (var tile in Tiles[layerIndex].Values)
             {
                 spriteBatch.Draw(_tilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
             }
@@ -142,13 +165,13 @@ namespace MonoGameTestGame
                 if (gid == 0)
                     continue;
 
-                Tile tile = _tiles[layerIndex][i];
+                Tile tile = Tiles[layerIndex][i];
 
                 spriteBatch.Draw(_tilesetTexture, tile.Position, tile.SourceRectangle, Color.White);
             }
         }
 
-        public bool CheckCollision(Vector2 position)
+        public bool __CheckCollision(Vector2 position)
         {
             int x = (int)Math.Floor(position.X / _tileWidth);
             int y = (int)Math.Floor(position.Y / _tileHeight);
@@ -167,7 +190,7 @@ namespace MonoGameTestGame
             return false; //gid == 1;
         }
 
-        public bool CheckCollision(int x, int y)
+        public bool __CheckCollision(int x, int y)
         {
             if (x < 0 || x >= _map.Width || y < 0 || y >= _map.Height)
                 return false;
@@ -182,15 +205,28 @@ namespace MonoGameTestGame
             return false;
         }
 
+        public bool CheckCollision(int x, int y)
+        {
+            int index = x + y * _map.Width;
+
+            if (Tiles[GroundLayer].ContainsKey(index))
+            {
+                return Tiles[GroundLayer][index].IsBlocking;
+            }
+
+            return false;
+        }
+
         public bool CheckHorizontalCollision(int x, int topY, int bottomY)
         {
+            //sConsole.WriteLine(x + "/" + Width);
             if (x < 0)
             {
                 if (_nextMaps.ContainsKey(Direction.Left))
                     StaticData.SceneManager.GoTo(Direction.Left, _nextMaps[Direction.Left]);
                 return true;   
             }
-            if (x >= _width)
+            if (x >= Width)
             {
                 if (_nextMaps.ContainsKey(Direction.Right))
                     StaticData.SceneManager.GoTo(Direction.Right, _nextMaps[Direction.Right]);
@@ -208,7 +244,19 @@ namespace MonoGameTestGame
 
         public bool CheckVerticalCollision(int y, int leftX, int rightX)
         {
-            //Console.WriteLine("CheckVerticalCollision");
+            if (y < 0)
+            {
+                if (_nextMaps.ContainsKey(Direction.Up))
+                    StaticData.SceneManager.GoTo(Direction.Up, _nextMaps[Direction.Up]);
+                return true;
+            }
+            if (y >= Height)
+            {
+                if (_nextMaps.ContainsKey(Direction.Down))
+                    StaticData.SceneManager.GoTo(Direction.Down, _nextMaps[Direction.Down]);
+                return true;
+            }
+
             for (int i = leftX; i < rightX + 1; i++)
             {
                 if (CheckCollision(i, y)) {
@@ -248,12 +296,13 @@ namespace MonoGameTestGame
             return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
         }
 
-        private class Tile
+        public class Tile
         {
             public Vector2 Position;
             public Rectangle DrawRectangle;
             public Rectangle SourceRectangle;
-            public bool IsBlocking = false; 
+            public bool IsBlocking = false;
+            public string TypeName;
         }
 
         private class TileAnimation

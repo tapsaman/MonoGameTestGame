@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.9" tiledversion="1.9.0" name="testmap" tilewidth="8" tileheight="8" tilecount="8120" columns="116">
- <image source="../../linktothepast-tiles.png" trans="ffffff" width="934" height="562"/>
+ <image source="linktothepast-tiles.png" trans="ffffff" width="934" height="562"/>
  <tile id="0" class="Ground"/>
  <tile id="1" class="Ground"/>
  <tile id="6">
@@ -23,9 +23,10 @@
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
- <tile id="20">
+ <tile id="20" class="Bush">
   <properties>
    <property name="IsBlocking" type="bool" value="true"/>
+   <property name="Type" propertytype="Type" value="Bush"/>
   </properties>
  </tile>
  <tile id="21">
@@ -247,7 +248,7 @@
  </tile>
  <tile id="246">
   <properties>
-   <property name="IsBlocking" type="bool" value="true"/>
+   <property name="IsBlocking" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="247">
@@ -387,12 +388,12 @@
  </tile>
  <tile id="362">
   <properties>
-   <property name="IsBlocking" type="bool" value="true"/>
+   <property name="IsBlocking" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="363">
   <properties>
-   <property name="IsBlocking" type="bool" value="true"/>
+   <property name="IsBlocking" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="366">

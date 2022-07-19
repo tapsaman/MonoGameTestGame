@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,9 +12,8 @@ namespace MonoGameTestGame
         public StateMachine StateMachine;
         public EventManager EventManager;
         public TileMap TileMap;
-        public Player Player; //{ get; private set; }
+        public Player Player;
         public DialogManager DialogManager;
-        //public List<MapEntity> MapEntities { get; private set; }
         public List<MapEntity> InteractableEntities { get; private set; }
         public List<Character> Characters { get; private set; }
         public List<Character> HittableEntities { get; private set; }
@@ -51,6 +51,14 @@ namespace MonoGameTestGame
 
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
+
+            foreach(var item in TileMap.Tiles[TileMap.GroundLayer])
+            {
+                if (item.Value.TypeName == "Bush")
+                {
+                    
+                }
+            }
         }
 
         public virtual void Start()
@@ -67,33 +75,46 @@ namespace MonoGameTestGame
             StateMachine.Update(gameTime);
             TileMap.Update(gameTime);
             CollidingEntities.Sort();
+
+            if (Player.Velocity != Vector2.Zero)
+                UpdateCamera(Player.Position);
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void UpdateCamera(Vector2 targetPosition)
         {
-            TileMap.Draw(spriteBatch, 0, DrawOffset);
+            int halfWidth = StaticData.NativeWidth / 2;
+            int x = Math.Min(TileMap.DrawWidth - StaticData.NativeWidth, Math.Max(0, (int)targetPosition.X - halfWidth));
+
+            int halfHeight = StaticData.NativeHeight / 2;
+            int y = Math.Min(TileMap.DrawHeight - StaticData.NativeHeight, Math.Max(0, (int)targetPosition.Y - halfHeight));
+
+            DrawOffset = new Vector2(-x, -y);
+        }
+
+        public void DrawGround(SpriteBatch spriteBatch)
+        {
+            TileMap.Draw(spriteBatch, TileMap.GroundLayer, DrawOffset);
 
             foreach (var mapEntity in CollidingEntities)
             {
                 mapEntity.Draw(spriteBatch);
             }
+        }
 
-            TileMap.Draw(spriteBatch, 1, DrawOffset);
+        public void DrawTop(SpriteBatch spriteBatch)
+        {
+            TileMap.Draw(spriteBatch, TileMap.TopLayer, DrawOffset);
 
             foreach (var mapEntity in UncollidingEntities)
             {
                 mapEntity.Draw(spriteBatch);
             }
 
-            //Player.SwordHitbox.Draw(spriteBatch);
             DialogManager.Draw(spriteBatch);
-            //spriteBatch.DrawString(StaticData.Font, Player.Position.ToString(), new Vector2(200, 200), Color.Black);
         }
 
         public void Add(MapEntity mapEntity)
         {
-            //MapEntities.Add(mapEntity);
-
             if (mapEntity.Interactable)
             {
                 InteractableEntities.Add(mapEntity);

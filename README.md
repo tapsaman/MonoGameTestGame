@@ -9,11 +9,13 @@ log:
 * 16.7 - event system init
 * 17.7 - split map entities to characters and event triggers, zelda style bitmap font and dialog box, nicer tilemap rendering
 * 18.7. - scene management and new map
+* 19.7. - moving "camera" to player, float rectangles to fix collision bugs (xna rectangles use int)
 
 roadmap:
 * enemy with ai and states
-* hittimg bushes
-* event logic for cut scenes etc. ("simple enum code solution" or maybe yarn spinner?)
+* hitting enemies/bushess
+* animation events (falling to hole)
 
 small stuff todo:
 * new class MapObject between map entity & character?
+* conditional events

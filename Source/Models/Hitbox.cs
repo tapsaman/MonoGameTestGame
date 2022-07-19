@@ -1,8 +1,5 @@
-using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using TiledCS;
 
 namespace MonoGameTestGame
 {
@@ -13,6 +10,7 @@ namespace MonoGameTestGame
         private int _width;
         private int _height;
         public Vector2 Position;
+        public float x;
         public Color Color = Color.Blue;
         public bool Enabled = true;
         public Hitbox() {}
@@ -47,11 +45,11 @@ namespace MonoGameTestGame
             if (Enabled)
                 spriteBatch.Draw(_texture, Position, Color * 0.5f);
         }
-        public Rectangle Rectangle
+        public FloatRectangle Rectangle
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, _width, _height);
+                return new FloatRectangle(Position.X, Position.Y, _width, _height);
             }
         }
         public bool IsColliding(Hitbox hitbox)

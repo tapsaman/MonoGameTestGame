@@ -25,6 +25,7 @@ namespace MonoGameTestGame
         {
             StaticData.Graphics = _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            StaticData.TiledProjectDirectory = "Content\\TiledProjects\\testmap";
             IsMouseVisible = true;
         }
 
@@ -53,6 +54,8 @@ namespace MonoGameTestGame
         {
             StaticData.Content = Content;
             StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
+            StaticData.TileTexture = Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-tiles");
+            StaticData.ObjectTexture = Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-objects");
             SFX.Load();
             BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
             StaticData.SceneManager = _sceneManager = new SceneManager();

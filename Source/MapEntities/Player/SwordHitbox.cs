@@ -23,7 +23,7 @@ namespace MonoGameTestGame
             _setHeight = height;
         }
 
-        public void StartHit(Rectangle playerRectangle, Direction direction)
+        public void StartHit(FloatRectangle playerRectangle, Direction direction)
         {
             Enabled = true;
             _direction = direction;

@@ -8,9 +8,9 @@ namespace MonoGameTestGame
     {
         public override void Load()
         {
-            _map = new TiledMap(StaticData.Content.RootDirectory + "\\TiledProjects\\testmap\\B1.tmx");
-            _tileset = new TiledTileset(StaticData.Content.RootDirectory + "\\TiledProjects\\testmap\\testmap.tsx");
-            _tilesetTexture = StaticData.Content.Load<Texture2D>("linktothepast-tiles");
+            _map = new TiledMap(StaticData.TiledProjectDirectory + "\\B1.tmx");
+            _tileset = new TiledTileset(StaticData.TiledProjectDirectory + "\\linktothepast-tiles.tsx");
+            _tilesetTexture = StaticData.TileTexture;
             _nextMaps = new Dictionary<Direction, MapCode>()
             {
                 { Direction.Left, MapCode.A1 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+
 namespace MonoGameTestGame
 {
     public class EventTrigger : MapEntity

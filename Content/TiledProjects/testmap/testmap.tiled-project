@@ -7,5 +7,15 @@
         "."
     ],
     "propertyTypes": [
+        {
+            "id": 2,
+            "name": "Type",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Bush"
+            ],
+            "valuesAsFlags": false
+        }
     ]
 }

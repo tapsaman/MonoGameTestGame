@@ -78,7 +78,6 @@ namespace MonoGameTestGame
         {
             Hitbox.Draw(spriteBatch);
             Sprite.Draw(spriteBatch, StaticData.Scene.DrawOffset);
-            Console.WriteLine(StaticData.Scene.DrawOffset);
         }
 
         public void Move(GameTime gameTime)
@@ -160,7 +159,6 @@ namespace MonoGameTestGame
             else if (Velocity.X > 0) {
                 int currentTileRight = tileMap.ConvertX(Hitbox.Rectangle.Right);
                 int newTileRight = tileMap.ConvertX(Hitbox.Rectangle.Right + Velocity.X);
-
                 if (newTileRight > currentTileRight) {
                     if (tileMap.CheckHorizontalCollision(newTileRight, tileMap.ConvertY(Hitbox.Rectangle.Top), tileMap.ConvertY(Hitbox.Rectangle.Bottom)))
                         Velocity.X = 0;
