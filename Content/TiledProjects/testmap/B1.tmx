@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="42" height="52" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="5">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="42" height="52" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="27">
  <tileset firstgid="1" source="linktothepast-tiles.tsx"/>
+ <tileset firstgid="8121" source="linktothepast-objects.tsx"/>
  <layer id="1" name="Ground" width="42" height="52">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -114,9 +115,31 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="4" name="MockingSign" class="Sign" x="80" y="208" width="16" height="16">
+  <object id="4" name="Text" x="256" y="144" width="16" height="16">
    <properties>
-    <property name="GAYBOY FOREST (haha thas you lol)" value=""/>
+    <property name="TextProperty" value="R.I.P."/>
+   </properties>
+  </object>
+  <object id="5" name="Bush" gid="8121" x="96" y="208" width="16" height="16"/>
+  <object id="6" name="Bush" gid="8121" x="112" y="208" width="16" height="16"/>
+  <object id="7" name="Bush" gid="8121" x="96" y="224" width="16" height="16"/>
+  <object id="8" name="Bush" gid="8121" x="112" y="224" width="16" height="16"/>
+  <object id="9" name="Bush" gid="8121" x="128" y="224" width="16" height="16"/>
+  <object id="11" name="Bush" gid="8121" x="128" y="240" width="16" height="16"/>
+  <object id="12" name="Bush" gid="8121" x="112" y="240" width="16" height="16"/>
+  <object id="13" name="Bush" gid="8121" x="112" y="256" width="16" height="16"/>
+  <object id="14" name="Bush" gid="8121" x="128" y="256" width="16" height="16"/>
+  <object id="16" name="Bush" gid="8121" x="160" y="192" width="16" height="16"/>
+  <object id="17" name="Bush" gid="8121" x="176" y="192" width="16" height="16"/>
+  <object id="21" name="Bush" gid="8121" x="160" y="176" width="16" height="16"/>
+  <object id="22" name="Bush" gid="8121" x="176" y="176" width="16" height="16"/>
+  <object id="23" name="Bush" gid="8121" x="192" y="176" width="16" height="16"/>
+  <object id="24" name="Bush" gid="8121" x="192" y="160" width="16" height="16"/>
+  <object id="25" name="Bush" gid="8121" x="176" y="160" width="16" height="16"/>
+  <object id="26" name="Sign" x="80" y="208" width="16" height="16">
+   <properties>
+    <property name="TextProperty">GAYBOY FOREST
+(haha thats you)</property>
    </properties>
   </object>
  </objectgroup>

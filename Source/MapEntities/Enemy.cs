@@ -31,24 +31,24 @@ namespace MonoGameTestGame
             };
             SpriteOffset = new Vector2(-2, -2);
             */
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet-red");
+            var texture = StaticData.Content.Load<Texture2D>("linktothepast/link-sprites-red");
             Animation.DefaultFrameWidth = 40;
             Animation.DefaultFrameHeight = 50;
 
             Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
             {
-                { "IdleDown",       new Animation(texture, 1, 0, 1) },
-                { "IdleUp",         new Animation(texture, 1, 1, 3) },
-                { "IdleLeft",       new Animation(texture, 1, 2, 3) },
-                { "IdleRight",      new Animation(texture, 1, 3, 3) },
-                { "WalkDown",       new Animation(texture, 8, 0) },
-                { "WalkUp",         new Animation(texture, 8, 1) },
-                { "WalkLeft",       new Animation(texture, 6, 2) },
-                { "WalkRight",      new Animation(texture, 6, 3) },
-                { "SwordHitDown",   new Animation(texture, 6, 4, 0, false, 0.04f) },
-                { "SwordHitUp",     new Animation(texture, 5, 5, 0, false, 0.04f) },
-                { "SwordHitLeft",   new Animation(texture, 5, 6, 0, false, 0.04f) },
-                { "SwordHitRight",  new Animation(texture, 5, 7, 0, false, 0.04f) },
+                { "IdleDown",       new Animation(texture, 1, 0.04f, false, 0, 1) },
+                { "IdleUp",         new Animation(texture, 1, 0.04f, false, 1, 3) },
+                { "IdleLeft",       new Animation(texture, 1, 0.04f, false, 2, 3) },
+                { "IdleRight",      new Animation(texture, 1, 0.04f, false, 3, 3) },
+                { "WalkDown",       new Animation(texture, 8, 0.04f, true, 0) },
+                { "WalkUp",         new Animation(texture, 8, 0.04f, true, 1) },
+                { "WalkLeft",       new Animation(texture, 6, 0.04f, true, 2) },
+                { "WalkRight",      new Animation(texture, 6, 0.04f, true, 3) },
+                { "SwordHitDown",   new Animation(texture, 6, 0.04f, false, 4) },
+                { "SwordHitUp",     new Animation(texture, 5, 0.04f, false, 5) },
+                { "SwordHitLeft",   new Animation(texture, 5, 0.04f, false, 6) },
+                { "SwordHitRight",  new Animation(texture, 5, 0.04f, false, 7) }
             };
 
             Sprite.SetAnimations(animations, "WalkRight");

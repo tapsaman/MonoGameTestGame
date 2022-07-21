@@ -56,10 +56,9 @@ namespace MonoGameTestGame
             Sprite.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
-            Hitbox.Draw(spriteBatch);
-            Sprite.Draw(spriteBatch, StaticData.Scene.DrawOffset);
+            Sprite.Draw(spriteBatch, offset);
         }
     }
 }

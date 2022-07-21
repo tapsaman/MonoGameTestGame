@@ -9,6 +9,7 @@ namespace MonoGameTestGame.Manangers
         public Scene CurrentScene;
         public Scene ChangingToScene;
         public bool Changing;
+        private const float _LOAD_TIME = 0.2f;
         private const float _CHANGE_TIME = 1f;
         private float _elapsedChangeTime;
         private Direction _newDirection;
@@ -20,6 +21,13 @@ namespace MonoGameTestGame.Manangers
         private Vector2 _playerPositionBefore;
         private Vector2 _playerPositionAfter;
 
+        public void Init(Scene firstScene)
+        {
+            StaticData.Scene = CurrentScene = firstScene;
+            Player = new Player() { Position = new Vector2(100, 100) };
+            CurrentScene.Init(Player);
+        }
+
         public void Update(GameTime gameTime)
         {
             if (!Changing)
@@ -28,16 +36,27 @@ namespace MonoGameTestGame.Manangers
                 return;
             }
             
+            
             if (_elapsedChangeTime == 0)
             {
                 StartChanging();
+                _elapsedChangeTime = 0.0001f;
+                return;
+            }
+            else
+            {
+                _elapsedChangeTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
-            _elapsedChangeTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (_elapsedChangeTime < _CHANGE_TIME)
+            if (_elapsedChangeTime < _LOAD_TIME)
             {
-                float changePercentage = (_elapsedChangeTime / _CHANGE_TIME);
+                return;
+            }
+            else if (_elapsedChangeTime < _LOAD_TIME + _CHANGE_TIME)
+            {
+                //Sys.Log(_elapsedChangeTime.ToString());
+                //Sys.Log("running slow = " + gameTime.IsRunningSlowly);
+                float changePercentage = (_elapsedChangeTime - _LOAD_TIME) / _CHANGE_TIME;
                 CurrentScene.DrawOffset = Vector2.Lerp(_currentSceneOffsetBefore, _currentSceneOffsetAfter, changePercentage);
                 ChangingToScene.DrawOffset = Vector2.Lerp(_newSceneOffsetBefore, _newSceneOffsetAfter, changePercentage);
                 Player.Position = Vector2.Lerp(_playerPositionBefore, _playerPositionAfter, changePercentage);
@@ -93,11 +112,11 @@ namespace MonoGameTestGame.Manangers
             switch (mapCode)
             {
                 case MapCode.A1:
-                    return new TestScene(Player);
+                    return new TestScene();
                 case MapCode.A2:
-                    return new SceneA2(Player);
+                    return new SceneA2();
                 case MapCode.B1:
-                    return new SceneB1(Player);
+                    return new SceneB1();
             }
             return null;
         }
@@ -106,8 +125,15 @@ namespace MonoGameTestGame.Manangers
         {
             ChangingToScene = MapCodeToScene(_newMapCode);
             ChangingToScene.Paused = true;
+            StaticData.Scene = ChangingToScene;
+            ChangingToScene.Init(Player);
+            ChangingToScene.RegisterHitbox(Player.Hitbox);
+            ChangingToScene.RegisterHitbox(Player.SwordHitbox);
+            StaticData.Scene = CurrentScene;
+
             CurrentScene.Remove(Player);
             CurrentScene.Player = null;
+
             const int playerLength = 14;
 
             switch (_newDirection)

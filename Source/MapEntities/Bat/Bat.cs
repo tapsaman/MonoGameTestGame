@@ -12,16 +12,16 @@ namespace MonoGameTestGame
         public Bat()
         {
             Interactable = false;
-            Hittable = true;
+            Hittable = false;
             Colliding = false;
             
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast-enemysprites");
+            var texture = StaticData.Content.Load<Texture2D>("linktothepast/enemy-sprites");
             Animation.DefaultFrameWidth = Animation.DefaultFrameHeight = 34;
 
             Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
             {
-                { "Default", new Animation(texture, 3) },
-                { "TakenDamage", new Animation(texture, 1) }
+                { "Default", new Animation(texture, 3, 0.1f, true) },
+                { "TakenDamage", new Animation(texture, 1, 0.1f, false) }
             };
 
             Sprite.SetAnimations(animations, "Default");

@@ -13,10 +13,14 @@ namespace MonoGameTestGame
         public float x;
         public Color Color = Color.Blue;
         public bool Enabled = true;
-        public Hitbox() {}
+        public Hitbox()
+        {
+            StaticData.Scene.RegisterHitbox(this);
+        }
         public Hitbox(int width, int height)
         {
             Load(width, height);
+            StaticData.Scene.RegisterHitbox(this);
         }
         ~Hitbox()
         {
@@ -40,10 +44,10 @@ namespace MonoGameTestGame
             if (_texture != null)
                 _texture.Dispose();
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
             if (Enabled)
-                spriteBatch.Draw(_texture, Position, Color * 0.5f);
+                spriteBatch.Draw(_texture, Position + offset, Color * 0.5f);
         }
         public FloatRectangle Rectangle
         {

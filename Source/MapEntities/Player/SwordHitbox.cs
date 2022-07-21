@@ -54,24 +54,21 @@ namespace MonoGameTestGame
 
         public void Update(GameTime gameTime)
         {
-            if (Enabled)
+            _elapsedMoveTime = Math.Min(_elapsedMoveTime + (float)gameTime.ElapsedGameTime.TotalSeconds, MoveTime);
+            //Position.Y = _moveStartPosition.Y + MoveLength * (_elapsedMoveTime / MoveTime);
+            switch (_direction)
             {
-                _elapsedMoveTime = Math.Min(_elapsedMoveTime + (float)gameTime.ElapsedGameTime.TotalSeconds, MoveTime);
-                //Position.Y = _moveStartPosition.Y + MoveLength * (_elapsedMoveTime / MoveTime);
-                switch (_direction)
-                {
-                    case Direction.Up:
-                        Position.X = _moveStartPosition.X - MoveLength * (_elapsedMoveTime / MoveTime);
-                        break;
-                    case Direction.Down:
-                        Position.X = _moveStartPosition.X + MoveLength * (_elapsedMoveTime / MoveTime);
-                        break;
-                    case Direction.Right:
-                    case Direction.Left:
-                        Position.Y = _moveStartPosition.Y + MoveLength * (_elapsedMoveTime / MoveTime);
-                        break;
+                case Direction.Up:
+                    Position.X = _moveStartPosition.X - MoveLength * (_elapsedMoveTime / MoveTime);
+                    break;
+                case Direction.Down:
+                    Position.X = _moveStartPosition.X + MoveLength * (_elapsedMoveTime / MoveTime);
+                    break;
+                case Direction.Right:
+                case Direction.Left:
+                    Position.Y = _moveStartPosition.Y + MoveLength * (_elapsedMoveTime / MoveTime);
+                    break;
 
-                }
             }
         }
 

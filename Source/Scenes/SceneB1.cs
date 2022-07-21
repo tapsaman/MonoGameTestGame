@@ -12,11 +12,9 @@ namespace MonoGameTestGame
         private Event _signEvent;
         private Song _song;
 
-        public SceneB1(Player player): base(player) {}
-        
         protected override void Load()
         {
-            _song = StaticData.Content.Load<Song>("linktothepast-forest");
+            _song = StaticData.Content.Load<Song>("linktothepast/forest");
             TileMap = new MapB1();
 
             var signEventTrigger = new EventTrigger(TileMap.GetPosition(9, 4), 14, 14);

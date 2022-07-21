@@ -12,6 +12,7 @@ namespace MonoGameTestGame
         public static int NativeSizeMultiplier = 3;
         public static int BackBufferWidth = (NativeWidth * NativeSizeMultiplier);
         public static int BackBufferHeight = (NativeHeight * NativeSizeMultiplier);
+        public static bool RenderHitboxes = true;
         public static SpriteFont Font;
         public static ContentManager Content;
         public static GraphicsDeviceManager Graphics;

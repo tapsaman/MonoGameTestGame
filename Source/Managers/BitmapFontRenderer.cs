@@ -29,29 +29,34 @@ namespace MonoGameTestGame.Managers
             {
                 if (code == 10)
                 {
-                    // New line character
+                    // 10 = LF = line feed
+                    // Used for new lines
                     position.X = startPosition.X;
                     position.Y += Font.LineHeight;
+                    continue;
                 }
-                else
+                else if (code == 13)
                 {
-                    if (!Font.Chars.ContainsKey(code))
-                    {
-                        Sys.LogError("Undefined symbol at " + code + " (" + (char)code + ") for " + Font.ToString());
-                        Font.Chars[code] = Font.Chars[Font.UndefinedSymbolCode];
-                    }
-
-                    BitmapFontChar c = Font.Chars[code];
-
-                    spriteBatch.Draw(
-                        Font.Texture,
-                        position + c.Offset,
-                        c.SourceRectangle,
-                        Color.White
-                    );
-
-                    position.X += c.XAdvance + Font.LetterSpacing;
+                    // 13 = CR = carriage return
+                    // Ignored
+                    continue;
                 }
+                else if (!Font.Chars.ContainsKey(code))
+                {
+                    Sys.LogError("Undefined symbol at " + code + " (" + (char)code + ") for " + Font.ToString());
+                    Font.Chars[code] = Font.Chars[Font.UndefinedSymbolCode];
+                }
+
+                BitmapFontChar c = Font.Chars[code];
+
+                spriteBatch.Draw(
+                    Font.Texture,
+                    position + c.Offset,
+                    c.SourceRectangle,
+                    Color.White
+                );
+
+                position.X += c.XAdvance + Font.LetterSpacing;
             }
         }
     }

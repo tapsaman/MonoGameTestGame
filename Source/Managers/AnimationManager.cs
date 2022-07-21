@@ -8,11 +8,13 @@ namespace MonoGameTestGame.Managers
 {
     public class AnimationManager
     {
-        private Models.Animation _animation;
+        private Animation _animation;
 
-        private float _timer;
+        private float _elapsedtime;
 
         public Vector2 Position;
+
+        public AnimationManager() {}
 
         public AnimationManager(Animation animation)
         {
@@ -27,26 +29,30 @@ namespace MonoGameTestGame.Managers
 
             _animation = animation;
             _animation.CurrentFrame = 0;
-            _timer = 0f;
+            _elapsedtime = 0f;
         }
 
         public void Stop()
         {
             _animation.CurrentFrame = 0;
-            _timer = 0f;
+            _elapsedtime = 0f;
         }
 
-        public void Update(GameTime gameTime) {
-            _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        public virtual void OnDone() {}
 
-            if (_timer > _animation.FrameDuration)
+        public void Update(GameTime gameTime) {
+            _elapsedtime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_elapsedtime > _animation.FrameDuration)
             {
-                _timer = 0f;
+                _elapsedtime = 0f;
 
                 if (_animation.CurrentFrame >= _animation.FrameCount - 1) {
                     // On last frame
                     if (_animation.IsLooping)
                         _animation.CurrentFrame = 0;
+                    else
+                        OnDone();
                 }
                 else {
                     _animation.CurrentFrame++;

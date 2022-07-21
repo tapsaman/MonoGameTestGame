@@ -85,11 +85,6 @@ namespace MonoGameTestGame
                 float x = (i % _map.Width) * _map.TileWidth;
                 float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
 
-                if (layerIndex == 0 && i == 10)
-                {
-                    Sys.Log(tiledTile.ToString());
-                }
-
                 var tile = new Tile()
                 {
                     Position = new Vector2((int)x, (int)y),
@@ -150,9 +145,20 @@ namespace MonoGameTestGame
                 Objects.Add(new Object()
                 {
                     TypeName = item.name,
-                    Position = new Vector2(item.x, item.y)
+                    Position = new Vector2(item.x, item.y),
+                    TextProperty = GetPropertyValue(item.properties, "TextProperty")
                 });
             }
+        }
+
+        private string GetPropertyValue(TiledCS.TiledProperty[] properties, string propertyName)
+        {
+            foreach (var property in properties)
+            {
+                if (property.name == propertyName)
+                    return property.value;
+            }
+            return null;
         }
 
         public void Update(GameTime gameTime)
@@ -324,7 +330,8 @@ namespace MonoGameTestGame
         {
             public string TypeName;
             public Vector2 Position;
-        } 
+            public string TextProperty;
+        }
 
         private class TileAnimation
         {

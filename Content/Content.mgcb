@@ -138,13 +138,25 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TestFont.spritefont
 
-#begin linktothepast-darkworld.mp3
+#begin linktothepast/animation-bush-slash.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/animation-bush-slash.png
+
+#begin linktothepast/darkworld.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:linktothepast-darkworld.mp3
+/build:linktothepast/darkworld.mp3
 
-#begin linktothepast-dialogbox.png
+#begin linktothepast/dialogbox.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -154,9 +166,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:linktothepast-dialogbox.png
+/build:linktothepast/dialogbox.png
 
-#begin linktothepast-enemysprites.png
+#begin linktothepast/enemy-sprites.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -166,87 +178,15 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:linktothepast-enemysprites.png
+/build:linktothepast/enemy-sprites.png
 
-#begin linktothepast-forest.mp3
+#begin linktothepast/forest.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:linktothepast-forest.mp3
+/build:linktothepast/forest.mp3
 
-#begin linktothepast-sfx/chest open.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/chest open.wav
-
-#begin linktothepast-sfx/cursor.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/cursor.wav
-
-#begin linktothepast-sfx/enemy dies.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/enemy dies.wav
-
-#begin linktothepast-sfx/enemy hit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/enemy hit.wav
-
-#begin linktothepast-sfx/error.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/error.wav
-
-#begin linktothepast-sfx/fighter sword 1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/fighter sword 1.wav
-
-#begin linktothepast-sfx/fighter sword 2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/fighter sword 2.wav
-
-#begin linktothepast-sfx/menu close.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/menu close.wav
-
-#begin linktothepast-sfx/menu open.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/menu open.wav
-
-#begin linktothepast-sfx/message finish.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/message finish.wav
-
-#begin linktothepast-sfx/message.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/message.wav
-
-#begin linktothepast-sfx/walk grass.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast-sfx/walk grass.wav
-
-#begin linktothepast-spritesheet.png
+#begin linktothepast/link-sprites.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -256,9 +196,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:linktothepast-spritesheet.png
+/build:linktothepast/link-sprites.png
 
-#begin linktothepast-spritesheet-evil.png
+#begin linktothepast/link-sprites-evil.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -268,9 +208,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:linktothepast-spritesheet-evil.png
+/build:linktothepast/link-sprites-evil.png
 
-#begin linktothepast-spritesheet-og.png
+#begin linktothepast/link-sprites-red.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -280,19 +220,91 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:linktothepast-spritesheet-og.png
+/build:linktothepast/link-sprites-red.png
 
-#begin linktothepast-spritesheet-red.png
+#begin linktothepast/sfx/chest open.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/chest open.wav
+
+#begin linktothepast/sfx/cursor.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/cursor.wav
+
+#begin linktothepast/sfx/enemy dies.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/enemy dies.wav
+
+#begin linktothepast/sfx/enemy hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/enemy hit.wav
+
+#begin linktothepast/sfx/error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/error.wav
+
+#begin linktothepast/sfx/fighter sword 1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/fighter sword 1.wav
+
+#begin linktothepast/sfx/fighter sword 2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/fighter sword 2.wav
+
+#begin linktothepast/sfx/menu close.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/menu close.wav
+
+#begin linktothepast/sfx/menu open.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/menu open.wav
+
+#begin linktothepast/sfx/message finish.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/message finish.wav
+
+#begin linktothepast/sfx/message.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/message.wav
+
+#begin linktothepast/sfx/walk grass.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/walk grass.wav
+
+#begin linktothepast/shadedwoodtransparency.png
 /importer:TextureImporter
 /processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyColor=255,255,255,255
 /processorParam:ColorKeyEnabled=True
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:linktothepast-spritesheet-red.png
+/build:linktothepast/shadedwoodtransparency.png
 
 #begin rm2k-sheet01.png
 /importer:TextureImporter

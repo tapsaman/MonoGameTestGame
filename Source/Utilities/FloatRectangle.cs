@@ -39,7 +39,7 @@ namespace MonoGameTestGame
         {
             get 
             { 
-                return new Vector2((X + Width) / 2, (Y + Height) / 2); 
+                return new Vector2(X + Width / 2, Y + Height / 2); 
             }
         }
         public bool Intersects(FloatRectangle r)

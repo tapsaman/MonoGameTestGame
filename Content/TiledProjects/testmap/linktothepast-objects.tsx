@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.0" name="linktothepast-objects" tilewidth="16" tileheight="16" tilecount="6" columns="5">
+<tileset version="1.9" tiledversion="1.9.0" name="linktothepast-objects" tilewidth="16" tileheight="16" tilecount="6" columns="5" objectalignment="topleft">
  <image source="linktothepast-objects.png" trans="ffffff" width="80" height="16"/>
- <tile id="0" class="BushClass">
+ <tile id="0">
   <properties>
    <property name="Type" propertytype="Type" value="Bush"/>
   </properties>

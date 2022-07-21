@@ -6,8 +6,8 @@ namespace MonoGameTestGame
     {
         public Bush()
         {
-            Hitbox.Load(14, 14);
-            Interactable = true;
+            Hitbox.Load(16, 16);
+            Interactable = false;
             Hittable = true;
             Colliding = true;
             Sprite.SetTexture(StaticData.ObjectTexture, new Rectangle(0, 0, 16, 16));
@@ -16,6 +16,7 @@ namespace MonoGameTestGame
 
         private void Destroy()
         {
+            StaticData.Scene.Add(new Animations.BushSlash(Position + new Vector2(8)));
             StaticData.Scene.SetToRemove(this);
         }
     }

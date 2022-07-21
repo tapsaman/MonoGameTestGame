@@ -53,16 +53,14 @@ namespace MonoGameTestGame
         protected override void LoadContent()
         {
             StaticData.Content = Content;
+            StaticData.SpriteBatch = _spriteBatch = new SpriteBatch(GraphicsDevice);
             StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
             StaticData.TileTexture = Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-tiles");
             StaticData.ObjectTexture = Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-objects");
-            SFX.Load();
             BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
+            SFX.Load();
             StaticData.SceneManager = _sceneManager = new SceneManager();
-            Player player = new Player() { Position = new Vector2(100, 100) };
-            _sceneManager.Player = player;
-            _sceneManager.CurrentScene = StaticData.Scene = new TestScene(player);
-            StaticData.SpriteBatch = _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _sceneManager.Init(new TestScene());
             _dialogManager = new DialogManager();
 
             _startButton = new Button(Content.Load<Texture2D>("Button"), Content.Load<SpriteFont>("Fonts/TestFont"))

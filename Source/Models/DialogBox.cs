@@ -20,10 +20,8 @@ namespace MonoGameTestGame
     {
         public LinkToThePastDialogBox()
         {
-            _bgTexture = StaticData.Content.Load<Texture2D>("linktothepast-dialogbox");
-            _arrowTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
+            _bgTexture = StaticData.Content.Load<Texture2D>("linktothepast/dialogbox");
             _height = _bgTexture.Height;
-            _arrowOffset = new Vector2(230,50);
             _textOffset = new Vector2(8,6);
         }
 
@@ -32,11 +30,6 @@ namespace MonoGameTestGame
             var position = new Vector2(33, top ? 18 : StaticData.NativeHeight - _height - 18);
 
             spriteBatch.Draw(_bgTexture, position, Color.White);
-
-            if (drawArrow)
-            {
-                spriteBatch.Draw(_arrowTexture, position + _arrowOffset, Color.White);
-            }
 
             if (name != null && name != "")
             {

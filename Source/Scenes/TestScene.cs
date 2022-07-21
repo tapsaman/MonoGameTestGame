@@ -13,11 +13,9 @@ namespace MonoGameTestGame
         private Event _signEvent;
         private Song _song;
 
-        public TestScene(Player player): base(player) {}
-
         protected override void Load()
         {
-            _song = StaticData.Content.Load<Song>("linktothepast-darkworld");
+            _song = StaticData.Content.Load<Song>("linktothepast/darkworld");
             TileMap = new TestMap();
 
             var enemy = new Enemy();

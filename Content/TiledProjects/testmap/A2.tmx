@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="161">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="220">
  <tileset firstgid="1" source="linktothepast-tiles.tsx"/>
  <tileset firstgid="8121" source="linktothepast-objects.tsx"/>
  <layer id="1" name="Ground" width="32" height="30">
@@ -37,104 +37,151 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="46" gid="8121" x="0" y="80" width="16" height="16"/>
-  <object id="47" gid="8121" x="16" y="80" width="16" height="16"/>
-  <object id="48" gid="8121" x="32" y="80" width="16" height="16"/>
-  <object id="49" gid="8121" x="48" y="80" width="16" height="16"/>
-  <object id="50" gid="8121" x="64" y="80" width="16" height="16"/>
-  <object id="51" gid="8121" x="64" y="96" width="16" height="16"/>
-  <object id="52" gid="8121" x="64" y="112" width="16" height="16"/>
-  <object id="53" gid="8121" x="64" y="128" width="16" height="16"/>
-  <object id="54" gid="8121" x="64" y="144" width="16" height="16"/>
-  <object id="55" gid="8121" x="80" y="144" width="16" height="16"/>
-  <object id="56" gid="8121" x="96" y="144" width="16" height="16"/>
-  <object id="57" gid="8121" x="96" y="160" width="16" height="16"/>
-  <object id="58" gid="8121" x="80" y="160" width="16" height="16"/>
-  <object id="59" gid="8121" x="64" y="160" width="16" height="16"/>
-  <object id="60" gid="8121" x="48" y="128" width="16" height="16"/>
-  <object id="61" gid="8121" x="32" y="128" width="16" height="16"/>
-  <object id="64" gid="8121" x="16" y="128" width="16" height="16"/>
-  <object id="65" gid="8121" x="0" y="128" width="16" height="16"/>
-  <object id="66" gid="8121" x="0" y="112" width="16" height="16"/>
-  <object id="68" gid="8121" x="0" y="96" width="16" height="16"/>
-  <object id="69" gid="8121" x="16" y="96" width="16" height="16"/>
-  <object id="70" gid="8121" x="32" y="96" width="16" height="16"/>
-  <object id="71" gid="8121" x="48" y="96" width="16" height="16"/>
-  <object id="72" gid="8121" x="48" y="112" width="16" height="16"/>
-  <object id="74" gid="8121" x="32" y="112" width="16" height="16"/>
-  <object id="75" gid="8121" x="16" y="112" width="16" height="16"/>
-  <object id="77" gid="8121" x="80" y="128" width="16" height="16"/>
-  <object id="78" gid="8121" x="96" y="128" width="16" height="16"/>
-  <object id="79" gid="8121" x="112" y="128" width="16" height="16"/>
-  <object id="80" gid="8121" x="112" y="112" width="16" height="16"/>
-  <object id="81" gid="8121" x="112" y="96" width="16" height="16"/>
-  <object id="82" gid="8121" x="128" y="96" width="16" height="16"/>
-  <object id="85" gid="8121" x="128" y="112" width="16" height="16"/>
-  <object id="87" gid="8121" x="128" y="128" width="16" height="16"/>
-  <object id="89" gid="8121" x="144" y="128" width="16" height="16"/>
-  <object id="90" gid="8121" x="160" y="128" width="16" height="16"/>
-  <object id="91" gid="8121" x="192" y="144" width="16" height="16"/>
-  <object id="92" gid="8121" x="176" y="144" width="16" height="16"/>
-  <object id="93" gid="8121" x="160" y="144" width="16" height="16"/>
-  <object id="94" gid="8121" x="144" y="144" width="16" height="16"/>
-  <object id="95" gid="8121" x="128" y="144" width="16" height="16"/>
-  <object id="96" gid="8121" x="112" y="144" width="16" height="16"/>
-  <object id="97" gid="8121" x="112" y="160" width="16" height="16"/>
-  <object id="98" gid="8121" x="128" y="160" width="16" height="16"/>
-  <object id="99" gid="8121" x="144" y="160" width="16" height="16"/>
-  <object id="100" gid="8121" x="160" y="160" width="16" height="16"/>
-  <object id="102" gid="8121" x="176" y="160" width="16" height="16"/>
-  <object id="103" gid="8121" x="192" y="160" width="16" height="16"/>
-  <object id="104" gid="8121" x="192" y="128" width="16" height="16"/>
-  <object id="105" gid="8121" x="176" y="128" width="16" height="16"/>
-  <object id="106" gid="8121" x="144" y="112" width="16" height="16"/>
-  <object id="108" gid="8121" x="144" y="96" width="16" height="16"/>
-  <object id="109" gid="8121" x="160" y="96" width="16" height="16"/>
-  <object id="110" gid="8121" x="160" y="112" width="16" height="16"/>
-  <object id="111" gid="8121" x="176" y="112" width="16" height="16"/>
-  <object id="113" gid="8121" x="176" y="96" width="16" height="16"/>
-  <object id="114" gid="8121" x="192" y="96" width="16" height="16"/>
-  <object id="117" gid="8121" x="192" y="112" width="16" height="16"/>
-  <object id="118" gid="8121" x="48" y="144" width="16" height="16"/>
-  <object id="119" gid="8121" x="32" y="144" width="16" height="16"/>
-  <object id="120" gid="8121" x="48" y="160" width="16" height="16"/>
-  <object id="121" gid="8121" x="32" y="160" width="16" height="16"/>
-  <object id="122" gid="8121" x="16" y="160" width="16" height="16"/>
-  <object id="123" gid="8121" x="16" y="144" width="16" height="16"/>
-  <object id="124" gid="8121" x="0" y="144" width="16" height="16"/>
-  <object id="125" gid="8121" x="0" y="160" width="16" height="16"/>
-  <object id="126" gid="8121" x="208" y="176" width="16" height="16"/>
-  <object id="128" gid="8121" x="224" y="176" width="16" height="16"/>
-  <object id="129" gid="8121" x="240" y="176" width="16" height="16"/>
-  <object id="130" gid="8121" x="192" y="176" width="16" height="16"/>
-  <object id="131" gid="8121" x="208" y="192" width="16" height="16"/>
-  <object id="132" gid="8121" x="224" y="192" width="16" height="16"/>
-  <object id="133" gid="8121" x="240" y="192" width="16" height="16"/>
-  <object id="134" gid="8121" x="192" y="192" width="16" height="16"/>
-  <object id="135" gid="8121" x="176" y="176" width="16" height="16"/>
-  <object id="136" gid="8121" x="176" y="192" width="16" height="16"/>
-  <object id="138" gid="8121" x="160" y="176" width="16" height="16"/>
-  <object id="139" gid="8121" x="144" y="176" width="16" height="16"/>
-  <object id="140" gid="8121" x="160" y="192" width="16" height="16"/>
-  <object id="142" gid="8121" x="144" y="192" width="16" height="16"/>
-  <object id="143" gid="8121" x="128" y="192" width="16" height="16"/>
-  <object id="144" gid="8121" x="128" y="176" width="16" height="16"/>
-  <object id="145" gid="8121" x="112" y="176" width="16" height="16"/>
-  <object id="146" gid="8121" x="112" y="192" width="16" height="16"/>
-  <object id="147" gid="8121" x="96" y="192" width="16" height="16"/>
-  <object id="148" gid="8121" x="96" y="176" width="16" height="16"/>
-  <object id="149" gid="8121" x="80" y="192" width="16" height="16"/>
-  <object id="150" gid="8121" x="80" y="176" width="16" height="16"/>
-  <object id="151" gid="8121" x="64" y="176" width="16" height="16"/>
-  <object id="152" gid="8121" x="64" y="192" width="16" height="16"/>
-  <object id="153" gid="8121" x="48" y="192" width="16" height="16"/>
-  <object id="154" gid="8121" x="48" y="176" width="16" height="16"/>
-  <object id="155" gid="8121" x="32" y="176" width="16" height="16"/>
-  <object id="156" gid="8121" x="32" y="192" width="16" height="16"/>
-  <object id="157" gid="8121" x="16" y="192" width="16" height="16"/>
-  <object id="158" gid="8121" x="16" y="176" width="16" height="16"/>
-  <object id="159" gid="8121" x="0" y="176" width="16" height="16"/>
-  <object id="160" gid="8121" x="0" y="192" width="16" height="16"/>
+  <object id="46" name="Bush" gid="8121" x="0" y="64" width="16" height="16"/>
+  <object id="47" name="Bush" gid="8121" x="16" y="64" width="16" height="16"/>
+  <object id="48" name="Bush" gid="8121" x="32" y="64" width="16" height="16"/>
+  <object id="49" name="Bush" gid="8121" x="48" y="64" width="16" height="16"/>
+  <object id="50" name="Bush" gid="8121" x="64" y="64" width="16" height="16"/>
+  <object id="51" name="Bush" gid="8121" x="64" y="80" width="16" height="16"/>
+  <object id="52" name="Bush" gid="8121" x="64" y="96" width="16" height="16"/>
+  <object id="53" name="Bush" gid="8121" x="64" y="112" width="16" height="16"/>
+  <object id="54" name="Bush" gid="8121" x="64" y="128" width="16" height="16"/>
+  <object id="55" name="Bush" gid="8121" x="80" y="128" width="16" height="16"/>
+  <object id="56" name="Bush" gid="8121" x="96" y="128" width="16" height="16"/>
+  <object id="57" name="Bush" gid="8121" x="96" y="144" width="16" height="16"/>
+  <object id="58" name="Bush" gid="8121" x="80" y="144" width="16" height="16"/>
+  <object id="59" name="Bush" gid="8121" x="64" y="144" width="16" height="16"/>
+  <object id="60" name="Bush" gid="8121" x="48" y="112" width="16" height="16"/>
+  <object id="61" name="Bush" gid="8121" x="32" y="112" width="16" height="16"/>
+  <object id="64" name="Bush" gid="8121" x="16" y="112" width="16" height="16"/>
+  <object id="65" name="Bush" gid="8121" x="0" y="112" width="16" height="16"/>
+  <object id="66" name="Bush" gid="8121" x="0" y="96" width="16" height="16"/>
+  <object id="68" name="Bush" gid="8121" x="0" y="80" width="16" height="16"/>
+  <object id="69" name="Bush" gid="8121" x="16" y="80" width="16" height="16"/>
+  <object id="70" name="Bush" gid="8121" x="32" y="80" width="16" height="16"/>
+  <object id="71" name="Bush" gid="8121" x="48" y="80" width="16" height="16"/>
+  <object id="72" name="Bush" gid="8121" x="48" y="96" width="16" height="16"/>
+  <object id="74" name="Bush" gid="8121" x="32" y="96" width="16" height="16"/>
+  <object id="75" name="Bush" gid="8121" x="16" y="96" width="16" height="16"/>
+  <object id="77" name="Bush" gid="8121" x="80" y="112" width="16" height="16"/>
+  <object id="78" name="Bush" gid="8121" x="96" y="112" width="16" height="16"/>
+  <object id="79" name="Bush" gid="8121" x="112" y="112" width="16" height="16"/>
+  <object id="80" name="Bush" gid="8121" x="112" y="96" width="16" height="16"/>
+  <object id="81" name="Bush" gid="8121" x="112" y="80" width="16" height="16"/>
+  <object id="82" name="Bush" gid="8121" x="128" y="80" width="16" height="16"/>
+  <object id="85" name="Bush" gid="8121" x="128" y="96" width="16" height="16"/>
+  <object id="87" name="Bush" gid="8121" x="128" y="112" width="16" height="16"/>
+  <object id="89" name="Bush" gid="8121" x="144" y="112" width="16" height="16"/>
+  <object id="90" name="Bush" gid="8121" x="160" y="112" width="16" height="16"/>
+  <object id="91" name="Bush" gid="8121" x="192" y="128" width="16" height="16"/>
+  <object id="92" name="Bush" gid="8121" x="176" y="128" width="16" height="16"/>
+  <object id="93" name="Bush" gid="8121" x="160" y="128" width="16" height="16"/>
+  <object id="94" name="Bush" gid="8121" x="144" y="128" width="16" height="16"/>
+  <object id="95" name="Bush" gid="8121" x="128" y="128" width="16" height="16"/>
+  <object id="96" name="Bush" gid="8121" x="112" y="128" width="16" height="16"/>
+  <object id="97" name="Bush" gid="8121" x="112" y="144" width="16" height="16"/>
+  <object id="98" name="Bush" gid="8121" x="128" y="144" width="16" height="16"/>
+  <object id="99" name="Bush" gid="8121" x="144" y="144" width="16" height="16"/>
+  <object id="100" name="Bush" gid="8121" x="160" y="144" width="16" height="16"/>
+  <object id="102" name="Bush" gid="8121" x="176" y="144" width="16" height="16"/>
+  <object id="103" name="Bush" gid="8121" x="192" y="144" width="16" height="16"/>
+  <object id="104" name="Bush" gid="8121" x="192" y="112" width="16" height="16"/>
+  <object id="105" name="Bush" gid="8121" x="176" y="112" width="16" height="16"/>
+  <object id="106" name="Bush" gid="8121" x="144" y="96" width="16" height="16"/>
+  <object id="108" name="Bush" gid="8121" x="144" y="80" width="16" height="16"/>
+  <object id="109" name="Bush" gid="8121" x="160" y="80" width="16" height="16"/>
+  <object id="110" name="Bush" gid="8121" x="160" y="96" width="16" height="16"/>
+  <object id="111" name="Bush" gid="8121" x="176" y="96" width="16" height="16"/>
+  <object id="113" name="Bush" gid="8121" x="176" y="80" width="16" height="16"/>
+  <object id="114" name="Bush" gid="8121" x="192" y="80" width="16" height="16"/>
+  <object id="117" name="Bush" gid="8121" x="192" y="96" width="16" height="16"/>
+  <object id="118" name="Bush" gid="8121" x="48" y="128" width="16" height="16"/>
+  <object id="119" name="Bush" gid="8121" x="32" y="128" width="16" height="16"/>
+  <object id="120" name="Bush" gid="8121" x="48" y="144" width="16" height="16"/>
+  <object id="121" name="Bush" gid="8121" x="32" y="144" width="16" height="16"/>
+  <object id="122" name="Bush" gid="8121" x="16" y="144" width="16" height="16"/>
+  <object id="123" name="Bush" gid="8121" x="16" y="128" width="16" height="16"/>
+  <object id="124" name="Bush" gid="8121" x="0" y="128" width="16" height="16"/>
+  <object id="125" name="Bush" gid="8121" x="0" y="144" width="16" height="16"/>
+  <object id="126" name="Bush" gid="8121" x="208" y="160" width="16" height="16"/>
+  <object id="128" name="Bush" gid="8121" x="224" y="160" width="16" height="16"/>
+  <object id="129" name="Bush" gid="8121" x="240" y="160" width="16" height="16"/>
+  <object id="130" name="Bush" gid="8121" x="192" y="160" width="16" height="16"/>
+  <object id="131" name="Bush" gid="8121" x="208" y="176" width="16" height="16"/>
+  <object id="132" name="Bush" gid="8121" x="224" y="176" width="16" height="16"/>
+  <object id="133" name="Bush" gid="8121" x="240" y="176" width="16" height="16"/>
+  <object id="134" name="Bush" gid="8121" x="192" y="176" width="16" height="16"/>
+  <object id="135" name="Bush" gid="8121" x="176" y="160" width="16" height="16"/>
+  <object id="136" name="Bush" gid="8121" x="176" y="176" width="16" height="16"/>
+  <object id="138" name="Bush" gid="8121" x="160" y="160" width="16" height="16"/>
+  <object id="139" name="Bush" gid="8121" x="144" y="160" width="16" height="16"/>
+  <object id="140" name="Bush" gid="8121" x="160" y="176" width="16" height="16"/>
+  <object id="142" name="Bush" gid="8121" x="144" y="176" width="16" height="16"/>
+  <object id="143" name="Bush" gid="8121" x="128" y="176" width="16" height="16"/>
+  <object id="144" name="Bush" gid="8121" x="128" y="160" width="16" height="16"/>
+  <object id="145" name="Bush" gid="8121" x="112" y="160" width="16" height="16"/>
+  <object id="146" name="Bush" gid="8121" x="112" y="176" width="16" height="16"/>
+  <object id="147" name="Bush" gid="8121" x="96" y="176" width="16" height="16"/>
+  <object id="148" name="Bush" gid="8121" x="96" y="160" width="16" height="16"/>
+  <object id="149" name="Bush" gid="8121" x="80" y="176" width="16" height="16"/>
+  <object id="150" name="Bush" gid="8121" x="80" y="160" width="16" height="16"/>
+  <object id="151" name="Bush" gid="8121" x="64" y="160" width="16" height="16"/>
+  <object id="152" name="Bush" gid="8121" x="64" y="176" width="16" height="16"/>
+  <object id="153" name="Bush" gid="8121" x="48" y="176" width="16" height="16"/>
+  <object id="154" name="Bush" gid="8121" x="48" y="160" width="16" height="16"/>
+  <object id="155" name="Bush" gid="8121" x="32" y="160" width="16" height="16"/>
+  <object id="156" name="Bush" gid="8121" x="32" y="176" width="16" height="16"/>
+  <object id="157" name="Bush" gid="8121" x="16" y="176" width="16" height="16"/>
+  <object id="158" name="Bush" gid="8121" x="16" y="160" width="16" height="16"/>
+  <object id="159" name="Bush" gid="8121" x="0" y="160" width="16" height="16"/>
+  <object id="160" name="Bush" gid="8121" x="0" y="176" width="16" height="16"/>
+  <object id="161" name="Bush" gid="8121" x="0" y="192" width="16" height="16"/>
+  <object id="162" name="Bush" gid="8121" x="16" y="192" width="16" height="16"/>
+  <object id="163" name="Bush" gid="8121" x="32" y="192" width="16" height="16"/>
+  <object id="164" name="Bush" gid="8121" x="0" y="208" width="16" height="16"/>
+  <object id="166" name="Bush" gid="8121" x="16" y="208" width="16" height="16"/>
+  <object id="167" name="Bush" gid="8121" x="0" y="224" width="16" height="16"/>
+  <object id="168" name="Bush" gid="8121" x="16" y="224" width="16" height="16"/>
+  <object id="169" name="Bush" gid="8121" x="32" y="224" width="16" height="16"/>
+  <object id="171" name="Bush" gid="8121" x="32" y="208" width="16" height="16"/>
+  <object id="172" name="Bush" gid="8121" x="48" y="224" width="16" height="16"/>
+  <object id="173" name="Bush" gid="8121" x="48" y="208" width="16" height="16"/>
+  <object id="174" name="Bush" gid="8121" x="48" y="192" width="16" height="16"/>
+  <object id="175" name="Bush" gid="8121" x="64" y="192" width="16" height="16"/>
+  <object id="177" name="Bush" gid="8121" x="64" y="208" width="16" height="16"/>
+  <object id="178" name="Bush" gid="8121" x="64" y="224" width="16" height="16"/>
+  <object id="179" name="Bush" gid="8121" x="80" y="224" width="16" height="16"/>
+  <object id="180" name="Bush" gid="8121" x="96" y="224" width="16" height="16"/>
+  <object id="183" name="Bush" gid="8121" x="112" y="224" width="16" height="16"/>
+  <object id="184" name="Bush" gid="8121" x="128" y="224" width="16" height="16"/>
+  <object id="185" name="Bush" gid="8121" x="128" y="208" width="16" height="16"/>
+  <object id="186" name="Bush" gid="8121" x="112" y="208" width="16" height="16"/>
+  <object id="187" name="Bush" gid="8121" x="96" y="208" width="16" height="16"/>
+  <object id="188" name="Bush" gid="8121" x="80" y="208" width="16" height="16"/>
+  <object id="189" name="Bush" gid="8121" x="80" y="192" width="16" height="16"/>
+  <object id="192" name="Bush" gid="8121" x="96" y="192" width="16" height="16"/>
+  <object id="193" name="Bush" gid="8121" x="112" y="192" width="16" height="16"/>
+  <object id="194" name="Bush" gid="8121" x="128" y="192" width="16" height="16"/>
+  <object id="196" name="Bush" gid="8121" x="144" y="192" width="16" height="16"/>
+  <object id="197" name="Bush" gid="8121" x="144" y="208" width="16" height="16"/>
+  <object id="198" name="Bush" gid="8121" x="160" y="224" width="16" height="16"/>
+  <object id="199" name="Bush" gid="8121" x="160" y="208" width="16" height="16"/>
+  <object id="200" name="Bush" gid="8121" x="160" y="192" width="16" height="16"/>
+  <object id="201" name="Bush" gid="8121" x="176" y="192" width="16" height="16"/>
+  <object id="202" name="Bush" gid="8121" x="176" y="208" width="16" height="16"/>
+  <object id="205" name="Bush" gid="8121" x="176" y="224" width="16" height="16"/>
+  <object id="207" name="Bush" gid="8121" x="192" y="224" width="16" height="16"/>
+  <object id="208" name="Bush" gid="8121" x="192" y="208" width="16" height="16"/>
+  <object id="209" name="Bush" gid="8121" x="192" y="192" width="16" height="16"/>
+  <object id="210" name="Bush" gid="8121" x="208" y="192" width="16" height="16"/>
+  <object id="211" name="Bush" gid="8121" x="224" y="192" width="16" height="16"/>
+  <object id="212" name="Bush" gid="8121" x="240" y="192" width="16" height="16"/>
+  <object id="213" name="Bush" gid="8121" x="240" y="208" width="16" height="16"/>
+  <object id="214" name="Bush" gid="8121" x="224" y="208" width="16" height="16"/>
+  <object id="215" name="Bush" gid="8121" x="208" y="208" width="16" height="16"/>
+  <object id="216" name="Bush" gid="8121" x="208" y="224" width="16" height="16"/>
+  <object id="217" name="Bush" gid="8121" x="224" y="224" width="16" height="16"/>
+  <object id="219" name="Bush" gid="8121" x="240" y="224" width="16" height="16"/>
  </objectgroup>
  <layer id="2" name="Top" width="32" height="30">
   <data encoding="csv">

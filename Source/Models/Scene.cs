@@ -24,11 +24,15 @@ namespace MonoGameTestGame
         public Vector2 DrawOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
-        private List<MapObject> _removeAfterUpdate;
+        private List<MapObject> _removingEntities;
+        private List<AnimationEffect> _animationEffects;
+        private List<AnimationEffect> _removingEffects;
+        // Register hitboxes for rendering
+        private List<Hitbox> _hitboxes;
 
         protected abstract void Load();
 
-        public Scene(Player player)
+        public Scene()
         {
             SceneData = new DataStore();
             MapObjects = new List<MapObject>();
@@ -36,7 +40,10 @@ namespace MonoGameTestGame
             HittableEntities = new List<MapObject>();
             CollidingEntities = new List<MapObject>();
             UncollidingEntities = new List<MapObject>();
-            _removeAfterUpdate = new List<MapObject>();
+            _removingEntities = new List<MapObject>();
+            _animationEffects = new List<AnimationEffect>();
+            _removingEffects = new List<AnimationEffect>();
+            _hitboxes = new List<Hitbox>();
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -48,10 +55,13 @@ namespace MonoGameTestGame
             EventManager = new EventManager();
             DialogManager = new DialogManager();
             DialogManager.DialogEnd += QuitDialog;
+        }
+
+        public void Init(Player player)
+        {
             Player = player;
             Add(Player);
             Load();
-
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
 
@@ -60,6 +70,10 @@ namespace MonoGameTestGame
                 if (obj.TypeName == "Bush")
                 {
                     Add(new Bush() { Position = obj.Position });
+                }
+                else if (obj.TypeName == "Sign")
+                {
+                    Add(new Sign() { Position = obj.Position, Text = obj.TextProperty });
                 }
             }
         }
@@ -83,12 +97,23 @@ namespace MonoGameTestGame
             if (Player.Velocity != Vector2.Zero)
                 UpdateCamera(Player.Position);
 
-            foreach (var mapEntity in _removeAfterUpdate)
+            foreach (var animationEffect in _animationEffects)
+            {
+                animationEffect.Update(gameTime);
+            }
+
+            foreach (var mapEntity in _removingEntities)
             {
                 Remove(mapEntity);
             }
 
-            _removeAfterUpdate.Clear();
+             foreach (var effect in _removingEffects)
+            {
+                _animationEffects.Remove(effect);
+            }
+
+            _removingEntities.Clear();
+            _removingEffects.Clear();
         }
 
         public void UpdateCamera(Vector2 targetPosition)
@@ -106,9 +131,20 @@ namespace MonoGameTestGame
         {
             TileMap.Draw(spriteBatch, TileMap.GroundLayer, DrawOffset);
 
+            if (StaticData.RenderHitboxes)
+            {
+                foreach (var hitbox in _hitboxes)
+                {
+                    hitbox.Draw(spriteBatch, DrawOffset);
+                }
+            }
             foreach (var mapEntity in CollidingEntities)
             {
-                mapEntity.Draw(spriteBatch);
+                mapEntity.Draw(spriteBatch, DrawOffset);
+            }
+            foreach (var animationEffect in _animationEffects)
+            {
+                animationEffect.Draw(spriteBatch, DrawOffset);
             }
         }
 
@@ -118,7 +154,7 @@ namespace MonoGameTestGame
 
             foreach (var mapEntity in UncollidingEntities)
             {
-                mapEntity.Draw(spriteBatch);
+                mapEntity.Draw(spriteBatch, DrawOffset);
             }
 
             DialogManager.Draw(spriteBatch);
@@ -158,6 +194,8 @@ namespace MonoGameTestGame
             {
                 InteractableEntities.Remove(mapEntity);
             }
+
+            UnregisterHitbox(mapEntity.Hitbox);
         }
 
         public void Remove(MapObject mapobject)
@@ -183,7 +221,27 @@ namespace MonoGameTestGame
         /* Set map entities to be removed after updates */
         public void SetToRemove(MapObject mapEntity)
         {
-            _removeAfterUpdate.Add(mapEntity);
+            _removingEntities.Add(mapEntity);
+        }
+
+        public void Add(AnimationEffect animationEffect)
+        {
+            _animationEffects.Add(animationEffect);
+        }
+
+        public void SetToRemove(AnimationEffect animationEffect)
+        {
+            _removingEffects.Add(animationEffect);
+        }
+
+        public void RegisterHitbox(Hitbox hitbox)
+        {
+            _hitboxes.Add(hitbox);
+        }
+
+        public void UnregisterHitbox(Hitbox hitbox)
+        {
+            _hitboxes.Remove(hitbox);
         }
 
         private void QuitDialog()

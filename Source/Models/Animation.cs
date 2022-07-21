@@ -19,7 +19,7 @@ namespace MonoGameTestGame.Models
         public int TextureYPos;
         public int TextureXPos;
 
-        public Animation(Texture2D texture, int frameCount, int textureYPos = 0, int textureXPos = 0, bool isLooping = true, float frameDuration = 0.1f)
+        public Animation(Texture2D texture, int frameCount, float frameDuration, bool isLooping = true, int textureYPos = 0, int textureXPos = 0)
         {
             Texture = texture;
             FrameCount = frameCount;
@@ -29,6 +29,18 @@ namespace MonoGameTestGame.Models
             FrameDuration = frameDuration;
             FrameWidth = DefaultFrameWidth;
             FrameHeight = DefaultFrameHeight;
+        }
+
+        public Animation(Texture2D texture, int frameCount, int frameWidth, int frameHeight, float frameDuration = 0.1f, int textureYPos = 0, int textureXPos = 0)
+        {
+            Texture = texture;
+            FrameCount = frameCount;
+            TextureYPos = textureYPos;
+            TextureXPos = textureXPos;
+            IsLooping = false;
+            FrameDuration = frameDuration;
+            FrameWidth = frameWidth;
+            FrameHeight = frameHeight;
         }
     }
 }

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
@@ -11,12 +8,10 @@ namespace MonoGameTestGame
     {
         private Event _signEvent;
         private Song _song;
-
-        public SceneA2(Player player): base(player) {}
         
         protected override void Load()
         {
-            _song = StaticData.Content.Load<Song>("linktothepast-forest");
+            _song = StaticData.Content.Load<Song>("linktothepast/forest");
             TileMap = new MapA2();
 
             var signEventTrigger = new EventTrigger(TileMap.GetPosition(9, 4), 14, 14);
