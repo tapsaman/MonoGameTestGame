@@ -15,6 +15,12 @@ namespace MonoGameTestGame
         B1
     }
 
+    public enum TransitionType
+    {
+        Pan,
+        FadeToBlack
+    }
+
     public enum EventStore
     {
         Scene,

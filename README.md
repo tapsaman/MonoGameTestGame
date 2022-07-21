@@ -12,6 +12,7 @@ log:
 * 19.7. - moving "camera" to player, float rectangles to fix collision bugs (xna rectangles use int)
 * 20.7. - condition and save value events, event data storage (only for bools atm), MapObject class (for bushes) and using Tiled map object layer
 * 21.7. - hitting bushes, animation effects, creating sign objects from map, forcing small wait time on scene change (to hide draw lag when creating a lot of map objects)
+* 21.7. - scene manager uses SceneTransition class, implemented new transition type FadeToBlack
 
 roadmap:
 * enemy with ai and states
@@ -20,4 +21,8 @@ roadmap:
 * animation events (falling to hole)
 
 small stuff todo:
-* camera should (probably) pan to expected x,y before scene transition
+* sys timing methods
+* use arrays for tilemap tiles? compare performance with timing methods
+
+could do but prob won't:
+* async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?) 

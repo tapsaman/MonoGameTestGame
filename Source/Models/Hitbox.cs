@@ -30,13 +30,7 @@ namespace MonoGameTestGame
         {
             _width = width;
             _height = height;
-            _texture = new Texture2D(StaticData.Graphics.GraphicsDevice, _width, _height);
-            _data = new Color[_width * _height];
-            for (int i = 0; i < _data.Length; i++)
-            {
-                _data[i] = Color.White;
-            }
-            _texture.SetData(_data);
+            _texture = Utility.CreateColorTexture(_width, _height, Color.White);
         }
         // TODO run on scene unload
         public void Unload()

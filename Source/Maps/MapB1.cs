@@ -1,20 +1,19 @@
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using TiledCS;
-
 namespace MonoGameTestGame
 {
     public class MapB1 : TileMap
     {
-        public override void Load()
+        public override TiledCS.TiledMap Load()
         {
-            _map = new TiledMap(StaticData.TiledProjectDirectory + "\\B1.tmx");
-            _tileset = new TiledTileset(StaticData.TiledProjectDirectory + "\\linktothepast-tiles.tsx");
+            _tileset = new TiledCS.TiledTileset(StaticData.TiledProjectDirectory + "\\linktothepast-tiles.tsx");
             _tilesetTexture = StaticData.TileTexture;
-            _nextMaps = new Dictionary<Direction, MapCode>()
+
+            Exits = new Dictionary<Direction, Exit>()
             {
-                { Direction.Left, MapCode.A1 }
+                { Direction.Left, new Exit(Direction.Left, MapCode.A1, TransitionType.FadeToBlack) }
             };
+
+            return new TiledCS.TiledMap(StaticData.TiledProjectDirectory + "\\B1.tmx");
         }
     }
 }
