@@ -19,6 +19,7 @@ roadmap:
 * enemy ai
 * taking/giving damage
 * animation events (falling to hole)
+* fuck shit up -> every death from falling to hole should break something in the game engine
 
 small stuff todo:
 * sys timing methods
