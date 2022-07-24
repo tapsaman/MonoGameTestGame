@@ -25,28 +25,26 @@ namespace MonoGameTestGame
             var bat = new Bat();
             bat.Position = new Vector2(180, 200);
 
+            var guard = new Guard();
+            guard.Position = new Vector2(TileMap.ConvertTileX(4), TileMap.ConvertTileY(22));
+
             var signEventTrigger = new EventTrigger(TileMap.GetPosition(9, 4), 14, 14);
             _signEvent = new TextEvent(new Dialog("ZELDA'S TENT HOME"), signEventTrigger);
             signEventTrigger.Trigger += ReadSign;
 
             Add(enemy);
             Add(bat);
+            Add(guard);
             Add(signEventTrigger);
 
             var enemyDialog1 = new Dialog(
-                "Hi Zelda. Good thing your awake.\nZelda has been capture again!\nLooks Like Ganondorf is at it again!",
+                "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!\n1234567",
                 "Simo ruumishuoneelta\nmoi. Oletko ajatellut kuolla?\nNyt se nimittäin kannattaa."
-            )
-            {
-                Title = "Erkki"
-            };
+            );
 
             var enemyDialog2 = new Dialog(
                 "Sample text"
-            )
-            {
-                Title = "Erkki"
-            };
+            );
 
             _enemyEvents = new Event[]
             {

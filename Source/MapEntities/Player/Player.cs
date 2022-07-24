@@ -10,7 +10,6 @@ namespace MonoGameTestGame
     public class Player : Character
     {
         public bool Hitting = false;
-        private float _walkSpeed = 70f;
         private const int _touchAreaLength = 10;
 
         public SwordHitbox SwordHitbox;
@@ -21,6 +20,7 @@ namespace MonoGameTestGame
             Hittable = false;
             Colliding = true;
             Moving = true;
+            WalkSpeed = 70f;
             SpriteOffset = new Vector2(-13, -24);
 
             var texture = StaticData.Content.Load<Texture2D>("linktothepast/link-sprites");
@@ -60,7 +60,6 @@ namespace MonoGameTestGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            StateMachine.Update(gameTime);
             
             if (SwordHitbox.Enabled)
             {
@@ -74,9 +73,13 @@ namespace MonoGameTestGame
                     }
                 }
             }
+            else if (StaticData.Scene.TileMap.Exits.ContainsKey(MapBorder))
+            {
+                StaticData.SceneManager.GoTo(StaticData.Scene.TileMap.Exits[MapBorder]);
+            }
         }
 
-        public void DetermineInputVelocity(GameTime gameTime)
+        public void DetermineInputVelocity()
         {
             Velocity = Vector2.Zero;
 
@@ -92,7 +95,7 @@ namespace MonoGameTestGame
             if (Velocity != Vector2.Zero)
             {
                 //MapEntity.Velocity.Normalize();
-                Velocity *= _walkSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Velocity *= WalkSpeed;
             }
         }
 

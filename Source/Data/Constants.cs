@@ -5,7 +5,8 @@ namespace MonoGameTestGame
         Up,
         Right,
         Down,
-        Left
+        Left,
+        None
     }
 
     public enum MapCode

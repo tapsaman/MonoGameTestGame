@@ -109,52 +109,51 @@ namespace MonoGameTestGame
             return false;
         }
 
-        public bool CheckHorizontalCollision(int x, int topY, int bottomY)
+        public bool CheckHorizontalCollision(int x, int topY, int bottomY, ref Direction mapBorder)
         {
-            //sConsole.WriteLine(x + "/" + Width);
             if (x < 0)
             {
-                if (Exits.ContainsKey(Direction.Left))
-                    StaticData.SceneManager.GoTo(Exits[Direction.Left]);
-                return true;   
+                mapBorder = Direction.Left;
+                return true;
             }
             if (x >= Width)
             {
-                if (Exits.ContainsKey(Direction.Right))
-                    StaticData.SceneManager.GoTo(Exits[Direction.Right]);
+                mapBorder = Direction.Right;
                 return true;
             }
 
             for (int i = topY; i < bottomY + 1; i++)
             {
-                if (CheckCollision(x, i)) {
+                if (CheckCollision(x, i))
+                {
                     return true;
                 }
             }
+
             return false;
         }
 
-        public bool CheckVerticalCollision(int y, int leftX, int rightX)
+        public bool CheckVerticalCollision(int y, int leftX, int rightX, ref Direction mapBorder)
         {
             if (y < 0)
             {
-                if (Exits.ContainsKey(Direction.Up))
-                    StaticData.SceneManager.GoTo(Exits[Direction.Up]);
+                mapBorder = Direction.Up;
                 return true;
             }
             if (y >= Height)
             {
-                if (Exits.ContainsKey(Direction.Down))
-                    StaticData.SceneManager.GoTo(Exits[Direction.Down]);
+                mapBorder = Direction.Down;
                 return true;
             }
 
             for (int i = leftX; i < rightX + 1; i++)
             {
-                if (CheckCollision(i, y)) {
+                if (CheckCollision(i, y))
+                {
                     return true;
                 }
             }
+            
             return false;
         }
 

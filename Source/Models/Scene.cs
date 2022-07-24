@@ -75,6 +75,10 @@ namespace MonoGameTestGame
                 {
                     Add(new Sign() { Position = obj.Position, Text = obj.TextProperty });
                 }
+                else if (obj.TypeName == "Text")
+                {
+                    Add(new Text() { Position = obj.Position, Message = obj.TextProperty });
+                }
             }
         }
 

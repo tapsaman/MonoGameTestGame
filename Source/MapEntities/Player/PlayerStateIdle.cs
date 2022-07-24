@@ -15,7 +15,7 @@ namespace MonoGameTestGame.Models
 
         public override void Update(GameTime gameTime)
         {
-            Player.DetermineInputVelocity(gameTime);
+            Player.DetermineInputVelocity();
             Player.DetermineHitInput();
 
             if (Player.Hitting)

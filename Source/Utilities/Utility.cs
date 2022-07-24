@@ -20,5 +20,39 @@ namespace MonoGameTestGame
 
             return texture;
         }
+
+        public static Vector2 DirectionToVector(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return new Vector2(0, -1);
+                case Direction.Right:
+                    return new Vector2(1, 0);
+                case Direction.Down:
+                    return new Vector2(0, 1);
+                case Direction.Left:
+                    return new Vector2(-1, 0);
+                default:
+                    return Vector2.Zero;
+            }
+        }
+
+        public static Direction ToOpposite(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return Direction.Down;
+                case Direction.Right:
+                    return Direction.Left;
+                case Direction.Down:
+                    return Direction.Up;
+                case Direction.Left:
+                    return Direction.Right;
+                default:
+                    return Direction.None;
+            }
+        }
     }
 }

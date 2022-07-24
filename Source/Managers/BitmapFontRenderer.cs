@@ -1,38 +1,37 @@
-using System.Collections.Generic;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame.Managers
 {
-    /*
-    Info on XML importing:
-        https://www.cs.usfca.edu/~galles/cs420S13/lecture/UsingXNA4XML/XNA_XML.html
-    
-    Bitmap font files are generated with BMFont
-    XML can then be find-replaced with regex:
-        <char id="(\d+)" x="(\d+)" y="(\d+)" width="(\d+)" height="(\d+)" xoffset="(-?\d+)" yoffset="(-?\d+)" xadvance="(\d+)" page="0" chnl="15" />
-        <Item><Key>$1</Key><Value>$2 $3 $4 $5 $6 $7 $8</Value></Item>
-    */
-
-    
-
     public static class BitmapFontRenderer
     {
         public static BitmapFont Font;
 
-        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position)
+        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, float yCrop = 0)
         {
-            var startPosition = position;
+            var startX = position.X;
+            int line = 0;
+            //position -= new Vector2(0, yCrop);
 
             foreach (int code in text)
             {
+                BitmapFontChar c;
+                int xAdvance;
+                Rectangle sourceRectangle;
+                Vector2 offset;
+
                 if (code == 10)
                 {
                     // 10 = LF = line feed
                     // Used for new lines
-                    position.X = startPosition.X;
+                    position.X = startX;
                     position.Y += Font.LineHeight;
+                    if (line == 0)
+                    {
+                        position.Y -= yCrop;
+                    }
+                    line++;
                     continue;
                 }
                 else if (code == 13)
@@ -45,18 +44,40 @@ namespace MonoGameTestGame.Managers
                 {
                     Sys.LogError("Undefined symbol at " + code + " (" + (char)code + ") for " + Font.ToString());
                     Font.Chars[code] = Font.Chars[Font.UndefinedSymbolCode];
+                    c = Font.Chars[Font.UndefinedSymbolCode];
+                    xAdvance = c.XAdvance;
+                    sourceRectangle = c.SourceRectangle;
+                    offset = c.Offset;
+                }
+                else
+                {
+                    c = Font.Chars[code];
+                    xAdvance = c.XAdvance;
+                    sourceRectangle = c.SourceRectangle;
+                    offset = c.Offset;
                 }
 
-                BitmapFontChar c = Font.Chars[code];
+                if (line == 0 && yCrop != 0)
+                {
+                    int charYCrop = Math.Max(0, (int)(yCrop - c.Offset.Y));
+                    sourceRectangle = new Rectangle(
+                        sourceRectangle.X,
+                        sourceRectangle.Y + charYCrop,
+                        sourceRectangle.Width,
+                        sourceRectangle.Height - charYCrop
+                    );
+                    offset = new Vector2(c.Offset.X, c.Offset.Y + charYCrop - yCrop);
+                    //offset = c.Offset;
+                }
 
                 spriteBatch.Draw(
                     Font.Texture,
-                    position + c.Offset,
-                    c.SourceRectangle,
+                    position + offset,
+                    sourceRectangle,
                     Color.White
                 );
 
-                position.X += c.XAdvance + Font.LetterSpacing;
+                position.X += xAdvance + Font.LetterSpacing;
             }
         }
     }

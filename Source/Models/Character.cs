@@ -9,7 +9,11 @@ namespace MonoGameTestGame
     public abstract class Character : MapObject
     {
         public Vector2 Velocity;
-        public virtual Direction Direction { get; set; } = Direction.Down;
+        public float WalkSpeed;
+        public Direction Direction = Direction.Down;
+        public Direction CollidingX = Direction.None;
+        public Direction CollidingY = Direction.None;
+        public Direction MapBorder = Direction.None;
         public bool Moving = false;
         public bool Walking = false;
         public bool WalkingStill = true;
@@ -31,6 +35,10 @@ namespace MonoGameTestGame
                     Sprite.SetAnimation("Idle" + Direction);
                 }
             }
+            else
+            {
+                StateMachine.Update(gameTime);
+            }
             if (Moving) {
                 Move(gameTime);
             }
@@ -48,6 +56,8 @@ namespace MonoGameTestGame
             if (Velocity.X < 0)
                 Direction = Direction.Left;
 
+            Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (Colliding)
             {
                 foreach (var mapEntity in StaticData.Scene.CollidingEntities)
@@ -57,7 +67,15 @@ namespace MonoGameTestGame
                         DetermineCollision(mapEntity);
                     }
                 }
-                DetermineCollision(StaticData.Scene.TileMap);
+
+                MapBorder = Direction.None;
+                CollidingX = DetermineHorizontalMapCollision(StaticData.Scene.TileMap);
+                CollidingY = DetermineVerticalMapCollision(StaticData.Scene.TileMap);
+
+                if (CollidingX != Direction.None)
+                    Velocity.X = 0;
+                if (CollidingY != Direction.None)
+                    Velocity.Y = 0;
             }
 
             Position += Velocity;
@@ -102,43 +120,88 @@ namespace MonoGameTestGame
             if (Velocity.X > 0 && IsTouchingLeft(mapEntity))
                 Velocity.X = 0;
         }
-        private void DetermineCollision(TileMap tileMap)
+        private Direction DetermineHorizontalMapCollision(TileMap tileMap)
         {
-            if (Velocity.X < 0) {
+            if (Velocity.X < 0)
+            {
                 int currentTileLeft = tileMap.ConvertX(Hitbox.Rectangle.Left);
                 int newTileLeft = tileMap.ConvertX(Hitbox.Rectangle.Left + Velocity.X);
 
-                if (newTileLeft < currentTileLeft) {
-                    if (tileMap.CheckHorizontalCollision(newTileLeft, tileMap.ConvertY(Hitbox.Rectangle.Top), tileMap.ConvertY(Hitbox.Rectangle.Bottom)))
-                        Velocity.X = 0;
+                if (newTileLeft < currentTileLeft)
+                {
+                    if (tileMap.CheckHorizontalCollision(
+                        newTileLeft,
+                        tileMap.ConvertY(Hitbox.Rectangle.Top),
+                        tileMap.ConvertY(Hitbox.Rectangle.Bottom),
+                        ref MapBorder
+                    ))
+                    {
+                        return Direction.Left;
+                    }
                 }
             }
-            else if (Velocity.X > 0) {
+            else if (Velocity.X > 0)
+            {
                 int currentTileRight = tileMap.ConvertX(Hitbox.Rectangle.Right);
                 int newTileRight = tileMap.ConvertX(Hitbox.Rectangle.Right + Velocity.X);
-                if (newTileRight > currentTileRight) {
-                    if (tileMap.CheckHorizontalCollision(newTileRight, tileMap.ConvertY(Hitbox.Rectangle.Top), tileMap.ConvertY(Hitbox.Rectangle.Bottom)))
-                        Velocity.X = 0;
+
+                if (newTileRight > currentTileRight)
+                {
+                    if (tileMap.CheckHorizontalCollision(
+                        newTileRight,
+                        tileMap.ConvertY(Hitbox.Rectangle.Top),
+                        tileMap.ConvertY(Hitbox.Rectangle.Bottom),
+                        ref MapBorder
+                    ))
+                    {
+                        return Direction.Right;
+                    }
                 }
             }
-            if (Velocity.Y < 0) {
+
+            return Direction.None;
+        }
+
+        private Direction DetermineVerticalMapCollision(TileMap tileMap)
+        {
+            if (Velocity.Y < 0)
+            {
                 int currentTileTop = tileMap.ConvertY(Hitbox.Rectangle.Top);
                 int newTileTop = tileMap.ConvertY(Hitbox.Rectangle.Top + Velocity.Y);
 
-                if (newTileTop < currentTileTop) {
-                    if (tileMap.CheckVerticalCollision(newTileTop, tileMap.ConvertX(Hitbox.Rectangle.Left), tileMap.ConvertX(Hitbox.Rectangle.Right)))
-                        Velocity.Y = 0;
+                if (newTileTop < currentTileTop)
+                {
+                    if (tileMap.CheckVerticalCollision(
+                        newTileTop,
+                        tileMap.ConvertX(Hitbox.Rectangle.Left),
+                        tileMap.ConvertX(Hitbox.Rectangle.Right),
+                        ref MapBorder
+                    ))
+                    {
+                        return Direction.Up;
+                    }
                 }
             }
-            else if (Velocity.Y > 0) {
+            else if (Velocity.Y > 0)
+            {
                 int currentTileBottom = tileMap.ConvertY(Hitbox.Rectangle.Bottom);
                 int newTileBottom = tileMap.ConvertY(Hitbox.Rectangle.Bottom + Velocity.Y);
 
-                if (newTileBottom > currentTileBottom) {
-                    if (tileMap.CheckVerticalCollision(newTileBottom, tileMap.ConvertX(Hitbox.Rectangle.Left), tileMap.ConvertX(Hitbox.Rectangle.Right)))
-                        Velocity.Y = 0;
+                if (newTileBottom > currentTileBottom)
+                {
+                    if (tileMap.CheckVerticalCollision(
+                        newTileBottom,
+                        tileMap.ConvertX(Hitbox.Rectangle.Left),
+                        tileMap.ConvertX(Hitbox.Rectangle.Right),
+                        ref MapBorder
+                    ))
+                    {
+                        return Direction.Down;
+                    }
                 }
             }
+
+            return Direction.None;
         }
     }
 }

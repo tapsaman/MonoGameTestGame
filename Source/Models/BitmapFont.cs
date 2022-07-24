@@ -4,7 +4,29 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameTestGame
 {
+    /*
+    Info on XML importing:
+        https://www.cs.usfca.edu/~galles/cs420S13/lecture/UsingXNA4XML/XNA_XML.html
     
+    Bitmap font files are generated with BMFont
+    XML can then be find-replaced with regex:
+        <char id="(\d+)" x="(\d+)" y="(\d+)" width="(\d+)" height="(\d+)" xoffset="(-?\d+)" yoffset="(-?\d+)" xadvance="(\d+)" page="0" chnl="15" />
+        <Item><Key>$1</Key><Value>$2 $3 $4 $5 $6 $7 $8</Value></Item>
+    */
+
+    public class BitmapFontChar
+    {
+        public Rectangle SourceRectangle;
+        public Vector2 Offset;
+        public int XAdvance;
+        public BitmapFontChar(int[] props)
+        {
+            SourceRectangle = new Rectangle(props[0], props[1], props[2], props[3]);
+            Offset = new Vector2(props[4], props[5]);
+            XAdvance = props[6];
+        }
+    }
+
     public abstract class BitmapFont
     {
         public Dictionary<int, BitmapFontChar> Chars { get; private set; }
@@ -46,19 +68,6 @@ namespace MonoGameTestGame
                 var rawCharData = StaticData.Content.Load<Dictionary<int, int[]>>("Fonts/bitmapfonttest");
                 Load(rawCharData);
             }
-        }
-    }
-
-    public class BitmapFontChar
-    {
-        public Rectangle SourceRectangle;
-        public Vector2 Offset;
-        public int XAdvance;
-        public BitmapFontChar(int[] props)
-        {
-            SourceRectangle = new Rectangle(props[0], props[1], props[2], props[3]);
-            Offset = new Vector2(props[4], props[5]);
-            XAdvance = props[6];
         }
     }
 }

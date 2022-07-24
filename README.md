@@ -13,11 +13,11 @@ log:
 * 20.7. - condition and save value events, event data storage (only for bools atm), MapObject class (for bushes) and using Tiled map object layer
 * 21.7. - hitting bushes, animation effects, creating sign objects from map, forcing small wait time on scene change (to hide draw lag when creating a lot of map objects)
 * 21.7. - scene manager uses SceneTransition class, implemented new transition type FadeToBlack
+* 24.7. - guard init, creating text events from Tiled map, dialog lines shift up, sectioned dialog box for parametrized size
 
 roadmap:
-* enemy with ai and states
-* hitting enemies/bushes
-* animation effects (bush leaves on hit)
+* enemy ai
+* taking/giving damage
 * animation events (falling to hole)
 
 small stuff todo:
@@ -25,4 +25,8 @@ small stuff todo:
 * use arrays for tilemap tiles? compare performance with timing methods
 
 could do but prob won't:
-* async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?) 
+* async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)
+* parametrizable sprite animation speed, e.g. to bind with walk speed
+* forwards/backwards looping sprite animation 
+* Character's direction prop should be named Facing?
+* action fields/"callbacks" could be named uniformly (OnThing or WhenThing)

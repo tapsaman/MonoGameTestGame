@@ -1,21 +1,17 @@
-using Microsoft.Xna.Framework;
-using MonoGameTestGame.Models;
+﻿using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame
 {
-    public class Sign : MapObject
+    public class Text : MapEntity
     {
-        public string Text
+        public string Message
         {
             set { _readEvent = new TextEvent(new Dialog(value), this); }
         }
         private TextEvent _readEvent;
 
-        public Sign()
+        public Text()
         {
-            Hittable = false;
-            Colliding = true;
-            Sprite.SetTexture(StaticData.ObjectTexture, new Rectangle(16 * 4, 0, 16, 16));
             Hitbox.Load(16, 16);
             Interactable = true;
             Trigger += Read;

@@ -5,14 +5,14 @@ namespace MonoGameTestGame
 {
     public class Hitbox
     {
-        private Texture2D _texture;
-        private Color[] _data;
-        private int _width;
-        private int _height;
         public Vector2 Position;
         public float x;
         public Color Color = Color.Blue;
         public bool Enabled = true;
+        private Texture2D _texture;
+        private int _width;
+        private int _height;
+
         public Hitbox()
         {
             StaticData.Scene.RegisterHitbox(this);
