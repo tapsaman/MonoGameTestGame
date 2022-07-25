@@ -1,14 +1,5 @@
 namespace MonoGameTestGame
 {
-    public enum Direction
-    {
-        Up,
-        Right,
-        Down,
-        Left,
-        None
-    }
-
     public enum MapCode
     {
         A1,

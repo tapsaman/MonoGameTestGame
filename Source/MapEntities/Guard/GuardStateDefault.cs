@@ -7,30 +7,67 @@ namespace MonoGameTestGame.Models
 {
     public class GuardStateDefault : CharacterState
     {
-        private Hitbox _detectionHitbox;
+        private Guard _guard;
+        private float _walkTime;
+        private bool _turning;
+        private float _elapsedTurnTime;
+        private float _elapsedWalkTime;
+        private const float _TURN_TIME = 0.1f;
 
-        public GuardStateDefault(Guard Guard) : base(Guard) {}
+        public GuardStateDefault(Guard guard) : base(guard)
+        {
+            _guard = guard;
+        }
 
         public override void Enter()
         {
-            Character.Sprite.SetAnimation("Walk" + Character.Direction);
-            Character.Velocity = Utility.DirectionToVector(Character.Direction) * Character.WalkSpeed;
-            _detectionHitbox = new Hitbox();
-            _detectionHitbox.Load(60, 100);
-            _detectionHitbox.Position = Character.Position - new Vector2(23, 80);
+            _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
+            _guard.Velocity = _guard.Direction.ToVector() * _guard.WalkSpeed;
+            
+            _walkTime = 4; //2 + (float)Utility.RandomDouble() * 5;
+            _turning = false;
+            _elapsedTurnTime = 0;
+            _elapsedWalkTime = 0;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Character.CollidingX == Character.Direction || Character.CollidingY == Character.Direction)
+            if (_guard.DetectingPlayer())
+            {
+                stateMachine.TransitionTo("NoticedPlayer");
+            }
+            else if (_turning)
+            {
+                _elapsedTurnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_elapsedTurnTime > _TURN_TIME)
+                {
+                    _turning = false;
+                    _guard.Direction = _guard.Direction.Next();
+                    _elapsedTurnTime = 0;
+                    _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
+                }
+            }
+            else if (_guard.CollidingX == _guard.Direction || _guard.CollidingY == _guard.Direction)
             {
                 // Hitting obstacle, turn around
-                Character.Direction = Utility.ToOpposite(Character.Direction);
+                _turning = true;
+                _guard.Direction = _guard.Direction.Next();
+                _guard.Velocity = Vector2.Zero;
+                _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
             }
+            else
+            {
+                _guard.Velocity = _guard.Direction.ToVector() * _guard.WalkSpeed;
+                _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
 
-            Character.Sprite.SetAnimation("Walk" + Character.Direction);
-            Character.Velocity = Utility.DirectionToVector(Character.Direction) * Character.WalkSpeed;
-            _detectionHitbox.Position = Character.Position - new Vector2(23, 80);
+                _elapsedWalkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_elapsedWalkTime > _walkTime)
+                {
+                    stateMachine.TransitionTo("LookAround");
+                }
+            }
         }
 
         public override void Exit() {}

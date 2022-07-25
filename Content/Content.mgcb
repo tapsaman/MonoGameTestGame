@@ -300,6 +300,18 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/message.wav
 
+#begin linktothepast/sfx/small enemy hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/small enemy hit.wav
+
+#begin linktothepast/sfx/soldier.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/soldier.wav
+
 #begin linktothepast/sfx/walk grass.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

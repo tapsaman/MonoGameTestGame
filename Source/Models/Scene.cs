@@ -31,6 +31,7 @@ namespace MonoGameTestGame
         private List<Hitbox> _hitboxes;
 
         protected abstract void Load();
+        protected virtual void DrawOverlay(SpriteBatch spriteBatch) {}
 
         public Scene()
         {
@@ -161,6 +162,8 @@ namespace MonoGameTestGame
                 mapEntity.Draw(spriteBatch, DrawOffset);
             }
 
+            // NOTE drawing tree shadow overlay on top of dialog looks cool 
+            DrawOverlay(spriteBatch);
             DialogManager.Draw(spriteBatch);
         }
 
@@ -200,6 +203,8 @@ namespace MonoGameTestGame
             }
 
             UnregisterHitbox(mapEntity.Hitbox);
+
+            mapEntity.Unload();
         }
 
         public void Remove(MapObject mapobject)

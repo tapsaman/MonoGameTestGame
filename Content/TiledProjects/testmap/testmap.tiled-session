@@ -15,8 +15,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 229,
-                "y": 180.25
+                "x": 128,
+                "y": 112
             }
         },
         "A2.tmx": {
@@ -26,8 +26,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 505,
-                "y": 2.75
+                "x": 128,
+                "y": 120
             }
         },
         "B1.tmx": {
@@ -35,10 +35,10 @@
                 3
             ],
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 249,
-                "y": 226.75
+                "x": -57,
+                "y": 224.75
             }
         },
         "linktothepast-objects.tsx": {

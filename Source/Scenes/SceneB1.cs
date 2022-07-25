@@ -11,9 +11,11 @@ namespace MonoGameTestGame
     {
         private Event _signEvent;
         private Song _song;
+        private Texture2D _overlay;
 
         protected override void Load()
         {
+            _overlay = StaticData.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
             _song = StaticData.Content.Load<Song>("linktothepast/forest");
             TileMap = new MapB1();
 
@@ -35,6 +37,11 @@ namespace MonoGameTestGame
         private void ReadSign()
         {
             EventManager.Load(_signEvent);
+        }
+
+        protected override void DrawOverlay(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_overlay, Vector2.Zero + DrawOffset * 0.5f, new Rectangle(0, 0, StaticData.NativeWidth * 2, StaticData.NativeHeight * 3), new Color(255, 255, 255, 0.5f));
         }
     }
 }

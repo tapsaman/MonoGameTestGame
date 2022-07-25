@@ -26,6 +26,15 @@ namespace MonoGameTestGame
             Hitbox = new Hitbox();
             Index = ++_count;
         }
+        ~MapEntity()
+        {
+            Unload();
+        }
+        public virtual void Unload()
+        {
+            StaticData.Scene.UnregisterHitbox(Hitbox);
+            Hitbox.Dispose();
+        }
         public bool HasTrigger()
         {
             return Trigger != null;

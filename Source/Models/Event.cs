@@ -88,16 +88,7 @@ namespace MonoGameTestGame.Models
             }
             else 
             {
-                Vector2 diff = Target.Position - FaceTowards.Position;
-
-                if (Math.Abs(diff.X) > Math.Abs(diff.Y))
-                {
-                    Target.Direction = diff.X > 0 ? Direction.Left : Direction.Right;
-                }
-                else
-                {
-                    Target.Direction = diff.Y > 0 ? Direction.Up : Direction.Down;
-                }
+                Target.FaceTowards(FaceTowards.Position);
             }
         }
 

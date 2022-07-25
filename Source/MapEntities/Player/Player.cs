@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameTestGame.Managers;
@@ -10,7 +11,11 @@ namespace MonoGameTestGame
     public class Player : Character
     {
         public bool Hitting = false;
+        public bool IsInvincible = false;
         private const int _touchAreaLength = 10;
+        public Vector2 HitPosition;
+        private float _elapsedInvincibleTime = 0;
+        private const float _INVINCIBLE_TIME = 1.5f;
 
         public SwordHitbox SwordHitbox;
             
@@ -51,7 +56,8 @@ namespace MonoGameTestGame
             {
                 { "Idle", new PlayerStateIdle(this) },
                 { "Walking", new PlayerStateWalking(this) },
-                { "SwordHit", new PlayerStateSwordHit(this) }
+                { "SwordHit", new PlayerStateSwordHit(this) },
+                { "TakenDamage", new PlayerStateTakenDamage(this) }
             };
 
             StateMachine = new StateMachine(states, "Idle");
@@ -60,6 +66,17 @@ namespace MonoGameTestGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (IsInvincible)
+            {
+                _elapsedInvincibleTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+                if (_elapsedInvincibleTime > _INVINCIBLE_TIME)
+                {
+                    _elapsedInvincibleTime = 0;
+                    IsInvincible = false;
+                }
+            }
             
             if (SwordHitbox.Enabled)
             {
@@ -76,6 +93,24 @@ namespace MonoGameTestGame
             else if (StaticData.Scene.TileMap.Exits.ContainsKey(MapBorder))
             {
                 StaticData.SceneManager.GoTo(StaticData.Scene.TileMap.Exits[MapBorder]);
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Vector2 offset)
+        {
+            if (!IsInvincible || _elapsedInvincibleTime < 0.5f || Math.Round((decimal)_elapsedInvincibleTime, 1) % 0.2M != 0)
+            {
+                base.Draw(spriteBatch, offset);
+            }
+        }
+
+        public void TakeDamage(Vector2 hitPosition)
+        {
+            if (!IsInvincible)
+            {
+                IsInvincible = true;
+                HitPosition = hitPosition;
+                StateMachine.TransitionTo("TakenDamage");
             }
         }
 

@@ -39,22 +39,40 @@ namespace MonoGameTestGame
             {
                 StateMachine.Update(gameTime);
             }
+
             if (Moving) {
                 Move(gameTime);
             }
+            
             Sprite.Update(gameTime);
+        }
+
+        public void FaceTowards(Vector2 position)
+        {
+            Direction = Utility.GetDirectionBetween(Position, position);
+        }
+
+        public void FaceToVelocity()
+        {
+            Direction velDirection = Velocity.ToDirection();
+
+            if (velDirection != Direction.None)
+            {
+                Direction = velDirection;
+            }
         }
 
         public void Move(GameTime gameTime)
         {
-            if (Velocity.Y < 0)
+            /*if (Velocity.Y < 0)
                 Direction = Direction.Up;
             if (Velocity.X > 0)
                 Direction = Direction.Right;
             if (Velocity.Y > 0)
                 Direction = Direction.Down;
             if (Velocity.X < 0)
-                Direction = Direction.Left;
+                Direction = Direction.Left;*/
+            //FaceToVelocity();
 
             Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
 

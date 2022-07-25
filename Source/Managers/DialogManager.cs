@@ -23,6 +23,8 @@ namespace MonoGameTestGame.Managers
         private int _drawLetterCount = 0;
         private bool _dialogBoxIsFull;
         private int _currentStartOfMessage;
+        private int _pageStart;
+        private int _pageLength;
         private string _currentMessage;
         private string _currentString;
         private int _pageLineIndex;
@@ -55,6 +57,11 @@ namespace MonoGameTestGame.Managers
             _currentString = "";
             _pageLineIndex = 0;
             _state = State.Typing;
+            _pageStart = 0;
+            _pageLength = _currentMessage.IndexOfNth('\n', 3);
+
+            if (_pageLength == -1)
+                _pageLength = _currentMessage.Length;
             
             int currentLineCount = Regex.Matches(_currentMessage, "\n").Count + 1;
             _dialogBoxTextHeight = Math.Min(currentLineCount, 3) * BitmapFontRenderer.Font.LineHeight;
@@ -84,78 +91,124 @@ namespace MonoGameTestGame.Managers
 
         public void Update(GameTime gameTime)
         {
-            if (!_running) return;
+            if (!_running)
+                return;
 
             switch(_state)
             {
                 case State.Typing:
-                    _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                    if (_elapsedTime > LetterTime)
-                    {
-                        _drawLetterCount++;
-                        _elapsedTime = 0;
-
-                        char currentChar = _currentMessage[_drawLetterCount - 1];
-
-                        if (currentChar == '\n')
-                        {
-                            _pageLineIndex++;
-
-                            if (_pageLineIndex != 3 && _dialogBoxIsFull)
-                            {
-                                _state = State.ShiftingLine;
-                            }
-                        }
-                        else if (currentChar != ' ')
-                        {
-                            _currentString = _currentMessage.Substring(_currentStartOfMessage, _drawLetterCount - _currentStartOfMessage);
-                            SFX.Message.Play();
-                        }
-
-                        if (_drawLetterCount == _currentMessage.Length)
-                        {
-                            _state = State.MessageDone;
-                        }
-                        else if (_pageLineIndex == 3)
-                        {
-                            _dialogBoxIsFull = true;
-                            _state = State.PageDone;
-                        }
-                    }
+                    if (GotNextInput())
+                        SkipAhead();
+                    else
+                        UpdateTyping(gameTime);
                     break;
                 case State.ShiftingLine:
-                    _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                    if (_elapsedTime < LineShiftTime)
-                    {
-                        _cropY = BitmapFontRenderer.Font.LineHeight * _elapsedTime / LineShiftTime;
-                    }
+                    if (GotNextInput())
+                        SkipAhead();
                     else
-                    {
-                        int nextNewLineIndex = _currentString.IndexOf('\n');
-                        _cropY = 0;
-                        _currentStartOfMessage += nextNewLineIndex + 1;
-                        //_currentString = _currentString.Substring(nextNewLineIndex + 1, _currentString.Length - nextNewLineIndex);
-                        _currentString = _currentMessage.Substring(_currentStartOfMessage, _drawLetterCount - _currentStartOfMessage);
-                        _elapsedTime = 0;
-                        _state = State.Typing;
-                    }
-                break;
+                        UpdateLineShifting(gameTime);
+                    break;
                 case State.PageDone:
                     if (GotNextInput())
-                    {
-                        _pageLineIndex = 0;
-                        _state = State.ShiftingLine;
-                    }
+                        NextPage();
                 break;
                 case State.MessageDone:
                     if (GotNextInput())
-                    {
                         NextMessage();
-                    }
                 break;
             }
+        }
+
+        private void SkipAhead()
+        {
+            _cropY = 0;
+            _elapsedTime = 0;
+
+            if (_pageStart + _pageLength == _currentMessage.Length)
+            {
+                _currentString = _currentMessage.Substring(_pageStart);
+                _state = State.MessageDone;
+            }
+            else
+            {
+                _currentStartOfMessage = _pageStart;
+                _currentString = _currentMessage.Substring(_currentStartOfMessage, _pageLength);
+                _pageLineIndex = 3;
+                _dialogBoxIsFull = true;
+                _state = State.PageDone;
+            }
+            
+            _drawLetterCount = _currentStartOfMessage + _currentString.Length + 1;
+        }
+
+        private void UpdateTyping(GameTime gameTime)
+        {
+            _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_elapsedTime > LetterTime)
+            {
+                _drawLetterCount++;
+                _elapsedTime = 0;
+
+                char currentChar = _currentMessage[_drawLetterCount - 1];
+
+                if (currentChar == '\n')
+                {
+                    _pageLineIndex++;
+
+                    if (_pageLineIndex != 3 && _dialogBoxIsFull)
+                    {
+                        _state = State.ShiftingLine;
+                    }
+                }
+                else if (currentChar != ' ')
+                {
+                    //_currentString = _currentMessage.Substring(_currentStartOfMessage, _drawLetterCount - _currentStartOfMessage);
+                    SFX.Message.Play();
+                }
+
+                _currentString += currentChar;
+
+                if (_drawLetterCount == _currentMessage.Length)
+                {
+                    _state = State.MessageDone;
+                }
+                else if (_pageLineIndex == 3)
+                {
+                    _dialogBoxIsFull = true;
+                    _state = State.PageDone;
+                }
+            }
+        }
+
+        private void UpdateLineShifting(GameTime gameTime)
+        {
+            _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_elapsedTime < LineShiftTime)
+            {
+                _cropY = BitmapFontRenderer.Font.LineHeight * _elapsedTime / LineShiftTime;
+            }
+            else
+            {
+                int nextNewLineIndex = _currentString.IndexOf('\n');
+                _cropY = 0;
+                _currentStartOfMessage += nextNewLineIndex + 1;
+                //_currentString = _currentString.Substring(nextNewLineIndex + 1, _currentString.Length - nextNewLineIndex);
+                _currentString = _currentMessage.Substring(_currentStartOfMessage, _drawLetterCount - _currentStartOfMessage);
+                _elapsedTime = 0;
+                _state = State.Typing;
+            }
+        }
+
+        private void NextPage()
+        {
+            _pageLineIndex = 0;
+            _pageStart = _drawLetterCount;
+            _pageLength = _currentMessage.IndexOfNth('\n', 3, _pageStart) - _pageStart;
+            if (_pageLength < 0)
+                _pageLength = _currentMessage.Length - _pageStart;
+            _state = State.ShiftingLine;
         }
 
         public void Draw(SpriteBatch spriteBatch)

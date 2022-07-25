@@ -24,7 +24,7 @@ namespace MonoGameTestGame
         }
         ~Hitbox()
         {
-            Unload();
+            Dispose();
         }
         public void Load(int width, int height)
         {
@@ -33,7 +33,7 @@ namespace MonoGameTestGame
             _texture = Utility.CreateColorTexture(_width, _height, Color.White);
         }
         // TODO run on scene unload
-        public void Unload()
+        public void Dispose()
         {
             if (_texture != null)
                 _texture.Dispose();

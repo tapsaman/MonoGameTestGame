@@ -123,10 +123,13 @@ namespace MonoGameTestGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Red);
 
             //_spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateScale(1f));
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            //_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
+            // Need to use wrapping sampler state for repeating textures (shaded wood overlay)
+            _spriteBatch.Begin(samplerState: SamplerState.PointWrap);
             _sceneManager.Draw(_spriteBatch);
 
             if (!started)

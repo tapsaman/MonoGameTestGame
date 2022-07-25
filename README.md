@@ -14,16 +14,18 @@ log:
 * 21.7. - hitting bushes, animation effects, creating sign objects from map, forcing small wait time on scene change (to hide draw lag when creating a lot of map objects)
 * 21.7. - scene manager uses SceneTransition class, implemented new transition type FadeToBlack
 * 24.7. - guard init, creating text events from Tiled map, dialog lines shift up, sectioned dialog box for parametrized size
+* 25.7. - dialog can be skipped again, wood shadow overlay, direction methods, guard states, player takes damage
 
 roadmap:
-* enemy ai
-* taking/giving damage
 * animation events (falling to hole)
 * fuck shit up -> every death from falling to hole should break something in the game engine
 
 small stuff todo:
 * sys timing methods
 * use arrays for tilemap tiles? compare performance with timing methods
+* enemy death animation effect
+* characters collidingx/y fields only update on map collisions, fix
+* heart display
 
 could do but prob won't:
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)
@@ -31,3 +33,5 @@ could do but prob won't:
 * forwards/backwards looping sprite animation 
 * Character's direction prop should be named Facing?
 * action fields/"callbacks" could be named uniformly (OnThing or WhenThing)
+* could use milliseconds instead of seconds for updates because ints take less space than floats :p
+* circle/polygon collision shapes (???) 

@@ -1,7 +1,5 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
 using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
@@ -32,19 +30,6 @@ namespace MonoGameTestGame
         }
         private Vector2 _position;
         private Vector2 _spriteOffset = Vector2.Zero;
-       
-        // Comparison method to sort entities by Y position
-        /*public int CompareTo(MapObject mapEntity)
-        {
-            if (Position.Y < mapEntity.Position.Y)
-                return 1;
-            if (Position.Y > mapEntity.Position.Y)
-                return 0;
-            if (Index < mapEntity.Index)
-                return 0;
-            
-            return 1;
-        }*/
 
         public MapObject()
         {
@@ -56,7 +41,7 @@ namespace MonoGameTestGame
             Sprite.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 offset)
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
             Sprite.Draw(spriteBatch, offset);
         }
