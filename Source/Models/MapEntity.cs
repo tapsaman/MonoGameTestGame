@@ -7,7 +7,7 @@ namespace MonoGameTestGame
     {
         public Hitbox Hitbox;
         public bool Interactable { get; protected set; }
-        public event Action Trigger;
+        public event Action<Character> Trigger;
         public virtual Vector2 Position
         {
             get { return _position; }
@@ -39,9 +39,9 @@ namespace MonoGameTestGame
         {
             return Trigger != null;
         }
-        public void InvokeTrigger()
+        public void InvokeTrigger(Character triggerer)
         {
-            Trigger.Invoke();
+            Trigger.Invoke(triggerer);
         }
     }
 }

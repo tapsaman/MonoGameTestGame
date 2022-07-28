@@ -29,7 +29,7 @@ namespace MonoGameTestGame
             base.Start();
         }
 
-        private void ReadSign()
+        private void ReadSign(Character _)
         {
             EventManager.Load(_signEvent);
         }

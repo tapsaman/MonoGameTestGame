@@ -15,6 +15,7 @@ log:
 * 21.7. - scene manager uses SceneTransition class, implemented new transition type FadeToBlack
 * 24.7. - guard init, creating text events from Tiled map, dialog lines shift up, sectioned dialog box for parametrized size
 * 25.7. - dialog can be skipped again, wood shadow overlay, direction methods, guard states, player takes damage
+* 29.7. - shaders!!!, new rendering utility class, enemy class, new enemy bat, enemy death animation, heart display, inputcontroller class
 
 roadmap:
 * animation events (falling to hole)
@@ -23,9 +24,8 @@ roadmap:
 small stuff todo:
 * sys timing methods
 * use arrays for tilemap tiles? compare performance with timing methods
-* enemy death animation effect
 * characters collidingx/y fields only update on map collisions, fix
-* heart display
+* gamepad support
 
 could do but prob won't:
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)

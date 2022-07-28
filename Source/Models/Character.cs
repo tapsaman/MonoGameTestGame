@@ -10,6 +10,8 @@ namespace MonoGameTestGame
     {
         public Vector2 Velocity;
         public float WalkSpeed;
+        public int Health { get; protected set; }
+        public bool IsInvincible;
         public Direction Direction = Direction.Down;
         public Direction CollidingX = Direction.None;
         public Direction CollidingY = Direction.None;

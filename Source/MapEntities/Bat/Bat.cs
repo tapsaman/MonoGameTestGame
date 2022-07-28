@@ -7,13 +7,13 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Bat : Character
+    public class Bat : Enemy
     {
         public Bat()
         {
-            Interactable = false;
-            Hittable = false;
+            Health = 2;
             Colliding = false;
+            Moving = true;
             
             var texture = StaticData.Content.Load<Texture2D>("linktothepast/enemy-sprites");
             Animation.DefaultFrameWidth = Animation.DefaultFrameHeight = 34;
@@ -26,21 +26,31 @@ namespace MonoGameTestGame
 
             Sprite.SetAnimations(animations, "Default");
             Hitbox.Load(24, 10);
-            Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-5, -14);
 
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
-                { "Default", new BatStateDefault(this) }
+                { "Default", new BatStateDefault(this) },
+                { "TakenDamage", new BatStateTakenDamage(this) }
             };
 
             StateMachine = new StateMachine(states, "Default");
         }
 
-        public override void Update(GameTime gameTime)
+        /*public override void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
             StateMachine.Update(gameTime);
+        }*/
+
+        public override void DeterminePlayerDamage()
+        {
+            var playerRectangle = StaticData.Scene.Player.Hitbox.Rectangle;
+
+            if (Hitbox.Rectangle.Intersects(playerRectangle))
+            {
+                StaticData.Scene.Player.TakeDamage(Hitbox.Rectangle.Center);
+            }
         }
     }
 }

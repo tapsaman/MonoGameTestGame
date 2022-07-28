@@ -220,7 +220,7 @@ namespace MonoGameTestGame.Managers
 
         private bool GotNextInput()
         {
-            return Input.JustPressed(Input.A) || Input.JustPressed(Input.B) || Input.JustPressedMouseLeft();
+            return Input.P1.JustPressed(Input.P1.A) || Input.P1.JustPressed(Input.P1.B) || Input.P1.JustPressedMouseLeft();
         }
     }
 }

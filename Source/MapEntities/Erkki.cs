@@ -6,9 +6,9 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Enemy : Character
+    public class Erkki : Character
     {       
-        public Enemy()
+        public Erkki()
         {
             /*
             var texture = StaticData.Content.Load<Texture2D>("linktothepast-spritesheet-og");
@@ -63,7 +63,7 @@ namespace MonoGameTestGame
             Direction = Direction.Left;
         }
 
-        private void TriggerTest()
+        private void TriggerTest(Character _)
         {
             Sys.Log("triggered");
         }

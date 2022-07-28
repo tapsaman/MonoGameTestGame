@@ -5,7 +5,7 @@ namespace MonoGameTestGame.Manangers
 {
     public class SceneManager
     {
-        public Player Player;
+        public Player Player { get; private set; }
         public Scene CurrentScene;
         public Scene ChangingToScene;
         public bool Changing;

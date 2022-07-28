@@ -18,6 +18,8 @@ namespace MonoGameTestGame
         public static SoundEffect WalkGrass;
         public static SoundEffect Soldier;
         public static SoundEffect SmallEnemyHit;
+        public static SoundEffect LinkHurt;
+
         public static void Load()
         {
             ChestOpen = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/chest open");
@@ -34,6 +36,7 @@ namespace MonoGameTestGame
             WalkGrass = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/walk grass");
             Soldier = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/soldier");
             SmallEnemyHit = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/small enemy hit");
+            LinkHurt = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/link hurt");
         }
     }
 }

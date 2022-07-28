@@ -10,7 +10,7 @@ namespace MonoGameTestGame.Models
         private Guard _guard;
         private float _elapsedTime;
         private Vector2 _runVelocity;
-        private const float _RUN_SPEED = 45f;
+        private const float _RUN_SPEED = 60f;
         private const float _ATTACK_TIME = 2f;
 
         public GuardStateAttacking(Guard guard) : base(guard)

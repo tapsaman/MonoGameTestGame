@@ -21,7 +21,7 @@ namespace MonoGameTestGame
             Trigger += Read;
         }
 
-        private void Read()
+        private void Read(Character _)
         {
             StaticData.Scene.EventManager.Load(_readEvent);
         }

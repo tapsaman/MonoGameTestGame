@@ -12,7 +12,7 @@ namespace MonoGameTestGame
         public static int NativeSizeMultiplier = 3;
         public static int BackBufferWidth = (NativeWidth * NativeSizeMultiplier);
         public static int BackBufferHeight = (NativeHeight * NativeSizeMultiplier);
-        public static bool RenderHitboxes = true;
+        public static bool RenderHitboxes = false;
         public static SpriteFont Font;
         public static ContentManager Content;
         public static GraphicsDeviceManager Graphics;
@@ -22,5 +22,6 @@ namespace MonoGameTestGame
         public static string TiledProjectDirectory;
         public static Texture2D TileTexture;
         public static Texture2D ObjectTexture;
+        public static Effect TestEffect;
     }
 }

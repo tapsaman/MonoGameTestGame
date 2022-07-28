@@ -10,17 +10,19 @@ namespace MonoGameTestGame
 {
     public class Player : Character
     {
+        public int MaxHealth { get; private set; } = 6;
         public bool Hitting = false;
-        public bool IsInvincible = false;
         private const int _touchAreaLength = 10;
         public Vector2 HitPosition;
-        private float _elapsedInvincibleTime = 0;
         private const float _INVINCIBLE_TIME = 1.5f;
+        private float _elapsedInvincibleTime = 0;
+        private bool _draw = true;
 
         public SwordHitbox SwordHitbox;
             
         public Player()
         {
+            Health = MaxHealth;
             Interactable = false;
             Hittable = false;
             Colliding = true;
@@ -70,11 +72,16 @@ namespace MonoGameTestGame
             if (IsInvincible)
             {
                 _elapsedInvincibleTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
+
                 if (_elapsedInvincibleTime > _INVINCIBLE_TIME)
                 {
                     _elapsedInvincibleTime = 0;
                     IsInvincible = false;
+                    _draw = true;
+                }
+                else if (_elapsedInvincibleTime > 0.5f)
+                {
+                    _draw = !_draw;
                 }
             }
             
@@ -86,7 +93,7 @@ namespace MonoGameTestGame
                 {
                     if (SwordHitbox.Rectangle.Intersects(entity.Hitbox.Rectangle))
                     {
-                        entity.InvokeTrigger();
+                        entity.InvokeTrigger(this);
                     }
                 }
             }
@@ -98,7 +105,8 @@ namespace MonoGameTestGame
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
-            if (!IsInvincible || _elapsedInvincibleTime < 0.5f || Math.Round((decimal)_elapsedInvincibleTime, 1) % 0.2M != 0)
+            //if (!IsInvincible || _elapsedInvincibleTime < 0.5f || Math.Round((decimal)_elapsedInvincibleTime, 1) % 0.2M != 0)
+            if (_draw)
             {
                 base.Draw(spriteBatch, offset);
             }
@@ -108,6 +116,7 @@ namespace MonoGameTestGame
         {
             if (!IsInvincible)
             {
+                Health = Math.Max(0, Health - 1);
                 IsInvincible = true;
                 HitPosition = hitPosition;
                 StateMachine.TransitionTo("TakenDamage");
@@ -118,13 +127,13 @@ namespace MonoGameTestGame
         {
             Velocity = Vector2.Zero;
 
-            if (Input.IsPressed(Input.Up))
+            if (Input.P1.IsPressed(Input.P1.Up))
                 Velocity.Y = -1;
-            if (Input.IsPressed(Input.Down))
+            if (Input.P1.IsPressed(Input.P1.Down))
                 Velocity.Y = 1;
-            if (Input.IsPressed(Input.Left))
+            if (Input.P1.IsPressed(Input.P1.Left))
                 Velocity.X = -1;
-            if (Input.IsPressed(Input.Right))
+            if (Input.P1.IsPressed(Input.P1.Right))
                 Velocity.X = 1;
             
             if (Velocity != Vector2.Zero)
@@ -136,10 +145,10 @@ namespace MonoGameTestGame
 
         public void DetermineHitInput()
         {
-            if (!Input.IsPressed(Input.A))
+            if (!Input.P1.IsPressed(Input.P1.A))
                 return;
 
-            if (Input.JustPressed(Input.A))
+            if (Input.P1.JustPressed(Input.P1.A))
             {
                 var touchArea = GetTouchArea();
 
@@ -147,7 +156,7 @@ namespace MonoGameTestGame
                 {
                     if (touchArea.Intersects(mapEntity.Hitbox.Rectangle))
                     {
-                        mapEntity.InvokeTrigger();
+                        mapEntity.InvokeTrigger(this);
                         return;
                     }
                 }

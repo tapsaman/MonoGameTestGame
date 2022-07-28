@@ -12,7 +12,7 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            SFX.EnemyHit.Play();
+            SFX.LinkHurt.Play();
             _elapsedTime = 0;
             var vel = (Player.Position - Player.HitPosition);
             vel.Normalize();
@@ -23,6 +23,11 @@ namespace MonoGameTestGame.Models
 
         public override void Update(GameTime gameTime)
         {
+            if (Player.CollidingX != Direction.None || Player.CollidingY != Direction.None)
+            {
+                _flyVelocity = Vector2.Zero;
+            }
+
             Player.Velocity = _flyVelocity;
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 

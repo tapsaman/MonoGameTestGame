@@ -7,6 +7,8 @@ namespace MonoGameTestGame.Models
 {
     public class BatStateDefault : CharacterState
     {
+        private const float _FLY_SPEED = 70f;
+
         public BatStateDefault(Bat bat) : base(bat) {}
 
         public override void Enter()
@@ -41,9 +43,13 @@ namespace MonoGameTestGame.Models
             direction = new Vector2((int) dir.X, (int) dir.Y);*/
             
             
-            Character.Velocity = RotateVectorAround(Character.Velocity, Character.Position, 0.2);
+            var vel = (StaticData.Scene.Player.Position - Character.Position);
+            vel.Normalize();
+            vel *= _FLY_SPEED;
+
+            Character.Velocity = RotateVectorAround(vel, Character.Position, -0.25);
             
-            Character.Position -= Character.Velocity * 0.001f;
+            //Character.Position -= Character.Velocity * 0.001f;
         }
 
         public static Vector2 RotateVectorAround(Vector2 vector, Vector2 pivot, double angle)

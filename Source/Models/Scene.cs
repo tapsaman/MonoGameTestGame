@@ -88,7 +88,7 @@ namespace MonoGameTestGame
             Paused = false;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             if (Paused)
                 return;

@@ -66,6 +66,15 @@ namespace MonoGameTestGame.Sprites
       else throw new Exception("No texture or animations defined for sprite");
     }
 
+    public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset, Color color)
+    {
+      if (_texture != null)
+        spriteBatch.Draw (_texture, Position + offset, _sourceRectangle, color);
+      else if (_animationManager != null)
+        _animationManager.Draw(spriteBatch, offset, color);
+      else throw new Exception("No texture or animations defined for sprite");
+    }
+
     public void SetAnimation(string animationName = null)
     {
       if (animationName == null)

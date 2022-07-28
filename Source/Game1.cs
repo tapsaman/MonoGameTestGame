@@ -14,30 +14,22 @@ namespace MonoGameTestGame
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private static SpriteBatch _spriteBatch;
         private DialogManager _dialogManager;
-        private RenderTarget2D _nativeRenderTarget; 
-        private Rectangle _actualScreenRectangle;
         private SceneManager _sceneManager;
+        private HUD _hud;
 
         public Game1()
         {
-            StaticData.Graphics = _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             StaticData.TiledProjectDirectory = "Content\\TiledProjects\\testmap";
+            StaticData.Graphics = new GraphicsDeviceManager(this);
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, StaticData.NativeWidth, StaticData.NativeHeight);
-            _actualScreenRectangle = new Rectangle(0, 0, StaticData.BackBufferWidth, StaticData.BackBufferHeight);
-
-            _graphics.PreferredBackBufferWidth = StaticData.BackBufferWidth;
-            _graphics.PreferredBackBufferHeight = StaticData.BackBufferHeight;
-            //_graphics.IsFullScreen = true;
-            _graphics.ApplyChanges();
+            Rendering.Init(GraphicsDevice);
 
             Window.AllowUserResizing = true;
             Window.AllowAltF4 = true;
@@ -59,9 +51,12 @@ namespace MonoGameTestGame
             StaticData.ObjectTexture = Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-objects");
             BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
             SFX.Load();
+            Shaders.Load();
             StaticData.SceneManager = _sceneManager = new SceneManager();
             _sceneManager.Init(new TestScene());
             _dialogManager = new DialogManager();
+            _hud = new HUD();
+            _hud.Load();
 
             _startButton = new Button(Content.Load<Texture2D>("Button"), Content.Load<SpriteFont>("Fonts/TestFont"))
             {
@@ -69,7 +64,6 @@ namespace MonoGameTestGame
             };
             _startButton.Click += StartButton_Click;
             
-            //StaticData.Content = null;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -84,6 +78,7 @@ namespace MonoGameTestGame
             SFX.MessageFinish.Play();
             _sceneManager.CurrentScene.Start();
             _startButton = null;
+            //Rendering.ApplyPostEffect(Shaders.Noise);
         }
 
         protected override void UnloadContent()
@@ -96,13 +91,13 @@ namespace MonoGameTestGame
 
         protected override void Update(GameTime gameTime)
         {
-            Input.Update();
+            Input.P1.Update();
 
             if (!started)
             {
                 _startButton.Update(gameTime);
                 
-                if (Input.JustPressed(Input.Start)) {
+                if (Input.P1.JustPressed(Input.P1.Start)) {
                     Start();
                 }
 
@@ -121,15 +116,9 @@ namespace MonoGameTestGame
         }
 
         protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
-            GraphicsDevice.Clear(Color.Red);
+        {            
+            Rendering.Start(GraphicsDevice);
 
-            //_spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateScale(1f));
-            //_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-            // Need to use wrapping sampler state for repeating textures (shaded wood overlay)
-            _spriteBatch.Begin(samplerState: SamplerState.PointWrap);
             _sceneManager.Draw(_spriteBatch);
 
             if (!started)
@@ -137,17 +126,11 @@ namespace MonoGameTestGame
                 _startButton.Draw(gameTime, _spriteBatch);
             }
             
+            _hud.Draw(_spriteBatch, _sceneManager.Player);
             _dialogManager.Draw(_spriteBatch);
             BitmapFontRenderer.DrawString(_spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _titlePosition);
-            _spriteBatch.End();
-
-            // after drawing the game at native resolution we can render _nativeRenderTarget to the backbuffer!
-            // First set the GraphicsDevice target back to the backbuffer
-            GraphicsDevice.SetRenderTarget(null);
-            // RenderTarget2D inherits from Texture2D so we can render it just like a texture
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _spriteBatch.Draw(_nativeRenderTarget, _actualScreenRectangle, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-            _spriteBatch.End();
+            
+            Rendering.End(GraphicsDevice, gameTime);
 
             base.Draw(gameTime);
         }

@@ -14,7 +14,7 @@ namespace MonoGameTestGame
             Trigger += Destroy;
         }
 
-        private void Destroy()
+        private void Destroy(Character _)
         {
             StaticData.Scene.Add(new Animations.BushSlash(Position + new Vector2(8)));
             StaticData.Scene.SetToRemove(this);

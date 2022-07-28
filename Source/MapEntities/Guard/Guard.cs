@@ -7,24 +7,20 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Guard : Character
+    public class Guard : Enemy
     {
         public Hitbox DetectionHitbox;
         public Hitbox DamageHitbox1;
         public Hitbox DamageHitbox2;
-        public int Health = 3;
-        public bool IsHit = false;
 
         public Guard()
         {
-            Hittable = true;
+            Health = 3;
             Colliding = true;
             Moving = true;
             Hitbox.Load(14, 14);
-            Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-3, -14);
             WalkSpeed = 30f;
-            Trigger += TakeDamage;
             Direction = Utility.RandomDirection();
 
             DetectionHitbox = new Hitbox();
@@ -72,7 +68,7 @@ namespace MonoGameTestGame
                 { "LookAround", new GuardStateLookAround(this) }, // scans around, change to random direction -> default
                 { "NoticedPlayer", new GuardStateNoticedPlayer(this) }, // looks to player's direction a short while -> attacking
                 { "Attacking", new GuardStateAttacking(this) }, // charges toward player -> look around
-                { "TakenDamage", new GuardStateTakenDamage(this) }, // flies to hit direction -> attacking
+                { "TakenDamage", new EnemyStateTakenDamage(this) }, // flies to hit direction -> attacking
             };
 
             StateMachine = new StateMachine(states, "Default");
@@ -94,23 +90,7 @@ namespace MonoGameTestGame
             DamageHitbox2.Dispose();
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            DeterminePlayerDamage();
-        }
-
-        private void TakeDamage()
-        {
-            if (!IsHit)
-            {
-                IsHit = true;
-                Sys.Log("TakenDamage");
-                StateMachine.TransitionTo("TakenDamage");
-            }
-        }
-
-        private void DeterminePlayerDamage()
+        public override void DeterminePlayerDamage()
         {
             var playerRectangle = StaticData.Scene.Player.Hitbox.Rectangle;
             DamageHitbox1.Position = Position + new Vector2(-1, -1);
