@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
 
@@ -9,6 +10,7 @@ namespace MonoGameTestGame
 {
     public abstract class Scene
     {
+        public Song Theme { get; protected set; }
         public DataStore SceneData;
         public StateMachine StateMachine;
         public EventManager EventManager;
@@ -20,6 +22,7 @@ namespace MonoGameTestGame
         public List<MapObject> HittableEntities { get; private set; }
         public List<MapObject> CollidingEntities { get; private set; }
         public List<MapObject> UncollidingEntities { get; private set; }
+        public List<MapEntity> TouchTriggers { get; private set; }
         public bool Paused = false;
         public Vector2 DrawOffset = Vector2.Zero;
         public int Width { get; private set; }
@@ -31,7 +34,6 @@ namespace MonoGameTestGame
         private List<Hitbox> _hitboxes;
 
         protected abstract void Load();
-        protected virtual void DrawOverlay(SpriteBatch spriteBatch) {}
 
         public Scene()
         {
@@ -41,6 +43,7 @@ namespace MonoGameTestGame
             HittableEntities = new List<MapObject>();
             CollidingEntities = new List<MapObject>();
             UncollidingEntities = new List<MapObject>();
+            TouchTriggers = new List<MapEntity>();
             _removingEntities = new List<MapObject>();
             _animationEffects = new List<AnimationEffect>();
             _removingEffects = new List<AnimationEffect>();
@@ -79,6 +82,14 @@ namespace MonoGameTestGame
                 else if (obj.TypeName == "Text")
                 {
                     Add(new Text() { Position = obj.Position, Message = obj.TextProperty });
+                }
+                else if (obj.TypeName == "Guard")
+                {
+                    Add(new Guard() { Position = obj.Position });
+                }
+                else if (obj.TypeName == "Bat")
+                {
+                    Add(new Bat() { Position = obj.Position });
                 }
             }
         }
@@ -161,10 +172,11 @@ namespace MonoGameTestGame
             {
                 mapEntity.Draw(spriteBatch, DrawOffset);
             }
+        }
 
-            // NOTE drawing tree shadow overlay on top of dialog looks cool 
-            DrawOverlay(spriteBatch);
-            DialogManager.Draw(spriteBatch);
+        public virtual void DrawOverlay(SpriteBatch spriteBatch)
+        {
+            // Do nothing by default
         }
 
         public void Add(MapEntity mapEntity)
@@ -172,6 +184,10 @@ namespace MonoGameTestGame
             if (mapEntity.Interactable)
             {
                 InteractableEntities.Add(mapEntity);
+            }
+            if (mapEntity.TriggeredOnTouch)
+            {
+                TouchTriggers.Add(mapEntity);
             }
         }
 
@@ -200,6 +216,10 @@ namespace MonoGameTestGame
             if (mapEntity.Interactable)
             {
                 InteractableEntities.Remove(mapEntity);
+            }
+            if (mapEntity.TriggeredOnTouch)
+            {
+                TouchTriggers.Remove(mapEntity);
             }
 
             UnregisterHitbox(mapEntity.Hitbox);

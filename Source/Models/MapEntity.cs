@@ -7,6 +7,7 @@ namespace MonoGameTestGame
     {
         public Hitbox Hitbox;
         public bool Interactable { get; protected set; }
+        public bool TriggeredOnTouch { get; protected set; }
         public event Action<Character> Trigger;
         public virtual Vector2 Position
         {

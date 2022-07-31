@@ -6,6 +6,7 @@ namespace MonoGameTestGame
 {
     public class Rendering
     {
+        public static Color BackgroundColor = new Color(207, 55, 55);
         private static Rendering _rendering;
         private static RenderTarget2D _nativeRenderTarget; 
         private static Rectangle _actualScreenRectangle;
@@ -29,7 +30,7 @@ namespace MonoGameTestGame
         public static void Start(GraphicsDevice graphicsDevice)
         {
             graphicsDevice.SetRenderTarget(_nativeRenderTarget);
-            graphicsDevice.Clear(Color.Blue);
+            graphicsDevice.Clear(BackgroundColor);
             // Need to use wrapping sampler state for repeating textures (shaded wood overlay)
             StaticData.SpriteBatch.Begin(samplerState: SamplerState.PointWrap);
         }
@@ -37,7 +38,7 @@ namespace MonoGameTestGame
         public static void Start(GraphicsDevice graphicsDevice, Effect effect)
         {
             graphicsDevice.SetRenderTarget(_nativeRenderTarget);
-            graphicsDevice.Clear(Color.Blue);
+            graphicsDevice.Clear(BackgroundColor);
             // Need to use wrapping sampler state for repeating textures (shaded wood overlay)
             StaticData.SpriteBatch.Begin(samplerState: SamplerState.PointWrap, effect: effect);
         }
@@ -84,7 +85,7 @@ namespace MonoGameTestGame
             _postEffect = effect;
             _doAfterPostEffect -= _doAfterPostEffect;
 
-            if (effect == Shaders.Noise)
+            if (effect == Shaders.MildNoise || effect == Shaders.Noise)
             {
                 _doAfterPostEffect += AfterNoiseEffect;
             }
@@ -92,9 +93,9 @@ namespace MonoGameTestGame
 
         private static void AfterNoiseEffect(GameTime gameTime)
         {
-            _noiseSeed += (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
-            Shaders.Noise.Parameters["seed"].SetValue(_noiseSeed);
-            //Shaders.NoiseDistortion.Parameters["seed"].SetValue(_noiseSeed);
+            //_noiseSeed += (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+            _noiseSeed += 0.001f;
+            _postEffect.Parameters["seed"].SetValue(_noiseSeed);
         }
     }
 }

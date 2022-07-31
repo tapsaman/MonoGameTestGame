@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameTestGame
@@ -6,8 +7,6 @@ namespace MonoGameTestGame
     {
         private KeyboardState _currentKeyboardState;
         private KeyboardState _previousKeyboardState;
-        private MouseState _currentMouseState;
-        private MouseState _previousMouseState;
 
         public KeyboardController()
         {
@@ -24,10 +23,24 @@ namespace MonoGameTestGame
         }
         public override void Update()
         {
+            base.Update();
             _previousKeyboardState = _currentKeyboardState;
             _currentKeyboardState = Keyboard.GetState();
-            _previousMouseState = _currentMouseState;
-            _currentMouseState = Mouse.GetState();
+        }
+        public override Vector2 GetDirectionVector()
+        {
+            Vector2 dir = Vector2.Zero;
+
+            if (_currentKeyboardState.IsKeyDown(Up))
+                dir.Y = -1;
+            if (_currentKeyboardState.IsKeyDown(Down))
+                dir.Y = 1;
+            if (_currentKeyboardState.IsKeyDown(Left))
+                dir.X = -1;
+            if (_currentKeyboardState.IsKeyDown(Right))
+                dir.X = 1;
+
+            return dir;
         }
         public override bool IsPressed(Keys key)
         {
@@ -40,10 +53,6 @@ namespace MonoGameTestGame
         public override bool JustReleased(Keys key)
         {
             return _previousKeyboardState.IsKeyDown(key) && _currentKeyboardState.IsKeyUp(key);
-        }
-        public override bool JustPressedMouseLeft()
-        {
-            return _previousMouseState.LeftButton == ButtonState.Released && _currentMouseState.LeftButton == ButtonState.Pressed;
         }
     }
 }

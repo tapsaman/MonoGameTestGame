@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameTestGame.Managers;
@@ -80,17 +81,21 @@ namespace MonoGameTestGame
 
             if (Colliding)
             {
-                foreach (var mapEntity in StaticData.Scene.CollidingEntities)
+                foreach (var mapEntity in StaticData.Scene.TouchTriggers)
                 {
-                    if (mapEntity != this)
+                    if (RightIsTouching(mapEntity) 
+                     || LeftIsTouching(mapEntity)
+                     || TopIsTouching(mapEntity)
+                     || BottomIsTouching(mapEntity)
+                    )
                     {
-                        DetermineCollision(mapEntity);
+                        mapEntity.InvokeTrigger(this);
                     }
                 }
-
+                
                 MapBorder = Direction.None;
-                CollidingX = DetermineHorizontalMapCollision(StaticData.Scene.TileMap);
-                CollidingY = DetermineVerticalMapCollision(StaticData.Scene.TileMap);
+                CollidingX = DetermineHorizontalCollision(StaticData.Scene.TileMap, StaticData.Scene.CollidingEntities);
+                CollidingY = DetermineVerticalCollision(StaticData.Scene.TileMap, StaticData.Scene.CollidingEntities);
 
                 if (CollidingX != Direction.None)
                     Velocity.X = 0;
@@ -101,46 +106,35 @@ namespace MonoGameTestGame
             Position += Velocity;
         }
 
-        private bool IsTouchingLeft(MapEntity mapEntity)
+        private bool RightIsTouching(MapEntity mapEntity)
         {
             return Hitbox.Rectangle.Right + Velocity.X > mapEntity.Hitbox.Rectangle.Left &&
                 Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Left &&
                 Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Top &&
                 Hitbox.Rectangle.Top < mapEntity.Hitbox.Rectangle.Bottom;
         }
-        private bool IsTouchingRight(MapEntity mapEntity)
+        private bool LeftIsTouching(MapEntity mapEntity)
         {
         return Hitbox.Rectangle.Left + Velocity.X < mapEntity.Hitbox.Rectangle.Right &&
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Right &&
             Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Top &&
             Hitbox.Rectangle.Top < mapEntity.Hitbox.Rectangle.Bottom;
         }
-        private bool IsTouchingTop(MapEntity mapEntity) 
+        private bool BottomIsTouching(MapEntity mapEntity)
         {
         return Hitbox.Rectangle.Bottom + Velocity.Y > mapEntity.Hitbox.Rectangle.Top &&
             Hitbox.Rectangle.Top < mapEntity.Hitbox.Rectangle.Top &&
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Left &&
             Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Right;
         }
-        private bool IsTouchingBottom(MapEntity mapEntity) 
+        private bool TopIsTouching(MapEntity mapEntity) 
         {
         return Hitbox.Rectangle.Top + Velocity.Y < mapEntity.Hitbox.Rectangle.Bottom &&
             Hitbox.Rectangle.Bottom > mapEntity.Hitbox.Rectangle.Bottom &&
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Left &&
             Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Right;
         }
-        private void DetermineCollision(MapEntity mapEntity)
-        {
-            if (Velocity.Y > 0 && IsTouchingTop(mapEntity))
-                Velocity.Y = 0; 
-            if (Velocity.X < 0 && IsTouchingRight(mapEntity))
-                Velocity.X = 0;
-            if (Velocity.Y < 0 && IsTouchingBottom(mapEntity))
-                Velocity.Y = 0;
-            if (Velocity.X > 0 && IsTouchingLeft(mapEntity))
-                Velocity.X = 0;
-        }
-        private Direction DetermineHorizontalMapCollision(TileMap tileMap)
+        private Direction DetermineHorizontalCollision(TileMap tileMap, IEnumerable<MapEntity> collidingEntities)
         {
             if (Velocity.X < 0)
             {
@@ -155,6 +149,14 @@ namespace MonoGameTestGame
                         tileMap.ConvertY(Hitbox.Rectangle.Bottom),
                         ref MapBorder
                     ))
+                    {
+                        return Direction.Left;
+                    }
+                }
+
+                foreach (var mapEntity in collidingEntities)
+                {
+                    if (LeftIsTouching(mapEntity))
                     {
                         return Direction.Left;
                     }
@@ -177,12 +179,20 @@ namespace MonoGameTestGame
                         return Direction.Right;
                     }
                 }
+
+                foreach (var mapEntity in collidingEntities)
+                {
+                    if (RightIsTouching(mapEntity))
+                    {
+                        return Direction.Right;
+                    }
+                }
             }
 
             return Direction.None;
         }
 
-        private Direction DetermineVerticalMapCollision(TileMap tileMap)
+        private Direction DetermineVerticalCollision(TileMap tileMap, IEnumerable<MapEntity> collidingEntities)
         {
             if (Velocity.Y < 0)
             {
@@ -201,6 +211,14 @@ namespace MonoGameTestGame
                         return Direction.Up;
                     }
                 }
+
+                foreach (var mapEntity in collidingEntities)
+                {
+                    if (TopIsTouching(mapEntity))
+                    {
+                        return Direction.Up;
+                    }
+                }
             }
             else if (Velocity.Y > 0)
             {
@@ -215,6 +233,14 @@ namespace MonoGameTestGame
                         tileMap.ConvertX(Hitbox.Rectangle.Right),
                         ref MapBorder
                     ))
+                    {
+                        return Direction.Down;
+                    }
+                }
+
+                foreach (var mapEntity in collidingEntities)
+                {
+                    if (BottomIsTouching(mapEntity))
                     {
                         return Direction.Down;
                     }

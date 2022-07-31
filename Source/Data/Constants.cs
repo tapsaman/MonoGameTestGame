@@ -4,7 +4,8 @@ namespace MonoGameTestGame
     {
         A1,
         A2,
-        B1
+        B1,
+        C1
     }
 
     public enum TransitionType

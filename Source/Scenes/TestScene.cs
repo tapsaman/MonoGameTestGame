@@ -9,12 +9,11 @@ namespace MonoGameTestGame
     {
         private Event[] _erkkiEvents;
         private Event _signEvent;
-        private Song _song;
-        private float _elapsedSongTime = 0; 
+        private float _elapsedSongTime = 0;
 
         protected override void Load()
         {
-            _song = StaticData.Content.Load<Song>("linktothepast/darkworld");
+            Theme = StaticData.Content.Load<Song>("linktothepast/darkworld");
             TileMap = new TestMap();
 
             var erkki = new Erkki();
@@ -65,14 +64,6 @@ namespace MonoGameTestGame
                 }
                 
             };
-        }
-
-        public override void Start()
-        {
-            MediaPlayer.Play(_song);
-            MediaPlayer.Volume = 0.2f;
-            MediaPlayer.IsRepeating = true;
-            base.Start();
         }
 
         /*

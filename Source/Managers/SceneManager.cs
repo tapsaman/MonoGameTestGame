@@ -17,6 +17,13 @@ namespace MonoGameTestGame.Manangers
             StaticData.Scene = CurrentScene = firstScene;
             Player = new Player() { Position = new Vector2(100, 100) };
             CurrentScene.Init(Player);
+            CurrentScene.UpdateCamera(Player.Position);
+        }
+
+        public void Start()
+        {
+            CurrentScene.Start();
+            Music.Play(CurrentScene.Theme);
         }
 
         public void GoTo(TileMap.Exit exit)
@@ -70,6 +77,8 @@ namespace MonoGameTestGame.Manangers
             {
                 CurrentScene.DrawGround(spriteBatch);
                 CurrentScene.DrawTop(spriteBatch);
+                CurrentScene.DrawOverlay(spriteBatch);
+                CurrentScene.DialogManager.Draw(spriteBatch);
             }
             else
             {
@@ -89,6 +98,8 @@ namespace MonoGameTestGame.Manangers
                     return new SceneA2();
                 case MapCode.B1:
                     return new SceneB1();
+                case MapCode.C1:
+                    return new SceneC1();
             }
             return null;
         }

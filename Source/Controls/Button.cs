@@ -5,21 +5,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameTestGame.Controls
 {
-    public class Button : Component
+    public class Button : UIComponent
     {
         #region Fields
-        private MouseState _currentMouse;
-        private MouseState _previousMouse;
-        private SpriteFont _font;
-        private bool _isHovering;
-        private Texture2D _texture;
+        protected SpriteFont _font;
+        protected bool _isHovering;
+        protected bool _isActive;
+        protected Texture2D _texture;
         #endregion
 
         #region Properties
         public event EventHandler Click;
         public bool Clicked { get; private set; }
+        public bool? IsFocused { get; set; } = null;
         public Color PenColor = Color.Black;
-        public Vector2 Position;
+        public override int Width { get { return _texture.Width; } }
+        public override int Height { get { return _texture.Height; } }
         public Rectangle Rectangle
         {
             get
@@ -35,13 +36,46 @@ namespace MonoGameTestGame.Controls
         {
             _texture = texture;
             _font = font;
-            Position = new Vector2(StaticData.NativeWidth / 2 - _texture.Width / 2, StaticData.NativeHeight / 2 - _texture.Height / 2);
         }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+
+        public override void Update(GameTime gameTime)
+        {
+            _isActive = false;
+            _isHovering = Input.P1.GetMouseRectangle().Intersects(Rectangle);
+
+            if (_isHovering)
+            {
+                if (Input.P1.IsMouseLeftPressed())
+                {
+                    _isActive = true;
+                }
+                else if (Input.P1.JustReleasedMouseLeft())
+                {
+                    Click?.Invoke(this, new EventArgs());
+                    return;
+                }
+            }
+
+            if (IsFocused == true)
+            {
+                if (Input.P1.IsPressed(Input.P1.A))
+                {
+                    _isActive = true;
+                }
+                else if (Input.P1.JustReleased(Input.P1.A))
+                {
+                    Click?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+    
+        public override void Draw(SpriteBatch spriteBatch)
         {
             var color = Color.White;
             
-            if (_isHovering)
+            if (_isActive)
+                color = Color.Red;
+            else if ((IsFocused == null && _isHovering) || IsFocused == true)
                 color = Color.Gray;
 
             spriteBatch.Draw(_texture, Rectangle, color);
@@ -54,23 +88,6 @@ namespace MonoGameTestGame.Controls
             }
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
-
-            var mouseRectangle = new Rectangle(_currentMouse.X / StaticData.NativeSizeMultiplier, _currentMouse.Y / StaticData.NativeSizeMultiplier, 1, 1);
-
-            _isHovering = false;
-
-            if (mouseRectangle.Intersects(Rectangle)) {
-                _isHovering = true;
-
-                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed) {
-                    Click?.Invoke(this, new EventArgs());
-                }
-            }
-        }
         #endregion
     }
 }

@@ -60,19 +60,19 @@ namespace MonoGameTestGame
                         _playerPositionBefore = new Vector2(-playerLength, _player.Position.Y);
                         _playerPositionAfter = new Vector2(0, _playerPositionBefore.Y);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(-StaticData.NativeWidth, 0);
-                        _scene2.DrawOffset = new Vector2(StaticData.NativeWidth, 0);
+                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X - StaticData.NativeWidth, _scene1.DrawOffset.Y);
+                        _scene2.DrawOffset = new Vector2(StaticData.NativeWidth, _scene1.DrawOffset.Y);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(0, 0);
+                        _newSceneOffsetAfter = new Vector2(0, _newSceneOffsetBefore.Y);
                         break;
                     case Direction.Left:
-                        _playerPositionBefore = new Vector2(StaticData.NativeWidth, _player.Position.Y);
-                        _playerPositionAfter = new Vector2(StaticData.NativeWidth - playerLength, _playerPositionBefore.Y);
-                        _scene1OffsetBefore = Vector2.Zero;
-                        _scene1OffsetAfter = new Vector2(StaticData.NativeWidth, 0);
-                        _scene2.DrawOffset = new Vector2(-StaticData.NativeWidth, 0);
+                        _playerPositionBefore = new Vector2(_scene2.Width, _player.Position.Y);
+                        _playerPositionAfter = new Vector2(_scene2.Width - playerLength, _playerPositionBefore.Y);
+                        _scene1OffsetBefore = _scene1.DrawOffset;
+                        _scene1OffsetAfter = new Vector2(StaticData.NativeWidth, _scene1.DrawOffset.Y);
+                        _scene2.DrawOffset = new Vector2(StaticData.NativeWidth - _scene2.Width - StaticData.NativeWidth, _scene1.DrawOffset.Y);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(0, 0);
+                        _newSceneOffsetAfter = new Vector2(StaticData.NativeWidth - _scene2.Width, _newSceneOffsetBefore.Y);
                         break;
                 }
             }
@@ -96,7 +96,7 @@ namespace MonoGameTestGame
                 }
                 else
                 {
-                    _scene2.DrawOffset = Vector2.Zero;
+                    _scene2.DrawOffset = _newSceneOffsetAfter;
                     _player.Position = _playerPositionAfter;
                     Done = true;
                 }
@@ -178,6 +178,9 @@ namespace MonoGameTestGame
                         _scene2 = SceneManager.LoadNextScene();
                         _player.Position = _playerPositionAfter;
                         _scene2.UpdateCamera(_player.Position);
+                        
+                        //if (_scene1.Theme != _scene2.Theme)
+                        Music.FadeOutTo(_scene2.Theme, _FADE_TIME + _LOAD_TIME);
                     }
                 }
                 else if (_elapsedTime < _FADE_TIME * 2 + _LOAD_TIME)
@@ -197,11 +200,13 @@ namespace MonoGameTestGame
                 {
                     _scene1.DrawGround(spriteBatch);
                     _scene1.DrawTop(spriteBatch);
+                    _scene1.DrawOverlay(spriteBatch);
                 }
                 else if (_elapsedTime >= _FADE_TIME + _LOAD_TIME)
                 {
                     _scene2.DrawGround(spriteBatch);
                     _scene2.DrawTop(spriteBatch);
+                    _scene2.DrawOverlay(spriteBatch);
                 }
 
                 spriteBatch.Draw(_overlay, Vector2.Zero, Color.Black * _colorMultiplier);

@@ -7,13 +7,14 @@ namespace MonoGameTestGame.Managers
 {
     public class StateMachine
     {
-        public State CurrentState;
-        public Dictionary<string, State> States
+        public State CurrentState { get; private set; }
+        public virtual Dictionary<string, State> States
         {
             get { return _states; }
             set
             {
                 _states = value;
+                
                 foreach (State state in _states.Values)
                 {
                     state.stateMachine = this;

@@ -12,33 +12,41 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 128,
-                "y": 112
+                "x": 181,
+                "y": 296.5
             }
         },
         "A2.tmx": {
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 128,
-                "y": 120
+                "x": 181,
+                "y": 72.5
             }
         },
         "B1.tmx": {
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": -57,
-                "y": 224.75
+                "x": -75,
+                "y": 296.5
+            }
+        },
+        "C1.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -411,
+                "y": 296.5
             }
         },
         "linktothepast-objects.tsx": {
@@ -78,10 +86,10 @@
     "loadedWorlds": [
         "C:/git/monogame-test/MonoGameTestGame/Content/TiledProjects/testmap/testworld.world"
     ],
-    "map.height": 28,
+    "map.height": 58,
     "map.lastUsedFormat": "tmx",
-    "map.tileHeight": 16,
-    "map.tileWidth": 16,
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
     "map.width": 32,
     "openFiles": [
         "B1.tmx",
@@ -91,10 +99,10 @@
         "A1.tmx"
     ],
     "project": "testmap.tiled-project",
-    "property.type": "string",
+    "property.type": "bool",
     "recentFiles": [
-        "A1.tmx",
         "linktothepast-tiles.tsx",
+        "A1.tmx",
         "linktothepast-objects.tsx",
         "A2.tmx",
         "B1.tmx",

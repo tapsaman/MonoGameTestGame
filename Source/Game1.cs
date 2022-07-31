@@ -18,6 +18,7 @@ namespace MonoGameTestGame
         private DialogManager _dialogManager;
         private SceneManager _sceneManager;
         private HUD _hud;
+        private GameMenu _gameMenu;
 
         public Game1()
         {
@@ -40,8 +41,6 @@ namespace MonoGameTestGame
             base.Initialize();
         }
 
-        private Button _startButton;
-
         protected override void LoadContent()
         {
             StaticData.Content = Content;
@@ -53,18 +52,15 @@ namespace MonoGameTestGame
             SFX.Load();
             Shaders.Load();
             StaticData.SceneManager = _sceneManager = new SceneManager();
+
             _sceneManager.Init(new TestScene());
             _dialogManager = new DialogManager();
             _hud = new HUD();
             _hud.Load();
 
-            _startButton = new Button(Content.Load<Texture2D>("Button"), Content.Load<SpriteFont>("Fonts/TestFont"))
-            {
-                Text = "START"
-            };
-            _startButton.Click += StartButton_Click;
-            
+            _gameMenu = new GameMenu(StartButton_Click);
         }
+
 
         private void StartButton_Click(object sender, EventArgs e)
         {
@@ -76,8 +72,7 @@ namespace MonoGameTestGame
             started = true;
             _dialogManager.Load(new Dialog("terve", "mitä äijä?"));
             SFX.MessageFinish.Play();
-            _sceneManager.CurrentScene.Start();
-            _startButton = null;
+            _sceneManager.Start();
             //Rendering.ApplyPostEffect(Shaders.Noise);
         }
 
@@ -95,17 +90,13 @@ namespace MonoGameTestGame
 
             if (!started)
             {
-                _startButton.Update(gameTime);
-                
-                if (Input.P1.JustPressed(Input.P1.Start)) {
-                    Start();
-                }
-
+                _gameMenu.Update(gameTime);
                 return;
             }
 
             _sceneManager.Update(gameTime);
             _dialogManager.Update(gameTime);
+            Music.Update(gameTime);
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -123,7 +114,7 @@ namespace MonoGameTestGame
 
             if (!started)
             {
-                _startButton.Draw(gameTime, _spriteBatch);
+                _gameMenu.Draw(_spriteBatch);
             }
             
             _hud.Draw(_spriteBatch, _sceneManager.Player);

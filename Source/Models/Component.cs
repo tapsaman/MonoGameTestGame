@@ -3,9 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameTestGame
 {
-    public abstract class Component
+    public abstract class UIComponent
     {
+        public abstract int Width { get; }
+        public abstract int Height { get; }
+        public Vector2 Position;
         public abstract void Update(GameTime gameTime);
-        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        public abstract void Draw(SpriteBatch spriteBatch);
     } 
 }

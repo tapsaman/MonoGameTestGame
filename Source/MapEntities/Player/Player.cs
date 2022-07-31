@@ -125,22 +125,7 @@ namespace MonoGameTestGame
 
         public void DetermineInputVelocity()
         {
-            Velocity = Vector2.Zero;
-
-            if (Input.P1.IsPressed(Input.P1.Up))
-                Velocity.Y = -1;
-            if (Input.P1.IsPressed(Input.P1.Down))
-                Velocity.Y = 1;
-            if (Input.P1.IsPressed(Input.P1.Left))
-                Velocity.X = -1;
-            if (Input.P1.IsPressed(Input.P1.Right))
-                Velocity.X = 1;
-            
-            if (Velocity != Vector2.Zero)
-            {
-                //MapEntity.Velocity.Normalize();
-                Velocity *= WalkSpeed;
-            }
+            Velocity = Input.P1.GetDirectionVector() * WalkSpeed;
         }
 
         public void DetermineHitInput()

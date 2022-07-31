@@ -796,6 +796,21 @@
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="704">
+  <properties>
+   <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="705">
+  <properties>
+   <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="706">
+  <properties>
+   <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="708">
   <properties>
    <property name="IsBlocking" type="bool" value="true"/>
@@ -902,6 +917,16 @@
   </properties>
  </tile>
  <tile id="733">
+  <properties>
+   <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="820">
+  <properties>
+   <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="821">
   <properties>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>

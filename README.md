@@ -16,6 +16,7 @@ log:
 * 24.7. - guard init, creating text events from Tiled map, dialog lines shift up, sectioned dialog box for parametrized size
 * 25.7. - dialog can be skipped again, wood shadow overlay, direction methods, guard states, player takes damage
 * 29.7. - shaders!!!, new rendering utility class, enemy class, new enemy bat, enemy death animation, heart display, inputcontroller class
+* 31.7. - static music class, mild noise shader, characters collidingx/y fields update on entity colliding, new map c1, touch trigger events, gamepad support, game menu init
 
 roadmap:
 * animation events (falling to hole)
@@ -24,8 +25,7 @@ roadmap:
 small stuff todo:
 * sys timing methods
 * use arrays for tilemap tiles? compare performance with timing methods
-* characters collidingx/y fields only update on map collisions, fix
-* gamepad support
+* global game states, menu state
 
 could do but prob won't:
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)

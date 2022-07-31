@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 namespace MonoGameTestGame
 {
-    public class MapB1 : TileMap
+    public class MapC1 : TileMap
     {
         public override TiledCS.TiledMap Load()
         {
@@ -10,11 +10,10 @@ namespace MonoGameTestGame
 
             Exits = new Dictionary<Direction, Exit>()
             {
-                { Direction.Left, new Exit(Direction.Left, MapCode.A1, TransitionType.FadeToBlack) },
-                { Direction.Right, new Exit(Direction.Right, MapCode.C1, TransitionType.Pan) },
+                { Direction.Left, new Exit(Direction.Left, MapCode.B1, TransitionType.Pan) }
             };
 
-            return new TiledCS.TiledMap(StaticData.TiledProjectDirectory + "\\B1.tmx");
+            return new TiledCS.TiledMap(StaticData.TiledProjectDirectory + "\\C1.tmx");
         }
     }
 }
