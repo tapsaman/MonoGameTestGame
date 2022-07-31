@@ -1,37 +1,30 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame.Models
 {
-    public class GameStateDefault : RenderState
+    public class GameStateMainMenu : RenderState
     {
         private ZeldaAdventure666 _game;
+        private GameMenu _menu;
 
-        public GameStateDefault(ZeldaAdventure666 game)
+        public GameStateMainMenu(ZeldaAdventure666 game)
         {
             _game = game;
         }
 
         public override void Enter()
         {
-            if (!StaticData.GameStarted)
-            {
-                _game.SceneManager.Start();
-                StaticData.GameStarted = true;
-            }
+            MediaPlayer.Pause();
+            _menu = new GameMenu(ResumeGame);
         }
 
         public override void Update(GameTime gameTime)
         {
-            _game.SceneManager.Update(gameTime);
-            _game.DialogManager.Update(gameTime);
-            Music.Update(gameTime);
-
-            _game.TitlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
-
-            if (Input.P1.IsPressed(Input.P1.Start))
-                stateMachine.TransitionTo("MainMenu");
+            _menu.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -40,12 +33,25 @@ namespace MonoGameTestGame.Models
 
             _game.SceneManager.Draw(spriteBatch);
             _game.Hud.Draw(spriteBatch, _game.SceneManager.Player);
+            _game.DialogManager.Draw(spriteBatch);
             
             BitmapFontRenderer.DrawString(spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _game.TitlePosition);
+
+            _menu.Draw(spriteBatch);
             
             Rendering.End(gameTime);
         }
 
-        public override void Exit() {}
+        public override void Exit()
+        {
+            MediaPlayer.Resume();
+            SFX.MessageFinish.Play();
+        }
+
+        private void ResumeGame(object sender, EventArgs e)
+        {
+            stateMachine.TransitionTo("Default");
+            _menu = null;
+        }
     } 
 }

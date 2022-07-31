@@ -6,6 +6,6 @@ namespace MonoGameTestGame.Models
 {
     public abstract class RenderState : State
     {
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
     }
 }

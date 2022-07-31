@@ -83,8 +83,6 @@ namespace MonoGameTestGame
         
         private void StartErkkiDialog(Character _)
         {
-            //DialogManager.Load(_erkkiDialog, true);
-            //StateMachine.TransitionTo("Dialog");
             EventManager.Load(_erkkiEvents);
         }
 

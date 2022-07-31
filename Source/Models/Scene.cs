@@ -12,18 +12,16 @@ namespace MonoGameTestGame
     {
         public Song Theme { get; protected set; }
         public DataStore SceneData;
-        public StateMachine StateMachine;
         public EventManager EventManager;
         public TileMap TileMap;
         public Player Player;
-        public DialogManager DialogManager;
         public List<MapEntity> InteractableEntities { get; private set; }
         public List<MapObject> MapObjects { get; private set; }
         public List<MapObject> HittableEntities { get; private set; }
         public List<MapObject> CollidingEntities { get; private set; }
         public List<MapObject> UncollidingEntities { get; private set; }
         public List<MapEntity> TouchTriggers { get; private set; }
-        public bool Paused = false;
+        public bool Paused = true;
         public Vector2 DrawOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -44,21 +42,11 @@ namespace MonoGameTestGame
             CollidingEntities = new List<MapObject>();
             UncollidingEntities = new List<MapObject>();
             TouchTriggers = new List<MapEntity>();
+            EventManager = new EventManager();
             _removingEntities = new List<MapObject>();
             _animationEffects = new List<AnimationEffect>();
             _removingEffects = new List<AnimationEffect>();
             _hitboxes = new List<Hitbox>();
-
-            Dictionary<string, State> states = new Dictionary<string, State>()
-            {
-                { "Default", new GameStateDefault(this) },
-                { "Dialog", new GameStateDialog(this) }
-            };
-
-            StateMachine = new StateMachine(states, "Default");
-            EventManager = new EventManager();
-            DialogManager = new DialogManager();
-            DialogManager.DialogEnd += QuitDialog;
         }
 
         public void Init(Player player)
@@ -97,6 +85,8 @@ namespace MonoGameTestGame
         public virtual void Start()
         {
             Paused = false;
+            if (Theme != null)
+                Music.Play(Theme);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -105,9 +95,13 @@ namespace MonoGameTestGame
                 return;
             
             EventManager.Update();
-            StateMachine.Update(gameTime);
-            TileMap.Update(gameTime);  
-            //CollidingEntities.Sort();
+            TileMap.Update(gameTime);
+
+            foreach (var mapEntity in StaticData.Scene.MapObjects)
+            {
+                mapEntity.Update(gameTime);
+            }
+
             CollidingEntities.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
 
             if (Player.Velocity != Vector2.Zero)
@@ -271,11 +265,6 @@ namespace MonoGameTestGame
         public void UnregisterHitbox(Hitbox hitbox)
         {
             _hitboxes.Remove(hitbox);
-        }
-
-        private void QuitDialog()
-        {
-            StateMachine.TransitionTo("Default");
         }
     }
 }

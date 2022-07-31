@@ -31,6 +31,7 @@ namespace MonoGameTestGame
             public override void Start(Scene scene1, Player player, Direction direction)
             {
                 _scene1 = scene1;
+                _scene1.Paused = true;
                 _scene2 = SceneManager.LoadNextScene();
                 _player = player;
 
@@ -141,6 +142,7 @@ namespace MonoGameTestGame
             public override void Start(Scene scene1, Player player, Direction direction)
             {
                 _scene1 = scene1;
+                _scene1.Paused = true;
                 _player = player;
                 _overlay = Utility.CreateColorTexture(StaticData.NativeWidth, StaticData.NativeHeight, Color.Black);
 

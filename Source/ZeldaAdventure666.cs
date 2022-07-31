@@ -12,15 +12,16 @@ using MonoGameTestGame.Sprites;
 
 namespace MonoGameTestGame
 {
-    public class Game1 : Game
+    public class ZeldaAdventure666 : Game
     {
+        public RenderStateMachine StateMachine;
+        public SceneManager SceneManager;
+        public DialogManager DialogManager;
+        public HUD Hud;
+        public Vector2 TitlePosition;
         private static SpriteBatch _spriteBatch;
-        private DialogManager _dialogManager;
-        private SceneManager _sceneManager;
-        private HUD _hud;
-        private GameMenu _gameMenu;
 
-        public Game1()
+        public ZeldaAdventure666()
         {
             Content.RootDirectory = "Content";
             StaticData.TiledProjectDirectory = "Content\\TiledProjects\\testmap";
@@ -43,6 +44,7 @@ namespace MonoGameTestGame
 
         protected override void LoadContent()
         {
+            StaticData.Game = this;
             StaticData.Content = Content;
             StaticData.SpriteBatch = _spriteBatch = new SpriteBatch(GraphicsDevice);
             StaticData.Font = Content.Load<SpriteFont>("Fonts/TestFont");
@@ -51,78 +53,44 @@ namespace MonoGameTestGame
             BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
             SFX.Load();
             Shaders.Load();
-            StaticData.SceneManager = _sceneManager = new SceneManager();
+            StaticData.SceneManager = SceneManager = new SceneManager();
+            TitlePosition = new Vector2(StaticData.NativeWidth, 1);
 
-            _sceneManager.Init(new TestScene());
-            _dialogManager = new DialogManager();
-            _hud = new HUD();
-            _hud.Load();
+            SceneManager.Init(new TestScene());
+            DialogManager = new DialogManager();
+            DialogManager.DialogEnd += QuitDialog;
+            Hud = new HUD();
+            Hud.Load();
 
-            _gameMenu = new GameMenu(StartButton_Click);
+            Dictionary<string, State> states = new Dictionary<string, State>()
+            {
+                { "MainMenu", new GameStateMainMenu(this) },
+                { "Default", new GameStateDefault(this) },
+                { "Dialog", new GameStateDialog(this) }
+            };
+
+            StateMachine = new RenderStateMachine(states, "MainMenu");
         }
 
-
-        private void StartButton_Click(object sender, EventArgs e)
+        private void QuitDialog()
         {
-            Start();
+            StateMachine.TransitionTo("Default");
         }
-
-        private void Start()
-        {
-            started = true;
-            _dialogManager.Load(new Dialog("terve", "mitä äijä?"));
-            SFX.MessageFinish.Play();
-            _sceneManager.Start();
-            //Rendering.ApplyPostEffect(Shaders.Noise);
-        }
-
-        protected override void UnloadContent()
-        {
-            base.UnloadContent();
-        }
-
-        private Vector2 _titlePosition = new Vector2(StaticData.NativeWidth, 0);
-        private bool started = false;
 
         protected override void Update(GameTime gameTime)
         {
             Input.P1.Update();
-
-            if (!started)
-            {
-                _gameMenu.Update(gameTime);
-                return;
-            }
-
-            _sceneManager.Update(gameTime);
-            _dialogManager.Update(gameTime);
-            Music.Update(gameTime);
+            StateMachine.Update(gameTime);
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            _titlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
-        {            
-            Rendering.Start(GraphicsDevice);
-
-            _sceneManager.Draw(_spriteBatch);
-
-            if (!started)
-            {
-                _gameMenu.Draw(_spriteBatch);
-            }
-            
-            _hud.Draw(_spriteBatch, _sceneManager.Player);
-            _dialogManager.Draw(_spriteBatch);
-            BitmapFontRenderer.DrawString(_spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _titlePosition);
-            
-            Rendering.End(GraphicsDevice, gameTime);
-
+        {
+            StateMachine.Draw(_spriteBatch, gameTime);
             base.Draw(gameTime);
         }
     }

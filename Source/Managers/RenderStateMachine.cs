@@ -11,10 +11,10 @@ namespace MonoGameTestGame.Managers
         public RenderStateMachine(Dictionary<string, State> states, string initialStateName)
             : base(states, initialStateName) {}
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (CurrentState is RenderState state)
-                state.Draw(spriteBatch);
+                state.Draw(spriteBatch, gameTime);
         }
     }
 }

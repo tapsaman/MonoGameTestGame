@@ -7,7 +7,7 @@ namespace MonoGameTestGame
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new ZeldaAdventure666())
                 game.Run();
         }
     }

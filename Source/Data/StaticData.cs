@@ -7,6 +7,7 @@ namespace MonoGameTestGame
 {
     public static class StaticData
     {
+        public static ZeldaAdventure666 Game;
         public static bool GameStarted;
         public static int NativeWidth = 256;
         public static int NativeHeight = 224;

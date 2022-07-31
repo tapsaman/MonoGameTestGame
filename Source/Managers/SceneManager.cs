@@ -23,7 +23,6 @@ namespace MonoGameTestGame.Manangers
         public void Start()
         {
             CurrentScene.Start();
-            Music.Play(CurrentScene.Theme);
         }
 
         public void GoTo(TileMap.Exit exit)
@@ -78,7 +77,6 @@ namespace MonoGameTestGame.Manangers
                 CurrentScene.DrawGround(spriteBatch);
                 CurrentScene.DrawTop(spriteBatch);
                 CurrentScene.DrawOverlay(spriteBatch);
-                CurrentScene.DialogManager.Draw(spriteBatch);
             }
             else
             {

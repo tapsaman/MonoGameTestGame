@@ -48,16 +48,16 @@ namespace MonoGameTestGame.Models
         public override void Enter()
         {
             bool topDialogBox = Speaker.Position.Y > StaticData.NativeHeight / 2;
-            StaticData.Scene.DialogManager.Load(Dialog, topDialogBox);
-            StaticData.Scene.StateMachine.TransitionTo("Dialog");
-            StaticData.Scene.DialogManager.DialogEnd += WhenDone;
+            StaticData.Game.DialogManager.Load(Dialog, topDialogBox);
+            StaticData.Game.StateMachine.TransitionTo("Dialog");
+            StaticData.Game.DialogManager.DialogEnd += WhenDone;
         }
 
         public override void Update() {}
 
         public override void Exit()
         {
-            StaticData.Scene.DialogManager.DialogEnd -= WhenDone;
+            StaticData.Game.DialogManager.DialogEnd -= WhenDone;
         }
     }
 
