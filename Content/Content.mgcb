@@ -295,30 +295,6 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/chest open.wav
 
-#begin linktothepast/sfx/chest open.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/chest open.wav
-
-#begin linktothepast/sfx/chest open.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/chest open.wav
-
-#begin linktothepast/sfx/cursor.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/cursor.wav
-
-#begin linktothepast/sfx/cursor.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/cursor.wav
-
 #begin linktothepast/sfx/cursor.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -331,47 +307,11 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/enemy dies.wav
 
-#begin linktothepast/sfx/enemy dies.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/enemy dies.wav
-
-#begin linktothepast/sfx/enemy dies.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/enemy dies.wav
-
 #begin linktothepast/sfx/enemy hit.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/enemy hit.wav
-
-#begin linktothepast/sfx/enemy hit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/enemy hit.wav
-
-#begin linktothepast/sfx/enemy hit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/enemy hit.wav
-
-#begin linktothepast/sfx/error.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/error.wav
-
-#begin linktothepast/sfx/error.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/error.wav
 
 #begin linktothepast/sfx/error.wav
 /importer:WavImporter
@@ -385,41 +325,11 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/fall.wav
 
-#begin linktothepast/sfx/fall.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/fall.wav
-
 #begin linktothepast/sfx/fighter sword 1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/fighter sword 1.wav
-
-#begin linktothepast/sfx/fighter sword 1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/fighter sword 1.wav
-
-#begin linktothepast/sfx/fighter sword 1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/fighter sword 1.wav
-
-#begin linktothepast/sfx/fighter sword 2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/fighter sword 2.wav
-
-#begin linktothepast/sfx/fighter sword 2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/fighter sword 2.wav
 
 #begin linktothepast/sfx/fighter sword 2.wav
 /importer:WavImporter
@@ -439,41 +349,11 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/link falls.wav
 
-#begin linktothepast/sfx/link falls.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/link falls.wav
-
 #begin linktothepast/sfx/link hurt.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/link hurt.wav
-
-#begin linktothepast/sfx/link hurt.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/link hurt.wav
-
-#begin linktothepast/sfx/link hurt.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/link hurt.wav
-
-#begin linktothepast/sfx/menu close.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/menu close.wav
-
-#begin linktothepast/sfx/menu close.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/menu close.wav
 
 #begin linktothepast/sfx/menu close.wav
 /importer:WavImporter
@@ -487,47 +367,11 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/menu open.wav
 
-#begin linktothepast/sfx/menu open.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/menu open.wav
-
-#begin linktothepast/sfx/menu open.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/menu open.wav
-
 #begin linktothepast/sfx/message finish.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/message finish.wav
-
-#begin linktothepast/sfx/message finish.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/message finish.wav
-
-#begin linktothepast/sfx/message finish.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/message finish.wav
-
-#begin linktothepast/sfx/message.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/message.wav
-
-#begin linktothepast/sfx/message.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/message.wav
 
 #begin linktothepast/sfx/message.wav
 /importer:WavImporter
@@ -541,47 +385,11 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/small enemy hit.wav
 
-#begin linktothepast/sfx/small enemy hit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/small enemy hit.wav
-
-#begin linktothepast/sfx/small enemy hit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/small enemy hit.wav
-
 #begin linktothepast/sfx/soldier.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/soldier.wav
-
-#begin linktothepast/sfx/soldier.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/soldier.wav
-
-#begin linktothepast/sfx/soldier.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/soldier.wav
-
-#begin linktothepast/sfx/walk grass.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/walk grass.wav
-
-#begin linktothepast/sfx/walk grass.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:linktothepast/sfx/walk grass.wav
 
 #begin linktothepast/sfx/walk grass.wav
 /importer:WavImporter
@@ -600,6 +408,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:linktothepast/shadedwoodtransparency.png
+
+#begin moogle2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:moogle2.png
 
 #begin oot_game_over.mp3
 /importer:Mp3Importer
@@ -625,29 +445,11 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/EffectTest.fx
 
-#begin Shaders/EffectTest.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/EffectTest.fx
-
 #begin Shaders/EnemyDamageEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/EnemyDamageEffect.fx
-
-#begin Shaders/EnemyDamageEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/EnemyDamageEffect.fx
-
-#begin Shaders/GrayScale.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/GrayScale.fx
 
 #begin Shaders/GrayScale.fx
 /importer:EffectImporter
@@ -661,29 +463,11 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/HighContrastEffect.fx
 
-#begin Shaders/HighContrastEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/HighContrastEffect.fx
-
 #begin Shaders/InvertedColorEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/InvertedColorEffect.fx
-
-#begin Shaders/InvertedColorEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/InvertedColorEffect.fx
-
-#begin Shaders/MildNoiseEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/MildNoiseEffect.fx
 
 #begin Shaders/MildNoiseEffect.fx
 /importer:EffectImporter
@@ -697,18 +481,6 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/NoiseDistortionEffect.fx
 
-#begin Shaders/NoiseDistortionEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/NoiseDistortionEffect.fx
-
-#begin Shaders/NoiseEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/NoiseEffect.fx
-
 #begin Shaders/NoiseEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -720,18 +492,6 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/RainbowEffect.fx
-
-#begin Shaders/RainbowEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/RainbowEffect.fx
-
-#begin Shaders/ShaderTestSpriteEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/ShaderTestSpriteEffect.fx
 
 #begin Shaders/ShaderTestSpriteEffect.fx
 /importer:EffectImporter
@@ -744,12 +504,6 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/SpotlightEffect.fx
-
-#begin Shaders/WavyEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/WavyEffect.fx
 
 #begin Shaders/WavyEffect.fx
 /importer:EffectImporter

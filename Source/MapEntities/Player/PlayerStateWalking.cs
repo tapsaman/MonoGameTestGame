@@ -24,7 +24,7 @@ namespace MonoGameTestGame.Models
             {
                 stateMachine.TransitionTo("SwordHit");
             }
-            else if (Player.Velocity.X == 0 && Player.Velocity.Y == 0)
+            else if (Player.Velocity == Vector2.Zero)
             {
                 stateMachine.TransitionTo("Idle");
             }

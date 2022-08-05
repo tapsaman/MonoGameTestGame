@@ -18,6 +18,9 @@ namespace MonoGameTestGame
         public int DrawWidth { get; private set; }
         // Height in pixels
         public int DrawHeight { get; private set; }
+        public int TileWidth { get; private set; }
+        public int TileHeight { get; private set; }
+        public Vector2 TileSize { get; private set; }
         public ushort GroundLayer { get; protected set; } = 0;
         public ushort TopLayer { get; protected set; } = 1;
         public ushort ObjectLayer { get; protected set; } = 2;
@@ -25,8 +28,6 @@ namespace MonoGameTestGame
         protected TiledTileset _tileset;
         protected Texture2D _tilesetTexture;
         //protected Dictionary<Direction, MapCode> _nextMaps;
-        private int _tileWidth;
-        private int _tileHeight;
         private int _tilesetTilesWide;
         private int _tilesetTilesHeight;
         public Dictionary<int, Dictionary<int, Tile>> Tiles;
@@ -42,8 +43,13 @@ namespace MonoGameTestGame
         {
             TiledCS.TiledMap map = Load();
             
-            _tileWidth = _tileset.TileWidth;
-            _tileHeight = _tileset.TileHeight;
+            Width = map.Width;
+            Height = map.Height;
+            TileWidth = _tileset.TileWidth;
+            TileHeight = _tileset.TileHeight;
+            TileSize = new Vector2(TileWidth, TileHeight);
+            DrawWidth = Width * TileWidth;
+            DrawHeight = Height * TileHeight;
 
             // Amount of tiles on each row (left right)
             _tilesetTilesWide = _tileset.Columns;
@@ -52,11 +58,6 @@ namespace MonoGameTestGame
 
             Tiles = new Dictionary<int, Dictionary<int, Tile>>();
             _tileAnimations = new Dictionary<int, TileAnimation>();
-
-            Width = map.Width;
-            Height = map.Height;
-            DrawWidth = Width * _tileWidth;
-            DrawHeight = Height * _tileHeight;
 
             LoadTiles(map, GroundLayer);
             LoadTiles(map, TopLayer);
@@ -68,7 +69,7 @@ namespace MonoGameTestGame
             int column = tileFrame % _tilesetTilesWide;
             int row = (int)Math.Floor((double)tileFrame / (double)_tilesetTilesWide);
 
-            return new Rectangle(_tileWidth * column, _tileHeight * row, _tileWidth, _tileHeight);
+            return new Rectangle(TileWidth * column, TileHeight * row, TileWidth, TileHeight);
         }
 
         private string GetPropertyValue(TiledCS.TiledProperty[] properties, string propertyName)
@@ -159,27 +160,27 @@ namespace MonoGameTestGame
 
         public int ConvertX(int x)
         {
-            return x / _tileWidth;
+            return x / TileWidth;
         }
         public int ConvertX(float x)
         {
-            return (int)Math.Floor(x / _tileWidth);
+            return (int)Math.Floor(x / TileWidth);
         }
         public float ConvertTileX(int tileX)
         {
-            return tileX * _tileWidth;
+            return tileX * TileWidth;
         }
         public int ConvertY(int y)
         {
-            return y / _tileHeight;
+            return y / TileHeight;
         }
         public int ConvertY(float y)
         {
-            return (int)Math.Floor(y / _tileHeight);
+            return (int)Math.Floor(y / TileHeight);
         }
         public float ConvertTileY(int tileY)
         {
-            return tileY * _tileHeight;
+            return tileY * TileHeight;
         }
         public Vector2 ConvertTileXY(int tileX, int tileY)
         {
@@ -230,13 +231,13 @@ namespace MonoGameTestGame
                 var tiledTile = map.GetTiledTile(map.Tilesets[0], _tileset, gid);
                 Rectangle sourceRectangle = TileFrameToSourceRectangle(gid - 1);
 
-                float x = (i % Width) * _tileWidth;
-                float y = (float)Math.Floor(i / (double)Width) * _tileHeight;
+                float x = (i % Width) * TileWidth;
+                float y = (float)Math.Floor(i / (double)Width) * TileHeight;
 
                 Tile tile = new Tile()
                 {
                     Position = new Vector2((int)x, (int)y),
-                    DrawRectangle = new Rectangle((int)x, (int)y, _tileWidth, _tileHeight),
+                    DrawRectangle = new Rectangle((int)x, (int)y, TileWidth, TileHeight),
                     SourceRectangle = sourceRectangle
                 };
 

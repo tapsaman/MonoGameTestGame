@@ -24,13 +24,17 @@ namespace MonoGameTestGame.Animations
             private int _y = 60;
             private int _xPadding = 40;
             private float _speed = 800f;
+            private float _elapsedTime = 0;
             
-            public override void Update(GameTime gameTime) {}
+            public override void Update(GameTime gameTime)
+            {
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             public override void Draw(SpriteBatch spriteBatch)
             {
                 //_textWidth = BitmapFontRenderer.CalculateSize(Text).X;
                 
-                Utility.DrawOverlay(spriteBatch, new Color(0, 0, 0, Manager.ElapsedStageTime / 3));
+                Utility.DrawOverlay(spriteBatch, new Color(0, 0, 0, _elapsedTime / 3));
 
 
                 int letterSpace = 20; //Static.NativeWidth - xPadding * 2 / Text.Length;
@@ -39,7 +43,7 @@ namespace MonoGameTestGame.Animations
                 {
                     string t = Text.Substring(i, 1);
                     float endX = _xPadding + i * letterSpace + letterSpace / 2;
-                    float x = Static.NativeWidth * i - _speed * Manager.ElapsedStageTime;
+                    float x = Static.NativeWidth * i - _speed * _elapsedTime;
                     x = Math.Max(endX, x);
 
                     BitmapFontRenderer.DrawString(spriteBatch, t, new Vector2(x, _y));
@@ -59,11 +63,14 @@ namespace MonoGameTestGame.Animations
             private int _xPadding = 40;
             private int _nextXPadding = 85;
             private float _time = 0.4f;
+            private float _elapsedTime = 0;
 
             
             public override void Update(GameTime gameTime)
             {
-                if (Manager.ElapsedStageTime > _time)
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_elapsedTime > _time)
                     IsDone = true;
             }
 
@@ -73,7 +80,7 @@ namespace MonoGameTestGame.Animations
 
                 int letterSpace = 20; //Static.NativeWidth - xPadding * 2 / Text.Length;
                 Vector2 endPosition = new Vector2(_nextXPadding + letterSpace / 2, _y);
-                float donePercentage = Math.Min(1f, Manager.ElapsedStageTime / _time);
+                float donePercentage = Math.Min(1f, _elapsedTime / _time);
                 
                 for (int i = Text.Length - 1; i >= 0; i--)
                 {
@@ -92,6 +99,7 @@ namespace MonoGameTestGame.Animations
             private int _y = 60;
             private int _xPadding = 85;
             private float _time = 0.2f;
+            private float _elapsedTime = 0;
 
             public override void Enter()
             {
@@ -100,7 +108,9 @@ namespace MonoGameTestGame.Animations
 
             public override void Update(GameTime gameTime)
             {
-                if (Manager.ElapsedStageTime > _time)
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_elapsedTime > _time)
                     IsDone = true;
             }
 
@@ -109,7 +119,7 @@ namespace MonoGameTestGame.Animations
                 Utility.DrawOverlay(spriteBatch, Color.Black);
 
                 int letterSpace = 8; //Static.NativeWidth - xPadding * 2 / Text.Length;
-                float donePercentage = Math.Min(1f, Manager.ElapsedStageTime / _time);
+                float donePercentage = Math.Min(1f, _elapsedTime / _time);
                 Vector2 startPosition = new Vector2(_xPadding + letterSpace / 2, _y);
                 
                 for (int i = Text.Length - 1; i >= 0; i--)
@@ -130,16 +140,19 @@ namespace MonoGameTestGame.Animations
             private int _y = 60;
             private int _xPadding = 85;
             private float _time = 0.4f;
+            private float _elapsedTime = 0;
 
             public override void Update(GameTime gameTime)
             {
-                if (Manager.ElapsedStageTime > _time)
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                
+                if (_elapsedTime > _time)
                     IsDone = true;
             }
 
             public override void Draw(SpriteBatch spriteBatch)
             {
-                float reverseDonePercentage = 1f - Math.Min(1f, Manager.ElapsedStageTime / _time);
+                float reverseDonePercentage = 1f - Math.Min(1f, _elapsedTime / _time);
                 Utility.DrawOverlay(spriteBatch, new Color(reverseDonePercentage, reverseDonePercentage, reverseDonePercentage));
                 int letterSpace = 8; //Static.NativeWidth - xPadding * 2 / Text.Length;
 

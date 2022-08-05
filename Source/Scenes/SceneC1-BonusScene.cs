@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using MonoGameTestGame.Managers;
 using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame
@@ -10,6 +8,8 @@ namespace MonoGameTestGame
     public class SceneC1 : Scene
     {
         private Texture2D _overlay;
+        private Moogle _moogle;
+        private Event[] _startEvent;
 
         public SceneC1()
         {
@@ -20,6 +20,37 @@ namespace MonoGameTestGame
         protected override void Load()
         {
             _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
+            _moogle = new Moogle();
+            _moogle.Position = TileMap.ConvertTileXY(4, 36);
+            _moogle.Direction = Direction.Right;
+            var yDiff = Player.Position.Y - _moogle.Position.Y;
+
+            _startEvent = new Event[]
+            {
+                new AnimateEvent(new Animations.Walk(Player, TileMap.ConvertTileXY(2, 0), 0.2f)),
+                new FaceEvent(Player, _moogle), 
+                new WaitEvent(0.5f),
+                new FaceEvent(_moogle, Player), 
+                new WaitEvent(1f),
+                new AnimateEvent(new Animations.Jump(_moogle)),
+                new TextEvent(new Dialog("oh sh*t a customer"), _moogle),
+                new AnimateEvent(new Animations.Walk(_moogle, new Vector2(0, yDiff), 0.5f)),
+                new FaceEvent(_moogle, Player),
+                new FaceEvent(Player, _moogle),
+                new TextEvent(new Dialog("Wellcome to the mini game\naction!"), _moogle),
+                new AnimateEvent(new Animations.Walk(_moogle, new Vector2(0, -yDiff), 0.5f), false),
+                new AnimateEvent(new Animations.Walk(Player, TileMap.ConvertTileXY(2, 0))),
+                new AnimateEvent(new Animations.Walk(Player, new Vector2(0, -(yDiff - TileMap.TileHeight * 2)))),
+                new FaceEvent(_moogle, Player),
+            };
+
+            Add(_moogle);
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            Static.EventSystem.Load(_startEvent);
         }
 
         public override void DrawOverlay(SpriteBatch spriteBatch)

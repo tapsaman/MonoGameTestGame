@@ -77,6 +77,35 @@ namespace MonoGameTestGame.Models
         }
     }
 
+    public class AnimateEvent : Event
+    {
+        private Animation _animation;
+
+        public AnimateEvent(Animation animation)
+            : base(EventType.Animate)
+        {
+            _animation = animation;
+        }
+
+        public override void Enter()
+        {
+            IsDone = false;
+            _animation.Enter();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            _animation.Update(gameTime);
+
+            if (_animation.IsDone)
+            {
+                WhenDone?.Invoke();
+            }
+        }
+
+        public override void Exit() {}
+    }
+
     public class FaceEvent : Event
     {
         public Character Target;

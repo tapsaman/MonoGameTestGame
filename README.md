@@ -19,6 +19,7 @@ log:
 * 31.7. - static music class, mild noise shader, characters collidingx/y fields update on entity colliding, new map c1, touch trigger events, gamepad support, game menu init
 * 1.8. - global game states, menu state, using global game object renamed ZeldaAdventure666, states with draw method "render states"
 * 5.8. - slider input, sfx/music volume sliders, select input, resolution setting, wait event, game states cutscene, start over and game over, animation class and game over animations, dialog questions, static img class, global event manager replaced with event system, spotlight shader, interfaces init, renamed StaticData to Static and Animation(Manager) to SAnimation(Manager)
+* 5.8. - moogle, c1 start event init, animation events, jump and walk animations
 
 roadmap:
 * animation events (falling to hole)
@@ -31,6 +32,7 @@ small stuff todo:
 * question event with answer option switch
 * better text highlight shader
 * abstract class UIInput from Button
+* event manager not waiting and waiting for id
 
 could do but prob won't:
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)

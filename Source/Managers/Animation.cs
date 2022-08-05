@@ -16,11 +16,22 @@ namespace MonoGameTestGame
         {
             _stages = stages;
 
-            foreach (var item in _stages)
+            /*foreach (var item in _stages)
             {
                 item.Manager = this;
+            }*/
+        }
+
+        public void Enter()
+        {
+            Stages[CurrentIndex].Enter();
+
+            if (Stages[CurrentIndex].IsDone)
+            {
+                GoToNext();
             }
         }
+
 
         public void GoToNext()
         {
@@ -67,7 +78,6 @@ namespace MonoGameTestGame
 
     public abstract class AnimationStage : IStage, IDrawable
     {
-        public Animation Manager { get; set; }
         public bool IsDone { get; set; }
 
         public virtual void Enter() {}

@@ -58,6 +58,16 @@ namespace MonoGameTestGame
             }
         }
 
+        public static Vector2 ToAbsolute(this Vector2 vector)
+        {
+            return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
+        }
+
+        public static float ToAbsoluteFloat(this Vector2 vector)
+        {
+            return Math.Abs(vector.X) + Math.Abs(vector.Y);
+        }
+
         // Must be disposed!
         public static Texture2D CreateColorTexture(int width, int height, Color color)
         {

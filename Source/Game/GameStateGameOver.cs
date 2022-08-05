@@ -23,9 +23,10 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            Music.PlayOnce(_song);
             _animation = new Animations.GameOver();
+            _animation.Enter();
             _elapsedWaitTime = 0;
+            Music.PlayOnce(_song);
         }
 
         public override void Update(GameTime gameTime)

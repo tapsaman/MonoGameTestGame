@@ -34,6 +34,8 @@ namespace MonoGameTestGame
         {
             if (StateMachine == null)
             {
+                FaceToVelocity();
+                
                 if (WalkingStill || Velocity != Vector2.Zero) {
                     Sprite.SafeSetAnimation("Walk" + Direction);
                 }

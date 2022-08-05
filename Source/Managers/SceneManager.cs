@@ -15,10 +15,10 @@ namespace MonoGameTestGame.Manangers
         public void Init()
         {
             // Static.Scene must be defined before player so that hitboxes can register
-            Static.Scene = CurrentScene = new TestScene();
+            Static.Scene = CurrentScene = new SceneB1();
             Static.Player = Player = new Player()
             {
-                Position = CurrentScene.TileMap.ConvertTileXY(10, 10)
+                Position = CurrentScene.TileMap.ConvertTileXY(20, 40)
             };
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
