@@ -27,6 +27,18 @@ namespace MonoGameTestGame
         public abstract bool IsPressed(Keys key);
         public abstract bool JustPressed(Keys key);
         public abstract bool JustReleased(Keys key);
+        public bool IsAnyKeyPressed()
+        {
+            return (
+                Input.P1.IsPressed(Input.P1.A)
+             || Input.P1.IsPressed(Input.P1.B)
+             || Input.P1.IsPressed(Input.P1.X)
+             || Input.P1.IsPressed(Input.P1.Y)
+             || Input.P1.IsPressed(Input.P1.Start)
+             || Input.P1.IsPressed(Input.P1.Select)
+             || Input.P1.GetDirectionVector() != Vector2.Zero
+            );
+        }
         public bool IsMouseLeftPressed()
         {
             return _currentMouseState.LeftButton == ButtonState.Pressed;
@@ -41,7 +53,12 @@ namespace MonoGameTestGame
         }
         public Rectangle GetMouseRectangle()
         {
-            return new Rectangle(_currentMouseState.X / StaticData.NativeSizeMultiplier, _currentMouseState.Y / StaticData.NativeSizeMultiplier, 1, 1);
+            return new Rectangle(
+                (int)((_currentMouseState.X - Static.Renderer.ScreenX) / Static.Renderer.NativeSizeMultiplier),
+                (int)((_currentMouseState.Y - Static.Renderer.ScreenY) / Static.Renderer.NativeSizeMultiplier),
+                1,
+                1
+            );
         }
     }
 }

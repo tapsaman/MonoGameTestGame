@@ -19,7 +19,7 @@ namespace MonoGameTestGame
 
         private void Read(Character _)
         {
-            StaticData.Scene.EventManager.Load(_readEvent);
+            Static.EventSystem.Load(_readEvent);
         }
     }
 }

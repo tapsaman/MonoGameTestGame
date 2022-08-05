@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -15,9 +16,9 @@ namespace MonoGameTestGame.Controls
         #endregion
 
         #region Properties
+        public static SoundEffect ClickSound;
         public event EventHandler Click;
         public bool Clicked { get; private set; }
-        public bool? IsFocused { get; set; } = null;
         public Color PenColor = Color.Black;
         public override int Width { get { return _texture.Width; } }
         public override int Height { get { return _texture.Height; } }
@@ -40,6 +41,9 @@ namespace MonoGameTestGame.Controls
 
         public override void Update(GameTime gameTime)
         {
+            if (Disabled)
+                return;
+
             _isActive = false;
             _isHovering = Input.P1.GetMouseRectangle().Intersects(Rectangle);
 
@@ -51,6 +55,8 @@ namespace MonoGameTestGame.Controls
                 }
                 else if (Input.P1.JustReleasedMouseLeft())
                 {
+                    if (ClickSound != null) ClickSound.Play();
+
                     Click?.Invoke(this, new EventArgs());
                     return;
                 }
@@ -58,12 +64,14 @@ namespace MonoGameTestGame.Controls
 
             if (IsFocused == true)
             {
-                if (Input.P1.IsPressed(Input.P1.A))
+                if (Input.P1.IsPressed(Input.P1.A) || Input.P1.IsPressed(Input.P1.Start))
                 {
                     _isActive = true;
                 }
-                else if (Input.P1.JustReleased(Input.P1.A))
+                else if (Input.P1.JustReleased(Input.P1.A) || Input.P1.JustReleased(Input.P1.Start))
                 {
+                    if (ClickSound != null) ClickSound.Play();
+                    
                     Click?.Invoke(this, new EventArgs());
                 }
             }
@@ -74,8 +82,8 @@ namespace MonoGameTestGame.Controls
             var color = Color.White;
             
             if (_isActive)
-                color = Color.Red;
-            else if ((IsFocused == null && _isHovering) || IsFocused == true)
+                color = ActiveColor;
+            else if (_isHovering || IsFocused == true)
                 color = Color.Gray;
 
             spriteBatch.Draw(_texture, Rectangle, color);

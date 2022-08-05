@@ -1,27 +1,36 @@
-using Microsoft.Xna.Framework.Media;
-using MonoGameTestGame.Managers;
-using MonoGameTestGame.Models;
-
+using Microsoft.Xna.Framework;
 namespace MonoGameTestGame
 {
     public class SceneA2 : Scene
     {
-        private Event _signEvent;
+        TouchEventTrigger _holeEventTrigger;
+
+        public SceneA2()
+        {
+            TileMap = new MapA2();
+        }
         
         protected override void Load()
         {
-            TileMap = new MapA2();
-
-            var signEventTrigger = new EventTrigger(TileMap.GetPosition(9, 4), 14, 14);
-            _signEvent = new TextEvent(new Dialog("ZELDA'S TENT HOME"), signEventTrigger);
-            signEventTrigger.Trigger += ReadSign;
-
-            Add(signEventTrigger);
+            _holeEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(10, 22), 16, 16);
+            _holeEventTrigger.Trigger += PullToHole;
+            var innerHoleEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(10, 22) + new Vector2(6, 0), 4, 16);
+            innerHoleEventTrigger.Trigger += PullToHole;
+            
+            Add(_holeEventTrigger);
+            Add(innerHoleEventTrigger);
         }
 
-        private void ReadSign(Character _)
+        private void PullToHole(Character character)
         {
-            EventManager.Load(_signEvent);
+            character.ElementalVelocity = _holeEventTrigger.Hitbox.Rectangle.Center - character.Hitbox.Rectangle.Center;
+            character.ElementalVelocity.Normalize();
+            character.ElementalVelocity *= 30f;
+
+            if (_holeEventTrigger.Hitbox.Rectangle.Contains(character.Hitbox.Rectangle))
+            {
+                character.MakeFall();
+            }
         }
     }
 }

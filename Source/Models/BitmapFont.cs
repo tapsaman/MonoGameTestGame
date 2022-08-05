@@ -52,9 +52,9 @@ namespace MonoGameTestGame
         {
             public LinkToThePast()
             {
-                var rawCharData = StaticData.Content.Load<Dictionary<int, int[]>>("Fonts/linktothepast/linktothepast");
+                var rawCharData = Static.Content.Load<Dictionary<int, int[]>>("Fonts/linktothepast/linktothepast");
                 Load(rawCharData);
-                Texture = StaticData.Content.Load<Texture2D>("Fonts/linktothepast/linktothepast_0");
+                Texture = Static.Content.Load<Texture2D>("Fonts/linktothepast/linktothepast_0");
                 LineHeight = 16;
                 LetterSpacing = 1;
             }
@@ -64,8 +64,8 @@ namespace MonoGameTestGame
         {
             public Courier()
             {
-                Texture = StaticData.Content.Load<Texture2D>("Fonts/bitmapfonttest_0");
-                var rawCharData = StaticData.Content.Load<Dictionary<int, int[]>>("Fonts/bitmapfonttest");
+                Texture = Static.Content.Load<Texture2D>("Fonts/bitmapfonttest_0");
+                var rawCharData = Static.Content.Load<Dictionary<int, int[]>>("Fonts/bitmapfonttest");
                 Load(rawCharData);
             }
         }

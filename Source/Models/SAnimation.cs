@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameTestGame.Models
 {
-    public class Animation
+    public class SAnimation
     {
         public static int DefaultFrameWidth = 40;
         public static int DefaultFrameHeight = 50;
@@ -19,7 +19,7 @@ namespace MonoGameTestGame.Models
         public int TextureYPos;
         public int TextureXPos;
 
-        public Animation(Texture2D texture, int frameCount, float frameDuration, bool isLooping = true, int textureYPos = 0, int textureXPos = 0)
+        public SAnimation(Texture2D texture, int frameCount, float frameDuration, bool isLooping = true, int textureYPos = 0, int textureXPos = 0)
         {
             Texture = texture;
             FrameCount = frameCount;
@@ -31,7 +31,7 @@ namespace MonoGameTestGame.Models
             FrameHeight = DefaultFrameHeight;
         }
 
-        public Animation(Texture2D texture, int frameCount, int frameWidth, int frameHeight, float frameDuration = 0.1f, int textureYPos = 0, int textureXPos = 0)
+        public SAnimation(Texture2D texture, int frameCount, int frameWidth, int frameHeight, float frameDuration = 0.1f, int textureYPos = 0, int textureXPos = 0)
         {
             Texture = texture;
             FrameCount = frameCount;

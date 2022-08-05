@@ -13,19 +13,22 @@ namespace MonoGameTestGame
         public Seppo Seppo;
         private bool _seppoActivated;
 
+        public SceneB1()
+        {
+            Theme = Static.Content.Load<Song>("linktothepast/forest");
+            TileMap = new MapB1();
+        }
+
         protected override void Load()
         {
-            _overlay = StaticData.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
-            Theme = StaticData.Content.Load<Song>("linktothepast/forest");
-            TileMap = new MapB1();
-
+            _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
             Seppo = new Seppo();
-            Seppo.Position = new Vector2(TileMap.ConvertTileX(35), TileMap.ConvertTileY(6));
+            Seppo.Position = TileMap.ConvertTileXY(35, 6);
 
-            var seppoActivateEventTrigger = new TouchEventTrigger(TileMap.GetPosition(35, 16), 16, 8);
+            var seppoActivateEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(35, 16), 16, 8);
             seppoActivateEventTrigger.Trigger += SeppoActivateEvent;
             
-            var seppoDectivateEventTrigger = new TouchEventTrigger(TileMap.GetPosition(35, 20), 16, 8);
+            var seppoDectivateEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(35, 20), 16, 8);
             seppoDectivateEventTrigger.Trigger += SeppoDeactivateEvent;
 
             Add(Seppo);
@@ -60,7 +63,15 @@ namespace MonoGameTestGame
         // NOTE drawing tree shadow overlay on top of dialog looks cool 
         public override void DrawOverlay(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_overlay, Vector2.Zero + DrawOffset * 0.5f, new Rectangle(0, 0, StaticData.NativeWidth * 2, StaticData.NativeHeight * 3), new Color(255, 255, 255, 0.5f));
+            // Reduce native size for panning
+            var overlayPosition = OverlayOffset + DrawOffset * 0.5f - Static.NativeSize;
+            
+            spriteBatch.Draw(
+                _overlay,
+                overlayPosition,
+                new Rectangle(0, 0, Width * 3, Height * 2),
+                new Color(255, 255, 255, 0.5f)
+            );
         }
     }
 }

@@ -13,44 +13,56 @@ namespace MonoGameTestGame.Models
 
         public GameStateMainMenu(ZeldaAdventure666 game)
         {
+            CanReEnter = false;
             _game = game;
         }
 
         public override void Enter()
         {
-            MediaPlayer.Pause();
+            if (Static.GameStarted)
+            {
+                SFX.MenuOpen.Play();
+                MediaPlayer.Pause();
+            }
+
             _menu = new GameMenu(ResumeGame);
+            UI.Add(_menu);
         }
 
         public override void Update(GameTime gameTime)
         {
-            _menu.Update(gameTime);
+            UI.Update(gameTime);
+            Music.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            Rendering.Start();
+            Static.Renderer.Start();
 
-            _game.SceneManager.Draw(spriteBatch);
-            _game.Hud.Draw(spriteBatch, _game.SceneManager.Player);
-            _game.DialogManager.Draw(spriteBatch);
+            Static.SceneManager.Draw(spriteBatch);
+            _game.Hud.Draw(spriteBatch, Static.Player);
+            //Static.DialogManager.Draw(spriteBatch);
             
             BitmapFontRenderer.DrawString(spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _game.TitlePosition);
 
-            _menu.Draw(spriteBatch);
+            UI.Draw(spriteBatch);
             
-            Rendering.End(gameTime);
+            Static.Renderer.End(gameTime);
         }
 
         public override void Exit()
         {
-            MediaPlayer.Resume();
-            SFX.MessageFinish.Play();
+            if (Static.GameStarted)
+            {
+                SFX.MenuClose.Play();
+                MediaPlayer.Resume();
+            }
         }
 
         private void ResumeGame(object sender, EventArgs e)
         {
             stateMachine.TransitionTo("Default");
+            UI.SetToRemove(_menu);
             _menu = null;
         }
     } 

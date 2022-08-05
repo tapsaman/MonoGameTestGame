@@ -14,16 +14,18 @@ namespace MonoGameTestGame.Models
         SaveValue
     }
 
-    public abstract class Event
+    public abstract class Event : IStage
     {
         public EventType Type { get; private set; }
         public string ID { get; private set; }
         public string WaitForID { get; private set; }
+        public bool IsDone { get; set; }
         public Action WhenDone;
         private static int _noIDCount = 0;
 
+        // Events must be reset in Enter for reusage!
         public abstract void Enter();
-        public abstract void Update();
+        public abstract void Update(GameTime gameTime);
         public abstract void Exit();
 
         public Event(EventType type, string id = "", string waitForID = "")
@@ -38,6 +40,7 @@ namespace MonoGameTestGame.Models
     {
         public Dialog Dialog;
         public MapEntity Speaker;
+        private string _previousGameState;
         public TextEvent(Dialog dialog, MapEntity speaker)
             : base(EventType.Text)
         {
@@ -47,17 +50,30 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            bool topDialogBox = Speaker.Position.Y > StaticData.NativeHeight / 2;
-            StaticData.Game.DialogManager.Load(Dialog, topDialogBox);
-            StaticData.Game.StateMachine.TransitionTo("Dialog");
-            StaticData.Game.DialogManager.DialogEnd += WhenDone;
+            IsDone = false;
+            _previousGameState = Static.Game.StateMachine.CurrentStateKey;
+            bool topDialogBox = Speaker.Position.Y > Static.NativeHeight / 2;
+            Static.DialogManager.Load(Dialog, topDialogBox);
+            Static.Game.StateMachine.TransitionTo("Dialog");
+            Static.DialogManager.DialogEnd += OnDone;
         }
 
-        public override void Update() {}
+        private void OnDone()
+        {
+            Static.Game.StateMachine.TransitionTo(_previousGameState);
+            IsDone = true;
+            WhenDone?.Invoke();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            // Since GameStateDialog stops event updates we are done one first update
+            //IsDone = true;
+        }
 
         public override void Exit()
         {
-            StaticData.Game.DialogManager.DialogEnd -= WhenDone;
+            Static.DialogManager.DialogEnd -= OnDone;
         }
     }
 
@@ -82,6 +98,8 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
+            IsDone = false;
+
             if (FaceTo != null)
             {
                 Target.Direction = (Direction)FaceTo;
@@ -92,9 +110,10 @@ namespace MonoGameTestGame.Models
             }
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             // End on first update so we get one rendering before next event 
+            IsDone = true;
             WhenDone?.Invoke();
         }
 
@@ -117,14 +136,16 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            DataStore dataStore = StaticData.Scene.SceneData;
+            IsDone = false;
+            DataStore dataStore = Static.Scene.SceneData;
 
             dataStore.Save(_id, _value);
 
+            IsDone = true;
             WhenDone?.Invoke();
         }
 
-        public override void Update() {}
+        public override void Update(GameTime gameTime) {}
 
         public override void Exit() {}
     }
@@ -147,31 +168,67 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            DataStore dataStore = StaticData.Scene.SceneData;
+            IsDone = false;
+            DataStore dataStore = Static.Scene.SceneData;
             bool condition = dataStore.Get(BasedOnID);
 
             if (condition && IfTrue != null)
             {
-                _eventManager = new EventManager();
-                _eventManager.Load(IfTrue);
+                _eventManager = new EventManager(IfTrue);
+                //_eventManager.Enter();
             }
             else if (!condition && IfFalse != null)
             {
-                _eventManager = new EventManager();
-                _eventManager.Load(IfFalse);
+                _eventManager = new EventManager(IfFalse);
+                //_eventManager.Enter();
             }
             else
             {
                 WhenDone?.Invoke();
+                IsDone = true;
             }
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
-            if (_eventManager == null || _eventManager.Done)
+            if (_eventManager == null || _eventManager.IsDone)
+            {
                 WhenDone?.Invoke();
+                IsDone = true;
+            }
             else
-                _eventManager.Update();
+                _eventManager.Update(gameTime);
+        }
+
+        public override void Exit() {}
+    }
+
+    public class WaitEvent : Event
+    {
+        public float WaitTime;
+        private float _elapsedWaitTime;
+
+        public WaitEvent(float waitTime)
+            : base(EventType.Condition)
+        {
+            WaitTime = waitTime;
+        }
+
+        public override void Enter()
+        {
+            IsDone = false;
+            _elapsedWaitTime = 0;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            _elapsedWaitTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            if (_elapsedWaitTime > WaitTime)
+            {
+                IsDone = true;
+                WhenDone?.Invoke();
+            }
         }
 
         public override void Exit() {}

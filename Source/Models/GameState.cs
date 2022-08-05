@@ -11,5 +11,5 @@ namespace MonoGameTestGame.Models
         {
             Scene = scene;
         }
-    } 
+    }
 }

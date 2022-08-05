@@ -15,13 +15,13 @@ namespace MonoGameTestGame
             Colliding = false;
             Moving = true;
             
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast/enemy-sprites");
-            Animation.DefaultFrameWidth = Animation.DefaultFrameHeight = 34;
+            var texture = Static.Content.Load<Texture2D>("linktothepast/enemy-sprites");
+            SAnimation.DefaultFrameWidth = SAnimation.DefaultFrameHeight = 34;
 
-            Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
+            Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
-                { "Default", new Animation(texture, 3, 0.1f, true) },
-                { "TakenDamage", new Animation(texture, 1, 0.1f, false) }
+                { "Default", new SAnimation(texture, 3, 0.1f, true) },
+                { "TakenDamage", new SAnimation(texture, 1, 0.1f, false) }
             };
 
             Sprite.SetAnimations(animations, "Default");
@@ -45,11 +45,11 @@ namespace MonoGameTestGame
 
         public override void DeterminePlayerDamage()
         {
-            var playerRectangle = StaticData.Scene.Player.Hitbox.Rectangle;
+            var playerRectangle = Static.Scene.Player.Hitbox.Rectangle;
 
             if (Hitbox.Rectangle.Intersects(playerRectangle))
             {
-                StaticData.Scene.Player.TakeDamage(Hitbox.Rectangle.Center);
+                Static.Scene.Player.TakeDamage(Hitbox.Rectangle.Center);
             }
         }
     }

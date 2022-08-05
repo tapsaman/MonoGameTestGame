@@ -8,11 +8,10 @@ using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame
 {
-    public abstract class Scene
+    public abstract class Scene : IUpdatable
     {
         public Song Theme { get; protected set; }
         public DataStore SceneData;
-        public EventManager EventManager;
         public TileMap TileMap;
         public Player Player;
         public List<MapEntity> InteractableEntities { get; private set; }
@@ -23,6 +22,7 @@ namespace MonoGameTestGame
         public List<MapEntity> TouchTriggers { get; private set; }
         public bool Paused = true;
         public Vector2 DrawOffset = Vector2.Zero;
+        public Vector2 OverlayOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
         private List<MapObject> _removingEntities;
@@ -42,7 +42,6 @@ namespace MonoGameTestGame
             CollidingEntities = new List<MapObject>();
             UncollidingEntities = new List<MapObject>();
             TouchTriggers = new List<MapEntity>();
-            EventManager = new EventManager();
             _removingEntities = new List<MapObject>();
             _animationEffects = new List<AnimationEffect>();
             _removingEffects = new List<AnimationEffect>();
@@ -52,7 +51,7 @@ namespace MonoGameTestGame
         public void Init(Player player)
         {
             Player = player;
-            Add(Player);
+            Add((MapObject)Player);
             Load();
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
@@ -94,10 +93,9 @@ namespace MonoGameTestGame
             if (Paused)
                 return;
             
-            EventManager.Update();
             TileMap.Update(gameTime);
 
-            foreach (var mapEntity in StaticData.Scene.MapObjects)
+            foreach (var mapEntity in MapObjects)
             {
                 mapEntity.Update(gameTime);
             }
@@ -128,11 +126,11 @@ namespace MonoGameTestGame
 
         public void UpdateCamera(Vector2 targetPosition)
         {
-            int halfWidth = StaticData.NativeWidth / 2;
-            int x = Math.Min(TileMap.DrawWidth - StaticData.NativeWidth, Math.Max(0, (int)targetPosition.X - halfWidth));
+            int halfWidth = Static.NativeWidth / 2;
+            int x = Math.Min(TileMap.DrawWidth - Static.NativeWidth, Math.Max(0, (int)targetPosition.X - halfWidth));
 
-            int halfHeight = StaticData.NativeHeight / 2;
-            int y = Math.Min(TileMap.DrawHeight - StaticData.NativeHeight, Math.Max(0, (int)targetPosition.Y - halfHeight));
+            int halfHeight = Static.NativeHeight / 2;
+            int y = Math.Min(TileMap.DrawHeight - Static.NativeHeight, Math.Max(0, (int)targetPosition.Y - halfHeight));
 
             DrawOffset = new Vector2(-x, -y);
         }
@@ -141,7 +139,7 @@ namespace MonoGameTestGame
         {
             TileMap.Draw(spriteBatch, TileMap.GroundLayer, DrawOffset);
 
-            if (StaticData.RenderHitboxes)
+            if (Static.RenderHitboxes)
             {
                 foreach (var hitbox in _hitboxes)
                 {

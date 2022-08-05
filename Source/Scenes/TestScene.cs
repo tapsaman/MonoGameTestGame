@@ -11,22 +11,27 @@ namespace MonoGameTestGame
         private Event _signEvent;
         private float _elapsedSongTime = 0;
 
+        public TestScene()
+        {
+            // Load basics in constructor
+            Theme = Static.Content.Load<Song>("linktothepast/darkworld");
+            TileMap = new TestMap();
+        }
+
         protected override void Load()
         {
-            Theme = StaticData.Content.Load<Song>("linktothepast/darkworld");
-            TileMap = new TestMap();
-
+            // Init events and map objects in Load
             var erkki = new Erkki();
-            erkki.Position = new Vector2(TileMap.ConvertTileX(22), TileMap.ConvertTileY(22));
+            erkki.Position = TileMap.ConvertTileXY(22, 22);
             erkki.Trigger += StartErkkiDialog;
 
             var bat = new Bat();
             bat.Position = new Vector2(180, 200);
 
             var guard = new Guard();
-            guard.Position = new Vector2(TileMap.ConvertTileX(4), TileMap.ConvertTileY(22));
+            guard.Position = TileMap.ConvertTileXY(4, 22);
 
-            var signEventTrigger = new EventTrigger(TileMap.GetPosition(9, 4), 14, 14);
+            var signEventTrigger = new EventTrigger(TileMap.ConvertTileXY(9, 4), 14, 14);
             _signEvent = new TextEvent(new Dialog("ZELDA'S TENT HOME"), signEventTrigger);
             signEventTrigger.Trigger += ReadSign;
 
@@ -35,10 +40,8 @@ namespace MonoGameTestGame
             Add(guard);
             Add(signEventTrigger);
 
-            var erkkiDialog1 = new Dialog(
-                "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!\n123456790909\nvitu juu",
-                "Simo ruumishuoneelta\nmoi. Oletko ajatellut kuolla?\nNyt se nimittäin kannattaa."
-            );
+            var msg1 = "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!\n123456790909\nvitu juu";
+            var msg2 = "Simo ruumishuoneelta\nmoi. Oletko ajatellut kuolla?\nNyt se nimittäin kannattaa.";
 
             var erkkiDialog2 = new Dialog(
                 "Sample text"
@@ -50,8 +53,12 @@ namespace MonoGameTestGame
                 {
                     IfFalse = new Event[]
                     {
-                        new FaceEvent(erkki, Player),
-                        new TextEvent(erkkiDialog1, erkki),
+                        new FaceEvent(erkki, Direction.Up),
+                        //new FaceEvent(erkki, Player),
+                        new TextEvent(new Dialog(msg1), erkki),
+                        new FaceEvent(erkki, Direction.Right),
+                        new WaitEvent(1),
+                        new TextEvent(new Dialog(msg2), erkki),
                         new FaceEvent(erkki, Direction.Down),
                         new SaveValueEvent(EventStore.Scene, "spoken to erkki", true)
                     },
@@ -62,7 +69,6 @@ namespace MonoGameTestGame
                         new FaceEvent(erkki, Direction.Down)
                     }
                 }
-                
             };
         }
 
@@ -83,12 +89,12 @@ namespace MonoGameTestGame
         
         private void StartErkkiDialog(Character _)
         {
-            EventManager.Load(_erkkiEvents);
+            Static.EventSystem.Load(_erkkiEvents);
         }
 
         private void ReadSign(Character _)
         {
-            EventManager.Load(_signEvent);
+            Static.EventSystem.Load(_signEvent);
         }
     }
 }

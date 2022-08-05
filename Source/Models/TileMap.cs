@@ -181,7 +181,7 @@ namespace MonoGameTestGame
         {
             return tileY * _tileHeight;
         }
-        public Vector2 GetPosition(int tileX, int tileY)
+        public Vector2 ConvertTileXY(int tileX, int tileY)
         {
             return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
         }

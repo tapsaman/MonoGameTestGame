@@ -10,14 +10,14 @@ namespace MonoGameTestGame
             Interactable = false;
             Hittable = true;
             Colliding = true;
-            Sprite.SetTexture(StaticData.ObjectTexture, new Rectangle(0, 0, 16, 16));
+            Sprite.SetTexture(Img.ObjectTexture, new Rectangle(0, 0, 16, 16));
             Trigger += Destroy;
         }
 
         private void Destroy(Character _)
         {
-            StaticData.Scene.Add(new Animations.BushSlash(Position + new Vector2(8)));
-            StaticData.Scene.SetToRemove(this);
+            Static.Scene.Add(new Animations.BushSlash(Position + new Vector2(8)));
+            Static.Scene.SetToRemove(this);
         }
     }
 }

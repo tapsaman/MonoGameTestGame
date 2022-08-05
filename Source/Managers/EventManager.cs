@@ -1,35 +1,51 @@
+using Microsoft.Xna.Framework;
 using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame.Managers
 {
-    public class EventManager
+    public class EventManager //: ArrayManager<Event>
     {
-        public bool Done = true;
-        private int _eventIndex; 
+        /*public EventManager(Event[] events)
+        {
+            Stages = events;
+        }
+
+        public override void OnEnter(Event stage)
+        {
+            stage.Enter();
+        }
+
+        public override void OnExit(Event stage)
+        {
+            stage.Exit();
+        }*/
+
+        public bool IsDone { get; set; }
+        private int _eventIndex;
         private Event[] _eventList;
         private bool _lastEventDone = false;
 
-        public void Load(Event singleEvent)
+        public EventManager(Event[] eventList)
         {
-            Load(new Event[] { singleEvent });
+            Load(eventList);
         }
         
         public void Load(Event[] eventList)
         {
-            Done = false;
+            IsDone = false;
             _eventList = eventList;
             _eventIndex = 0;
             InitEvent(0);
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             if (_eventList == null)
                 return;
 
             if (!_lastEventDone)
             {
-                _eventList[_eventIndex].Update();                
+                _eventList[_eventIndex].Update(gameTime);        
             }
             else
             {
@@ -59,7 +75,7 @@ namespace MonoGameTestGame.Managers
             }
             else
             {
-                Done = true;
+                IsDone = true;
                 Unload();
             }
         }

@@ -8,6 +8,7 @@ namespace MonoGameTestGame
         {
             Position = position;
             Hitbox.Load(width, height);
+            Hitbox.Color = Color.Pink;
             Interactable = false;
             TriggeredOnTouch = true;
         }

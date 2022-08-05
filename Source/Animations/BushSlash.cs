@@ -8,11 +8,11 @@ namespace MonoGameTestGame.Animations
     {
         public BushSlash(Vector2 position): base(position) {}
         
-        protected override Animation Load()
+        protected override SAnimation Load()
         {
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast/animation-bush-slash");
+            var texture = Static.Content.Load<Texture2D>("linktothepast/animation-bush-slash");
             Position -= new Vector2(15, 21);
-            return new Animation(texture, 8, 29, 43, 0.1f);
+            return new SAnimation(texture, 8, 29, 43, 0.1f);
         }
     }
 }

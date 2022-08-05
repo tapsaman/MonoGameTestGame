@@ -56,8 +56,8 @@ namespace MonoGameTestGame.Models
                 else
                 {
                     SFX.EnemyDies.Play();
-                    StaticData.Scene.Add(new Animations.EnemyDeath(_bat.Hitbox.Rectangle.Center));
-                    StaticData.Scene.SetToRemove(_bat);
+                    Static.Scene.Add(new Animations.EnemyDeath(_bat.Hitbox.Rectangle.Center));
+                    Static.Scene.SetToRemove(_bat);
                 }
             }
         }

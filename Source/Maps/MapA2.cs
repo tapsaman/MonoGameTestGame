@@ -6,15 +6,15 @@ namespace MonoGameTestGame
     {
         public override TiledCS.TiledMap Load()
         {
-            _tileset = new TiledCS.TiledTileset(StaticData.TiledProjectDirectory + "\\linktothepast-tiles.tsx");
-            _tilesetTexture = StaticData.TileTexture;
+            _tileset = new TiledCS.TiledTileset(Static.TiledProjectDirectory + "\\linktothepast-tiles.tsx");
+            _tilesetTexture = Img.TileTexture;
 
             Exits = new Dictionary<Direction, Exit>()
             {
                 { Direction.Up, new Exit(Direction.Up, MapCode.A1, TransitionType.Pan) }
             };
 
-            return new TiledCS.TiledMap(StaticData.TiledProjectDirectory + "\\A2.tmx");
+            return new TiledCS.TiledMap(Static.TiledProjectDirectory + "\\A2.tmx");
         }
     }
 }

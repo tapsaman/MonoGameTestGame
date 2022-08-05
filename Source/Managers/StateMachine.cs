@@ -7,6 +7,7 @@ namespace MonoGameTestGame.Managers
 {
     public class StateMachine
     {
+        public string CurrentStateKey { get; private set; }
         public State CurrentState { get; private set; }
         public virtual Dictionary<string, State> States
         {
@@ -27,6 +28,7 @@ namespace MonoGameTestGame.Managers
         {
             States = states;
             CurrentState = States[initialStateName];
+            CurrentStateKey = initialStateName;
             CurrentState.Enter();
         }
 
@@ -41,13 +43,14 @@ namespace MonoGameTestGame.Managers
             {
                 Sys.LogError("StateMachine attempted to transition to undefined state '" + newStateName + "'");
             }
-            else
+            else if (CurrentState.CanReEnter || CurrentState != States[newStateName])
             {
                 CurrentState.Exit();
+                Sys.Debug("StateMachine entering state " + newStateName);
                 CurrentState = States[newStateName];
+                CurrentStateKey = newStateName;
                 CurrentState.Enter();
             }
-
         }
     }
 }

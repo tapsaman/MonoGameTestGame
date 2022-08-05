@@ -8,11 +8,11 @@ namespace MonoGameTestGame.Animations
     {
         public EnemyDeath(Vector2 position): base(position) {}
         
-        protected override Animation Load()
+        protected override SAnimation Load()
         {
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast/animation-enemy-death");
+            var texture = Static.Content.Load<Texture2D>("linktothepast/animation-enemy-death");
             Position -= new Vector2(15, 21);
-            return new Animation(texture, 7, 26, 32, 0.1f);
+            return new SAnimation(texture, 7, 26, 32, 0.1f);
         }
     }
 }

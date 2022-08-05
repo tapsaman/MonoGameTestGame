@@ -13,7 +13,7 @@ namespace MonoGameTestGame
                 if (GamePad.GetCapabilities(i).IsConnected)
                 {
                     P1 = new GamePadController(i);
-                    StaticData.GamePadEnabled = true;
+                    Static.GamePadEnabled = true;
                     return;
                 }
             }
@@ -24,7 +24,7 @@ namespace MonoGameTestGame
         {
             P1 = new KeyboardController();
             P1.Update();
-            StaticData.GamePadEnabled = false;
+            Static.GamePadEnabled = false;
         }
     }
 }

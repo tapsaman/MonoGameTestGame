@@ -35,7 +35,7 @@ namespace MonoGameTestGame.Models
         {
             if (_enemy.CollidingX != Direction.None || _enemy.CollidingY != Direction.None)
             {
-                _flyVelocity = Vector2.Zero;
+                //_flyVelocity = Vector2.Zero;
             }
 
             _enemy.Velocity = _flyVelocity;
@@ -56,8 +56,8 @@ namespace MonoGameTestGame.Models
                 else
                 {
                     SFX.EnemyDies.Play();
-                    StaticData.Scene.Add(new Animations.EnemyDeath(_enemy.Position + new Vector2(7)));
-                    StaticData.Scene.SetToRemove(_enemy);
+                    Static.Scene.Add(new Animations.EnemyDeath(_enemy.Position + new Vector2(7)));
+                    Static.Scene.SetToRemove(_enemy);
                 }
             }
         }

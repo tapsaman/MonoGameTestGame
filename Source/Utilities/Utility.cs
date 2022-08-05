@@ -7,6 +7,7 @@ namespace MonoGameTestGame
     public static class Utility
     {
         private static Random _random = new Random();
+        private static Texture2D _fullScreenOverlay = Utility.CreateColorTexture(Static.NativeWidth, Static.NativeHeight, Color.White);
 
         public static int RandomBetween(int lowest, int highest)
         {
@@ -37,6 +38,11 @@ namespace MonoGameTestGame
             }
         }
 
+        public static float GetSeconds(this GameTime gameTime)
+        {
+            return (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
         public static Direction ToDirection(this Vector2 vector)
         {
             if (vector == Vector2.Zero)
@@ -55,17 +61,22 @@ namespace MonoGameTestGame
         // Must be disposed!
         public static Texture2D CreateColorTexture(int width, int height, Color color)
         {
-            var texture = new Texture2D(StaticData.Graphics.GraphicsDevice, width, height);
+            var texture = new Texture2D(Static.Graphics.GraphicsDevice, width, height);
             var data = new Color[width * height];
 
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = Color.White;
+                data[i] = color;
             }
 
             texture.SetData(data);
 
             return texture;
+        }
+
+        public static void DrawOverlay(SpriteBatch spriteBatch, Color color)
+        {
+            spriteBatch.Draw(_fullScreenOverlay, Vector2.Zero, color);
         }
 
         public static int IndexOfNth(this string source, char toFind, int n, int fromIndex = 0)

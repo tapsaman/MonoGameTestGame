@@ -24,22 +24,28 @@ namespace MonoGameTestGame
 
         public override void Update(GameTime gameTime)
         {
+            if (Static.Game.StateMachine.CurrentState is GameStateDefault == false)
+                return;
+            
             base.Update(gameTime);
-            DeterminePlayerDamage();
+
+            if (!IsInvincible)
+            {
+                DeterminePlayerDamage();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
             if (!IsInvincible)
             {
-
                 Sprite.Draw(spriteBatch, offset);
             }
             else
             {
-                Rendering.ChangeToDamageEffect();
+                Static.Renderer.ChangeToDamageEffect();
                 Sprite.Draw(spriteBatch, offset);
-                Rendering.ChangeToDefault();
+                Static.Renderer.ChangeToDefault();
             }
         }
 

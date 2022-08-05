@@ -33,7 +33,7 @@ namespace MonoGameTestGame
         }
         public virtual void Unload()
         {
-            StaticData.Scene.UnregisterHitbox(Hitbox);
+            Static.Scene.UnregisterHitbox(Hitbox);
             Hitbox.Dispose();
         }
         public bool HasTrigger()

@@ -15,7 +15,7 @@ namespace MonoGameTestGame
         {
             Hittable = false;
             Colliding = true;
-            Sprite.SetTexture(StaticData.ObjectTexture, new Rectangle(16 * 4, 0, 16, 16));
+            Sprite.SetTexture(Img.ObjectTexture, new Rectangle(16 * 4, 0, 16, 16));
             Hitbox.Load(16, 16);
             Interactable = true;
             Trigger += Read;
@@ -23,7 +23,7 @@ namespace MonoGameTestGame
 
         private void Read(Character _)
         {
-            StaticData.Scene.EventManager.Load(_readEvent);
+            Static.EventSystem.Load(_readEvent);
         }
     }
 }

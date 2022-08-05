@@ -3,20 +3,20 @@ using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame.Models
 {
-    public abstract class AnimationEffect : AnimationManager
+    public abstract class AnimationEffect : SAnimationManager
     {
-        protected abstract Animation Load();
+        protected abstract SAnimation Load();
 
         public AnimationEffect(Vector2 position)
         {
             Position = position;
-            Animation animation = Load();
+            SAnimation animation = Load();
             Play(animation);
         }
 
         public override void OnDone()
         {
-            StaticData.Scene.SetToRemove(this);
+            Static.Scene.SetToRemove(this);
         }
     }
 }

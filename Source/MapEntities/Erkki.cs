@@ -10,16 +10,16 @@ namespace MonoGameTestGame
     {       
         public Erkki()
         {
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast/npc-sprites");
-            Animation.DefaultFrameWidth = 20;
-            Animation.DefaultFrameHeight = 30;
+            var texture = Static.Content.Load<Texture2D>("linktothepast/npc-sprites");
+            SAnimation.DefaultFrameWidth = 20;
+            SAnimation.DefaultFrameHeight = 30;
 
-            Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
+            Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
-                { "IdleDown",       new Animation(texture, 1, 0.04f, false, 0, 3) },
-                { "IdleUp",         new Animation(texture, 1, 0.04f, false, 0, 2) },
-                { "IdleLeft",       new Animation(texture, 1, 0.04f, false, 0, 1) },
-                { "IdleRight",      new Animation(texture, 1, 0.04f, false, 0, 0) },
+                { "IdleDown",       new SAnimation(texture, 1, 0.04f, false, 0, 3) },
+                { "IdleUp",         new SAnimation(texture, 1, 0.04f, false, 0, 2) },
+                { "IdleLeft",       new SAnimation(texture, 1, 0.04f, false, 0, 1) },
+                { "IdleRight",      new SAnimation(texture, 1, 0.04f, false, 0, 0) },
             };
 
             Sprite.SetAnimations(animations);

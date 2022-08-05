@@ -30,22 +30,25 @@ namespace MonoGameTestGame
             WalkSpeed = 70f;
             SpriteOffset = new Vector2(-13, -24);
 
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast/link-sprites");
+            var texture = Static.Content.Load<Texture2D>("linktothepast/link-sprites");
+            SAnimation.DefaultFrameWidth = 40;
+            SAnimation.DefaultFrameHeight = 50;
 
-            Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
+            Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
-                { "IdleDown",       new Animation(texture, 1, 0.04f, false, 0, 1) },
-                { "IdleUp",         new Animation(texture, 1, 0.04f, false, 1, 3) },
-                { "IdleLeft",       new Animation(texture, 1, 0.04f, false, 2, 3) },
-                { "IdleRight",      new Animation(texture, 1, 0.04f, false, 3, 3) },
-                { "WalkDown",       new Animation(texture, 8, 0.04f, true, 0) },
-                { "WalkUp",         new Animation(texture, 8, 0.04f, true, 1) },
-                { "WalkLeft",       new Animation(texture, 6, 0.04f, true, 2) },
-                { "WalkRight",      new Animation(texture, 6, 0.04f, true, 3) },
-                { "SwordHitDown",   new Animation(texture, 6, 0.04f, false, 4) },
-                { "SwordHitUp",     new Animation(texture, 5, 0.04f, false, 5) },
-                { "SwordHitLeft",   new Animation(texture, 5, 0.04f, false, 6) },
-                { "SwordHitRight",  new Animation(texture, 5, 0.04f, false, 7) }
+                { "IdleDown",       new SAnimation(texture, 1, 0.04f, false, 0, 1) },
+                { "IdleUp",         new SAnimation(texture, 1, 0.04f, false, 1, 3) },
+                { "IdleLeft",       new SAnimation(texture, 1, 0.04f, false, 2, 3) },
+                { "IdleRight",      new SAnimation(texture, 1, 0.04f, false, 3, 3) },
+                { "WalkDown",       new SAnimation(texture, 8, 0.04f, true, 0) },
+                { "WalkUp",         new SAnimation(texture, 8, 0.04f, true, 1) },
+                { "WalkLeft",       new SAnimation(texture, 6, 0.04f, true, 2) },
+                { "WalkRight",      new SAnimation(texture, 6, 0.04f, true, 3) },
+                { "SwordHitDown",   new SAnimation(texture, 6, 0.04f, false, 4) },
+                { "SwordHitUp",     new SAnimation(texture, 5, 0.04f, false, 5) },
+                { "SwordHitLeft",   new SAnimation(texture, 5, 0.04f, false, 6) },
+                { "SwordHitRight",  new SAnimation(texture, 5, 0.04f, false, 7) },
+                { "Falling",        new SAnimation(texture, 6, 0.04f, false, 4) },
             };
 
             Hitbox.Load(14, 14);
@@ -59,7 +62,9 @@ namespace MonoGameTestGame
                 { "Idle", new PlayerStateIdle(this) },
                 { "Walking", new PlayerStateWalking(this) },
                 { "SwordHit", new PlayerStateSwordHit(this) },
-                { "TakenDamage", new PlayerStateTakenDamage(this) }
+                { "TakenDamage", new PlayerStateTakenDamage(this) },
+                { "Falling", new PlayerStateFalling(this) },
+                { "Stopped", new PlayerStateStopped(this) }
             };
 
             StateMachine = new StateMachine(states, "Idle");
@@ -89,7 +94,7 @@ namespace MonoGameTestGame
             {
                 SwordHitbox.Update(gameTime);
                 
-                foreach (var entity in StaticData.Scene.HittableEntities)
+                foreach (var entity in Static.Scene.HittableEntities)
                 {
                     if (SwordHitbox.Rectangle.Intersects(entity.Hitbox.Rectangle))
                     {
@@ -97,9 +102,9 @@ namespace MonoGameTestGame
                     }
                 }
             }
-            else if (StaticData.Scene.TileMap.Exits.ContainsKey(MapBorder))
+            else if (Static.Scene.TileMap.Exits.ContainsKey(MapBorder))
             {
-                StaticData.SceneManager.GoTo(StaticData.Scene.TileMap.Exits[MapBorder]);
+                Static.SceneManager.GoTo(Static.Scene.TileMap.Exits[MapBorder]);
             }
         }
 
@@ -110,6 +115,11 @@ namespace MonoGameTestGame
             {
                 base.Draw(spriteBatch, offset);
             }
+        }
+
+        public override void MakeFall()
+        {
+            StateMachine.TransitionTo("Falling");
         }
 
         public void TakeDamage(Vector2 hitPosition)
@@ -137,7 +147,7 @@ namespace MonoGameTestGame
             {
                 var touchArea = GetTouchArea();
 
-                foreach (var mapEntity in StaticData.Scene.InteractableEntities)
+                foreach (var mapEntity in Static.Scene.InteractableEntities)
                 {
                     if (touchArea.Intersects(mapEntity.Hitbox.Rectangle))
                     {

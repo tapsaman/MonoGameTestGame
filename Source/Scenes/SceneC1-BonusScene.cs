@@ -11,16 +11,28 @@ namespace MonoGameTestGame
     {
         private Texture2D _overlay;
 
+        public SceneC1()
+        {
+            Theme = Static.Content.Load<Song>("linktothepast/forest");
+            TileMap = new MapC1();
+        }
+
         protected override void Load()
         {
-            _overlay = StaticData.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
-            Theme = StaticData.Content.Load<Song>("linktothepast/forest");
-            TileMap = new MapC1();
+            _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
         }
 
         public override void DrawOverlay(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_overlay, Vector2.Zero + DrawOffset * 0.5f, new Rectangle(0, 0, StaticData.NativeWidth * 2, StaticData.NativeHeight * 3), new Color(255, 255, 255, 0.5f));
+            // Reduce native size for panning
+            var overlayPosition = OverlayOffset + DrawOffset * 0.5f - Static.NativeSize;
+            
+            spriteBatch.Draw(
+                _overlay,
+                overlayPosition,
+                new Rectangle(0, 0, Width * 3, Height * 2),
+                new Color(255, 255, 255, 0.5f)
+            );
         }
     }
 }

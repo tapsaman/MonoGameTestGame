@@ -8,13 +8,14 @@ namespace MonoGameTestGame.Models
     public class BatStateDefault : CharacterState
     {
         private const float _FLY_SPEED = 70f;
+        private Vector2 _velocity;
 
         public BatStateDefault(Bat bat) : base(bat) {}
 
         public override void Enter()
         {
             Character.Sprite.SetAnimation("Default");
-            Character.Velocity = new Vector2(0, -0.1f);
+            _velocity = Utility.RandomDirection().ToVector() * 40f;
         }
 
         public override void Update(GameTime gameTime)
@@ -43,13 +44,37 @@ namespace MonoGameTestGame.Models
             direction = new Vector2((int) dir.X, (int) dir.Y);*/
             
             
-            var vel = (StaticData.Scene.Player.Position - Character.Position);
+            /*var vel = (Static.Scene.Player.Position - Character.Position);
             vel.Normalize();
-            vel *= _FLY_SPEED;
+            vel *= _FLY_SPEED;*/
 
-            Character.Velocity = RotateVectorAround(vel, Character.Position, -0.25);
+            var angle = GetAngleBetween(Character.Position, Static.Scene.Player.Position);
+
+            //var transformed = Vector2.Transform(_velocity, Matrix.CreateRotationY((float)angle));
+            
+            //direction = new Point((int) dir.X, (int) dir.Y);
+
+
+            //_velocity = Rotate(_velocity, -0.01f);
+            _velocity = RotateVectorAround(_velocity, Character.Position, angle);
+            Character.Velocity = _velocity;
             
             //Character.Position -= Character.Velocity * 0.001f;
+        }
+
+
+
+        private static double GetAngleBetween(Vector2 a, Vector2 b)
+        {
+            return Math.Atan2(b.Y - a.Y, b.X - a.X);
+        }
+
+        public static Vector2 Rotate(Vector2 v, float delta)
+        {
+            return new Vector2(
+                (float)(v.X * Math.Cos(delta) - v.Y * Math.Sin(delta)),
+                (float)(v.X * Math.Sin(delta) + v.Y * Math.Cos(delta))
+            );
         }
 
         public static Vector2 RotateVectorAround(Vector2 vector, Vector2 pivot, double angle)

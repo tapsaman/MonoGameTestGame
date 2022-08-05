@@ -15,12 +15,12 @@ namespace MonoGameTestGame
 
         public Hitbox()
         {
-            StaticData.Scene.RegisterHitbox(this);
+            Static.Scene.RegisterHitbox(this);
         }
         public Hitbox(int width, int height)
         {
             Load(width, height);
-            StaticData.Scene.RegisterHitbox(this);
+            Static.Scene.RegisterHitbox(this);
         }
         ~Hitbox()
         {

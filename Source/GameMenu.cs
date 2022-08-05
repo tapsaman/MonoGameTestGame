@@ -1,96 +1,53 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameTestGame.Controls;
+using MonoGameTestGame.Managers;
 
 namespace MonoGameTestGame
 {
-    public class GameMenu
+    public class GameMenu : Menu
     {
-        public List<UIComponent> Components;
-        public int Padding = 5;
-        private CheckBoxButton _gamePadCheckBox;
-        private Vector2 _firstComponentPosition;
-
         public GameMenu(EventHandler startGame)
         {
-            Components = new List<UIComponent>();
-
-            var buttonTexture = StaticData.Content.Load<Texture2D>("Button");
-            var font = StaticData.Content.Load<SpriteFont>("Fonts/TestFont");
-            var fontSmall = StaticData.Content.Load<SpriteFont>("Fonts/TestFontSmall");
+            OverlayColor = new Color(50, 50, 50);
+            var buttonTexture = Static.Content.Load<Texture2D>("Button");
+            var font = Static.Content.Load<SpriteFont>("Fonts/TestFont");
+            var fontSmall = Static.Content.Load<SpriteFont>("Fonts/TestFontSmall");
 
             Button startButton = new Button(buttonTexture, font)
-            { 
-                Text = !StaticData.GameStarted ? "START" : "CONTINUE"
+            {
+                Text = !Static.GameStarted ? "START" : "RESUME"
             };
             startButton.Click += startGame;
 
-            _gamePadCheckBox = new CheckBoxButton(buttonTexture, fontSmall)
+            Button settingsButton = new Button(buttonTexture, font)
             {
-                Text = "USE GAMEPAD",
-                IsChecked = StaticData.GamePadEnabled
+                Text = "OPTIONS"
             };
-            _gamePadCheckBox.Click += ToggleGamePad;
+            settingsButton.Click += GoToSettings;
 
-            Components.Add(startButton);
-            Components.Add(_gamePadCheckBox);
+            Button quitButton = new Button(buttonTexture, font)
+            {
+                Text = "QUIT"
+            };
+            quitButton.Click += QuitGame;
 
-            CalculateFirstComponentPosition();
+            Add(startButton);
+            Add(settingsButton);
+            Add(quitButton);
+
+            CalculateSize();
         }
 
-        private void ToggleGamePad(object sender, EventArgs e)
+        private void GoToSettings(object sender, EventArgs e)
         {
-            if (!StaticData.GamePadEnabled)
-            {
-                Input.EnableGamePadController();
-            }
-            else
-            {
-                Input.DisableGamePadController();
-            }
+            UI.Add(new SettingsMenu());
         }
 
-        protected void CalculateFirstComponentPosition()
+        private void QuitGame(object sender, EventArgs e)
         {
-            int greatestWidth = 0;
-            int combinedHeight = 0;
-
-            foreach (var item in Components)
-            {
-                if (greatestWidth < item.Width)
-                    greatestWidth = item.Width;
-                
-                combinedHeight += item.Height;
-            }
-
-            float x = StaticData.NativeWidth / 2 - greatestWidth / 2;
-            float y = StaticData.NativeHeight / 2 - (combinedHeight + Padding * Components.Count - 1) / 2;
-
-            _firstComponentPosition = new Vector2(x, y);
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            foreach (var item in Components)
-            {
-                item.Update(gameTime);
-            }
-
-            _gamePadCheckBox.IsChecked = StaticData.GamePadEnabled;
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            float y = _firstComponentPosition.Y;
-
-            foreach (var item in Components)
-            {
-                item.Position = new Vector2(_firstComponentPosition.X, y);
-                item.Draw(spriteBatch);
-                y += item.Height + Padding;
-            }
+            Static.Game.Exit();
         }
     }
 }

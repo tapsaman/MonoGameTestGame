@@ -15,35 +15,38 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            if (!StaticData.GameStarted)
+            if (!Static.GameStarted)
             {
-                _game.SceneManager.Start();
-                StaticData.GameStarted = true;
+                Static.SceneManager.Start();
+                Static.GameStarted = true;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            _game.SceneManager.Update(gameTime);
-            _game.DialogManager.Update(gameTime);
+            Static.EventSystem.Update(gameTime);
+            Static.SceneManager.Update(gameTime);
             Music.Update(gameTime);
 
             _game.TitlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
 
-            if (Input.P1.IsPressed(Input.P1.Start))
+            if (Input.P1.IsPressed(Input.P1.Start) || Input.P1.IsPressed(Input.P1.Select))
+                stateMachine.TransitionTo("MainMenu");
+            // To access main menu easily
+            else if (Input.P1.JustReleasedMouseLeft())
                 stateMachine.TransitionTo("MainMenu");
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            Rendering.Start();
+            Static.Renderer.Start();
 
-            _game.SceneManager.Draw(spriteBatch);
-            _game.Hud.Draw(spriteBatch, _game.SceneManager.Player);
+            Static.SceneManager.Draw(spriteBatch);
+            _game.Hud.Draw(spriteBatch, Static.Player);
             
             BitmapFontRenderer.DrawString(spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _game.TitlePosition);
             
-            Rendering.End(gameTime);
+            Static.Renderer.End(gameTime);
         }
 
         public override void Exit() {}

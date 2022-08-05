@@ -66,5 +66,10 @@ namespace MonoGameTestGame
                 || p.Y < Top
             );
         }
+
+        public bool Contains(FloatRectangle value)
+        {
+            return ((((this.X <= value.X) && ((value.X + value.Width) <= (this.X + this.Width))) && (this.Y <= value.Y)) && ((value.Y + value.Height) <= (this.Y + this.Height)));
+        }
     }
 }

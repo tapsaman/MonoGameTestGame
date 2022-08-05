@@ -5,6 +5,10 @@ namespace MonoGameTestGame
 {
     public abstract class UIComponent
     {
+        public static Color ActiveColor = new Color(207, 55, 55);
+        public bool Focusable { get; protected set; } = true;
+        public bool Disabled { get; set; }
+        public bool? IsFocused { get; set; } = null;
         public abstract int Width { get; }
         public abstract int Height { get; }
         public Vector2 Position;

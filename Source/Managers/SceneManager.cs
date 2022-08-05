@@ -12,10 +12,15 @@ namespace MonoGameTestGame.Manangers
         private TileMap.Exit _mapexit;
         private SceneTransition _sceneTransition;
 
-        public void Init(Scene firstScene)
+        public void Init()
         {
-            StaticData.Scene = CurrentScene = firstScene;
-            Player = new Player() { Position = new Vector2(100, 100) };
+            // Static.Scene must be defined before player so that hitboxes can register
+            Static.Scene = CurrentScene = new TestScene();
+            Static.Player = Player = new Player()
+            {
+                Position = CurrentScene.TileMap.ConvertTileXY(10, 10)
+            };
+            // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
             CurrentScene.UpdateCamera(Player.Position);
         }
@@ -40,11 +45,11 @@ namespace MonoGameTestGame.Manangers
         {
             ChangingToScene = MapCodeToScene(_mapexit.MapCode);
             ChangingToScene.Paused = true;
-            StaticData.Scene = ChangingToScene;
+            Static.Scene = ChangingToScene;
             ChangingToScene.Init(Player);
             ChangingToScene.RegisterHitbox(Player.Hitbox);
             ChangingToScene.RegisterHitbox(Player.SwordHitbox);
-            StaticData.Scene = CurrentScene;
+            Static.Scene = CurrentScene;
             //CurrentScene.SetToRemove(Player);
 
             return ChangingToScene;
@@ -62,7 +67,7 @@ namespace MonoGameTestGame.Manangers
 
             if (_sceneTransition.Done)
             {
-                CurrentScene = StaticData.Scene = ChangingToScene;
+                CurrentScene = Static.Scene = ChangingToScene;
                 ChangingToScene = null;
                 Changing = false;
                 CurrentScene.Start();
@@ -83,7 +88,7 @@ namespace MonoGameTestGame.Manangers
                 _sceneTransition.Draw(spriteBatch);
             }
 
-            spriteBatch.DrawString(StaticData.Font, Player.Position.ToString(), new Vector2(200, 200), Color.Black);
+            spriteBatch.DrawString(Static.Font, Player.Position.ToString(), new Vector2(200, 200), Color.Black);
         }
 
         private Scene MapCodeToScene(MapCode mapCode)

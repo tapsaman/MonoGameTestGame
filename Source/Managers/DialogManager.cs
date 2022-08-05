@@ -12,13 +12,20 @@ namespace MonoGameTestGame.Managers
             Typing,
             ShiftingLine,
             PageDone,
-            MessageDone
+            MessageDone,
+            QuestionDone
         }
 
+        public bool IsDone { get; set; }
+        public bool Borderless { get; set; }
+        public event Action DialogEnd;
+        public DialogBox DialogBox = new LinkToThePastSectionedDialogBox();
+        public string Answer { get; private set; } = null;
+        public int? AnswerIndex { get; private set; } = null;
         private State _state;
-        const float LetterTime = 0.018f;
-        const float ArrowTime = 0.4f;
-        const float LineShiftTime = 0.2f;
+        const float _LETTER_TIME = 0.018f;
+        const float _INPUT_WAIT_TIME = 0.2f;
+        const float _LINE_SHIFT_TIME = 0.2f;
         private float _elapsedTime = 0f;
         private int _drawLetterCount = 0;
         private bool _dialogBoxIsFull;
@@ -29,27 +36,59 @@ namespace MonoGameTestGame.Managers
         private string _currentString;
         private int _pageLineIndex;
         private int _dialogBoxTextHeight;
-        private int _dialogMessageIndex;
+        private int _dialogContentIndex;
         private float _cropY;
         private Dialog _dialog;
-        private bool _running;
         private bool _topDialogBox;
-        public event Action DialogEnd;
-        public DialogBox DialogBox = new LinkToThePastSectionedDialogBox();
+        private bool _asking;
+        private int? _currentOptionIndex = null;
+
 
         public void Load(Dialog dialog, bool topDialogBox = false)
         {
+            IsDone = false;
             _dialog = dialog;
             _topDialogBox = topDialogBox;
-            _running = true;
-            _dialogMessageIndex = 0;
+            _dialogContentIndex = 0;
  
-            StartNewMessage();
+            StartNewContent();
         }
 
-        private void StartNewMessage()
+        private void StartNewContent()
         {
-            _currentMessage = _dialog.Messages[_dialogMessageIndex];
+            _asking = false;
+            _currentOptionIndex = null;
+            var currentContent = _dialog.Content[_dialogContentIndex];
+
+            if (currentContent is DialogText textContent)
+            {
+                StartNewMessage(textContent.Message);
+            }
+            else if (currentContent is DialogAsk askContent)
+            {
+                _asking = true;
+                StartNewMessage(DialogAskToText(askContent, null));
+            }
+        }
+
+        private static string DialogAskToText(DialogAsk ask, int? optionIndex)
+        {
+            string text = ask.Question;
+            
+            for (int i = 0; i < ask.Options.Length; i++)
+            {
+                if (i == optionIndex)
+                    text += "\n     > " + ask.Options[i];
+                else
+                    text += "\n        " + ask.Options[i];
+            }
+
+            return text;
+        }
+
+        private void StartNewMessage(string message)
+        {
+            _currentMessage = message;
             _dialogBoxIsFull = false;
             _drawLetterCount = 0;
             _currentStartOfMessage = 0;
@@ -67,13 +106,13 @@ namespace MonoGameTestGame.Managers
             _dialogBoxTextHeight = Math.Min(currentLineCount, 3) * BitmapFontRenderer.Font.LineHeight;
         }
 
-        private void NextMessage()
+        private void NextContent()
         {
-            _dialogMessageIndex++;
+            _dialogContentIndex++;
 
-            if (_dialogMessageIndex < _dialog.Messages.Length)
+            if (_dialogContentIndex < _dialog.Content.Length)
             {
-                StartNewMessage();
+                StartNewContent();
             }
             else
             {
@@ -83,15 +122,15 @@ namespace MonoGameTestGame.Managers
 
         private void EndDialog()
         {
-            _running = false;
-            _dialogMessageIndex = 0;
+            IsDone = true;
+            _dialogContentIndex = 0;
             SFX.MessageFinish.Play();
             DialogEnd?.Invoke();
         }
 
         public void Update(GameTime gameTime)
         {
-            if (!_running)
+            if (IsDone)
                 return;
 
             switch(_state)
@@ -114,7 +153,10 @@ namespace MonoGameTestGame.Managers
                 break;
                 case State.MessageDone:
                     if (GotNextInput())
-                        NextMessage();
+                        NextContent();
+                break;
+                case State.QuestionDone:
+                    UpdateAsking(gameTime);
                 break;
             }
         }
@@ -145,7 +187,7 @@ namespace MonoGameTestGame.Managers
         {
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (_elapsedTime > LetterTime)
+            if (_elapsedTime > _LETTER_TIME)
             {
                 _drawLetterCount++;
                 _elapsedTime = 0;
@@ -171,7 +213,7 @@ namespace MonoGameTestGame.Managers
 
                 if (_drawLetterCount == _currentMessage.Length)
                 {
-                    _state = State.MessageDone;
+                    _state = _asking ? State.QuestionDone : State.MessageDone;
                 }
                 else if (_pageLineIndex == 3)
                 {
@@ -185,9 +227,9 @@ namespace MonoGameTestGame.Managers
         {
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (_elapsedTime < LineShiftTime)
+            if (_elapsedTime < _LINE_SHIFT_TIME)
             {
-                _cropY = BitmapFontRenderer.Font.LineHeight * _elapsedTime / LineShiftTime;
+                _cropY = BitmapFontRenderer.Font.LineHeight * _elapsedTime / _LINE_SHIFT_TIME;
             }
             else
             {
@@ -213,9 +255,55 @@ namespace MonoGameTestGame.Managers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (!_running) return;
+            DialogBox.Draw(
+                spriteBatch,
+                _topDialogBox,
+                _currentString,
+                _cropY,
+                _dialogBoxTextHeight, 
+                Borderless,
+                IsDone ? _currentOptionIndex + 1 : null
+            );
+        }
 
-            DialogBox.Draw(spriteBatch, _topDialogBox, _currentString, _cropY, _dialogBoxTextHeight);
+        private void UpdateAsking(GameTime gameTime)
+        {
+            _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_elapsedTime > _INPUT_WAIT_TIME && _dialog.Content[_dialogContentIndex] is DialogAsk ask)
+            {
+                if (_currentOptionIndex == null)
+                {
+                    _currentOptionIndex = 0;
+                    _currentString = DialogAskToText(ask, _currentOptionIndex);
+                    SFX.Cursor.Play();
+                }
+                else if (Input.P1.JustPressed(Input.P1.A))
+                {
+                    AnswerIndex = _currentOptionIndex;
+                    Answer = ask.Options[(int)_currentOptionIndex];
+                    NextContent();
+                }
+                else
+                {
+                    var dir = Input.P1.GetDirectionVector();
+                    
+                    if (dir.Y < 0)
+                    {
+                        _currentOptionIndex = (_currentOptionIndex == 0 ? ask.Options.Length : _currentOptionIndex) - 1;
+                        _currentString = DialogAskToText(ask, _currentOptionIndex);
+                        SFX.Cursor.Play();
+                        _elapsedTime = 0;
+                    }
+                    else if (dir.Y > 0)
+                    {
+                        _currentOptionIndex = _currentOptionIndex + 1 < ask.Options.Length ? _currentOptionIndex + 1 : 0;
+                        _currentString = DialogAskToText(ask, _currentOptionIndex);
+                        SFX.Cursor.Play();
+                        _elapsedTime = 0;
+                    }
+                }
+            }
         }
 
         private bool GotNextInput()

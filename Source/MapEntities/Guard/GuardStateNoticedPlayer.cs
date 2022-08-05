@@ -21,7 +21,7 @@ namespace MonoGameTestGame.Models
             _elapsedTime = 0;
             _guard.Moving = false;
             _guard.Velocity = Vector2.Zero;
-            var direction = Utility.GetDirectionBetween(_guard.Position, StaticData.Scene.Player.Position);
+            var direction = Utility.GetDirectionBetween(_guard.Position, Static.Scene.Player.Position);
             Sys.Log("Noticed player in direction " + direction);
             
             if (direction == _guard.Direction)

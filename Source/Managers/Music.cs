@@ -27,6 +27,12 @@ namespace MonoGameTestGame
                 MediaPlayer.IsRepeating = true;
             }
         }
+        
+        public static void PlayOnce(Song song)
+        {
+            Play(song);
+            MediaPlayer.IsRepeating = false;
+        }
 
         public static void FadeOut(float timeInSeconds)
         {

@@ -19,7 +19,7 @@ namespace MonoGameTestGame
             X = Keys.X;
             Y = Keys.Y;
             Start = Keys.Enter;
-            Select = Keys.Back;
+            Select = Keys.Escape;
         }
         public override void Update()
         {

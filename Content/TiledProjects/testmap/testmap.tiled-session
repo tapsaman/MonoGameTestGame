@@ -15,38 +15,38 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 181,
-                "y": 296.5
+                "x": 406,
+                "y": 108.5
             }
         },
         "A2.tmx": {
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1,
+            "scale": 8,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 181,
-                "y": 72.5
+                "x": 120.875,
+                "y": -160.6875
             }
         },
         "B1.tmx": {
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1,
-            "selectedLayer": 0,
+            "scale": 3,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": -75,
-                "y": 296.5
+                "x": -95.33333333333334,
+                "y": 349.5
             }
         },
         "C1.tmx": {
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -411,
-                "y": 296.5
+                "x": 128,
+                "y": 232.5
             }
         },
         "linktothepast-objects.tsx": {
@@ -59,8 +59,8 @@
             "scaleInEditor": 5.5
         },
         "linktothepast-tiles.tsx": {
-            "scaleInDock": 3,
-            "scaleInEditor": 3
+            "scaleInDock": 2,
+            "scaleInEditor": 11
         },
         "testmap.tmx": {
             "expandedObjectLayers": [
@@ -95,13 +95,15 @@
         "B1.tmx",
         "A2.tmx",
         "linktothepast-objects.tsx",
-        "linktothepast-tiles.tsx",
-        "A1.tmx"
+        "A1.tmx",
+        "C1.tmx",
+        "linktothepast-tiles.tsx"
     ],
     "project": "testmap.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "linktothepast-tiles.tsx",
+        "C1.tmx",
         "A1.tmx",
         "linktothepast-objects.tsx",
         "A2.tmx",

@@ -23,12 +23,12 @@ namespace MonoGameTestGame
             Y = (Keys)Buttons.Y;
             Start = (Keys)Buttons.Start;
             Select = (Keys)Buttons.Back;
+
+            Sys.Debug(GamePad.GetCapabilities(_index).ToString());
         }
         public override void Update()
         {
             base.Update();
-
-            Sys.Log(GamePad.GetState(_index).ToString());
 
             _previousGamePadState = _currentGamePadState;
             _currentGamePadState = GamePad.GetState(_index);

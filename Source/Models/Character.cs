@@ -9,6 +9,7 @@ namespace MonoGameTestGame
 {
     public abstract class Character : MapObject
     {
+        public Vector2 ElementalVelocity;
         public Vector2 Velocity;
         public float WalkSpeed;
         public int Health { get; protected set; }
@@ -20,22 +21,24 @@ namespace MonoGameTestGame
         public bool Moving = false;
         public bool Walking = false;
         public bool WalkingStill = true;
-        protected StateMachine StateMachine;
+        public StateMachine StateMachine { get; protected set; }
 
         public Character()
         {
             Sprite = new Sprite();
         }
 
+        public virtual void MakeFall() {}
+
         public override void Update(GameTime gameTime)
         {
             if (StateMachine == null)
             {
                 if (WalkingStill || Velocity != Vector2.Zero) {
-                    Sprite.SetAnimation("Walk" + Direction);
+                    Sprite.SafeSetAnimation("Walk" + Direction);
                 }
                 else {
-                    Sprite.SetAnimation("Idle" + Direction);
+                    Sprite.SafeSetAnimation("Idle" + Direction);
                 }
             }
             else
@@ -67,21 +70,13 @@ namespace MonoGameTestGame
 
         public void Move(GameTime gameTime)
         {
-            /*if (Velocity.Y < 0)
-                Direction = Direction.Up;
-            if (Velocity.X > 0)
-                Direction = Direction.Right;
-            if (Velocity.Y > 0)
-                Direction = Direction.Down;
-            if (Velocity.X < 0)
-                Direction = Direction.Left;*/
-            //FaceToVelocity();
-
+            ElementalVelocity = Vector2.Zero;
             Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            // First go through touch triggers to get elemental velocity
             if (Colliding)
             {
-                foreach (var mapEntity in StaticData.Scene.TouchTriggers)
+                foreach (var mapEntity in Static.Scene.TouchTriggers)
                 {
                     if (RightIsTouching(mapEntity) 
                      || LeftIsTouching(mapEntity)
@@ -92,10 +87,12 @@ namespace MonoGameTestGame
                         mapEntity.InvokeTrigger(this);
                     }
                 }
-                
+
+                Velocity += ElementalVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
                 MapBorder = Direction.None;
-                CollidingX = DetermineHorizontalCollision(StaticData.Scene.TileMap, StaticData.Scene.CollidingEntities);
-                CollidingY = DetermineVerticalCollision(StaticData.Scene.TileMap, StaticData.Scene.CollidingEntities);
+                CollidingX = DetermineHorizontalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
+                CollidingY = DetermineVerticalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
 
                 if (CollidingX != Direction.None)
                     Velocity.X = 0;

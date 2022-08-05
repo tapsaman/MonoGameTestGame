@@ -10,14 +10,14 @@ namespace MonoGameTestGame
     {       
         public Seppo()
         {
-            var texture = StaticData.Content.Load<Texture2D>("linktothepast/npc-sprites");
-            Animation.DefaultFrameWidth = 20;
-            Animation.DefaultFrameHeight = 30;
+            var texture = Static.Content.Load<Texture2D>("linktothepast/npc-sprites");
+            SAnimation.DefaultFrameWidth = 20;
+            SAnimation.DefaultFrameHeight = 30;
 
-            Dictionary<string, Animation> animations = new Dictionary<string, Animation>()
+            Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
-                { "IdleLeft",       new Animation(texture, 2, 0.5f, true, 1, 0) },
-                { "IdleDown",       new Animation(texture, 1, 0.5f, false, 1, 2) }
+                { "IdleLeft",       new SAnimation(texture, 2, 0.5f, true, 1, 0) },
+                { "IdleDown",       new SAnimation(texture, 1, 0.5f, false, 1, 2) }
             };
 
             Sprite.SetAnimations(animations);

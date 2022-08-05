@@ -12,9 +12,9 @@ namespace MonoGameTestGame.Sprites
   {
     #region Fields
 
-    protected AnimationManager _animationManager;
+    protected SAnimationManager _animationManager;
 
-    protected Dictionary<string, Animation> _animations;
+    protected Dictionary<string, SAnimation> _animations;
 
     protected Vector2 _position;
 
@@ -83,6 +83,12 @@ namespace MonoGameTestGame.Sprites
         _animationManager.Play(_animations[animationName]);
     }
 
+    public void SafeSetAnimation(string animationName)
+    {
+      if (_animations.ContainsKey(animationName))
+        _animationManager.Play(_animations[animationName]);
+    }
+
     public void SetTexture(Texture2D texture)
     {
       _texture = texture;
@@ -95,10 +101,10 @@ namespace MonoGameTestGame.Sprites
       _sourceRectangle = sourceRectangle;
     }
 
-    public void SetAnimations(Dictionary<string, Animation> animations, string initialAnimationName = "")
+    public void SetAnimations(Dictionary<string, SAnimation> animations, string initialAnimationName = "")
     {
       _animations = animations;
-      _animationManager = new AnimationManager(initialAnimationName == "" ? _animations.First().Value : _animations[initialAnimationName]);
+      _animationManager = new SAnimationManager(initialAnimationName == "" ? _animations.First().Value : _animations[initialAnimationName]);
     }
 
     #endregion

@@ -4,6 +4,18 @@ namespace MonoGameTestGame
 {
     public static class SFX
     {
+        public static float Volume
+        {
+            get
+            {
+                return SoundEffect.MasterVolume;
+            }
+            set
+            {
+                SoundEffect.MasterVolume = value;
+            }
+        }
+        
         public static SoundEffect ChestOpen;
         public static SoundEffect Cursor;
         public static SoundEffect EnemyDies;
@@ -19,24 +31,31 @@ namespace MonoGameTestGame
         public static SoundEffect Soldier;
         public static SoundEffect SmallEnemyHit;
         public static SoundEffect LinkHurt;
+        public static SoundEffect LinkFall;
+        public static SoundEffect Fall;
+        public static SoundEffect LargeBeam;
 
         public static void Load()
         {
-            ChestOpen = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/chest open");
-            Cursor = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/cursor");
-            EnemyDies = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/enemy dies");
-            EnemyHit = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/enemy hit");
-            Error = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/error");
-            MenuClose = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/menu close");
-            MenuOpen = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/menu open");
-            Message = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/message");
-            MessageFinish = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/message finish");
-            Sword1 = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/fighter sword 1");
-            Sword2 = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/fighter sword 2");
-            WalkGrass = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/walk grass");
-            Soldier = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/soldier");
-            SmallEnemyHit = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/small enemy hit");
-            LinkHurt = StaticData.Content.Load<SoundEffect>("linktothepast/sfx/link hurt");
+            Volume = 0.8f;
+            ChestOpen = Static.Content.Load<SoundEffect>("linktothepast/sfx/chest open");
+            Cursor = Static.Content.Load<SoundEffect>("linktothepast/sfx/cursor");
+            EnemyDies = Static.Content.Load<SoundEffect>("linktothepast/sfx/enemy dies");
+            EnemyHit = Static.Content.Load<SoundEffect>("linktothepast/sfx/enemy hit");
+            Error = Static.Content.Load<SoundEffect>("linktothepast/sfx/error");
+            MenuClose = Static.Content.Load<SoundEffect>("linktothepast/sfx/menu close");
+            MenuOpen = Static.Content.Load<SoundEffect>("linktothepast/sfx/menu open");
+            Message = Static.Content.Load<SoundEffect>("linktothepast/sfx/message");
+            MessageFinish = Static.Content.Load<SoundEffect>("linktothepast/sfx/message finish");
+            Sword1 = Static.Content.Load<SoundEffect>("linktothepast/sfx/fighter sword 1");
+            Sword2 = Static.Content.Load<SoundEffect>("linktothepast/sfx/fighter sword 2");
+            WalkGrass = Static.Content.Load<SoundEffect>("linktothepast/sfx/walk grass");
+            Soldier = Static.Content.Load<SoundEffect>("linktothepast/sfx/soldier");
+            SmallEnemyHit = Static.Content.Load<SoundEffect>("linktothepast/sfx/small enemy hit");
+            LinkHurt = Static.Content.Load<SoundEffect>("linktothepast/sfx/link hurt");
+            LinkFall = Static.Content.Load<SoundEffect>("linktothepast/sfx/link falls");
+            Fall = Static.Content.Load<SoundEffect>("linktothepast/sfx/fall");
+            LargeBeam = Static.Content.Load<SoundEffect>("linktothepast/sfx/large beam");
         }
     }
 }

@@ -17,15 +17,20 @@ log:
 * 25.7. - dialog can be skipped again, wood shadow overlay, direction methods, guard states, player takes damage
 * 29.7. - shaders!!!, new rendering utility class, enemy class, new enemy bat, enemy death animation, heart display, inputcontroller class
 * 31.7. - static music class, mild noise shader, characters collidingx/y fields update on entity colliding, new map c1, touch trigger events, gamepad support, game menu init
-* global game states, menu state, using global game object renamed ZeldaAdventure666, states with draw method "render states"
+* 1.8. - global game states, menu state, using global game object renamed ZeldaAdventure666, states with draw method "render states"
+* 5.8. - slider input, sfx/music volume sliders, select input, resolution setting, wait event, game states cutscene, start over and game over, animation class and game over animations, dialog questions, static img class, global event manager replaced with event system, spotlight shader, interfaces init, renamed StaticData to Static and Animation(Manager) to SAnimation(Manager)
 
 roadmap:
 * animation events (falling to hole)
-* fuck shit up -> every death from falling to hole should break something in the game engine
+* fuck shit up -> every death from falling to hole should break something in the game Static
 
 small stuff todo:
 * sys timing methods
 * use arrays for tilemap tiles? compare performance with timing methods
+* minigame, couple enemies
+* question event with answer option switch
+* better text highlight shader
+* abstract class UIInput from Button
 
 could do but prob won't:
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)
@@ -33,5 +38,23 @@ could do but prob won't:
 * forwards/backwards looping sprite animation 
 * Character's direction prop should be named Facing?
 * action fields/"callbacks" could be named uniformly (OnThing or WhenThing)
-* could use milliseconds instead of seconds for updates because ints take less space than floats :p
-* circle/polygon collision shapes (???) 
+* could use milliseconds instead of seconds for updates because ints take less space than floats
+* circle/polygon collision shapes (???)
+* there's shitload of managers + manageables (animations, dialog, ui, events), could maybe have Manager + Manageable interfaces to enforce uniformity
+e.g.
+    IManager<TKey, IManageable>  ->
+        Dictionary<TKey, IManageable> Lookup/Children/Collection/Stages?
+        float ElapsedStageTime
+        void Update
+        void GoTo(TKey)
+        void Draw?
+        void SetToRemove
+    IManageable ->
+        IManager Manager
+        bool IsDone
+        bool CanReEnter
+        void Update
+        bool Paused?
+        void Draw?
+        bool DisableDrawing?
+* ok trying to implement ^ this on this proj at this point was bad idea, interfaces need to be kept very simple... 

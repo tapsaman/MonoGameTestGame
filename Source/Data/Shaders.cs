@@ -11,18 +11,20 @@ namespace MonoGameTestGame
         public static Effect Wavy;
         public static Effect Noise;
         public static Effect MildNoise;
+        public static Effect Spotlight;
         public static Effect TestEffect;
 
         public static void Load()
         {
-            EnemyDamage = StaticData.Content.Load<Effect>("Shaders/EnemyDamageEffect");
-            HighContrast = StaticData.Content.Load<Effect>("Shaders/HighContrastEffect");
-            Rainbow = StaticData.Content.Load<Effect>("Shaders/RainbowEffect");
-            InvertedColor = StaticData.Content.Load<Effect>("Shaders/InvertedColorEffect");
-            Wavy = StaticData.Content.Load<Effect>("Shaders/WavyEffect");
-            Noise = StaticData.Content.Load<Effect>("Shaders/NoiseEffect");
-            MildNoise = StaticData.Content.Load<Effect>("Shaders/MildNoiseEffect");
-            TestEffect = StaticData.Content.Load<Effect>("Shaders/ShaderTestSpriteEffect");
+            EnemyDamage = Static.Content.Load<Effect>("Shaders/EnemyDamageEffect");
+            HighContrast = Static.Content.Load<Effect>("Shaders/HighContrastEffect");
+            Rainbow = Static.Content.Load<Effect>("Shaders/RainbowEffect");
+            InvertedColor = Static.Content.Load<Effect>("Shaders/InvertedColorEffect");
+            Wavy = Static.Content.Load<Effect>("Shaders/WavyEffect");
+            Noise = Static.Content.Load<Effect>("Shaders/NoiseEffect");
+            MildNoise = Static.Content.Load<Effect>("Shaders/MildNoiseEffect");
+            Spotlight = Static.Content.Load<Effect>("Shaders/SpotlightEffect");
+            TestEffect = Static.Content.Load<Effect>("Shaders/ShaderTestSpriteEffect");
         }
     }
 }

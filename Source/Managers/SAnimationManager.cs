@@ -1,27 +1,25 @@
-using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame.Managers
 {
-    public class AnimationManager
+    public class SAnimationManager
     {
-        private Animation _animation;
+        private SAnimation _animation;
 
         private float _elapsedtime;
 
         public Vector2 Position;
 
-        public AnimationManager() {}
+        public SAnimationManager() {}
 
-        public AnimationManager(Animation animation)
+        public SAnimationManager(SAnimation animation)
         {
             _animation = animation;
         }
 
-        public void Play(Animation animation)
+        public void Play(SAnimation animation)
         {
             if (_animation == animation) {
                 return;

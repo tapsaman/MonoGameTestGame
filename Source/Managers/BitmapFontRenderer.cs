@@ -8,11 +8,76 @@ namespace MonoGameTestGame.Managers
     {
         public static BitmapFont Font;
 
-        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, float yCrop = 0)
+        public static Point CalculateSize(string text, float yCrop = 0)
+        {
+            int w = 0, h = 0;
+            int line = 0;
+            int greatestWidth = 0;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                int code = text[i];
+                int xAdvance;
+
+                if (code == 10)
+                {
+                    // 10 = LF = line feed
+                    // Used for new lines
+                    if (w > greatestWidth) 
+                        greatestWidth = w;
+
+                    w = 0;
+                    h += Font.LineHeight;
+
+                    if (line == 0)
+                    {
+                        h -= (int)yCrop;
+                    }
+
+                    line++;
+                    continue;
+                }
+                else if (code == 13)
+                {
+                    // 13 = CR = carriage return
+                    // Ignored
+                    continue;
+                }
+                else if (!Font.Chars.ContainsKey(code))
+                {
+                    Sys.LogError("Undefined symbol at " + code + " (" + (char)code + ") for " + Font.ToString());
+                    Font.Chars[code] = Font.Chars[Font.UndefinedSymbolCode];
+                    var c = Font.Chars[Font.UndefinedSymbolCode];
+                    xAdvance = c.XAdvance;
+                }
+                else
+                {
+                    var c = Font.Chars[code];
+                    xAdvance = c.XAdvance;
+                }
+
+                w += xAdvance;
+                
+                if (i != text.Length - 1 && (text[i + 1] != 10 || text[i + 1] != 13))
+                {
+                    // Not last letter of line
+                    w += Font.LetterSpacing;
+                }
+            }
+
+            return new Point(w, h);
+        }
+
+        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, float yCrop = 0, int? highlightRow = null)
         {
             var startX = position.X;
             int line = 0;
             //position -= new Vector2(0, yCrop);
+
+            if (highlightRow == line)
+            {
+                Static.Renderer.ChangeToDamageEffect();
+            }
 
             foreach (int code in text)
             {
@@ -32,6 +97,15 @@ namespace MonoGameTestGame.Managers
                         position.Y -= yCrop;
                     }
                     line++;
+
+                    if (highlightRow == line)
+                    {
+                        Static.Renderer.ChangeToDamageEffect();
+                    }
+                    else
+                    {
+                        Static.Renderer.ChangeToDefault();
+                    }
                     continue;
                 }
                 else if (code == 13)

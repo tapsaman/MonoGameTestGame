@@ -2,7 +2,7 @@
     "maps": [
         {
             "fileName": "B1.tmx",
-            "height": 416,
+            "height": 464,
             "width": 336,
             "x": 256,
             "y": 0
@@ -19,6 +19,13 @@
             "height": 224,
             "width": 256,
             "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "C1.tmx",
+            "height": 464,
+            "width": 256,
+            "x": 592,
             "y": 0
         }
     ],

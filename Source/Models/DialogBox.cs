@@ -15,21 +15,21 @@ namespace MonoGameTestGame
 
         public virtual void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false) {}
         public virtual void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop) {}
-        public virtual void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight) {}
+        public virtual void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, bool borderless = false, int? highlightRow = null) {}
     }
 
     public class LinkToThePastDialogBox : DialogBox
     {
         public LinkToThePastDialogBox()
         {
-            _bgTexture = StaticData.Content.Load<Texture2D>("linktothepast/dialogbox");
+            _bgTexture = Static.Content.Load<Texture2D>("linktothepast/dialogbox");
             _height = _bgTexture.Height;
             _textOffset = new Vector2(8,6);
         }
 
         public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false)
         {
-            var position = new Vector2(33, top ? 18 : StaticData.NativeHeight - _height - 18);
+            var position = new Vector2(33, top ? 18 : Static.NativeHeight - _height - 18);
 
             spriteBatch.Draw(_bgTexture, position, Color.White);
 
@@ -43,7 +43,7 @@ namespace MonoGameTestGame
 
         public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop)
         {
-            var position = new Vector2(33, top ? 18 : StaticData.NativeHeight - _height - 18);
+            var position = new Vector2(33, top ? 18 : Static.NativeHeight - _height - 18);
 
             spriteBatch.Draw(_bgTexture, position, Color.White);
             
@@ -65,7 +65,7 @@ namespace MonoGameTestGame
 
         public LinkToThePastSectionedDialogBox()
         {
-            _bgTexture = StaticData.Content.Load<Texture2D>("linktothepast/dialogbox");
+            _bgTexture = Static.Content.Load<Texture2D>("linktothepast/dialogbox");
             
             int textureHeight = _bgTexture.Height;
             _width = _bgTexture.Width;
@@ -83,15 +83,19 @@ namespace MonoGameTestGame
             _sourceBottomRight = new Rectangle(_width - cornerLength, textureHeight - cornerLength,cornerLength,cornerLength);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight)
+        public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, bool borderless = false, int? highlightRow = null)
         {
-            int cornerLength = 7;
             int height = (int)(preservedTextHeight + _textOffset.Y * 1.5); // don't know why 1.5 works here but it does
-            var position = new Vector2(33, top ? 18 : StaticData.NativeHeight - height - 18);
+            var position = new Vector2(33, top ? 18 : Static.NativeHeight - height - 18);
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, yCrop, highlightRow);
+
+            if (borderless)
+                return;
+
+            int cornerLength = 7;
 
             Vector2 xScale = new Vector2(_width, 1);
             Vector2 yScale = new Vector2(1, height);
-            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, yCrop);
 
             // atm corners render on top of borders, this could be fixed
             // Top
@@ -119,8 +123,8 @@ namespace MonoGameTestGame
     {
         public FantasyDialogBox()
         {
-            _bgTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-scaled");
-            _arrowTexture = StaticData.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
+            _bgTexture = Static.Content.Load<Texture2D>("dialogbox-fantasy-scaled");
+            _arrowTexture = Static.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
             _height = _bgTexture.Height;
             _arrowOffset = new Vector2(230,50);
             _nameOffset = new Vector2(44,2);
@@ -129,7 +133,7 @@ namespace MonoGameTestGame
 
         public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false)
         {
-            var position = new Vector2(0, top ? 0 : StaticData.NativeHeight - _height);
+            var position = new Vector2(0, top ? 0 : Static.NativeHeight - _height);
 
             spriteBatch.Draw(_bgTexture, position, Color.White);
 
@@ -138,8 +142,8 @@ namespace MonoGameTestGame
                 spriteBatch.Draw(_arrowTexture, position + _arrowOffset, Color.White);
             }
 
-            //spriteBatch.DrawString(StaticData.Font, name, position + _nameOffset, Color.White);
-            //spriteBatch.DrawString(StaticData.Font, text, position + _textOffset, Color.Black);
+            //spriteBatch.DrawString(Static.Font, name, position + _nameOffset, Color.White);
+            //spriteBatch.DrawString(Static.Font, text, position + _textOffset, Color.Black);
 
             BitmapFontRenderer.DrawString(spriteBatch, name, position + _nameOffset);
             BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset);

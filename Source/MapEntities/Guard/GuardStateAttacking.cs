@@ -22,9 +22,9 @@ namespace MonoGameTestGame.Models
         {
             SFX.Soldier.Play();
             _elapsedTime = 0;
-            //_guard.FaceTowards(StaticData.Scene.Player.Position);
+            //_guard.FaceTowards(Static.Scene.Player.Position);
             //_guard.Sprite.SetAnimation("Run" + _guard.Direction);
-            var vel = (StaticData.Scene.Player.Position - _guard.Position);
+            var vel = (Static.Scene.Player.Position - _guard.Position);
             vel.Normalize();
             _runVelocity = vel * _RUN_SPEED;
             _guard.Moving = true;
@@ -41,10 +41,10 @@ namespace MonoGameTestGame.Models
                 if (_guard.DetectingPlayer())
                 {
                     _elapsedTime = 0;
-                    var vel = (StaticData.Scene.Player.Position - _guard.Position);
+                    var vel = (Static.Scene.Player.Position - _guard.Position);
                     vel.Normalize();
                     _runVelocity = vel * _RUN_SPEED;
-                    //_guard.FaceTowards(StaticData.Scene.Player.Position);
+                    //_guard.FaceTowards(Static.Scene.Player.Position);
                     _guard.Direction = _runVelocity.ToDirection();
                     _guard.Sprite.SetAnimation("Run" + _guard.Direction);
                 }

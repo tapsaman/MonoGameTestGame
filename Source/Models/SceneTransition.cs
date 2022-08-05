@@ -40,11 +40,11 @@ namespace MonoGameTestGame
                 switch (direction)
                 {
                     case Direction.Up:
-                        _playerPositionBefore = new Vector2(_player.Position.X, StaticData.NativeHeight);
-                        _playerPositionAfter = new Vector2(_playerPositionBefore.X, StaticData.NativeHeight - playerLength);
+                        _playerPositionBefore = new Vector2(_player.Position.X, Static.NativeHeight);
+                        _playerPositionAfter = new Vector2(_playerPositionBefore.X, Static.NativeHeight - playerLength);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(0, StaticData.NativeHeight);
-                        _scene2.DrawOffset = new Vector2(0, -StaticData.NativeHeight);
+                        _scene1OffsetAfter = new Vector2(0, Static.NativeHeight);
+                        _scene2.DrawOffset = new Vector2(0, -Static.NativeHeight);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
                         _newSceneOffsetAfter = new Vector2(0, 0);
                         break;
@@ -52,8 +52,8 @@ namespace MonoGameTestGame
                         _playerPositionBefore = new Vector2(_player.Position.X, -playerLength);
                         _playerPositionAfter = new Vector2(_playerPositionBefore.X, 0);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(0, -StaticData.NativeHeight);
-                        _scene2.DrawOffset = new Vector2(0, StaticData.NativeHeight);
+                        _scene1OffsetAfter = new Vector2(0, -Static.NativeHeight);
+                        _scene2.DrawOffset = new Vector2(0, Static.NativeHeight);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
                         _newSceneOffsetAfter = new Vector2(0, 0);
                         break;
@@ -61,8 +61,8 @@ namespace MonoGameTestGame
                         _playerPositionBefore = new Vector2(-playerLength, _player.Position.Y);
                         _playerPositionAfter = new Vector2(0, _playerPositionBefore.Y);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X - StaticData.NativeWidth, _scene1.DrawOffset.Y);
-                        _scene2.DrawOffset = new Vector2(StaticData.NativeWidth, _scene1.DrawOffset.Y);
+                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X - Static.NativeWidth, _scene1.DrawOffset.Y);
+                        _scene2.DrawOffset = new Vector2(Static.NativeWidth, _scene1.DrawOffset.Y);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
                         _newSceneOffsetAfter = new Vector2(0, _newSceneOffsetBefore.Y);
                         break;
@@ -70,10 +70,10 @@ namespace MonoGameTestGame
                         _playerPositionBefore = new Vector2(_scene2.Width, _player.Position.Y);
                         _playerPositionAfter = new Vector2(_scene2.Width - playerLength, _playerPositionBefore.Y);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(StaticData.NativeWidth, _scene1.DrawOffset.Y);
-                        _scene2.DrawOffset = new Vector2(StaticData.NativeWidth - _scene2.Width - StaticData.NativeWidth, _scene1.DrawOffset.Y);
+                        _scene1OffsetAfter = new Vector2(Static.NativeWidth, _scene1.DrawOffset.Y);
+                        _scene2.DrawOffset = new Vector2(Static.NativeWidth - _scene2.Width - Static.NativeWidth, _scene1.DrawOffset.Y);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(StaticData.NativeWidth - _scene2.Width, _newSceneOffsetBefore.Y);
+                        _newSceneOffsetAfter = new Vector2(Static.NativeWidth - _scene2.Width, _newSceneOffsetBefore.Y);
                         break;
                 }
             }
@@ -98,6 +98,7 @@ namespace MonoGameTestGame
                 else
                 {
                     _scene2.DrawOffset = _newSceneOffsetAfter;
+                    _scene2.OverlayOffset = _scene1OffsetAfter * 0.5f; //- _scene1OffsetAfter * 0.5f + Static.NativeSize;
                     _player.Position = _playerPositionAfter;
                     Done = true;
                 }
@@ -110,23 +111,25 @@ namespace MonoGameTestGame
                 {   
                     _scene1.DrawGround(spriteBatch);
                     _scene1.DrawTop(spriteBatch);
+                    _scene1.DrawOverlay(spriteBatch);
                 }
                 else
                 {
                     _scene1.DrawGround(spriteBatch);
 
-                    StaticData.Scene = _scene2;
+                    Static.Scene = _scene2;
                     _scene2.DrawGround(spriteBatch);
-                    StaticData.Scene = _scene1;
+                    Static.Scene = _scene1;
 
                     _scene1.DrawTop(spriteBatch);
 
-                    StaticData.Scene = _scene2;
+                    Static.Scene = _scene2;
                     _scene2.DrawTop(spriteBatch);
-                    StaticData.Scene = _scene1;
-                }
+                    //_scene2.DrawOverlay(spriteBatch);
+                    Static.Scene = _scene1;
 
-                
+                    _scene1.DrawOverlay(spriteBatch);
+                }
             }
         }
 
@@ -144,14 +147,14 @@ namespace MonoGameTestGame
                 _scene1 = scene1;
                 _scene1.Paused = true;
                 _player = player;
-                _overlay = Utility.CreateColorTexture(StaticData.NativeWidth, StaticData.NativeHeight, Color.Black);
+                _overlay = Utility.CreateColorTexture(Static.NativeWidth, Static.NativeHeight, Color.Black);
 
                 const int playerLength = 14;
 
                 switch (direction)
                 {
                     case Direction.Up:
-                        _playerPositionAfter = new Vector2(_player.Position.X, StaticData.NativeHeight - playerLength);
+                        _playerPositionAfter = new Vector2(_player.Position.X, Static.NativeHeight - playerLength);
                         break;
                     case Direction.Down:
                         _playerPositionAfter = new Vector2(_player.Position.X, 0);
@@ -160,7 +163,7 @@ namespace MonoGameTestGame
                         _playerPositionAfter = new Vector2(0, _player.Position.Y);
                         break;
                     case Direction.Left:
-                        _playerPositionAfter = new Vector2(StaticData.NativeWidth - playerLength, _player.Position.Y);
+                        _playerPositionAfter = new Vector2(Static.NativeWidth - playerLength, _player.Position.Y);
                         break;
                 }
             }
