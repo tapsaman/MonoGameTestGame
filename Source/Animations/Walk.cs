@@ -7,21 +7,102 @@ namespace MonoGameTestGame.Animations
 {
     public class Walk : Animation
     {
-        public Walk(Character target, Vector2 distance, float time = 0f)
+        public Walk(Character target, Vector2 distance, float? speed = null)
         {
-            if (time == 0f)
+            Stages = new AnimationStage[]
             {
-                Stages = new AnimationStage[]
-                {
-                    new WalkStage(target, distance, target.WalkSpeed)
-                };
-            }
-            else
+                new WalkStage(
+                    target,
+                    distance,
+                    speed == null ? target.WalkSpeed : (float)speed
+                )
+            };
+        }
+
+        public class Timed : Animation
+        {
+            public Timed(Character target, Vector2 distance, float time)
             {
                 Stages = new AnimationStage[]
                 {
                     new TimedWalkStage(target, distance, time)
                 };
+            }
+        }
+
+        public class To : Animation
+        {
+            public To(Character target, Vector2 endPostion, float? speed = null)
+            {
+                Stages = new AnimationStage[]
+                {
+                    new WalkToStage(
+                        target,
+                        endPostion,
+                        speed == null ? target.WalkSpeed : (float)speed
+                    )
+                };
+            }
+        }
+
+        private class WalkStage : AnimationStage
+        {
+            public float Time = 1f;
+            protected Vector2 _distance;
+            protected float _speed;
+            protected Vector2 _endPosition;
+            protected Vector2 _startPosition;
+            protected Vector2 _velocity;
+            protected Character _target;
+            
+            public WalkStage(Character target, Vector2 distance, float speed)
+            {
+                _target = target;
+                _distance = distance;
+                _speed = speed;
+            }
+            public override void Enter()
+            {
+                _startPosition = _target.Position;
+                _endPosition = _target.Position + _distance;
+                _velocity = _distance;
+                _velocity.Normalize();
+                _velocity *= _speed;
+                _target.Direction = _velocity.ToDirection();
+            }
+            public override void Update(GameTime gameTime)
+            {
+                var travel = _target.Position - _startPosition;
+
+                if (Math.Abs(travel.X) >= Math.Abs(_distance.X) && Math.Abs(travel.Y) >= Math.Abs(_distance.Y))
+                {
+                    IsDone = true;
+                    _target.Position = _endPosition;
+                    _target.Velocity = Vector2.Zero;
+                }
+                else
+                {
+                    _target.Velocity = _velocity;
+                }
+            }
+            public override void Draw(SpriteBatch spriteBatch) {}
+        }
+
+        private class WalkToStage : WalkStage
+        {
+            public WalkToStage(Character target, Vector2 endPosition, float speed)
+                : base(target, endPosition, speed)
+            {
+                _endPosition = endPosition;
+            }
+            public override void Enter()
+            {
+                _startPosition = _target.Position;
+                _distance = _endPosition - _startPosition;
+                _velocity = _distance;
+                _velocity.Normalize();
+                _velocity *= _speed;
+                _target.Direction = _velocity.ToDirection();
             }
         }
 
@@ -56,49 +137,6 @@ namespace MonoGameTestGame.Animations
                 else
                 {
                     _target.Velocity = _distance / Time;
-                }
-            }
-            public override void Draw(SpriteBatch spriteBatch) {}
-        }
-
-        private class WalkStage : AnimationStage
-        {
-            public float Time = 1f;
-            private Vector2 _distance;
-            private float _speed;
-            private Vector2 _endPosition;
-            private Vector2 _startPosition;
-            private Vector2 _velocity;
-            private Character _target;
-            
-            public WalkStage(Character target, Vector2 distance, float speed)
-            {
-                _target = target;
-                _distance = distance;
-                _speed = speed;
-            }
-            public override void Enter()
-            {
-                _startPosition = _target.Position;
-                _endPosition = _target.Position + _distance;
-                _velocity = _distance;
-                _velocity.Normalize();
-                _velocity *= _speed;
-                _target.Direction = _velocity.ToDirection();
-            }
-            public override void Update(GameTime gameTime)
-            {
-                var travel = _target.Position - _startPosition;
-
-                if (Math.Abs(travel.X) >= Math.Abs(_distance.X) && Math.Abs(travel.Y) >= Math.Abs(_distance.Y))
-                {
-                    IsDone = true;
-                    _target.Position = _endPosition;
-                    _target.Velocity = Vector2.Zero;
-                }
-                else
-                {
-                    _target.Velocity = _velocity;
                 }
             }
             public override void Draw(SpriteBatch spriteBatch) {}

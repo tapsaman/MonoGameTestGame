@@ -76,7 +76,7 @@ namespace MonoGameTestGame.Managers
 
             if (highlightRow == line)
             {
-                Static.Renderer.ChangeToDamageEffect();
+                Static.Renderer.ChangeToHighlightEffect();
             }
 
             foreach (int code in text)
@@ -100,7 +100,7 @@ namespace MonoGameTestGame.Managers
 
                     if (highlightRow == line)
                     {
-                        Static.Renderer.ChangeToDamageEffect();
+                        Static.Renderer.ChangeToHighlightEffect();
                     }
                     else
                     {
@@ -153,6 +153,8 @@ namespace MonoGameTestGame.Managers
 
                 position.X += xAdvance + Font.LetterSpacing;
             }
+
+            Static.Renderer.ChangeToDefault();
         }
     }
 }

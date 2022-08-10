@@ -157,6 +157,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TestFontSmall.spritefont
 
+#begin linktothepast/7584.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/7584.png
+
 #begin linktothepast/animation-bush-slash.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -211,6 +223,18 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast/enemy-sprites.png
 
+#begin linktothepast/enemy-sprites-og.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/enemy-sprites-og.png
+
 #begin linktothepast/forest.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -228,6 +252,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:linktothepast/guard-sprites.png
+
+#begin linktothepast/hud.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/hud.png
 
 #begin linktothepast/life-hud.png
 /importer:TextureImporter
@@ -265,6 +301,18 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast/link-sprites-evil.png
 
+#begin linktothepast/link-sprites-og.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/link-sprites-og.png
+
 #begin linktothepast/link-sprites-red.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -277,6 +325,30 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast/link-sprites-red.png
 
+#begin linktothepast/new-link-sprite-main.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/new-link-sprite-main.png
+
+#begin linktothepast/new-link-sprite-sword.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/new-link-sprite-sword.png
+
 #begin linktothepast/npc-sprites.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -288,6 +360,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:linktothepast/npc-sprites.png
+
+#begin linktothepast/npc-sprites-og.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/npc-sprites-og.png
 
 #begin linktothepast/sfx/chest open.wav
 /importer:WavImporter
@@ -342,6 +426,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/large beam.wav
+
+#begin linktothepast/sfx/link dies.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/link dies.wav
 
 #begin linktothepast/sfx/link falls.wav
 /importer:WavImporter
@@ -462,6 +552,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/HighContrastEffect.fx
+
+#begin Shaders/HighlightEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/HighlightEffect.fx
 
 #begin Shaders/InvertedColorEffect.fx
 /importer:EffectImporter

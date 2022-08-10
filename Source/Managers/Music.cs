@@ -5,7 +5,7 @@ namespace MonoGameTestGame
 {
     public static class Music
     {
-        public static float Volume { get; set; } = 0.2f;
+        public static float Volume { get; set; } = 0.4f;
         private static float _currentVolume;
         private static float _fadeOutTime;
         private static float _elapsedFadeTime;
@@ -15,6 +15,8 @@ namespace MonoGameTestGame
 
         public static void Play(Song song)
         {
+            Sys.Debug("Playing song " + song.Name);
+
             if (_fadingOut)
             {
                 _nextSong = song;

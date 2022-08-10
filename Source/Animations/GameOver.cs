@@ -33,9 +33,12 @@ namespace MonoGameTestGame.Animations
             public override void Draw(SpriteBatch spriteBatch)
             {
                 //_textWidth = BitmapFontRenderer.CalculateSize(Text).X;
+
+                if (_elapsedTime == 0)
+                    return;
                 
                 Utility.DrawOverlay(spriteBatch, new Color(0, 0, 0, _elapsedTime / 3));
-
+                Static.Scene.DrawPlayerOnly(spriteBatch);
 
                 int letterSpace = 20; //Static.NativeWidth - xPadding * 2 / Text.Length;
 
@@ -77,6 +80,7 @@ namespace MonoGameTestGame.Animations
             public override void Draw(SpriteBatch spriteBatch)
             {
                 Utility.DrawOverlay(spriteBatch, Color.Black);
+                Static.Scene.DrawPlayerOnly(spriteBatch);
 
                 int letterSpace = 20; //Static.NativeWidth - xPadding * 2 / Text.Length;
                 Vector2 endPosition = new Vector2(_nextXPadding + letterSpace / 2, _y);
@@ -117,6 +121,7 @@ namespace MonoGameTestGame.Animations
             public override void Draw(SpriteBatch spriteBatch)
             {
                 Utility.DrawOverlay(spriteBatch, Color.Black);
+                Static.Scene.DrawPlayerOnly(spriteBatch);
 
                 int letterSpace = 8; //Static.NativeWidth - xPadding * 2 / Text.Length;
                 float donePercentage = Math.Min(1f, _elapsedTime / _time);

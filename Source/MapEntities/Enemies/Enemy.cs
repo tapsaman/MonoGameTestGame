@@ -29,10 +29,10 @@ namespace MonoGameTestGame
             
             base.Update(gameTime);
 
-            if (!IsInvincible)
-            {
-                DeterminePlayerDamage();
-            }
+            //if (!IsInvincible)
+            //{
+            DeterminePlayerDamage();
+            //}
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 offset)
@@ -58,6 +58,13 @@ namespace MonoGameTestGame
                 IsInvincible = true;
                 StateMachine.TransitionTo("TakenDamage");
             }
+        }
+
+        public virtual void Die()
+        {
+            SFX.EnemyDies.Play();
+            Static.Scene.Add(new Animations.EnemyDeath(Hitbox.Rectangle.Center));
+            Static.Scene.Remove(this);
         }
     }
 }

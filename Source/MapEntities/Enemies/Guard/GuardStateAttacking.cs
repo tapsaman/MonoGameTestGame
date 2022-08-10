@@ -18,7 +18,7 @@ namespace MonoGameTestGame.Models
             _guard = guard;
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             SFX.Soldier.Play();
             _elapsedTime = 0;

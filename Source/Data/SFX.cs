@@ -32,6 +32,7 @@ namespace MonoGameTestGame
         public static SoundEffect SmallEnemyHit;
         public static SoundEffect LinkHurt;
         public static SoundEffect LinkFall;
+        public static SoundEffect LinkDies;
         public static SoundEffect Fall;
         public static SoundEffect LargeBeam;
 
@@ -54,6 +55,7 @@ namespace MonoGameTestGame
             SmallEnemyHit = Static.Content.Load<SoundEffect>("linktothepast/sfx/small enemy hit");
             LinkHurt = Static.Content.Load<SoundEffect>("linktothepast/sfx/link hurt");
             LinkFall = Static.Content.Load<SoundEffect>("linktothepast/sfx/link falls");
+            LinkDies = Static.Content.Load<SoundEffect>("linktothepast/sfx/link dies");
             Fall = Static.Content.Load<SoundEffect>("linktothepast/sfx/fall");
             LargeBeam = Static.Content.Load<SoundEffect>("linktothepast/sfx/large beam");
         }

@@ -8,7 +8,7 @@ namespace MonoGameTestGame.Models
     {
         public PlayerStateIdle(Player player) : base(player) {}
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             Player.Sprite.SetAnimation("Idle" + Player.Direction);
         }

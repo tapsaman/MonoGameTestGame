@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using MonoGameTestGame.Models;
 
@@ -20,10 +21,13 @@ namespace MonoGameTestGame.Managers
             stage.Exit();
         }*/
 
-        public bool IsDone { get; set; }
+        public bool IsDone { get; private set; }
+        public bool IsEntered { get; private set; }
         private int _eventIndex;
         private Event[] _eventList;
-        private bool _lastEventDone = false;
+        private Dictionary<string, Event> _waitingForID = new Dictionary<string, Event>();
+        private UpdatableList<Event> _updating = new UpdatableList<Event>();
+        private bool _shouldTraverse;
 
         public EventManager(Event[] eventList)
         {
@@ -33,45 +37,83 @@ namespace MonoGameTestGame.Managers
         public void Load(Event[] eventList)
         {
             IsDone = false;
+            IsEntered = false;
+            _shouldTraverse = false;
             _eventList = eventList;
             _eventIndex = 0;
-            InitEvent(0);
+        }
+
+        public void Enter()
+        {
+            IsEntered = true;
+            InitEvent(_eventList[_eventIndex]);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (_eventList == null)
-                return;
+            _updating.Update();
 
-            if (!_lastEventDone)
+            foreach (var ev in _updating)
             {
-                _eventList[_eventIndex].Update(gameTime);        
+                if (ev.IsDone)
+                {
+                    ev.Exit();
+
+                    if (!string.IsNullOrEmpty(ev.ID) && _waitingForID.ContainsKey(ev.ID))
+                    {
+                        InitWaitingEvent(_waitingForID[ev.ID]);
+                    }
+
+                    _updating.SetToRemove(ev);
+                }
+                else
+                {
+                    ev.Update(gameTime);
+                }
             }
-            else
+
+            if (_shouldTraverse)
             {
-                InitEvent(_eventIndex);
+                _shouldTraverse = false;
+                InitEvent(_eventList[_eventIndex]);
             }
         }
     
-        private void InitEvent(int index)
+        private void InitEvent(Event ev)
         {
-            _lastEventDone = false;
-            var e = _eventList[index];
-            e.WhenDone += EventDone;
-            Sys.Debug("Entering " + e.ToString());
-            e.Enter();
+            if (!string.IsNullOrEmpty(ev.WaitForID))
+            {
+                _waitingForID[ev.WaitForID] = ev;
+                GoToNext();
+                return;
+            }
+
+            _updating.Add(ev);
+            ev.Traverse += GoToNext;
+            Sys.Debug("Entering " + ev.ToString());
+            ev.Enter();
         }
 
-        private void EventDone()
+        private void InitWaitingEvent(Event ev)
+        {
+            if (string.IsNullOrEmpty(ev.WaitForID))
+                throw new System.Exception("Ran InitWaitingEvent for event without WaitForID");
+            
+            _waitingForID.Remove(ev.WaitForID);
+            _updating.SetToAdd(ev);
+            Sys.Debug("Entering " + ev.ToString());
+            ev.Enter();
+        }
+
+        private void GoToNext()
         {
             var e = _eventList[_eventIndex];
-            e.Exit();
-            e.WhenDone -= EventDone;
+            e.Traverse -= GoToNext;
             _eventIndex++;
 
             if (_eventIndex < _eventList.Length)
             {
-                _lastEventDone = true;
+                _shouldTraverse = true;
             }
             else
             {

@@ -13,7 +13,8 @@ namespace MonoGameTestGame.Managers
             ShiftingLine,
             PageDone,
             MessageDone,
-            QuestionDone
+            QuestionDone,
+            QuestionAnswered
         }
 
         public bool IsDone { get; set; }
@@ -26,6 +27,7 @@ namespace MonoGameTestGame.Managers
         const float _LETTER_TIME = 0.018f;
         const float _INPUT_WAIT_TIME = 0.2f;
         const float _LINE_SHIFT_TIME = 0.2f;
+        const float _ANSWER_FLASH_TIME = 1f;
         private float _elapsedTime = 0f;
         private int _drawLetterCount = 0;
         private bool _dialogBoxIsFull;
@@ -56,6 +58,9 @@ namespace MonoGameTestGame.Managers
 
         private void StartNewContent()
         {
+            AnswerIndex = null;
+            Answer = null;
+
             _asking = false;
             _currentOptionIndex = null;
             var currentContent = _dialog.Content[_dialogContentIndex];
@@ -158,7 +163,23 @@ namespace MonoGameTestGame.Managers
                 case State.QuestionDone:
                     UpdateAsking(gameTime);
                 break;
+                case State.QuestionAnswered:
+                    UpdateAfterAnswer(gameTime);
+                break;
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            DialogBox.Draw(
+                spriteBatch,
+                _topDialogBox,
+                _currentString,
+                _cropY,
+                _dialogBoxTextHeight, 
+                Borderless,
+                AnswerIndex != null ? AnswerIndex + 1 : null
+            );
         }
 
         private void SkipAhead()
@@ -166,7 +187,15 @@ namespace MonoGameTestGame.Managers
             _cropY = 0;
             _elapsedTime = 0;
 
-            if (_pageStart + _pageLength == _currentMessage.Length)
+            if (_asking)
+            {
+                _currentStartOfMessage = _pageStart;
+                _currentString = _currentMessage.Substring(_currentStartOfMessage, _pageLength);
+                _pageLineIndex = 3;
+                _dialogBoxIsFull = true;
+                _state = State.QuestionDone;
+            }
+            else if (_pageStart + _pageLength == _currentMessage.Length)
             {
                 _currentString = _currentMessage.Substring(_pageStart);
                 _state = State.MessageDone;
@@ -253,19 +282,6 @@ namespace MonoGameTestGame.Managers
             _state = State.ShiftingLine;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            DialogBox.Draw(
-                spriteBatch,
-                _topDialogBox,
-                _currentString,
-                _cropY,
-                _dialogBoxTextHeight, 
-                Borderless,
-                IsDone ? _currentOptionIndex + 1 : null
-            );
-        }
-
         private void UpdateAsking(GameTime gameTime)
         {
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -282,7 +298,10 @@ namespace MonoGameTestGame.Managers
                 {
                     AnswerIndex = _currentOptionIndex;
                     Answer = ask.Options[(int)_currentOptionIndex];
-                    NextContent();
+                    _elapsedTime = 0;
+                    _state = State.QuestionAnswered;
+                    //NextContent();
+                    SFX.WalkGrass.Play();
                 }
                 else
                 {
@@ -303,6 +322,16 @@ namespace MonoGameTestGame.Managers
                         _elapsedTime = 0;
                     }
                 }
+            }
+        }
+
+        private void UpdateAfterAnswer(GameTime gameTime)
+        {
+            _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_elapsedTime > _ANSWER_FLASH_TIME)
+            {
+                NextContent();
             }
         }
 

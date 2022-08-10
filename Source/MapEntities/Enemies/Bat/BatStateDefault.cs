@@ -12,7 +12,7 @@ namespace MonoGameTestGame.Models
 
         public BatStateDefault(Bat bat) : base(bat) {}
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             Character.Sprite.SetAnimation("Default");
             _velocity = Utility.RandomDirection().ToVector() * 40f;

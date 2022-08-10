@@ -25,9 +25,7 @@ namespace MonoGameTestGame
         public Vector2 OverlayOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
-        private List<MapObject> _removingEntities;
         private List<AnimationEffect> _animationEffects;
-        private List<AnimationEffect> _removingEffects;
         // Register hitboxes for rendering
         private List<Hitbox> _hitboxes;
 
@@ -42,9 +40,7 @@ namespace MonoGameTestGame
             CollidingEntities = new List<MapObject>();
             UncollidingEntities = new List<MapObject>();
             TouchTriggers = new List<MapEntity>();
-            _removingEntities = new List<MapObject>();
             _animationEffects = new List<AnimationEffect>();
-            _removingEffects = new List<AnimationEffect>();
             _hitboxes = new List<Hitbox>();
         }
 
@@ -78,6 +74,18 @@ namespace MonoGameTestGame
                 {
                     Add(new Bat() { Position = obj.Position });
                 }
+                else if (obj.TypeName == "Bubble")
+                {
+                    Add(new Bubble() { Position = obj.Position });
+                }
+                else if (obj.TypeName == "Bari")
+                {
+                    Add(new Bari() { Position = obj.Position });
+                }
+                else if (obj.TypeName == "RedBari")
+                {
+                    Add(new RedBari() { Position = obj.Position });
+                }
             }
         }
 
@@ -95,9 +103,10 @@ namespace MonoGameTestGame
             
             TileMap.Update(gameTime);
 
-            foreach (var mapEntity in MapObjects)
+            // Reverse for loops so we can safely add/remove items during iteration
+            for (int i = MapObjects.Count - 1; i >= 0 ; i--)
             {
-                mapEntity.Update(gameTime);
+                MapObjects[i].Update(gameTime);
             }
 
             CollidingEntities.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
@@ -105,23 +114,10 @@ namespace MonoGameTestGame
             if (Player.Velocity != Vector2.Zero)
                 UpdateCamera(Player.Position);
 
-            foreach (var animationEffect in _animationEffects)
+            for (int i = _animationEffects.Count - 1; i >= 0 ; i--)
             {
-                animationEffect.Update(gameTime);
+                _animationEffects[i].Update(gameTime);
             }
-
-            foreach (var mapEntity in _removingEntities)
-            {
-                Remove(mapEntity);
-            }
-
-             foreach (var effect in _removingEffects)
-            {
-                _animationEffects.Remove(effect);
-            }
-
-            _removingEntities.Clear();
-            _removingEffects.Clear();
         }
 
         public void UpdateCamera(Vector2 targetPosition)
@@ -169,6 +165,12 @@ namespace MonoGameTestGame
         public virtual void DrawOverlay(SpriteBatch spriteBatch)
         {
             // Do nothing by default
+        }
+
+        // For animations
+        public void DrawPlayerOnly(SpriteBatch spriteBatch)
+        {
+            Player.Draw(spriteBatch, DrawOffset);
         }
 
         public void Add(MapEntity mapEntity)
@@ -239,20 +241,14 @@ namespace MonoGameTestGame
             }
         }
 
-        /* Set map entities to be removed after updates */
-        public void SetToRemove(MapObject mapEntity)
-        {
-            _removingEntities.Add(mapEntity);
-        }
-
         public void Add(AnimationEffect animationEffect)
         {
             _animationEffects.Add(animationEffect);
         }
 
-        public void SetToRemove(AnimationEffect animationEffect)
+        public void Remove(AnimationEffect animationEffect)
         {
-            _removingEffects.Add(animationEffect);
+            _animationEffects.Remove(animationEffect);
         }
 
         public void RegisterHitbox(Hitbox hitbox)

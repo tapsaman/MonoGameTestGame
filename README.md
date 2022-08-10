@@ -20,6 +20,7 @@ log:
 * 1.8. - global game states, menu state, using global game object renamed ZeldaAdventure666, states with draw method "render states"
 * 5.8. - slider input, sfx/music volume sliders, select input, resolution setting, wait event, game states cutscene, start over and game over, animation class and game over animations, dialog questions, static img class, global event manager replaced with event system, spotlight shader, interfaces init, renamed StaticData to Static and Animation(Manager) to SAnimation(Manager)
 * 5.8. - moogle, c1 start event init, animation events, jump and walk animations
+* 10.8. - event manager not waiting and waiting for id, enemies bubble bari biri, moogle start event done, dialog questions and ask event, new link sprites, game over animations finished, state args for state enter
 
 roadmap:
 * animation events (falling to hole)
@@ -42,7 +43,7 @@ could do but prob won't:
 * action fields/"callbacks" could be named uniformly (OnThing or WhenThing)
 * could use milliseconds instead of seconds for updates because ints take less space than floats
 * circle/polygon collision shapes (???)
-* there's shitload of managers + manageables (animations, dialog, ui, events), could maybe have Manager + Manageable interfaces to enforce uniformity
+* ~~there's shitload of managers + manageables (animations, dialog, ui, events), could maybe have Manager + Manageable interfaces to enforce uniformity~~
 e.g.
     IManager<TKey, IManageable>  ->
         Dictionary<TKey, IManageable> Lookup/Children/Collection/Stages?
@@ -59,4 +60,4 @@ e.g.
         bool Paused?
         void Draw?
         bool DisableDrawing?
-* ok trying to implement ^ this on this proj at this point was bad idea, interfaces need to be kept very simple... 
+* ok nah all mmanagers work too differently to force anything except bare base interfaces, like IManageablw with `bool IsDone { get; }` property

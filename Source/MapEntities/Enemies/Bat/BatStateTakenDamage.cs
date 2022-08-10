@@ -2,9 +2,9 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGameTestGame.Models
 {
-    public class EnemyStateTakenDamage : CharacterState
+    public class BatStateTakenDamage : CharacterState
     {
-        private Enemy _enemy;
+        private Bat _bat;
         private Vector2 _flyVelocity;
         private float _elapsedTime;
         private const float _FLY_TIME = 0.5f;
@@ -14,31 +14,31 @@ namespace MonoGameTestGame.Models
             new Color(255, 200, 200)
         };
 
-        public EnemyStateTakenDamage(Enemy enemy) : base(enemy)
+        public BatStateTakenDamage(Bat bat) : base(bat)
         {
-            _enemy = enemy;
+            _bat = bat;
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             SFX.EnemyHit.Play();
             _elapsedTime = 0;
             _colorIndex = 0;
-            var vel = (_enemy.Position - _enemy.DamagerPosition);
+            var vel = (_bat.Position - _bat.DamagerPosition);
             vel.Normalize();
             _flyVelocity = vel * 150f;
-            _enemy.Moving = true;
-            _enemy.Sprite.SetAnimation("Idle" + _enemy.Direction);
+            _bat.Moving = true;
+            _bat.Sprite.SetAnimation("TakenDamage");
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (_enemy.CollidingX != Direction.None || _enemy.CollidingY != Direction.None)
+            if (_bat.CollidingX != Direction.None || _bat.CollidingY != Direction.None)
             {
-                //_flyVelocity = Vector2.Zero;
+                _flyVelocity = Vector2.Zero;
             }
 
-            _enemy.Velocity = _flyVelocity;
+            _bat.Velocity = _flyVelocity;
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (_elapsedTime < _FLY_TIME)
@@ -48,16 +48,16 @@ namespace MonoGameTestGame.Models
             }
             else
             {
-                if (_enemy.Health > 0)
+                if (_bat.Health > 0)
                 {
-                    stateMachine.TransitionTo("Attacking");
-                    _enemy.IsInvincible = false;
+                    stateMachine.TransitionTo("Default");
+                    _bat.IsInvincible = false;
                 }
                 else
                 {
                     SFX.EnemyDies.Play();
-                    Static.Scene.Add(new Animations.EnemyDeath(_enemy.Position + new Vector2(7)));
-                    Static.Scene.SetToRemove(_enemy);
+                    Static.Scene.Add(new Animations.EnemyDeath(_bat.Hitbox.Rectangle.Center));
+                    Static.Scene.Remove(_bat);
                 }
             }
         }

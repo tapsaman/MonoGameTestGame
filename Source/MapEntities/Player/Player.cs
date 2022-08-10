@@ -12,6 +12,7 @@ namespace MonoGameTestGame
     {
         public int MaxHealth { get; private set; } = 6;
         public bool Hitting = false;
+        public bool CanDie = true;
         private const int _touchAreaLength = 10;
         public Vector2 HitPosition;
         private const float _INVINCIBLE_TIME = 1.5f;
@@ -30,25 +31,50 @@ namespace MonoGameTestGame
             WalkSpeed = 70f;
             SpriteOffset = new Vector2(-13, -24);
 
-            var texture = Static.Content.Load<Texture2D>("linktothepast/link-sprites");
-            SAnimation.DefaultFrameWidth = 40;
-            SAnimation.DefaultFrameHeight = 50;
-
+            var txt1 = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-main");
+            var txt2 = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-sword");
+            var offset1 = new Vector2(8, 11);
+            var offset2 = new Vector2(-4, -1);
+            SAnimation.DefaultFrameWidth = 24;
+            SAnimation.DefaultFrameHeight = 28;
             Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
-                { "IdleDown",       new SAnimation(texture, 1, 0.04f, false, 0, 1) },
-                { "IdleUp",         new SAnimation(texture, 1, 0.04f, false, 1, 3) },
-                { "IdleLeft",       new SAnimation(texture, 1, 0.04f, false, 2, 3) },
-                { "IdleRight",      new SAnimation(texture, 1, 0.04f, false, 3, 3) },
-                { "WalkDown",       new SAnimation(texture, 8, 0.04f, true, 0) },
-                { "WalkUp",         new SAnimation(texture, 8, 0.04f, true, 1) },
-                { "WalkLeft",       new SAnimation(texture, 6, 0.04f, true, 2) },
-                { "WalkRight",      new SAnimation(texture, 6, 0.04f, true, 3) },
-                { "SwordHitDown",   new SAnimation(texture, 6, 0.04f, false, 4) },
-                { "SwordHitUp",     new SAnimation(texture, 5, 0.04f, false, 5) },
-                { "SwordHitLeft",   new SAnimation(texture, 5, 0.04f, false, 6) },
-                { "SwordHitRight",  new SAnimation(texture, 5, 0.04f, false, 7) },
-                { "Falling",        new SAnimation(texture, 6, 0.04f, false, 4) },
+                { "IdleDown",       new SAnimation(txt1, 0, 10, 24, 28, offset: offset1) },
+                { "IdleLeft",       new SAnimation(txt1, 1, 10, 24, 28, offset: offset1) },
+                { "IdleUp",         new SAnimation(txt1, 2, 10, 24, 28, offset: offset1) },
+                { "IdleRight",      new SAnimation(txt1, 3, 10, 24, 28, offset: offset1) },
+                { "DamagedDown",    new SAnimation(txt1, 4, 10, 24, 28, offset: offset1) },
+                { "DamagedLeft",    new SAnimation(txt1, 5, 10, 24, 28, offset: offset1) },
+                { "DamagedUp",      new SAnimation(txt1, 6, 10, 24, 28, offset: offset1) },
+                { "DamagedRight",   new SAnimation(txt1, 7, 10, 24, 28, offset: offset1) },
+                { "WalkDown",       new SAnimation(txt1, 8, 0.04f, true, 0, 0, offset: offset1) },
+                { "WalkUp",         new SAnimation(txt1, 8, 0.04f, true, 1, 0, offset: offset1) },
+                { "WalkRight",      new SAnimation(txt1, 8, 0.04f, true, 2, 0, offset: offset1) },
+                { "WalkLeft",       new SAnimation(txt1, 8, 0.04f, true, 3, 0, offset: offset1) },
+                { "Falling",        new SAnimation(txt1, 7, 0.2f, false, 11, 0, offset: offset1) },
+                { "Dying",          new SAnimation(txt1, 0.07f, offset1, new Rectangle[]
+                    {
+                        new Rectangle(0,   336, 24, 28),
+                        new Rectangle(24,  336, 24, 28),
+                        new Rectangle(48,  336, 24, 28),
+                        new Rectangle(72,  336, 24, 28),
+                        new Rectangle(0,   336, 24, 28),
+                        new Rectangle(24,  336, 24, 28),
+                        new Rectangle(48,  336, 24, 28),
+                        new Rectangle(72,  336, 24, 28),
+                        new Rectangle(0,   336, 24, 28),
+                        new Rectangle(24,  336, 24, 28),
+                        new Rectangle(48,  336, 24, 28),
+                        new Rectangle(72,  336, 24, 28),
+                        // Fall down
+                        new Rectangle(96,  336, 24, 28),
+                        new Rectangle(120, 336, 24, 28),
+                    }
+                )},
+                { "SwordHitDown",   new SAnimation(txt2, 10, 46, 50, 0.04f, 0, offset: offset2) },
+                { "SwordHitUp",     new SAnimation(txt2, 10, 46, 50, 0.04f, 1, offset: offset2) },
+                { "SwordHitLeft",   new SAnimation(txt2, 10, 46, 50, 0.04f, 3, offset: offset2) },
+                { "SwordHitRight",  new SAnimation(txt2, 10, 46, 50, 0.04f, 2, offset: offset2) },
             };
 
             Hitbox.Load(14, 14);
@@ -64,6 +90,7 @@ namespace MonoGameTestGame
                 { "SwordHit", new PlayerStateSwordHit(this) },
                 { "TakenDamage", new PlayerStateTakenDamage(this) },
                 { "Falling", new PlayerStateFalling(this) },
+                { "Dying", new PlayerStateDying(this) },
                 { "Stopped", new PlayerStateStopped(this) }
             };
 
@@ -94,8 +121,10 @@ namespace MonoGameTestGame
             {
                 SwordHitbox.Update(gameTime);
                 
-                foreach (var entity in Static.Scene.HittableEntities)
+                for (int i = Static.Scene.HittableEntities.Count - 1; i >= 0 ; i--)
                 {
+                    var entity = Static.Scene.HittableEntities[i];
+
                     if (SwordHitbox.Rectangle.Intersects(entity.Hitbox.Rectangle))
                     {
                         entity.InvokeTrigger(this);
@@ -127,9 +156,17 @@ namespace MonoGameTestGame
             if (!IsInvincible)
             {
                 Health = Math.Max(0, Health - 1);
-                IsInvincible = true;
-                HitPosition = hitPosition;
-                StateMachine.TransitionTo("TakenDamage");
+                
+                if (Health == 0 && CanDie)
+                {
+                    Static.Game.StateMachine.TransitionTo("GameOver");
+                }
+                else
+                {
+                    IsInvincible = true;
+                    HitPosition = hitPosition;
+                    StateMachine.TransitionTo("TakenDamage");
+                }
             }
         }
 

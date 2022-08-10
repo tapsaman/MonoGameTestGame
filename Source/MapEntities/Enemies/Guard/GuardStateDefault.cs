@@ -19,7 +19,7 @@ namespace MonoGameTestGame.Models
             _guard = guard;
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
             _guard.Velocity = _guard.Direction.ToVector() * _guard.WalkSpeed;

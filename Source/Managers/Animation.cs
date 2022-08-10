@@ -58,8 +58,8 @@ namespace MonoGameTestGame
 
         public void Update(GameTime gameTime)
         {
-            if (IsDone)
-                return;
+            //if (IsDone)
+            //    return;
             
             ElapsedStageTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             Stages[CurrentIndex].Update(gameTime);

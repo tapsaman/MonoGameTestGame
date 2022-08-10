@@ -24,6 +24,24 @@ namespace MonoGameTestGame
             return (Direction)RandomBetween(0, 3);
         }
 
+        public static Vector2 RandomDiagonal()
+        {
+            int r = RandomBetween(0,3);
+            Vector2 v = Vector2.Zero;
+
+            switch (r)
+            {
+                case 0: v = new Vector2(1,-1); break;
+                case 1: v = new Vector2(1,1); break;
+                case 2: v = new Vector2(-1,1); break;
+                case 3: v = new Vector2(-1,-1); break;
+            }
+
+            v.Normalize();
+
+            return v;
+        }
+
         public static Direction GetDirectionBetween(Vector2 from, Vector2 to)
         {
             Vector2 difference = from - to;
@@ -62,7 +80,7 @@ namespace MonoGameTestGame
         {
             return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
         }
-
+    
         public static float ToAbsoluteFloat(this Vector2 vector)
         {
             return Math.Abs(vector.X) + Math.Abs(vector.Y);

@@ -8,7 +8,7 @@ namespace MonoGameTestGame.Models
         private float _elapsedHitTime = 0f;
         public PlayerStateSwordHit(Player player) : base(player) {}
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             SFX.Sword1.Play();
             Player.Sprite.SetAnimation("SwordHit" + Player.Direction);

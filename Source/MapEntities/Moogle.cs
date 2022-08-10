@@ -7,10 +7,11 @@ using MonoGameTestGame.Sprites;
 namespace MonoGameTestGame
 {
     public class Moogle : Character
-    {       
+    {
         private Event[] _talkEvent;
         public Moogle()
         {
+            WalkSpeed = 70f;
             var texture = Static.Content.Load<Texture2D>("moogle2");
             SAnimation.DefaultFrameWidth = 24;
             SAnimation.DefaultFrameHeight = 32;
@@ -30,7 +31,7 @@ namespace MonoGameTestGame
             Sprite.SetAnimations(animations);
             Hitbox.Load (14, 10);
             Hitbox.Color = Color.Red;
-            SpriteOffset = new Vector2(-3, -18);
+            SpriteOffset = new Vector2(-5, -22);
             Trigger += TalkTo;
             Interactable = true;
             Colliding = true;
@@ -43,7 +44,7 @@ namespace MonoGameTestGame
                 {
                     IfFalse = new Event[]
                     {
-                        new TextEvent(new Dialog("Juat get a... get to the\notherside my guy."), this),
+                        new TextEvent(new Dialog("Just get a... get to the\notherside my guy."), this),
                         new SaveValueEvent(EventStore.Scene, "moogle speak toggle", true)
                     },
                     IfTrue = new Event[]

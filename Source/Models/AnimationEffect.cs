@@ -16,7 +16,7 @@ namespace MonoGameTestGame.Models
 
         public override void OnDone()
         {
-            Static.Scene.SetToRemove(this);
+            Static.Scene.Remove(this);
         }
     }
 }

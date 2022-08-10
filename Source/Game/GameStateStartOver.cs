@@ -21,7 +21,7 @@ namespace MonoGameTestGame.Models
             _game = game;
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             _elapsedTime = 0;
             _sceneInited = false;

@@ -29,7 +29,7 @@ namespace MonoGameTestGame.Managers
             States = states;
             CurrentState = States[initialStateName];
             CurrentStateKey = initialStateName;
-            CurrentState.Enter();
+            CurrentState.Enter(new StateArgs());
         }
 
         public void Update(GameTime gameTime)
@@ -37,7 +37,7 @@ namespace MonoGameTestGame.Managers
             CurrentState.Update(gameTime);
         }
 
-        public void TransitionTo(string newStateName)
+        public void TransitionTo(string newStateName, StateArgs args = null)
         {
             if (!States.ContainsKey(newStateName))
             {
@@ -49,7 +49,7 @@ namespace MonoGameTestGame.Managers
                 Sys.Debug("StateMachine entering state " + newStateName);
                 CurrentState = States[newStateName];
                 CurrentStateKey = newStateName;
-                CurrentState.Enter();
+                CurrentState.Enter(args);
             }
         }
     }

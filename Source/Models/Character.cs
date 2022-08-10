@@ -11,7 +11,7 @@ namespace MonoGameTestGame
     {
         public Vector2 ElementalVelocity;
         public Vector2 Velocity;
-        public float WalkSpeed;
+        public float WalkSpeed = 10f;
         public int Health { get; protected set; }
         public bool IsInvincible;
         public Direction Direction = Direction.Down;
@@ -19,6 +19,7 @@ namespace MonoGameTestGame
         public Direction CollidingY = Direction.None;
         public Direction MapBorder = Direction.None;
         public bool Moving = false;
+        public bool DrawingShadow = true;
         public bool Walking = false;
         public bool WalkingStill = true;
         public StateMachine StateMachine { get; protected set; }
@@ -53,6 +54,19 @@ namespace MonoGameTestGame
             }
             
             Sprite.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Vector2 offset)
+        {
+            if (DrawingShadow)
+            {
+                var shadowPos = new Vector2(Hitbox.Rectangle.Left - 5, Hitbox.Rectangle.Bottom - 6 - 20) + offset;
+                shadowPos.Round();
+
+                spriteBatch.Draw(Img.Shadow, shadowPos, new Rectangle(168, 308, 24, 28), Color.White);
+            }
+            
+            base.Draw(spriteBatch, offset);
         }
 
         public void FaceTowards(Vector2 position)

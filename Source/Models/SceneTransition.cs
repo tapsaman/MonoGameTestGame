@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameTestGame.Manangers;
+using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame
 {
@@ -141,11 +142,11 @@ namespace MonoGameTestGame
             private Vector2 _playerPositionAfter;
             private Texture2D _overlay;
             private float _colorMultiplier = 0f;
+            private Animation _walkAnimation;
 
             public override void Start(Scene scene1, Player player, Direction direction)
             {
                 _scene1 = scene1;
-                _scene1.Paused = true;
                 _player = player;
                 _overlay = Utility.CreateColorTexture(Static.NativeWidth, Static.NativeHeight, Color.Black);
 
@@ -166,20 +167,33 @@ namespace MonoGameTestGame
                         _playerPositionAfter = new Vector2(Static.NativeWidth - playerLength, _player.Position.Y);
                         break;
                 }
+
+                _player.Colliding = false;
+                _walkAnimation = new Animations.Walk(_player, direction.ToVector() * playerLength);
+                _walkAnimation.Enter();
             }
 
             public override void Update(GameTime gameTime)
             {
+                if (!_walkAnimation.IsDone)
+                {
+                    _walkAnimation.Update(gameTime);
+                    _scene1.Update(gameTime);
+                    return;
+                }
+
+                _scene1.Paused = true;
                 _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 
                 if (_elapsedTime < _FADE_TIME)
                 {
-                    _colorMultiplier = _elapsedTime / _FADE_TIME;
+                    _colorMultiplier = (_elapsedTime) / _FADE_TIME;
                 }
                 else if (_elapsedTime < _FADE_TIME + _LOAD_TIME)
                 {
                     if (_scene2 == null)
                     {
+                        _player.Colliding = true;
                         _scene2 = SceneManager.LoadNextScene();
                         _player.Position = _playerPositionAfter;
                         _scene2.UpdateCamera(_player.Position);

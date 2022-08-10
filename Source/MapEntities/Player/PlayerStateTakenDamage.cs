@@ -10,7 +10,7 @@ namespace MonoGameTestGame.Models
 
         public PlayerStateTakenDamage(Player player) : base(player) {}
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             SFX.LinkHurt.Play();
             _elapsedTime = 0;
@@ -18,7 +18,7 @@ namespace MonoGameTestGame.Models
             vel.Normalize();
             _flyVelocity = vel * 150f;
             Player.SwordHitbox.Enabled = false;
-            Player.Sprite.SetAnimation("Idle" + Player.Direction);
+            Player.Sprite.SetAnimation("Damaged" + Player.Direction);
         }
 
         public override void Update(GameTime gameTime)

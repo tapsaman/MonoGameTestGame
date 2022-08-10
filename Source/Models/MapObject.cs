@@ -8,7 +8,7 @@ namespace MonoGameTestGame
     {
         public Sprite Sprite;
         public bool Hittable { get; protected set; } = false;
-        public bool Colliding { get; protected set; } = true;
+        public bool Colliding = true;
         public override Vector2 Position
         {
             get { return _position; }

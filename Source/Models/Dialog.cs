@@ -19,13 +19,13 @@ namespace MonoGameTestGame
             }
         }
 
-        public static DialogText Text(string message)
+        public static Dialog Text(string message)
         {
-            return new DialogText(message);
+            return new Dialog(new DialogText(message));
         }
-        public static DialogAsk Ask(string question, params string[] options)
+        public static Dialog Ask(string question, params string[] options)
         {
-            return new DialogAsk(question, options);
+            return new Dialog(new DialogAsk(question, options));
         }
     }
 

@@ -8,8 +8,10 @@ namespace MonoGameTestGame.Models
     {
         public StateMachine stateMachine;
         public virtual bool CanReEnter { get; protected set; } = true;
-        public abstract void Enter();
+        public abstract void Enter(StateArgs args);
         public abstract void Update(GameTime gameTime);
         public abstract void Exit();
-    } 
+    }
+
+    public class StateArgs {}
 }

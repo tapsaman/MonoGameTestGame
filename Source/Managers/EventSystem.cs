@@ -27,7 +27,6 @@ namespace MonoGameTestGame.Managers
         
         public void Load(Event[] eventList, Settings settings = Settings.None)
         {
-
             if ((settings & Settings.Parallel) == Settings.Parallel)
             {
                 _parallel.Add(new EventManagerAndSettings()
@@ -52,9 +51,17 @@ namespace MonoGameTestGame.Managers
         {
             if (_queue.Count != 0)
             {
-                _queue[0].EventManager.Update(gameTime);
+                var firstEventManager = _queue[0].EventManager;
 
-                if (_queue[0].EventManager.IsDone)
+                if (!firstEventManager.IsEntered)
+                {
+                    firstEventManager.Enter();
+                }
+                else if (!firstEventManager.IsDone)
+                {
+                    firstEventManager.Update(gameTime);
+                }
+                else
                 {
                     _queue.RemoveAt(0);
 
@@ -62,7 +69,6 @@ namespace MonoGameTestGame.Managers
                     {
                         Static.Game.StateMachine.TransitionTo("Default");
                     }
-
                 }
             }
             else

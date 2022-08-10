@@ -7,20 +7,21 @@ namespace MonoGameTestGame.Models
     public enum EventType
     {
         Text,
-        Move,
+        Ask,
         Face,
         Animate,
         Condition,
-        SaveValue
+        SaveValue,
+        Wait
     }
 
-    public abstract class Event : IStage
+    public abstract class Event //: IStage
     {
         public EventType Type { get; private set; }
-        public string ID { get; private set; }
-        public string WaitForID { get; private set; }
+        public string ID;
+        public string WaitForID;
         public bool IsDone { get; set; }
-        public Action WhenDone;
+        public Action Traverse;
         private static int _noIDCount = 0;
 
         // Events must be reset in Enter for reusage!
@@ -28,11 +29,11 @@ namespace MonoGameTestGame.Models
         public abstract void Update(GameTime gameTime);
         public abstract void Exit();
 
-        public Event(EventType type, string id = "", string waitForID = "")
+        public Event(EventType type)
         {
             Type = type;
-            WaitForID = waitForID;
-            ID = id == "" ? "Unnamed_" + (_noIDCount++).ToString() : id;
+            //WaitForID = waitForID;
+            //ID = id == "" ? "Unnamed_" + (_noIDCount++).ToString() : id;
         }
     }
 
@@ -60,9 +61,10 @@ namespace MonoGameTestGame.Models
 
         private void OnDone()
         {
+            Static.DialogManager.DialogEnd -= OnDone;
             Static.Game.StateMachine.TransitionTo(_previousGameState);
             IsDone = true;
-            WhenDone?.Invoke();
+            Traverse?.Invoke();
         }
 
         public override void Update(GameTime gameTime)
@@ -77,8 +79,75 @@ namespace MonoGameTestGame.Models
         }
     }
 
+    public class AskEvent : Event
+    {
+        public Dialog Dialog;
+        public MapEntity Speaker;
+        private string _previousGameState;
+        public Event[] IfOption1; 
+        public Event[] IfOption2;
+        private EventManager _eventManager;
+        public AskEvent(Dialog dialog, MapEntity speaker)
+            : base(EventType.Ask)
+        {
+            Dialog = dialog;
+            Speaker = speaker;
+        }
+
+        public override void Enter()
+        {
+            IsDone = false;
+            _previousGameState = Static.Game.StateMachine.CurrentStateKey;
+            bool topDialogBox = Speaker.Position.Y > Static.NativeHeight / 2;
+            Static.DialogManager.Load(Dialog, topDialogBox);
+            Static.Game.StateMachine.TransitionTo("Dialog");
+            Static.DialogManager.DialogEnd += OnDialogDone;
+        }
+
+        private void OnDialogDone()
+        {
+            Static.DialogManager.DialogEnd -= OnDialogDone;
+            Static.Game.StateMachine.TransitionTo(_previousGameState);
+            
+            if (Static.DialogManager.AnswerIndex == 0 && IfOption1 != null)
+            {
+                _eventManager = new EventManager(IfOption1);
+                _eventManager.Enter();
+            }
+            else if (Static.DialogManager.AnswerIndex == 1 && IfOption2 != null)
+            {
+                _eventManager = new EventManager(IfOption2);
+                _eventManager.Enter();
+            }
+            else
+            {
+                IsDone = true;
+                Traverse?.Invoke();
+            }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (_eventManager != null)
+            {
+                if (!_eventManager.IsDone)
+                {
+                    _eventManager.Update(gameTime);
+                }
+                else
+                {
+                    IsDone = true;
+                    Traverse?.Invoke();
+                }
+            }
+        }
+
+        public override void Exit() {}
+    }
+
     public class AnimateEvent : Event
     {
+        public bool Wait = true;
         private Animation _animation;
 
         public AnimateEvent(Animation animation)
@@ -91,6 +160,11 @@ namespace MonoGameTestGame.Models
         {
             IsDone = false;
             _animation.Enter();
+            
+            if (!Wait)
+            {
+                Traverse?.Invoke();
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -99,7 +173,8 @@ namespace MonoGameTestGame.Models
 
             if (_animation.IsDone)
             {
-                WhenDone?.Invoke();
+                IsDone = true;
+                Traverse?.Invoke();
             }
         }
 
@@ -143,7 +218,7 @@ namespace MonoGameTestGame.Models
         {
             // End on first update so we get one rendering before next event 
             IsDone = true;
-            WhenDone?.Invoke();
+            Traverse?.Invoke();
         }
 
         public override void Exit() {}
@@ -165,13 +240,12 @@ namespace MonoGameTestGame.Models
 
         public override void Enter()
         {
-            IsDone = false;
             DataStore dataStore = Static.Scene.SceneData;
 
             dataStore.Save(_id, _value);
 
             IsDone = true;
-            WhenDone?.Invoke();
+            Traverse?.Invoke();
         }
 
         public override void Update(GameTime gameTime) {}
@@ -204,17 +278,17 @@ namespace MonoGameTestGame.Models
             if (condition && IfTrue != null)
             {
                 _eventManager = new EventManager(IfTrue);
-                //_eventManager.Enter();
+                _eventManager.Enter();
             }
             else if (!condition && IfFalse != null)
             {
                 _eventManager = new EventManager(IfFalse);
-                //_eventManager.Enter();
+                _eventManager.Enter();
             }
             else
             {
-                WhenDone?.Invoke();
                 IsDone = true;
+                Traverse?.Invoke();
             }
         }
 
@@ -222,8 +296,8 @@ namespace MonoGameTestGame.Models
         {
             if (_eventManager == null || _eventManager.IsDone)
             {
-                WhenDone?.Invoke();
                 IsDone = true;
+                Traverse?.Invoke();
             }
             else
                 _eventManager.Update(gameTime);
@@ -256,7 +330,7 @@ namespace MonoGameTestGame.Models
             if (_elapsedWaitTime > WaitTime)
             {
                 IsDone = true;
-                WhenDone?.Invoke();
+                Traverse?.Invoke();
             }
         }
 

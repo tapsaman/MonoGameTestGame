@@ -78,9 +78,13 @@ namespace MonoGameTestGame.Sprites
     public void SetAnimation(string animationName = null)
     {
       if (animationName == null)
+      {
         _animationManager.Stop();
+      }
       else
+      {
         _animationManager.Play(_animations[animationName]);
+      }
     }
 
     public void SafeSetAnimation(string animationName)

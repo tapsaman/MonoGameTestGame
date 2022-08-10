@@ -60,18 +60,13 @@ namespace MonoGameTestGame.Managers
 
         public void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
-            Vector2 position = (Position + offset);
+            Vector2 position = (Position + offset + _animation.Offset);
             position.Round();
 
             spriteBatch.Draw(
                 _animation.Texture,
                 position,
-                new Rectangle(
-                    _animation.CurrentFrame * _animation.FrameWidth + _animation.TextureXPos * _animation.FrameWidth,
-                    _animation.TextureYPos * _animation.FrameHeight,
-                    _animation.FrameWidth,
-                    _animation.FrameHeight
-                ),
+                _animation.FrameRectangles[_animation.CurrentFrame],
                 Color.White
             );
         }
@@ -81,12 +76,7 @@ namespace MonoGameTestGame.Managers
             spriteBatch.Draw(
                 _animation.Texture,
                 Position + offset,
-                new Rectangle(
-                    _animation.CurrentFrame * _animation.FrameWidth + _animation.TextureXPos * _animation.FrameWidth,
-                    _animation.TextureYPos * _animation.FrameHeight,
-                    _animation.FrameWidth,
-                    _animation.FrameHeight
-                ),
+                _animation.FrameRectangles[_animation.CurrentFrame],
                 color
             );
         }

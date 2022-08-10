@@ -18,7 +18,7 @@ namespace MonoGameTestGame.Models
             _guard = guard;
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             Character.Velocity = Vector2.Zero;
             _elapsedTime = 0;

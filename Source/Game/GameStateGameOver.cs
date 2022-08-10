@@ -11,8 +11,16 @@ namespace MonoGameTestGame.Models
         private Song _song;
         private Animations.GameOver _animation;
         private DialogManager _dialogManager;
-        private float _elapsedWaitTime = 0;
+        private float _elapsedTime = 0;
+        private const float _DROP_TIME = 2f;
         private const float _WAIT_TIME = 1f;
+        private bool _fallDeath;
+        private bool _hasDropped;
+
+        public class Args : StateArgs
+        {
+            public bool Falling;
+        }
 
         public GameStateGameOver(ZeldaAdventure666 game)
         {
@@ -21,18 +29,50 @@ namespace MonoGameTestGame.Models
             _song = Static.Content.Load<Song>("oot_game_over");
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs args = null)
         {
+            Static.Player.Moving = false;
+            Static.Player.StateMachine.TransitionTo("Stopped");
             _animation = new Animations.GameOver();
-            _animation.Enter();
-            _elapsedWaitTime = 0;
-            Music.PlayOnce(_song);
+            _elapsedTime = 0;
+            _hasDropped = false;
+
+            _fallDeath = (args is Args a && a.Falling);
+
+            if (!_fallDeath)
+            {
+                Music.Stop();
+                SFX.LinkDies.Play();
+                Static.Player.Sprite.SetAnimation("Dying");
+            }
+            else
+            {
+                Music.PlayOnce(_song);
+                _animation.Enter();
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             Music.Update(gameTime);
+            Static.SceneManager.Update(gameTime);
+
+            if (!_fallDeath && !_hasDropped)
+            {
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_elapsedTime > _DROP_TIME)
+                {
+                    _hasDropped = true;
+                    Music.PlayOnce(_song);
+                    _animation.Enter();
+                }
+
+                return;
+            }
+            
             _animation.Update(gameTime);
+            //Static.Player.Position -= new Vector2(50f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
 
             if (_animation.IsDone)
             {
@@ -49,9 +89,9 @@ namespace MonoGameTestGame.Models
                 }
                 else
                 {
-                    _elapsedWaitTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     
-                    if (_elapsedWaitTime > _WAIT_TIME)
+                    if (_elapsedTime > _WAIT_TIME)
                     {
                         _game.StateMachine.TransitionTo("StartOver");
                     }
@@ -64,9 +104,9 @@ namespace MonoGameTestGame.Models
             Static.Renderer.Start();
 
             Static.SceneManager.Draw(spriteBatch);
-            _game.Hud.Draw(spriteBatch, Static.SceneManager.Player);
+            //_game.Hud.Draw(spriteBatch, Static.SceneManager.Player);
             _animation.Draw(spriteBatch);
-
+            
             if (_dialogManager != null)
                 _dialogManager.Draw(spriteBatch);
 

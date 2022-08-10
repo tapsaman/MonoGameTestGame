@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameTestGame.Models;
 
 namespace MonoGameTestGame.Manangers
 {
@@ -9,7 +10,7 @@ namespace MonoGameTestGame.Manangers
         public Scene CurrentScene;
         public Scene ChangingToScene;
         public bool Changing;
-        private TileMap.Exit _mapexit;
+        public TileMap.Exit MapExit { get; private set; }
         private SceneTransition _sceneTransition;
 
         public void Init()
@@ -18,7 +19,7 @@ namespace MonoGameTestGame.Manangers
             Static.Scene = CurrentScene = new SceneB1();
             Static.Player = Player = new Player()
             {
-                Position = CurrentScene.TileMap.ConvertTileXY(20, 40)
+                Position = CurrentScene.TileMap.ConvertTileXY(30, 44)
             };
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
@@ -32,18 +33,23 @@ namespace MonoGameTestGame.Manangers
 
         public void GoTo(TileMap.Exit exit)
         {
+            if (Changing)
+                return;
+            
             Changing = true;
-            _mapexit = exit;
-            _sceneTransition = TransitionTypeToSceneTransition(_mapexit.TransitionType);
+            MapExit = exit;
+            Static.Game.StateMachine.TransitionTo("Cutscene");
+            _sceneTransition = TransitionTypeToSceneTransition(MapExit.TransitionType);
             _sceneTransition.SceneManager = this;
-            _sceneTransition.Start(CurrentScene, Player, _mapexit.Direction);
-            CurrentScene.Paused = true;
+            _sceneTransition.Start(CurrentScene, Player, MapExit.Direction);
+            
+            //CurrentScene.Paused = true;
         }
 
         // Exposed for ScreenTransitions
         public Scene LoadNextScene()
         {
-            ChangingToScene = MapCodeToScene(_mapexit.MapCode);
+            ChangingToScene = MapCodeToScene(MapExit.MapCode);
             ChangingToScene.Paused = true;
             Static.Scene = ChangingToScene;
             ChangingToScene.Init(Player);
@@ -70,8 +76,18 @@ namespace MonoGameTestGame.Manangers
                 CurrentScene = Static.Scene = ChangingToScene;
                 ChangingToScene = null;
                 Changing = false;
-                CurrentScene.Start();
                 _sceneTransition = null;
+
+                // Make player walk two steps
+                Static.EventSystem.Load(
+                    new AnimateEvent(
+                        new Animations.Walk.Timed(
+                            Player,
+                            MapExit.Direction.ToVector() * CurrentScene.TileMap.TileSize * 2,
+                            0.2f
+                )));
+
+                CurrentScene.Start();
             }
         }
 

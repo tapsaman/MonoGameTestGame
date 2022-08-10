@@ -9,7 +9,7 @@ namespace MonoGameTestGame.Models
     {
         public PlayerStateWalking(Player player) : base(player) {}
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             Player.Sprite.SetAnimation("Walk" + Player.Direction);
         }

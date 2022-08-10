@@ -16,7 +16,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 128,
-                "y": 111.5
+                "y": 112
             }
         },
         "A2.tmx": {
@@ -27,7 +27,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 128,
-                "y": 119.9375
+                "y": 120
             }
         },
         "B1.tmx": {
@@ -37,8 +37,8 @@
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 368.33333333333337,
-                "y": 460.83333333333326
+                "x": 555,
+                "y": 509.8333333333333
             }
         },
         "C1.tmx": {
@@ -46,7 +46,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 128,
-                "y": 232.5
+                "y": 232
             }
         },
         "linktothepast-objects.tsx": {

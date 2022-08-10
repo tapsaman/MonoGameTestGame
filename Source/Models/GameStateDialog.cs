@@ -14,10 +14,11 @@ namespace MonoGameTestGame.Models
             _game = game;
         }
 
-        public override void Enter() {}
+        public override void Enter(StateArgs _) {}
 
         public override void Update(GameTime gameTime)
         {
+            Static.EventSystem.Update(gameTime);
             Static.DialogManager.Update(gameTime);
             _game.TitlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
         }

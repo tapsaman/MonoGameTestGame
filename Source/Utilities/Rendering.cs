@@ -55,6 +55,7 @@ namespace MonoGameTestGame
         private Effect _currentEffect = null;
         private Effect _postEffect = null;
         private int _damageEffectIter = 0;
+        private int _highlightEffectIter = 0;
         private event Action<GameTime> _doAfterPostEffect;
         private float _noiseSeed = 0f;
         private float _spotlightSize = 0f;
@@ -154,6 +155,18 @@ namespace MonoGameTestGame
             _currentEffect = Shaders.EnemyDamage;
         }
 
+        public void ChangeToHighlightEffect()
+        {
+            Static.SpriteBatch.End();
+
+            Shaders.Highlight.Parameters["paramIter"].SetValue(_highlightEffectIter++);
+            if (_highlightEffectIter == 2)
+                _highlightEffectIter = 0;
+
+            Static.SpriteBatch.Begin(samplerState: SamplerState.PointWrap, effect: Shaders.Highlight);
+            _currentEffect = Shaders.Highlight;
+        }
+
         public void ApplyPostEffect(Effect effect)
         {
             _postEffect = effect;
@@ -183,7 +196,7 @@ namespace MonoGameTestGame
         {
             _spotlightSize += (float)gameTime.ElapsedGameTime.TotalSeconds * 0.8f;
             _postEffect.Parameters["size"].SetValue(_spotlightSize);
-            _postEffect.Parameters["target"].SetValue(Static.Player.Hitbox.Rectangle.Center / Static.NativeSize);
+            _postEffect.Parameters["target"].SetValue((Static.Player.Hitbox.Rectangle.Center + Static.Scene.DrawOffset) / Static.NativeSize);
         }
 
          private void ApplyFullScreenResolution()

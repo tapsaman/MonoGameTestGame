@@ -14,19 +14,18 @@ namespace MonoGameTestGame.Models
             _game = game;
         }
 
-        public override void Enter()
+        public override void Enter(StateArgs _)
         {
             Static.Player.StateMachine.TransitionTo("Stopped");
         }
 
         public override void Update(GameTime gameTime)
         {
+            Static.SceneManager.Update(gameTime);
             Static.EventSystem.Update(gameTime);
-            Static.Scene.TileMap.Update(gameTime);
-            foreach (var mapEntity in Static.Scene.MapObjects)
-            {
-                mapEntity.Update(gameTime);
-            }
+            
+            Music.Update(gameTime);
+
             _game.TitlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
         }
 
@@ -36,7 +35,6 @@ namespace MonoGameTestGame.Models
             
             Static.SceneManager.Draw(spriteBatch);
             _game.Hud.Draw(spriteBatch, Static.Player);
-            //Static.DialogManager.Draw(spriteBatch);
             
             BitmapFontRenderer.DrawString(spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _game.TitlePosition);
             
