@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public static class Music
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public static class Program
     {

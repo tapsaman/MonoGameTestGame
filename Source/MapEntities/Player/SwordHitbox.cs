@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class SwordHitbox : Hitbox
     {

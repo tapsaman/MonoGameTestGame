@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Sprites;
+using ZA6.Sprites;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class MapObject : MapEntity //, IComparable<MapObject>
     {

@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Models;
+using ZA6.Models;
 
-namespace MonoGameTestGame.Manangers
+namespace ZA6.Manangers
 {
     public class SceneManager
     {

@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
+using ZA6.Managers;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class DialogBox
     {

@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace MonoGameTestGame.Models
+namespace ZA6.Models
 {
     public class BariStateTakenDamage : CharacterState
     {

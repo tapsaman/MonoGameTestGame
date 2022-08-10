@@ -1,10 +1,10 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Controls;
-using MonoGameTestGame.Managers;
+using ZA6.Controls;
+using ZA6.Managers;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class GameMenu : Menu
     {

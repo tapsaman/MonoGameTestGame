@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Controls;
+using ZA6.Controls;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class Menu
     {

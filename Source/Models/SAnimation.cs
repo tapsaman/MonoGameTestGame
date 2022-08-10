@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameTestGame.Models
+namespace ZA6.Models
 {
     public class SAnimation
     {

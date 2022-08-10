@@ -2,9 +2,9 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using MonoGameTestGame.Managers;
+using ZA6.Managers;
 
-namespace MonoGameTestGame.Models
+namespace ZA6.Models
 {
     public class GameStateMainMenu : RenderState
     {

@@ -10,7 +10,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-namespace MonoGameTestGame
+namespace ZA6
 {
 public class PolygonCollisionExample : Game
 {

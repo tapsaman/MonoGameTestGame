@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class ArrayManager<T> : IIndexedManager, IStage
         where T : IStage

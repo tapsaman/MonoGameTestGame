@@ -1,4 +1,4 @@
-namespace MonoGameTestGame.Models
+namespace ZA6.Models
 {
     public abstract class PlayerState : State
     {

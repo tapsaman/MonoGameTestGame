@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Models;
+using ZA6.Models;
 
-namespace MonoGameTestGame.Managers
+namespace ZA6.Managers
 {
     public class RenderStateMachine : StateMachine
     {

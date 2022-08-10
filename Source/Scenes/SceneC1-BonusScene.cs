@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using MonoGameTestGame.Models;
+using ZA6.Models;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class SceneC1 : Scene
     {

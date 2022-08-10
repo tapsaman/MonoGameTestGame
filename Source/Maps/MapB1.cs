@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class MapB1 : TileMap
     {

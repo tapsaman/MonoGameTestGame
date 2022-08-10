@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Input;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public static class Input
     {

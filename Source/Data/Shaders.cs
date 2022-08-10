@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public static class Shaders
     {

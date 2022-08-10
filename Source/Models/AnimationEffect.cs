@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
-using MonoGameTestGame.Managers;
+using ZA6.Managers;
 
-namespace MonoGameTestGame.Models
+namespace ZA6.Models
 {
     public abstract class AnimationEffect : SAnimationManager
     {

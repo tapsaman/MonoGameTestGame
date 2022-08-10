@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
 using System.Linq;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class TileMap
     {

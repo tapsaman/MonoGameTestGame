@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public static class Img
     {

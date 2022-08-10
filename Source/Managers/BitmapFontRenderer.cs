@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameTestGame.Managers
+namespace ZA6.Managers
 {
     public static class BitmapFontRenderer
     {

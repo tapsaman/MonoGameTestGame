@@ -1,4 +1,6 @@
-# MonoGameTestGame
+# Zelda Adventure 666
+
+MonoGame testing game project
 
 log:
 * 9.7.22 - init with walking, hitting character (link), animations with animation manager, player states with state machine + quit button
@@ -23,24 +25,23 @@ log:
 * 10.8. - event manager not waiting and waiting for id, enemies bubble bari biri, moogle start event done, dialog questions and ask event, new link sprites, game over animations finished, state args for state enter
 
 roadmap:
-* animation events (falling to hole)
 * fuck shit up -> every death from falling to hole should break something in the game Static
 
 small stuff todo:
 * sys timing methods
 * use arrays for tilemap tiles? compare performance with timing methods
 * minigame, couple enemies
-* question event with answer option switch
 * better text highlight shader
 * abstract class UIInput from Button
-* event manager not waiting and waiting for id
 
 could do but prob won't:
+* switch event based on datastore int
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)
 * parametrizable sprite animation speed, e.g. to bind with walk speed
 * forwards/backwards looping sprite animation 
 * Character's direction prop should be named Facing?
 * action fields/"callbacks" could be named uniformly (OnThing or WhenThing)
+* rename Content to Assets
 * could use milliseconds instead of seconds for updates because ints take less space than floats
 * circle/polygon collision shapes (???)
 * ~~there's shitload of managers + manageables (animations, dialog, ui, events), could maybe have Manager + Manageable interfaces to enforce uniformity~~
@@ -60,4 +61,4 @@ e.g.
         bool Paused?
         void Draw?
         bool DisableDrawing?
-* ok nah all mmanagers work too differently to force anything except bare base interfaces, like IManageablw with `bool IsDone { get; }` property
+* ok nah all mmanagers work too differently to force anything except bare base interfaces, like IManageable with `bool IsDone { get; }` property

@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
-using MonoGameTestGame.Models;
+using ZA6.Models;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class Sign : MapObject
     {

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
-using MonoGameTestGame.Sprites;
+using ZA6.Managers;
+using ZA6.Sprites;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class Character : MapObject
     {

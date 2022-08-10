@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameTestGame.Controls
+namespace ZA6.Controls
 {
     public class Select<T> : Button
     {

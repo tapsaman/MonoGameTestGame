@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Manangers;
-using MonoGameTestGame.Models;
+using ZA6.Manangers;
+using ZA6.Models;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class SceneTransition
     {

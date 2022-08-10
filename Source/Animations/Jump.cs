@@ -1,9 +1,9 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
+using ZA6.Managers;
 
-namespace MonoGameTestGame.Animations
+namespace ZA6.Animations
 {
     public class Jump : Animation
     {

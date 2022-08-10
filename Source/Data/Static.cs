@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameTestGame.Managers;
-using MonoGameTestGame.Manangers;
+using ZA6.Managers;
+using ZA6.Manangers;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public static class Static
     {

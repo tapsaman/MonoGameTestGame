@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class SceneA2 : Scene
     {

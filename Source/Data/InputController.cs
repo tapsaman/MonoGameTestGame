@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class InputController
     {

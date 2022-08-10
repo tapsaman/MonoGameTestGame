@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameTestGame.Controls;
-using MonoGameTestGame.Managers;
-using MonoGameTestGame.Manangers;
-using MonoGameTestGame.Models;
+using ZA6.Controls;
+using ZA6.Managers;
+using ZA6.Manangers;
+using ZA6.Models;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public class ZeldaAdventure666 : Game
     {

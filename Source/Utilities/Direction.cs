@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public enum Direction
     {

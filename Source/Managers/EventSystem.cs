@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using MonoGameTestGame.Models;
+using ZA6.Models;
 
-namespace MonoGameTestGame.Managers
+namespace ZA6.Managers
 {
     
     public class EventSystem : IUpdatable

@@ -1,4 +1,4 @@
-namespace MonoGameTestGame
+namespace ZA6
 {
     public enum Resolution
     {

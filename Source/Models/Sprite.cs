@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoGameTestGame.Managers;
-using MonoGameTestGame.Models;
+using ZA6.Managers;
+using ZA6.Models;
 
-namespace MonoGameTestGame.Sprites
+namespace ZA6.Sprites
 {
   public class Sprite
   {

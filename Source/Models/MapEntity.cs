@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace MonoGameTestGame
+namespace ZA6
 {
     public abstract class MapEntity
     {
