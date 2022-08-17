@@ -69,3 +69,6 @@ monodroid*.msi
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Tiled session
+*.tiled-session

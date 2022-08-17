@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -44,32 +46,6 @@ namespace ZA6
             }
 
             throw new System.Exception("Map name " + mapName + " not defined in tiled world");
-        }
-
-        private WorldMap FindWorldMapByX(int x)
-        {
-            for (int i = 0; i < Maps.Length; i++)
-            {
-                if (Maps[i].X == x)
-                {
-                    return Maps[i];
-                }
-            }
-
-            return null;
-        }
-
-        private WorldMap FindWorldMapByY(int y)
-        {
-            for (int i = 0; i < Maps.Length; i++)
-            {
-                if (Maps[i].Y == y)
-                {
-                    return Maps[i];
-                }
-            }
-
-            return null;
         }
 
         private Dictionary<Direction, MapExit> GenerateExits(WorldMap worldMap)
@@ -199,6 +175,8 @@ namespace ZA6
                     };
                 }
 
+                Array.Sort(maps, new WorldMapComparer());
+
                 return maps;
             }
 
@@ -214,6 +192,14 @@ namespace ZA6
                 public int width { get; set; }
                 public int x { get; set; }
                 public int y { get; set; }
+            }
+
+            private class WorldMapComparer : IComparer
+            {
+                public int Compare(object x, object y)
+                {
+                    return (new CaseInsensitiveComparer()).Compare(((WorldMap)x).Name, ((WorldMap)y).Name);
+                }
             }
         }
     }

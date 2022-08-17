@@ -121,23 +121,6 @@
 /processorParam:TextureFormat=Color
 /build:dialogbox-fantasy-scaled.png
 
-#begin Fonts/bitmapfonttest.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Fonts/bitmapfonttest.xml
-
-#begin Fonts/bitmapfonttest_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Fonts/bitmapfonttest_0.png
-
 #begin Fonts/linktothepast/linktothepast.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
@@ -661,31 +644,7 @@
 /processorParam:TextureFormat=Color
 /build:slider-handle.png
 
-#begin TiledProjects/testmap/linktothepast-cave-tiles.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:TiledProjects/testmap/linktothepast-cave-tiles.png
-
-#begin TiledProjects/testmap/linktothepast-objects.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:TiledProjects/testmap/linktothepast-objects.png
-
-#begin TiledProjects/testmap/linktothepast-tiles.png
+#begin TiledProject/linktothepast-cave-tiles.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,255,255,255
@@ -695,9 +654,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:TiledProjects/testmap/linktothepast-tiles.png
+/build:TiledProject/linktothepast-cave-tiles.png
 
-#begin Tilemap/exampleTileset.png
+#begin TiledProject/linktothepast-cave-tiles-og.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -707,7 +666,31 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tilemap/exampleTileset.png
+/build:TiledProject/linktothepast-cave-tiles-og.png
+
+#begin TiledProject/linktothepast-objects.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TiledProject/linktothepast-objects.png
+
+#begin TiledProject/linktothepast-tiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,255,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TiledProject/linktothepast-tiles.png
 
 #begin zelda_adventure_666_title.png
 /importer:TextureImporter

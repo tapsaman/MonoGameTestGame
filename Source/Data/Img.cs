@@ -17,9 +17,9 @@ namespace ZA6
         {
             GameTitle = Static.Content.Load<Texture2D>("zelda_adventure_title");
             GameNumberTitle = Static.Content.Load<Texture2D>("zelda_adventure_666_title");
-            TileTexture = Static.Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-tiles");
-            CaveTileTexture = Static.Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-cave-tiles");
-            ObjectTexture = Static.Content.Load<Texture2D>("TiledProjects/testmap/linktothepast-objects");
+            TileTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-tiles");
+            CaveTileTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-cave-tiles");
+            ObjectTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-objects");
             EnemySprites = Static.Content.Load<Texture2D>("linktothepast/enemy-sprites");
             Shadow = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-main");
         }

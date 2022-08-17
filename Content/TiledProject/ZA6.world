@@ -36,18 +36,18 @@
             "y": 720
         },
         {
+            "fileName": "Cave.tmx",
+            "height": 224,
+            "width": 256,
+            "x": 1040,
+            "y": 960
+        },
+        {
             "fileName": "Z1.tmx",
             "height": 224,
             "width": 128,
             "x": -128,
             "y": 0
-        },
-        {
-            "fileName": "Cave.tmx",
-            "height": 224,
-            "width": 256,
-            "x": 1056,
-            "y": 944
         }
     ],
     "onlyShowAdjacentMaps": false,

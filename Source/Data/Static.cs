@@ -33,7 +33,6 @@ namespace ZA6
         public static Scene Scene;
         public static DevUtils DevUtils;
         public static DataStore SessionData;
-        public static string TiledProjectDirectory;
 
         public static RenderResolution[] ResolutionOptions = new RenderResolution[]
         {

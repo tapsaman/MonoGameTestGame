@@ -71,9 +71,8 @@ namespace ZA6
             Static.SpriteBatch = Static.Renderer.SpriteBatch;
             Static.Renderer.Init(Static.NativeWidth, Static.NativeHeight, Static.DefaultResolution);
             Static.Content = Content;
-            Static.TiledProjectDirectory = "Content\\TiledProjects\\testmap";
             Static.Font = Content.Load<SpriteFont>("Fonts/TestFont");
-            Static.World = new TiledWorld("Content\\TiledProjects\\testmap", "testworld.world");
+            Static.World = new TiledWorld("Content\\TiledProject", "ZA6.world");
             Static.SceneManager = new SceneManager()
             {
                 World = Static.World
