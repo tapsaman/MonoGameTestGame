@@ -1,8 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 using ZA6.Manangers;
+using ZA6.Utilities;
 
 namespace ZA6
 {
@@ -10,6 +12,7 @@ namespace ZA6
     {
         public static ZeldaAdventure666 Game;
         public static Player Player;
+        public static TiledWorld World;
         public static bool GameStarted;
         public static int NativeWidth = 256;
         public static int NativeHeight = 224;
@@ -17,17 +20,44 @@ namespace ZA6
         //public static int NativeSizeMultiplier = 4;
         //public static int BackBufferWidth = (NativeWidth * NativeSizeMultiplier);
         //public static int BackBufferHeight = (NativeHeight * NativeSizeMultiplier);
-        public static bool RenderHitboxes = true;
+        public static bool RenderHitboxes = false;
+        public static bool RenderCollisionMap = false;
         public static bool GamePadEnabled;
         public static SpriteFont Font;
         public static ContentManager Content;
-        public static GraphicsDeviceManager Graphics;
         public static SpriteBatch SpriteBatch;
         public static SceneManager SceneManager;
         public static DialogManager DialogManager;
-        public static Renderer Renderer;
+        public static GameRenderer Renderer;
         public static EventSystem EventSystem;
         public static Scene Scene;
+        public static DevUtils DevUtils;
+        public static DataStore SessionData;
         public static string TiledProjectDirectory;
+
+        public static RenderResolution[] ResolutionOptions = new RenderResolution[]
+        {
+            new RenderResolution(256, 224, "Native"),
+            new RenderResolution(512, 448, "Native x2"),
+            new RenderResolution(768, 672, "Native x3"),
+            new RenderResolution(1024, 896, "Native x4"),
+            new RenderResolution(1234, 1080), // Native fitted for 1080 height
+            new RenderResolution(0, 0) { IsFullscreen = true }
+        };
+
+        public static RenderResolution DefaultResolution = ResolutionOptions[3];
+
+        public static DataStore GetStoreByType(DataStoreType type)
+        {
+            switch (type)
+            {
+                case DataStoreType.Session:
+                    return Static.SessionData;
+                case DataStoreType.Scene:
+                default:
+                    return Static.Scene.SceneData;
+                
+            }
+        }
     }
 }

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using ZA6.Models;
+using TapsasEngine;
 
 namespace ZA6.Managers
 {
     public class StateMachine
     {
-        public string CurrentStateKey { get; private set; }
+        public string CurrentStateKey { get; private set; } = null;
         public State CurrentState { get; private set; }
         public virtual Dictionary<string, State> States
         {
@@ -28,8 +29,8 @@ namespace ZA6.Managers
         {
             States = states;
             CurrentState = States[initialStateName];
-            CurrentStateKey = initialStateName;
             CurrentState.Enter(new StateArgs());
+            CurrentStateKey = initialStateName;
         }
 
         public void Update(GameTime gameTime)
@@ -48,8 +49,8 @@ namespace ZA6.Managers
                 CurrentState.Exit();
                 Sys.Debug("StateMachine entering state " + newStateName);
                 CurrentState = States[newStateName];
-                CurrentStateKey = newStateName;
                 CurrentState.Enter(args);
+                CurrentStateKey = newStateName;
             }
         }
     }

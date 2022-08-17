@@ -7,87 +7,61 @@ namespace ZA6.Models
 {
     public class BatStateDefault : CharacterState
     {
-        private const float _FLY_SPEED = 70f;
+        private Bat _bat;
+        private const float _FLY_SPEED = 140f;
         private Vector2 _velocity;
+        private double _angle;
+        private float _elapsedTimeFromHit = 0;
+        private const float _HIT_WAIT_TIME = 1f;
 
-        public BatStateDefault(Bat bat) : base(bat) {}
+        public BatStateDefault(Bat bat)
+            : base(bat)
+        {
+            _bat = bat;
+        }
 
         public override void Enter(StateArgs _)
         {
             Character.Sprite.SetAnimation("Default");
-            _velocity = Utility.RandomDirection().ToVector() * 40f;
+            SFX.Keese.Play();
+            _angle = (Math.PI / 2);
         }
 
         public override void Update(GameTime gameTime)
         {
-            /*float angle = MathHelper.Pi;
-            direction.X = (int)((direction.X) * Math.Cos(angle) - direction.Y * Math.Sin(angle));
-            direction.Y = (int)((direction.X) * Math.Sin(angle) + direction.Y * Math.Cos(angle));
+            if (!_bat.DidHitPlayer)
+            {
+                _angle += gameTime.ElapsedGameTime.TotalSeconds / 6;
+                _velocity = (Character.Position - Static.Scene.Player.Position);
+                _velocity.Normalize();
+                _velocity = RotateVector(_velocity, _angle) * _FLY_SPEED;
+            }
+            else
+            {
+                _elapsedTimeFromHit += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            float angle = MathHelper.PiOver2;
-            Vector2 dir = new Vector2(direction.X, direction.Y);
-            Vector2.Transform(dir, Matrix.CreateRotationX(angle));
-            direction = new Point((int)dir.X, (int)dir.Y);
+                if (_elapsedTimeFromHit > _HIT_WAIT_TIME)
+                {
+                    _elapsedTimeFromHit = 0f;
+                    _bat.DidHitPlayer = false;
+                }
+            }
 
-            Character.Velocity = Character.Velocity.Transform();*/
-            
-            
-            /*var direction = Character.Velocity;
-            var angle = MathHelper.Pi;
-            direction.X = (int)((direction.X) * Math.Cos(angle) - direction.Y * Math.Sin(angle));
-            direction.Y = (int)((direction.X) * Math.Sin(angle) + direction.Y * Math.Cos(angle));*/
-
-            /*var direction = Character.Velocity;
-            float angle = MathHelper.PiOver2;
-            Vector2 dir = new Vector2(direction.X, direction.Y);
-            var transformed = Vector2.Transform(dir, Matrix.CreateRotationX(angle));
-            direction = new Vector2((int) dir.X, (int) dir.Y);*/
-            
-            
-            /*var vel = (Static.Scene.Player.Position - Character.Position);
-            vel.Normalize();
-            vel *= _FLY_SPEED;*/
-
-            var angle = GetAngleBetween(Character.Position, Static.Scene.Player.Position);
-
-            //var transformed = Vector2.Transform(_velocity, Matrix.CreateRotationY((float)angle));
-            
-            //direction = new Point((int) dir.X, (int) dir.Y);
-
-
-            //_velocity = Rotate(_velocity, -0.01f);
-            _velocity = RotateVectorAround(_velocity, Character.Position, angle);
-            Character.Velocity = _velocity;
+            _bat.Velocity = _velocity;
             
             //Character.Position -= Character.Velocity * 0.001f;
         }
 
-
-
-        private static double GetAngleBetween(Vector2 a, Vector2 b)
+        public Vector2 RotateVector(Vector2 v, double radianAngle)
         {
-            return Math.Atan2(b.Y - a.Y, b.X - a.X);
-        }
+            float sine = (float)Math.Sin(radianAngle);
+            float cosi = (float)Math.Cos(radianAngle);
 
-        public static Vector2 Rotate(Vector2 v, float delta)
-        {
-            return new Vector2(
-                (float)(v.X * Math.Cos(delta) - v.Y * Math.Sin(delta)),
-                (float)(v.X * Math.Sin(delta) + v.Y * Math.Cos(delta))
+            return new Vector2
+            (
+                v.X * cosi - v.Y * sine,
+                v.X * sine + v.Y * cosi
             );
-        }
-
-        public static Vector2 RotateVectorAround(Vector2 vector, Vector2 pivot, double angle)
-        {
-            //Get the X and Y difference
-            float xDiff = vector.X - pivot.X;
-            float yDiff = vector.Y - pivot.Y;
-
-            //Rotate the vector
-            float x = (float)((Math.Cos(angle) * xDiff) - (Math.Sin(angle) * yDiff) + pivot.X);
-            float y = (float)((Math.Sin(angle) * xDiff) + (Math.Cos(angle) * yDiff) + pivot.Y);
-
-            return new Vector2(x, y);
         }
 
         public override void Exit() {}

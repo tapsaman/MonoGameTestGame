@@ -17,6 +17,19 @@ namespace ZA6
         public Keys Select = Keys.Back;
         private MouseState _currentMouseState;
         private MouseState _previousMouseState;
+        private static Keys[] _numberKeys =
+        {
+            Keys.D0,
+            Keys.D1,
+            Keys.D2,
+            Keys.D3,
+            Keys.D4,
+            Keys.D5,
+            Keys.D6,
+            Keys.D7,
+            Keys.D8,
+            Keys.D9
+        };
 
         public virtual void Update()
         {
@@ -39,6 +52,17 @@ namespace ZA6
              || Input.P1.GetDirectionVector() != Vector2.Zero
             );
         }
+        public int? AnyNumberKeyJustPressed()
+        {
+            for (int i = 0; i < _numberKeys.Length; i++)
+            {
+                if (Input.P1.JustPressed(_numberKeys[i]))
+                {
+                    return i;
+                }
+            }
+            return null;
+        }
         public bool IsMouseLeftPressed()
         {
             return _currentMouseState.LeftButton == ButtonState.Pressed;
@@ -54,8 +78,8 @@ namespace ZA6
         public Rectangle GetMouseRectangle()
         {
             return new Rectangle(
-                (int)((_currentMouseState.X - Static.Renderer.ScreenX) / Static.Renderer.NativeSizeMultiplier),
-                (int)((_currentMouseState.Y - Static.Renderer.ScreenY) / Static.Renderer.NativeSizeMultiplier),
+                (int)((_currentMouseState.X - Static.Renderer.ScreenRectangle.X) / Static.Renderer.NativeSizeMultiplier.X),
+                (int)((_currentMouseState.Y - Static.Renderer.ScreenRectangle.Y) / Static.Renderer.NativeSizeMultiplier.Y),
                 1,
                 1
             );

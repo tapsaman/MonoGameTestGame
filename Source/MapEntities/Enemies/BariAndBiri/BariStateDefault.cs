@@ -7,25 +7,38 @@ namespace ZA6.Models
 {
     public class BariStateDefault : CharacterState
     {
-        private Enemy _enemy;
+        private Bari _bari;
         private float _SPEED = 20f;
         private float _elapsedTime;
         private float _time;
 
-        public BariStateDefault(Enemy enemy) : base(enemy)
+        public BariStateDefault(Bari bari) : base(bari)
         {
-            _enemy = enemy;
+            _bari = bari;
         }
 
         public override void Enter(StateArgs _)
         {
-            _enemy.Sprite.SetAnimation("Default");
+            _bari.Sprite.SetAnimation("Default");
             _time = 0.5f + (float)Utility.RandomDouble() * 3f;
-            _enemy.IsInvincible = false;
+            _bari.IsInvincible = false;
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (_bari.PushVelocity != Vector2.Zero)
+            {
+                Character.Velocity = _bari.PushVelocity * 150f;
+                _bari.PushVelocity -= _bari.PushVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
+            
+                if (_bari.PushVelocity.ToAbsoluteFloat() < 0.6)
+                {
+                    _bari.PushVelocity = Vector2.Zero;
+                }
+
+                return;
+            }
+
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (_elapsedTime < _time)

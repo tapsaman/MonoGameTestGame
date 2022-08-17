@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Utilities;
+using TapsasEngine;
 using ZA6.Controls;
 using ZA6.Managers;
 
@@ -10,23 +11,15 @@ namespace ZA6
     public class SettingsMenu : Menu
     {
         private CheckBoxButton _gamePadCheckBox;
-        private CheckBoxButton _renderHitboxesCheckBox;
         private Slider _musicVolSlider;
         private Slider _sfxVolSlider;
-        private Select<Resolution> _resolutionSelect;
-        private static Resolution[] _resolutionOptions =
-        {
-            Resolution.FullScreen,
-            Resolution._256x224,
-            Resolution._512x448,
-            Resolution._768x672,
-            Resolution._1024x896,
-            Resolution._1234X1080
-        };
+        private Select<RenderResolution> _resolutionSelect;
 
-        public SettingsMenu()
+        public SettingsMenu(bool startMenu)
         {
-            OverlayColor = new Color(50, 50, 50);
+            if (!startMenu)
+                OverlayColor = new Color(50, 50, 50);
+            
             var buttonTexture = Static.Content.Load<Texture2D>("Button");
             var font = Static.Content.Load<SpriteFont>("Fonts/TestFont");
             var fontSmall = Static.Content.Load<SpriteFont>("Fonts/TestFontSmall");
@@ -44,13 +37,6 @@ namespace ZA6
             };
             _gamePadCheckBox.Click += ToggleGamePad;
 
-            _renderHitboxesCheckBox = new CheckBoxButton(buttonTexture, fontSmall)
-            {
-                Text = "HITBOXES",
-                IsChecked = Static.RenderHitboxes
-            };
-            _renderHitboxesCheckBox.Click += ToggleHitboxes;
-
             _musicVolSlider = new Slider(buttonTexture, fontSmall, 0f, 1f, 0.1f)
             {
                 Text = "MUSIC VOL",
@@ -65,7 +51,7 @@ namespace ZA6
             };
             _sfxVolSlider.OnChange += ChangeSFXVol;
 
-            _resolutionSelect = new Select<Resolution>(buttonTexture, fontSmall, _resolutionOptions)
+            _resolutionSelect = new Select<RenderResolution>(buttonTexture, fontSmall, Static.ResolutionOptions)
             {
                 Text = "RESOLUTION",
                 Value = Static.Renderer.Resolution
@@ -73,7 +59,6 @@ namespace ZA6
             _resolutionSelect.OnChange += ChangeResolution;
 
             Add(_resolutionSelect);
-            Add(_renderHitboxesCheckBox);
             Add(_gamePadCheckBox);
             Add(_musicVolSlider);
             Add(_sfxVolSlider);
@@ -102,11 +87,6 @@ namespace ZA6
             }
         }
 
-        private void ToggleHitboxes(object sender, EventArgs e)
-        {
-            Static.RenderHitboxes = !Static.RenderHitboxes;
-        }
-
         private void ChangeMusicVol(float value)
         {
             Sys.Log("new volume " + value);
@@ -121,7 +101,7 @@ namespace ZA6
             _sfxVolSlider.Value = SFX.Volume;
         }
 
-        private void ChangeResolution(Resolution res)
+        private void ChangeResolution(RenderResolution res)
         {
             Static.Renderer.Resolution = res;
             _resolutionSelect.Value = Static.Renderer.Resolution;
@@ -141,7 +121,6 @@ namespace ZA6
             }
 
             _gamePadCheckBox.IsChecked = Static.GamePadEnabled;
-            _renderHitboxesCheckBox.IsChecked = Static.RenderHitboxes;
             base.Update(gameTime);
         }
     }

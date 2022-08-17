@@ -5,10 +5,7 @@ namespace ZA6
     {
         TouchEventTrigger _holeEventTrigger;
 
-        public SceneA2()
-        {
-            TileMap = new MapA2();
-        }
+        public SceneA2() {}
         
         protected override void Load()
         {

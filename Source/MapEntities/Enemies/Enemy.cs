@@ -19,12 +19,13 @@ namespace ZA6
             Interactable = false;
             Hittable = true;
             Hitbox.Color = Color.Red;
-            Trigger += TakeDamage;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Static.Game.StateMachine.CurrentState is GameStateDefault == false)
+            var gameStateKey = Static.Game.StateMachine.CurrentStateKey;
+            
+            if (gameStateKey != "Default" && gameStateKey != "StartMenu")
                 return;
             
             base.Update(gameTime);
@@ -49,7 +50,7 @@ namespace ZA6
             }
         }
 
-        private void TakeDamage(Character damager)
+        public override void TakeHit(Character damager)
         {
             if (!IsInvincible)
             {

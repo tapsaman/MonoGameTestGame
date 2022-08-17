@@ -35,10 +35,14 @@ namespace ZA6
         public static SoundEffect LinkDies;
         public static SoundEffect Fall;
         public static SoundEffect LargeBeam;
+        public static SoundEffect Keese;
+        public static SoundEffect Heart;
+        public static SoundEffect LifeRefill;
+        public static SoundEffectInstance LowHP;
 
         public static void Load()
         {
-            Volume = 0.8f;
+            Volume = 0.5f;
             ChestOpen = Static.Content.Load<SoundEffect>("linktothepast/sfx/chest open");
             Cursor = Static.Content.Load<SoundEffect>("linktothepast/sfx/cursor");
             EnemyDies = Static.Content.Load<SoundEffect>("linktothepast/sfx/enemy dies");
@@ -58,6 +62,15 @@ namespace ZA6
             LinkDies = Static.Content.Load<SoundEffect>("linktothepast/sfx/link dies");
             Fall = Static.Content.Load<SoundEffect>("linktothepast/sfx/fall");
             LargeBeam = Static.Content.Load<SoundEffect>("linktothepast/sfx/large beam");
+            Keese = Static.Content.Load<SoundEffect>("linktothepast/sfx/keese");
+            Heart = Static.Content.Load<SoundEffect>("linktothepast/sfx/heart");
+            LifeRefill = Static.Content.Load<SoundEffect>("linktothepast/sfx/life refill");
+            var lowHP = Static.Content.Load<SoundEffect>("linktothepast/sfx/low hp");
+
+            LowHP = lowHP.CreateInstance();
+            LowHP.Volume = 0.4f;
+            LowHP.IsLooped = true;
+            //LowHP.Play();
         }
     }
 }

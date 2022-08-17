@@ -1,32 +1,37 @@
+using TapsasEngine.Utilities;
+
 namespace ZA6
 {
-    public enum Resolution
-    {
-        FullScreen,
-        _256x224, // Native SNES reso
-        _512x448, // Native x2 
-        _768x672, // Native x3
-        _1024x896, // Native x4 
-        _1234X1080 // Native fitted for 1080 height
-    }
-
     public enum MapCode
     {
         A1,
         A2,
         B1,
+        B2,
         C1
     }
 
     public enum TransitionType
     {
         Pan,
-        FadeToBlack
+        FadeToBlack,
+        Doorway
     }
 
-    public enum EventStore
+    public enum DataStoreType
     {
         Scene,
+        Session,
         Game
+    }
+
+    public enum CollisionType : ushort
+    {
+        None,
+        Full,
+        NorthEast,
+        SouthEast,
+        SouthWest,
+        NorthWest
     }
 }

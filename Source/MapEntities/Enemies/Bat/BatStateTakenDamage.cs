@@ -33,11 +33,6 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
-            if (_bat.CollidingX != Direction.None || _bat.CollidingY != Direction.None)
-            {
-                _flyVelocity = Vector2.Zero;
-            }
-
             _bat.Velocity = _flyVelocity;
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 

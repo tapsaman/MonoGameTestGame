@@ -7,17 +7,12 @@ using ZA6.Sprites;
 
 namespace ZA6
 {
-    public class Biri : Enemy
+    public class Biri : Bari
     {
-        public Hitbox DamageHitbox1;
-        
         public Biri()
         {
-            Health = 2;
-            Hittable = true;
-            Colliding = true;
-            Moving = true;
-            
+            Health = 1;
+
             var texture = Img.EnemySprites;
             SAnimation.DefaultFrameWidth = SAnimation.DefaultFrameHeight = 34;
 
@@ -30,7 +25,6 @@ namespace ZA6
 
             Sprite.SetAnimations(animations, "Default");
             Hitbox.Load(5, 5);
-            DamageHitbox1 = new Hitbox();
             DamageHitbox1.Load(8, 8);
             SpriteOffset = new Vector2(-14, -16);
 

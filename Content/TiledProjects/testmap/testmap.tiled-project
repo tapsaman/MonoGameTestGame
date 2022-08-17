@@ -8,9 +8,24 @@
     ],
     "propertyTypes": [
         {
+            "id": 3,
+            "name": "CollisionShape",
+            "storageType": "int",
+            "type": "enum",
+            "values": [
+                "None",
+                "Full",
+                "NorthEast",
+                "SouthEast",
+                "SouthWest",
+                "NorthWest"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "id": 2,
             "name": "Type",
-            "storageType": "string",
+            "storageType": "int",
             "type": "enum",
             "values": [
                 "Bush"

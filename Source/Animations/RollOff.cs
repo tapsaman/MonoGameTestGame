@@ -28,7 +28,7 @@ namespace ZA6.Animations
                 _target = target;
             }
 
-            public void Enter()
+            public override void Enter()
             {
                 _turns = 0;
                 _elapsedTime = 0;

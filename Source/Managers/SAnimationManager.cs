@@ -73,9 +73,12 @@ namespace ZA6.Managers
 
         public void Draw(SpriteBatch spriteBatch, Vector2 offset, Color color)
         {
+            Vector2 position = (Position + offset + _animation.Offset);
+            position.Round();
+
             spriteBatch.Draw(
                 _animation.Texture,
-                Position + offset,
+                position,
                 _animation.FrameRectangles[_animation.CurrentFrame],
                 color
             );

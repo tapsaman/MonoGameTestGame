@@ -25,7 +25,7 @@ namespace ZA6.Models
             FrameDuration = frameDuration;
             FrameCount = frameCount;
             Offset = offset;
-            FrameRectangles = CreateHorizontalFrameRectangle(frameCount, DefaultFrameWidth, DefaultFrameHeight, textureYPos, textureXPos);
+            FrameRectangles = CreateHorizontalFrameRectangles(frameCount, DefaultFrameWidth, DefaultFrameHeight, textureYPos, textureXPos);
         }
 
         public SAnimation(Texture2D texture, int frameCount, int frameWidth, int frameHeight, float frameDuration = 0.1f, int textureYPos = 0, int textureXPos = 0, Vector2 offset = new Vector2())
@@ -35,7 +35,7 @@ namespace ZA6.Models
             FrameDuration = frameDuration;
             FrameCount = frameCount;
             Offset = offset;
-            FrameRectangles = CreateHorizontalFrameRectangle(frameCount, frameWidth, frameHeight, textureYPos, textureXPos);
+            FrameRectangles = CreateHorizontalFrameRectangles(frameCount, frameWidth, frameHeight, textureYPos, textureXPos);
         }
 
         public SAnimation(Texture2D texture, float frameDuration, Vector2 offset, Rectangle[] frameRectangles)
@@ -57,8 +57,13 @@ namespace ZA6.Models
             FrameRectangles = new Rectangle[] { frameRectangle };
         }
 
-        public SAnimation(Texture2D texture, int spriteX, int spriteY, int width, int height, Vector2 offset = new Vector2())
+        public SAnimation(Texture2D texture, int spriteX, int spriteY, int width = 0, int height = 0, Vector2 offset = new Vector2())
         {
+            if (width == 0)
+                width = DefaultFrameWidth;
+            if (height == 0)
+                height = DefaultFrameHeight;
+            
             Texture = texture;
             FrameCount = 1;
             IsLooping = true;
@@ -70,7 +75,7 @@ namespace ZA6.Models
             };
         }
 
-        private static Rectangle[] CreateHorizontalFrameRectangle(int frameCount, int frameWidth, int frameHeight, int textureYPos, int textureXPos)
+        private static Rectangle[] CreateHorizontalFrameRectangles(int frameCount, int frameWidth, int frameHeight, int textureYPos, int textureXPos)
         {
             var r = new Rectangle[frameCount];
 

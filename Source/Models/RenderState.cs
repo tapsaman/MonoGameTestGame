@@ -6,6 +6,6 @@ namespace ZA6.Models
 {
     public abstract class RenderState : State
     {
-        public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
+        public abstract void Draw(SpriteBatch spriteBatch);
     }
 }

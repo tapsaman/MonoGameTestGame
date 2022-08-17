@@ -24,7 +24,7 @@ namespace ZA6.Models
             _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
             _guard.Velocity = _guard.Direction.ToVector() * _guard.WalkSpeed;
             
-            _walkTime = 4; //2 + (float)Utility.RandomDouble() * 5;
+            _walkTime = 2 + (float)Utility.RandomDouble() * 5;
             _turning = false;
             _elapsedTurnTime = 0;
             _elapsedWalkTime = 0;
@@ -48,7 +48,7 @@ namespace ZA6.Models
                     _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
                 }
             }
-            else if (_guard.CollidingX == _guard.Direction || _guard.CollidingY == _guard.Direction)
+            else if (_guard.CollisionX == CollisionType.Full || _guard.CollisionY == CollisionType.Full)
             {
                 // Hitting obstacle, turn around
                 _turning = true;

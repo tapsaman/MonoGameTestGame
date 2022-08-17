@@ -20,22 +20,20 @@ namespace ZA6.Models
         {
             Static.EventSystem.Update(gameTime);
             Static.DialogManager.Update(gameTime);
-            _game.TitlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
+            _game.Hud.Update(gameTime);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             Static.Renderer.Start();
             
             Static.SceneManager.Draw(spriteBatch);
-            _game.Hud.Draw(spriteBatch, Static.Player);
+            _game.Hud.Draw(spriteBatch);
 
             if (!Static.DialogManager.IsDone)
                 Static.DialogManager.Draw(spriteBatch);
             
-            BitmapFontRenderer.DrawString(spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _game.TitlePosition);
-            
-            Static.Renderer.End(gameTime);
+            Static.Renderer.End();
         }
 
         public override void Exit() {}

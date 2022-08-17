@@ -10,7 +10,7 @@ namespace ZA6
 {
     public class Player : Character
     {
-        public int MaxHealth { get; private set; } = 6;
+        public int MaxHealth { get; private set; } = 12;
         public bool Hitting = false;
         public bool CanDie = true;
         private const int _touchAreaLength = 10;
@@ -28,7 +28,7 @@ namespace ZA6
             Hittable = false;
             Colliding = true;
             Moving = true;
-            WalkSpeed = 70f;
+            WalkSpeed = 90f;
             SpriteOffset = new Vector2(-13, -24);
 
             var txt1 = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-main");
@@ -78,7 +78,7 @@ namespace ZA6
             };
 
             Hitbox.Load(14, 14);
-            Sprite.SetAnimations(animations);
+            Sprite.SetAnimations(animations, "IdleDown");
 
             // First parameter is considered width when Link faces up or down
             SwordHitbox = new SwordHitbox(14, 10) { Color = Color.HotPink };
@@ -127,7 +127,7 @@ namespace ZA6
 
                     if (SwordHitbox.Rectangle.Intersects(entity.Hitbox.Rectangle))
                     {
-                        entity.InvokeTrigger(this);
+                        entity.TakeHit(this);
                     }
                 }
             }
@@ -151,11 +151,11 @@ namespace ZA6
             StateMachine.TransitionTo("Falling");
         }
 
-        public void TakeDamage(Vector2 hitPosition)
+        public void TakeDamage(Vector2 hitPosition, int amount = 1)
         {
             if (!IsInvincible)
             {
-                Health = Math.Max(0, Health - 1);
+                Health = Math.Max(0, Health - amount);
                 
                 if (Health == 0 && CanDie)
                 {
@@ -170,9 +170,19 @@ namespace ZA6
             }
         }
 
+        public void ReplenishHealth(int amount)
+        {
+            Health = Math.Min(MaxHealth, Health + amount);
+        }
+
         public void DetermineInputVelocity()
         {
-            Velocity = Input.P1.GetDirectionVector() * WalkSpeed;
+            Velocity = Input.P1.GetDirectionVector();
+
+            if (Velocity != Vector2.Zero)
+                Velocity.Normalize();
+            
+            Velocity *= WalkSpeed;
         }
 
         public void DetermineHitInput()

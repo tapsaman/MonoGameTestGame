@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using ZA6.Sprites;
 
 namespace ZA6
 {
@@ -11,13 +12,18 @@ namespace ZA6
             Hittable = true;
             Colliding = true;
             Sprite.SetTexture(Img.ObjectTexture, new Rectangle(0, 0, 16, 16));
-            Trigger += Destroy;
         }
 
-        private void Destroy(Character _)
+        public override void TakeHit(Character _)
         {
             Static.Scene.Add(new Animations.BushSlash(Position + new Vector2(8)));
             Static.Scene.Remove(this);
+
+            var stumpSprite = new Sprite();
+            stumpSprite.SetTexture(Img.ObjectTexture, new Rectangle(16, 0, 16, 16));
+            stumpSprite.Position = Position;
+
+            Static.Scene.Add(stumpSprite);
         }
     }
 }

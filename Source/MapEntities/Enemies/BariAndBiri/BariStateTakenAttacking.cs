@@ -16,7 +16,7 @@ namespace ZA6.Models
         public override void Enter(StateArgs _)
         {
             _enemy.Sprite.SetAnimation("Attacking");
-            _enemy.IsInvincible = true;
+            //_enemy.IsInvincible = true;
             _elapsedTime = 0;
         }
 

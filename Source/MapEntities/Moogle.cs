@@ -28,7 +28,7 @@ namespace ZA6
                 { "WalkLeft",       new SAnimation(texture, 3, 0.04f, true, 3) }
             };
 
-            Sprite.SetAnimations(animations);
+            Sprite.SetAnimations(animations, "IdleUp");
             Hitbox.Load (14, 10);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-5, -22);
@@ -40,17 +40,17 @@ namespace ZA6
 
             _talkEvent = new Event[]
             {
-                new ConditionEvent(EventStore.Scene, "moogle speak toggle")
+                new ConditionEvent(DataStoreType.Scene, "moogle speak toggle")
                 {
                     IfFalse = new Event[]
                     {
                         new TextEvent(new Dialog("Just get a... get to the\notherside my guy."), this),
-                        new SaveValueEvent(EventStore.Scene, "moogle speak toggle", true)
+                        new SaveValueEvent(DataStoreType.Scene, "moogle speak toggle", true)
                     },
                     IfTrue = new Event[]
                     {
                         new TextEvent(new Dialog("Are you ok"), this),
-                        new SaveValueEvent(EventStore.Scene, "moogle speak toggle", false)
+                        new SaveValueEvent(DataStoreType.Scene, "moogle speak toggle", false)
                     }
                 }
             };

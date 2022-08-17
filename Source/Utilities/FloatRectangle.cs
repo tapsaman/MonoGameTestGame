@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -70,6 +71,36 @@ namespace ZA6
         public bool Contains(FloatRectangle value)
         {
             return ((((this.X <= value.X) && ((value.X + value.Width) <= (this.X + this.Width))) && (this.Y <= value.Y)) && ((value.Y + value.Height) <= (this.Y + this.Height)));
+        }
+
+        public static FloatRectangle operator +(FloatRectangle r, Vector2 v)
+        {
+            return new FloatRectangle(r.X + v.X, r.Y + v.Y, r.Width, r.Height);
+        }
+
+        public FloatRectangle AddX(float d)
+        {
+            return new FloatRectangle(X + d, Y, Width, Height);
+        }
+
+        public FloatRectangle AddY(float d)
+        {
+            return new FloatRectangle(X, Y + d, Width, Height);
+        }
+
+        public FloatRectangle Add(Vector2 v)
+        {
+            return this + v;
+        }
+
+        public FloatRectangle Round()
+        {
+            return new FloatRectangle(
+                (float)Math.Round(X),
+                (float)Math.Round(Y),
+                Width,
+                Height
+            );
         }
     }
 }

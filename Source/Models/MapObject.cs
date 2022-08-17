@@ -8,7 +8,7 @@ namespace ZA6
     {
         public Sprite Sprite;
         public bool Hittable { get; protected set; } = false;
-        public bool Colliding = true;
+        public bool Colliding { get; protected set; } = true;
         public override Vector2 Position
         {
             get { return _position; }
@@ -45,5 +45,7 @@ namespace ZA6
         {
             Sprite.Draw(spriteBatch, offset);
         }
+
+        public virtual void TakeHit(Character hitter) {}
     }
 }

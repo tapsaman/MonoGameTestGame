@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using ZA6.Managers;
+using TapsasEngine.Utilities;
 using ZA6.Models;
+using ZA6.Sprites;
 
 namespace ZA6
 {
-    public abstract class Scene : IUpdatable
+    public class Scene : IUpdatable
     {
         public Song Theme { get; protected set; }
         public DataStore SceneData;
         public TileMap TileMap;
         public Player Player;
         public List<MapEntity> InteractableEntities { get; private set; }
+        public List<Character> Characters { get; private set; }
         public List<MapObject> MapObjects { get; private set; }
         public List<MapObject> HittableEntities { get; private set; }
         public List<MapObject> CollidingEntities { get; private set; }
         public List<MapObject> UncollidingEntities { get; private set; }
         public List<MapEntity> TouchTriggers { get; private set; }
+        public List<Sprite> LowerSprites { get; private set; }
         public bool Paused = true;
         public Vector2 DrawOffset = Vector2.Zero;
         public Vector2 OverlayOffset = Vector2.Zero;
@@ -28,63 +31,89 @@ namespace ZA6
         private List<AnimationEffect> _animationEffects;
         // Register hitboxes for rendering
         private List<Hitbox> _hitboxes;
-
-        protected abstract void Load();
+        public Dictionary<Direction, TransitionType> ExitTransitions; 
 
         public Scene()
         {
+            // Load basics in constructor
             SceneData = new DataStore();
             MapObjects = new List<MapObject>();
+            Characters = new List<Character>();
             InteractableEntities = new List<MapEntity>();
             HittableEntities = new List<MapObject>();
             CollidingEntities = new List<MapObject>();
             UncollidingEntities = new List<MapObject>();
             TouchTriggers = new List<MapEntity>();
+            ExitTransitions = new Dictionary<Direction, TransitionType>();
+            LowerSprites = new List<Sprite>();
             _animationEffects = new List<AnimationEffect>();
             _hitboxes = new List<Hitbox>();
+        }
+
+        protected virtual void Load()
+        {
+            // Init events and map objects in Load
         }
 
         public void Init(Player player)
         {
             Player = player;
-            Add((MapObject)Player);
+            Add((Character)Player);
             Load();
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
 
+            foreach (var exitKeyValue in TileMap.Exits)
+            {
+                if (ExitTransitions.ContainsKey(exitKeyValue.Key))
+                {
+                    exitKeyValue.Value.TransitionType = ExitTransitions[exitKeyValue.Key];
+                }
+            }
+
             foreach(var obj in TileMap.Objects)
             {
-                if (obj.TypeName == "Bush")
+                switch (obj.TypeName)
                 {
-                    Add(new Bush() { Position = obj.Position });
-                }
-                else if (obj.TypeName == "Sign")
-                {
-                    Add(new Sign() { Position = obj.Position, Text = obj.TextProperty });
-                }
-                else if (obj.TypeName == "Text")
-                {
-                    Add(new Text() { Position = obj.Position, Message = obj.TextProperty });
-                }
-                else if (obj.TypeName == "Guard")
-                {
-                    Add(new Guard() { Position = obj.Position });
-                }
-                else if (obj.TypeName == "Bat")
-                {
-                    Add(new Bat() { Position = obj.Position });
-                }
-                else if (obj.TypeName == "Bubble")
-                {
-                    Add(new Bubble() { Position = obj.Position });
-                }
-                else if (obj.TypeName == "Bari")
-                {
-                    Add(new Bari() { Position = obj.Position });
-                }
-                else if (obj.TypeName == "RedBari")
-                {
-                    Add(new RedBari() { Position = obj.Position });
+                    // Map objects
+                    case "Bush":
+                        Add(new Bush() { Position = obj.Position });
+                        break;
+                    case "Sign":
+                        Add(new Sign() { Position = obj.Position, Text = obj.TextProperty });
+                        break;
+                    case "TreasureChest":
+                        Add(new TreasureChest(TileMap.Name + obj.Position.X + "," + obj.Position.Y) 
+                        {
+                            Position = obj.Position,
+                            ItemID = obj.TextProperty
+                        });
+                        break;
+
+                    // Event triggers
+                    case "Text":
+                        Add(new Text() { Position = obj.Position, Message = obj.TextProperty });
+                        break;
+                    case "Doorway":
+                        Add(new Doorway(obj.Position, obj.TextProperty));
+                        break;
+                    
+                    // Enemies
+                    case "Guard":
+                        Add(new Guard() { Position = obj.Position });
+                        break;
+                    case "Bat":
+                        Add(new Bat() { Position = obj.Position });
+                        break;
+                    case "Bubble":
+                        Add(new Bubble() { Position = obj.Position });
+                        break;
+                    case "Bari":
+                        Add(new Bari() { Position = obj.Position });
+                        break;
+                    case "RedBari":
+                        Add(new RedBari() { Position = obj.Position });
+                        break;
                 }
             }
         }
@@ -142,13 +171,13 @@ namespace ZA6
                     hitbox.Draw(spriteBatch, DrawOffset);
                 }
             }
+            foreach (var sprite in LowerSprites)
+            {
+                sprite.Draw(spriteBatch, DrawOffset);
+            }
             foreach (var mapEntity in CollidingEntities)
             {
                 mapEntity.Draw(spriteBatch, DrawOffset);
-            }
-            foreach (var animationEffect in _animationEffects)
-            {
-                animationEffect.Draw(spriteBatch, DrawOffset);
             }
         }
 
@@ -159,6 +188,10 @@ namespace ZA6
             foreach (var mapEntity in UncollidingEntities)
             {
                 mapEntity.Draw(spriteBatch, DrawOffset);
+            }
+            foreach (var animationEffect in _animationEffects)
+            {
+                animationEffect.Draw(spriteBatch, DrawOffset);
             }
         }
 
@@ -171,6 +204,11 @@ namespace ZA6
         public void DrawPlayerOnly(SpriteBatch spriteBatch)
         {
             Player.Draw(spriteBatch, DrawOffset);
+        }
+
+        public void Add(Sprite sprite)
+        {
+            LowerSprites.Add(sprite);
         }
 
         public void Add(MapEntity mapEntity)
@@ -203,6 +241,13 @@ namespace ZA6
             {
                 UncollidingEntities.Add(mapobject);
             }
+        }
+
+        public void Add(Character character)
+        {
+            Add((MapObject)character);
+
+            Characters.Add(character);
         }
 
         public void Remove(MapEntity mapEntity)
@@ -239,6 +284,13 @@ namespace ZA6
             {
                 UncollidingEntities.Remove(mapobject);
             }
+        }
+
+        public void Remove(Character character)
+        {
+            Remove((MapObject)character);
+
+            Characters.Remove(character);
         }
 
         public void Add(AnimationEffect animationEffect)

@@ -23,22 +23,26 @@ namespace ZA6.Models
         {
             Static.SceneManager.Update(gameTime);
             Static.EventSystem.Update(gameTime);
-            
             Music.Update(gameTime);
+            _game.TitleText.Update(gameTime);
+            _game.Hud.Update(gameTime);
 
-            _game.TitlePosition.X -= (float)gameTime.ElapsedGameTime.TotalSeconds * 15;
+            if (Input.P1.IsPressed(Input.P1.Start) || Input.P1.IsPressed(Input.P1.Select))
+                stateMachine.TransitionTo("MainMenu");
+            // To access main menu easily
+            else if (Input.P1.JustReleasedMouseLeft())
+                stateMachine.TransitionTo("MainMenu");
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             Static.Renderer.Start();
             
             Static.SceneManager.Draw(spriteBatch);
-            _game.Hud.Draw(spriteBatch, Static.Player);
+            _game.TitleText.Draw(spriteBatch);
+            _game.Hud.Draw(spriteBatch);
             
-            BitmapFontRenderer.DrawString(spriteBatch, "zeldan seikkailut mikä mikä maassa vittu", _game.TitlePosition);
-            
-            Static.Renderer.End(gameTime);
+            Static.Renderer.End();
         }
 
         public override void Exit()

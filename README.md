@@ -23,18 +23,24 @@ log:
 * 5.8. - slider input, sfx/music volume sliders, select input, resolution setting, wait event, game states cutscene, start over and game over, animation class and game over animations, dialog questions, static img class, global event manager replaced with event system, spotlight shader, interfaces init, renamed StaticData to Static and Animation(Manager) to SAnimation(Manager)
 * 5.8. - moogle, c1 start event init, animation events, jump and walk animations
 * 10.8. - event manager not waiting and waiting for id, enemies bubble bari biri, moogle start event done, dialog questions and ask event, new link sprites, game over animations finished, state args for state enter
+* 11.8. - new b1 forest scene, fixed bats, excecution timer utility, diagonal map collsion with collision type on each tile (CollisionTileMap), dynamic maps with world loaded from tiled world json, dev utils and dev view, trasure chests, doorways, wait/teleport/remove/run events, cave room and  klaus, items and heart, animated life hud, opening with title + start menu, renderer revamp and renderresolution class
 
 roadmap:
-* fuck shit up -> every death from falling to hole should break something in the game Static
+* fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
+* treasure chests, bushes change to cut bushes
 * sys timing methods
 * use arrays for tilemap tiles? compare performance with timing methods
-* minigame, couple enemies
 * better text highlight shader
 * abstract class UIInput from Button
+* could clean SAnimation constructor overload
+* separate generic code to own namespace and folder like TapsasEngine or smth for future games
+    - TileMap to (I)Map -> TileMap
 
 could do but prob won't:
+* if any velocity becomes NaN everything breaks, could force numeric values
+* rename events to commands
 * switch event based on datastore int
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)
 * parametrizable sprite animation speed, e.g. to bind with walk speed

@@ -8,16 +8,27 @@ namespace ZA6
 {
     public class GameMenu : Menu
     {
-        public GameMenu(EventHandler startGame)
+        private bool _startMenu;
+
+        public GameMenu(EventHandler startGame, bool startMenu = false)
         {
-            OverlayColor = new Color(50, 50, 50);
+            _startMenu = startMenu;
+
+            if (!_startMenu) {
+                OverlayColor =  new Color(50, 50, 50);
+            }
+            else
+            {
+                Margin.Top = 50;
+            }
+            
             var buttonTexture = Static.Content.Load<Texture2D>("Button");
             var font = Static.Content.Load<SpriteFont>("Fonts/TestFont");
             var fontSmall = Static.Content.Load<SpriteFont>("Fonts/TestFontSmall");
 
             Button startButton = new Button(buttonTexture, font)
             {
-                Text = !Static.GameStarted ? "START" : "RESUME"
+                Text = _startMenu ? "START" : "RESUME"
             };
             startButton.Click += startGame;
 
@@ -42,7 +53,7 @@ namespace ZA6
 
         private void GoToSettings(object sender, EventArgs e)
         {
-            UI.Add(new SettingsMenu());
+            UI.Add(new SettingsMenu(_startMenu));
         }
 
         private void QuitGame(object sender, EventArgs e)

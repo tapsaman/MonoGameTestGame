@@ -21,12 +21,13 @@ struct VertexShaderOutput
     float2 TextureCoordinates : TEXCOORD0;
 };
 
-float calculateWave(float y, float yOffset)
+float calculateWave(float y, float yOffset, float waveWidth, float waveHeight)
 {
-    return sin(28 * (y + yOffset)) / 32;
+    return sin(waveHeight * (y + yOffset)) * waveWidth;
 }
 
 float yOffset;
+float waveWidth = 32;
 
 // Ps stands for pixel shader this is were we can effect the change of colors to our images.
 // When we passed our effect to spritebatch.Begin( .., ...,, effect,..) this is what effects all the Draw calls we now make.
@@ -35,12 +36,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float x = input.TextureCoordinates.x;
     float y = input.TextureCoordinates.y;
     
-    x += calculateWave(y, yOffset);
+    x += calculateWave(y, yOffset, 0.02, 10);
 
     float2 coords = float2(x, y);
     float4 imageColor = tex2D(SpriteTextureSampler, coords);
 
-    return imageColor;
+    return imageColor * input.Color;
 }
 
 technique SpriteDrawing

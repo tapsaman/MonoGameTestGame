@@ -6,20 +6,21 @@ namespace ZA6.Manangers
 {
     public class SceneManager
     {
+        public TiledWorld World;
         public Player Player { get; private set; }
         public Scene CurrentScene;
         public Scene ChangingToScene;
         public bool Changing;
-        public TileMap.Exit MapExit { get; private set; }
+        public MapExit MapExit { get; private set; }
         private SceneTransition _sceneTransition;
 
-        public void Init()
+        public void Init(string startMapName = "A1")
         {
             // Static.Scene must be defined before player so that hitboxes can register
-            Static.Scene = CurrentScene = new SceneB1();
-            Static.Player = Player = new Player()
+            Static.Scene = CurrentScene = LoadScene(startMapName);
+            Static.Player = Static.Game.Hud.Player = Player = new Player()
             {
-                Position = CurrentScene.TileMap.ConvertTileXY(30, 44)
+                Position = CurrentScene.TileMap.PlayerStartPosition
             };
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
@@ -31,7 +32,7 @@ namespace ZA6.Manangers
             CurrentScene.Start();
         }
 
-        public void GoTo(TileMap.Exit exit)
+        public void GoTo(MapExit exit)
         {
             if (Changing)
                 return;
@@ -46,19 +47,33 @@ namespace ZA6.Manangers
             //CurrentScene.Paused = true;
         }
 
+        public void GoTo(string mapName)
+        {
+            GoTo(new MapExit(Player.Direction, mapName, TransitionType.Doorway));
+        }
+
         // Exposed for ScreenTransitions
         public Scene LoadNextScene()
         {
-            ChangingToScene = MapCodeToScene(MapExit.MapCode);
+            ChangingToScene = LoadScene(MapExit.MapName);
             ChangingToScene.Paused = true;
+            
             Static.Scene = ChangingToScene;
             ChangingToScene.Init(Player);
             ChangingToScene.RegisterHitbox(Player.Hitbox);
             ChangingToScene.RegisterHitbox(Player.SwordHitbox);
-            Static.Scene = CurrentScene;
-            //CurrentScene.SetToRemove(Player);
-
+            Static.Scene = ChangingToScene;
+            
             return ChangingToScene;
+        }
+
+        private Scene LoadScene(string mapName)
+        {
+            TileMap map = World.LoadTileMap(mapName);
+            Scene scene = MapNameToScene(mapName);
+            scene.TileMap = map;
+
+            return scene;
         }
 
         public void Update(GameTime gameTime)
@@ -103,8 +118,6 @@ namespace ZA6.Manangers
             {
                 _sceneTransition.Draw(spriteBatch);
             }
-
-            spriteBatch.DrawString(Static.Font, Player.Position.ToString(), new Vector2(200, 200), Color.Black);
         }
 
         private Scene MapCodeToScene(MapCode mapCode)
@@ -117,10 +130,33 @@ namespace ZA6.Manangers
                     return new SceneA2();
                 case MapCode.B1:
                     return new SceneB1();
+                case MapCode.B2:
+                    return new SceneB2();
                 case MapCode.C1:
                     return new SceneC1();
             }
             return null;
+        }
+
+        private Scene MapNameToScene(string mapName)
+        {
+            switch (mapName)
+            {
+                case "A1":
+                    return new TestScene();
+                case "A2":
+                    return new SceneA2();
+                case "B1":
+                    return new SceneB1();
+                case "B2":
+                    return new SceneB2();
+                case "C1":
+                    return new SceneC1();
+                case "Cave":
+                    return new SceneCave();
+                default:
+                    return new Scene();
+            }
         }
 
         private SceneTransition TransitionTypeToSceneTransition(TransitionType transitionType)
@@ -131,6 +167,8 @@ namespace ZA6.Manangers
                     return new SceneTransition.Pan();
                 case TransitionType.FadeToBlack:
                     return new SceneTransition.FadeToBlack();
+                case TransitionType.Doorway:
+                    return new SceneTransition.Doorway();
             }
             return null;
         }

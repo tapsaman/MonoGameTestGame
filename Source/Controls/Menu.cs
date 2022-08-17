@@ -11,6 +11,7 @@ namespace ZA6
         private List<UIComponent> Components;
         private List<UIComponent> FocusableComponents;
         public int Padding = 5;
+        public Sides Margin;
         public int? FocusIndex { get; private set; } = null;
         public bool Disabled
         {
@@ -77,6 +78,7 @@ namespace ZA6
         {
             int greatestWidth = 0;
             int combinedHeight = 0;
+            int combinedPadding = Padding * Components.Count - 1;
 
             foreach (var item in Components)
             {
@@ -86,12 +88,13 @@ namespace ZA6
                 combinedHeight += item.Height;
             }
 
-            int contentHeight = combinedHeight + Padding * Components.Count - 1;
+            int contentWidth = greatestWidth;
+            int contentHeight = combinedHeight + combinedPadding;
 
             _contentRectangle = new Rectangle(
-                Static.NativeWidth / 2 - greatestWidth / 2,
-                Static.NativeHeight / 2 - contentHeight / 2,
-                greatestWidth,
+                Static.NativeWidth / 2 - contentWidth / 2 + Margin.Left,
+                Static.NativeHeight / 2 - contentHeight / 2 + Margin.Top,
+                contentWidth,
                 contentHeight
             );
 
@@ -116,7 +119,7 @@ namespace ZA6
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (_overlay != null)
             {
@@ -142,6 +145,7 @@ namespace ZA6
 
             foreach (var item in Components)
             {
+                // Center items 
                 int x = _contentRectangle.X + _contentRectangle.Width / 2 - item.Width / 2;
                 item.Position = new Vector2(x, y);
                 item.Draw(spriteBatch);

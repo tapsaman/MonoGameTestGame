@@ -1,11 +1,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine;
 
 namespace ZA6
 {
     public static class Music
     {
-        public static float Volume { get; set; } = 0.4f;
+        public static float Volume { get; set; } = 0.5f;
+        private const float _VOLUME_MULTIPLIER = 0.4f;
         private static float _currentVolume;
         private static float _fadeOutTime;
         private static float _elapsedFadeTime;
@@ -25,7 +27,7 @@ namespace ZA6
             {
                 _currentSong = song;
                 MediaPlayer.Play(song);
-                MediaPlayer.Volume = Volume;
+                MediaPlayer.Volume = Volume * _VOLUME_MULTIPLIER;
                 MediaPlayer.IsRepeating = true;
             }
         }
@@ -91,7 +93,7 @@ namespace ZA6
                 _currentVolume = Volume;
             }
 
-            MediaPlayer.Volume = _currentVolume;
+            MediaPlayer.Volume = _currentVolume * _VOLUME_MULTIPLIER;
         }
     }
 }

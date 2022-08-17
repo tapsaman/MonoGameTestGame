@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ZA6
+namespace TapsasEngine.Utilities
 {
     public class DataStore
     {

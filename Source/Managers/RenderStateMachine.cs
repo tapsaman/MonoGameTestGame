@@ -11,10 +11,10 @@ namespace ZA6.Managers
         public RenderStateMachine(Dictionary<string, State> states, string initialStateName)
             : base(states, initialStateName) {}
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentState is RenderState state)
-                state.Draw(spriteBatch, gameTime);
+                state.Draw(spriteBatch);
         }
     }
 }

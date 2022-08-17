@@ -56,6 +56,7 @@ namespace ZA6.Models
         {
             Music.Update(gameTime);
             Static.SceneManager.Update(gameTime);
+            _game.Hud.Update(gameTime);
 
             if (!_fallDeath && !_hasDropped)
             {
@@ -72,7 +73,6 @@ namespace ZA6.Models
             }
             
             _animation.Update(gameTime);
-            //Static.Player.Position -= new Vector2(50f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0);
 
             if (_animation.IsDone)
             {
@@ -99,18 +99,23 @@ namespace ZA6.Models
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             Static.Renderer.Start();
 
             Static.SceneManager.Draw(spriteBatch);
-            //_game.Hud.Draw(spriteBatch, Static.SceneManager.Player);
             _animation.Draw(spriteBatch);
             
-            if (_dialogManager != null)
+            if (_dialogManager == null)
+            {
+                _game.Hud.Draw(spriteBatch);
+            }
+            else
+            {
                 _dialogManager.Draw(spriteBatch);
+            }
 
-            Static.Renderer.End(gameTime);
+            Static.Renderer.End();
         }
 
         public override void Exit()

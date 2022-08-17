@@ -1,60 +1,60 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
-using System.Linq;
 
 namespace ZA6
 {
-    public abstract class TileMap
+    public class TileMap : CollisionTileMap
     {
-        // Width in tiles
-        public int Width { get; private set; }
-        // Height in tiles
-        public int Height { get; private set; }
         // Width in pixels
+        public string Name;
         public int DrawWidth { get; private set; }
         // Height in pixels
         public int DrawHeight { get; private set; }
-        public int TileWidth { get; private set; }
-        public int TileHeight { get; private set; }
         public Vector2 TileSize { get; private set; }
         public ushort GroundLayer { get; protected set; } = 0;
         public ushort TopLayer { get; protected set; } = 1;
         public ushort ObjectLayer { get; protected set; } = 2;
-        public Dictionary<Direction, Exit> Exits { get; protected set; }
-        protected TiledTileset _tileset;
-        protected Texture2D _tilesetTexture;
-        //protected Dictionary<Direction, MapCode> _nextMaps;
-        private int _tilesetTilesWide;
-        private int _tilesetTilesHeight;
+        public Vector2 PlayerStartPosition { get; protected set; } = Vector2.Zero;
+        public Dictionary<Direction, MapExit> Exits;
+        public TiledTileset Tileset;
+        public Texture2D TilesetTexture;
+        public Texture2D CollisionTileTexture;
+        private int TilesetTilesWide;
+        private int TilesetTilesHeight;
         public Dictionary<int, Dictionary<int, Tile>> Tiles;
         public List<Object> Objects;
         private Dictionary<int, TileAnimation> _tileAnimations;
-
-        /*
-        Should load fields _map, _tileset, _tilesetTexture, _nextMaps
-        */
-        public abstract TiledCS.TiledMap Load();
-
-        public TileMap()
+        private static Dictionary<CollisionType, Rectangle> _collisionTypeRectangles;
+        private static Color _collisionTileColor = new Color(120, 120, 120, 120);
+    
+        public void Load(TiledCS.TiledMap map)
         {
-            TiledCS.TiledMap map = Load();
-            
+            CollisionTileTexture = Static.Content.Load<Texture2D>("CollisionTiles");
+            _collisionTypeRectangles = new Dictionary<CollisionType, Rectangle> 
+            {
+                { CollisionType.None, new Rectangle(0, 0, 8, 8) },
+                { CollisionType.Full, new Rectangle(0, 8, 8, 8) },
+                { CollisionType.NorthWest, new Rectangle(8, 0, 8, 8) },
+                { CollisionType.NorthEast, new Rectangle(16, 0, 8, 8) },
+                { CollisionType.SouthWest, new Rectangle(8, 8, 8, 8) },
+                { CollisionType.SouthEast, new Rectangle(16, 8, 8, 8) }
+            };
+
             Width = map.Width;
             Height = map.Height;
-            TileWidth = _tileset.TileWidth;
-            TileHeight = _tileset.TileHeight;
+            TileWidth = Tileset.TileWidth;
+            TileHeight = Tileset.TileHeight;
             TileSize = new Vector2(TileWidth, TileHeight);
             DrawWidth = Width * TileWidth;
             DrawHeight = Height * TileHeight;
 
             // Amount of tiles on each row (left right)
-            _tilesetTilesWide = _tileset.Columns;
+            TilesetTilesWide = Tileset.Columns;
             // Amount of tiles on each column (up down)
-            _tilesetTilesHeight = _tileset.TileCount / _tileset.Columns;
+            TilesetTilesHeight = Tileset.TileCount / Tileset.Columns;
 
             Tiles = new Dictionary<int, Dictionary<int, Tile>>();
             _tileAnimations = new Dictionary<int, TileAnimation>();
@@ -66,8 +66,8 @@ namespace ZA6
 
         private Rectangle TileFrameToSourceRectangle(int tileFrame)
         {
-            int column = tileFrame % _tilesetTilesWide;
-            int row = (int)Math.Floor((double)tileFrame / (double)_tilesetTilesWide);
+            int column = tileFrame % TilesetTilesWide;
+            int row = (int)Math.Floor((double)tileFrame / (double)TilesetTilesWide);
 
             return new Rectangle(TileWidth * column, TileHeight * row, TileWidth, TileHeight);
         }
@@ -94,90 +94,34 @@ namespace ZA6
         {
             foreach (var tile in Tiles[layerIndex].Values)
             {
-                spriteBatch.Draw(_tilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
+                spriteBatch.Draw(TilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
+            }
+            if (Static.RenderCollisionMap)
+            {
+                foreach (Tile tile in Tiles[layerIndex].Values)
+                {
+                    spriteBatch.Draw(CollisionTileTexture, tile.Position + drawOffset, tile.CollisionTileRectangle, _collisionTileColor);
+                }
             }
         }
 
-        public bool CheckCollision(int x, int y)
+        public override CollisionType GetCollisionType(int x, int y)
         {
             int index = x + y * Width;
 
             if (Tiles[GroundLayer].ContainsKey(index))
             {
-                return Tiles[GroundLayer][index].IsBlocking;
+                return Tiles[GroundLayer][index].CollisionShape;
             }
 
-            return false;
+            return CollisionType.None;
         }
-
-        public bool CheckHorizontalCollision(int x, int topY, int bottomY, ref Direction mapBorder)
-        {
-            if (x < 0)
-            {
-                mapBorder = Direction.Left;
-                return true;
-            }
-            if (x >= Width)
-            {
-                mapBorder = Direction.Right;
-                return true;
-            }
-
-            for (int i = topY; i < bottomY + 1; i++)
-            {
-                if (CheckCollision(x, i))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool CheckVerticalCollision(int y, int leftX, int rightX, ref Direction mapBorder)
-        {
-            if (y < 0)
-            {
-                mapBorder = Direction.Up;
-                return true;
-            }
-            if (y >= Height)
-            {
-                mapBorder = Direction.Down;
-                return true;
-            }
-
-            for (int i = leftX; i < rightX + 1; i++)
-            {
-                if (CheckCollision(i, y))
-                {
-                    return true;
-                }
-            }
-            
-            return false;
-        }
-
-        public int ConvertX(int x)
-        {
-            return x / TileWidth;
-        }
-        public int ConvertX(float x)
-        {
-            return (int)Math.Floor(x / TileWidth);
-        }
+        
         public float ConvertTileX(int tileX)
         {
             return tileX * TileWidth;
         }
-        public int ConvertY(int y)
-        {
-            return y / TileHeight;
-        }
-        public int ConvertY(float y)
-        {
-            return (int)Math.Floor(y / TileHeight);
-        }
+        
         public float ConvertTileY(int tileY)
         {
             return tileY * TileHeight;
@@ -185,35 +129,6 @@ namespace ZA6
         public Vector2 ConvertTileXY(int tileX, int tileY)
         {
             return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
-        }
-
-        public class Tile
-        {
-            public Vector2 Position;
-            public Rectangle DrawRectangle;
-            public Rectangle SourceRectangle;
-            public bool IsBlocking = false;
-        }
-
-        public class Object
-        {
-            public string TypeName;
-            public Vector2 Position;
-            public string TextProperty;
-        }
-
-        public class Exit
-        {
-            public Direction Direction { get; private set; }
-            public MapCode MapCode { get; private set; }
-            public TransitionType TransitionType { get; private set; }
-
-            public Exit(Direction direction, MapCode mapCode, TransitionType transitionType)
-            {
-                Direction = direction;
-                MapCode = mapCode;
-                TransitionType = transitionType;
-            }
         }
 
         private void LoadTiles(TiledCS.TiledMap map, int layerIndex)
@@ -228,7 +143,7 @@ namespace ZA6
                 if (gid == 0)
                     continue;
 
-                var tiledTile = map.GetTiledTile(map.Tilesets[0], _tileset, gid);
+                var tiledTile = map.GetTiledTile(map.Tilesets[0], Tileset, gid);
                 Rectangle sourceRectangle = TileFrameToSourceRectangle(gid - 1);
 
                 float x = (i % Width) * TileWidth;
@@ -248,9 +163,14 @@ namespace ZA6
                     // Process Tiled custom properties
                     foreach(var item in tiledTile.properties)
                     {
-                        if (item.name == "IsBlocking" && item.value == "true")
+                        /*if (item.name == "IsBlocking" && item.value == "true")
                         {
                             tile.IsBlocking = true;
+                        }*/
+                        if (item.name == "CollisionShape")
+                        {
+                            tile.CollisionShape = (CollisionType)Int16.Parse(item.value);
+                            tile.CollisionTileRectangle = _collisionTypeRectangles[tile.CollisionShape];
                         }
                     }
 
@@ -291,6 +211,9 @@ namespace ZA6
 
             foreach (var item in map.Layers[layerIndex].objects)
             {
+                if (item.name == "PlayerStart")
+                    PlayerStartPosition = new Vector2(item.x, item.y);
+                
                 Objects.Add(new Object()
                 {
                     TypeName = item.name,
@@ -298,6 +221,29 @@ namespace ZA6
                     TextProperty = GetPropertyValue(item.properties, "TextProperty")
                 });
             }
+        }
+
+
+        private void CollisionTypeToSourceRectangle()
+        {
+
+        }
+
+        public class Tile
+        {
+            public Vector2 Position;
+            public Rectangle DrawRectangle;
+            public Rectangle SourceRectangle;
+            public bool IsBlocking = false;
+            public CollisionType CollisionShape;
+            public Rectangle CollisionTileRectangle;
+        }
+
+        public class Object
+        {
+            public string TypeName;
+            public Vector2 Position;
+            public string TextProperty;
         }
 
         private class TileAnimation

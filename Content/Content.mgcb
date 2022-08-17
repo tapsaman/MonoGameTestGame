@@ -61,6 +61,18 @@
 /processorParam:TextureFormat=Color
 /build:Checkboxes.png
 
+#begin CollisionTiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:CollisionTiles.png
+
 #begin dialogbox-fantasy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -421,11 +433,29 @@
 /processorParam:Quality=Best
 /build:linktothepast/sfx/fighter sword 2.wav
 
+#begin linktothepast/sfx/heart.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/heart.wav
+
+#begin linktothepast/sfx/keese.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/keese.wav
+
 #begin linktothepast/sfx/large beam.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/large beam.wav
+
+#begin linktothepast/sfx/life refill.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/life refill.wav
 
 #begin linktothepast/sfx/link dies.wav
 /importer:WavImporter
@@ -444,6 +474,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/link hurt.wav
+
+#begin linktothepast/sfx/low hp.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/low hp.wav
 
 #begin linktothepast/sfx/menu close.wav
 /importer:WavImporter
@@ -516,6 +552,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:oot_game_over.mp3
+
+#begin oot_title_theme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:oot_title_theme.mp3
 
 #begin rm2k-sheet01.png
 /importer:TextureImporter
@@ -619,6 +661,18 @@
 /processorParam:TextureFormat=Color
 /build:slider-handle.png
 
+#begin TiledProjects/testmap/linktothepast-cave-tiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TiledProjects/testmap/linktothepast-cave-tiles.png
+
 #begin TiledProjects/testmap/linktothepast-objects.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -654,4 +708,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tilemap/exampleTileset.png
+
+#begin zelda_adventure_666_title.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:zelda_adventure_666_title.png
+
+#begin zelda_adventure_title.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:zelda_adventure_title.png
 

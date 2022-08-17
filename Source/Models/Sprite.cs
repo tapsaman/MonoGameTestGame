@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using ZA6.Managers;
 using ZA6.Models;
 
@@ -12,6 +12,7 @@ namespace ZA6.Sprites
   {
     #region Fields
 
+    public Color Color = Color.White;
     protected SAnimationManager _animationManager;
 
     protected Dictionary<string, SAnimation> _animations;
@@ -60,18 +61,9 @@ namespace ZA6.Sprites
     public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
     {
       if (_texture != null)
-        spriteBatch.Draw (_texture, Position + offset, _sourceRectangle, Color.White);
+        spriteBatch.Draw (_texture, Position + offset, _sourceRectangle, Color);
       else if (_animationManager != null)
-        _animationManager.Draw(spriteBatch, offset);
-      else throw new Exception("No texture or animations defined for sprite");
-    }
-
-    public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset, Color color)
-    {
-      if (_texture != null)
-        spriteBatch.Draw (_texture, Position + offset, _sourceRectangle, color);
-      else if (_animationManager != null)
-        _animationManager.Draw(spriteBatch, offset, color);
+        _animationManager.Draw(spriteBatch, offset, Color);
       else throw new Exception("No texture or animations defined for sprite");
     }
 
@@ -105,10 +97,10 @@ namespace ZA6.Sprites
       _sourceRectangle = sourceRectangle;
     }
 
-    public void SetAnimations(Dictionary<string, SAnimation> animations, string initialAnimationName = "")
+    public void SetAnimations(Dictionary<string, SAnimation> animations, string initialAnimationName)
     {
       _animations = animations;
-      _animationManager = new SAnimationManager(initialAnimationName == "" ? _animations.First().Value : _animations[initialAnimationName]);
+      _animationManager = new SAnimationManager(_animations[initialAnimationName]);
     }
 
     #endregion

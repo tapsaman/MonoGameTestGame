@@ -7,7 +7,7 @@ namespace ZA6.Models
         private Enemy _enemy;
         private Vector2 _flyVelocity;
         private float _elapsedTime;
-        private const float _FLY_TIME = 0.5f;
+        private const float _FLY_TIME = 0.35f;
         private int _colorIndex = 0;
         private Color[] _damageColors = new Color[]
         {
@@ -33,10 +33,10 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
-            if (_enemy.CollidingX != Direction.None || _enemy.CollidingY != Direction.None)
+            /*if (_enemy.CollidingX != Direction.None || _enemy.CollidingY != Direction.None)
             {
                 //_flyVelocity = Vector2.Zero;
-            }
+            }*/
 
             _enemy.Velocity = _flyVelocity;
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;

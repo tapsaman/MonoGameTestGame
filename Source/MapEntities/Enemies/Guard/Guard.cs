@@ -34,33 +34,29 @@ namespace ZA6
 
             Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
-                { "IdleDown",           new SAnimation(texture, 1, 0.04f, false, 1, 0) },
-                { "IdleUp",             new SAnimation(texture, 1, 0.04f, false, 7, 0) },
-                { "IdleLeft",           new SAnimation(texture, 1, 0.04f, false, 5, 0) },
-                { "IdleRight",          new SAnimation(texture, 1, 0.04f, false, 3, 0) },
-                { "WalkDown",           new SAnimation(texture, 2, 0.2f,  true,  0, 0) },
-                { "WalkUp",             new SAnimation(texture, 2, 0.2f,  true,  6, 0) },
-                { "WalkLeft",           new SAnimation(texture, 2, 0.2f,  true,  4, 0) },
-                { "WalkRight",          new SAnimation(texture, 2, 0.2f,  true,  2, 0) },
-                { "RunDown",            new SAnimation(texture, 2, 0.1f, true,  0, 0) },
-                { "RunUp",              new SAnimation(texture, 2, 0.1f, true,  6, 0) },
-                { "RunLeft",            new SAnimation(texture, 2, 0.1f, true,  4, 0) },
-                { "RunRight",           new SAnimation(texture, 2, 0.1f, true,  2, 0) },
-                /*{ "LookAroundDown",     new SAnimation(texture, 4, 0.8f,  true,  1, 0) },
-                { "LookAroundUp",       new SAnimation(texture, 4, 0.8f,  true,  7, 0) },
-                { "LookAroundLeft",     new SAnimation(texture, 4, 0.8f,  true,  5, 0) },
-                { "LookAroundRight",    new SAnimation(texture, 4, 0.8f,  true,  3, 0) },*/
-                { "IdleDownLookLeft",   new SAnimation(texture, 1, 0.04f, false, 1, 3) },
-                { "IdleDownLookRight",  new SAnimation(texture, 1, 0.04f, false, 1, 1) },
-                { "IdleUpLookLeft",     new SAnimation(texture, 1, 0.04f, false, 7, 1) },
-                { "IdleUpLookRight",    new SAnimation(texture, 1, 0.04f, false, 7, 3) },
-                { "IdleLeftLookUp",     new SAnimation(texture, 1, 0.04f, false, 5, 3) },
-                { "IdleLeftLookDown",   new SAnimation(texture, 1, 0.04f, false, 5, 1) },
-                { "IdleRightLookUp",    new SAnimation(texture, 1, 0.04f, false, 3, 1) },
-                { "IdleRightLookDown",  new SAnimation(texture, 1, 0.04f, false, 3, 3) },
+                { "IdleDown",           new SAnimation(texture, 0, 1) },
+                { "IdleUp",             new SAnimation(texture, 0, 7) },
+                { "IdleLeft",           new SAnimation(texture, 0, 5) },
+                { "IdleRight",          new SAnimation(texture, 0, 3) },
+                { "WalkDown",           new SAnimation(texture, 2, 0.12f, true,  0, 0) },
+                { "WalkUp",             new SAnimation(texture, 2, 0.12f, true,  6, 0) },
+                { "WalkLeft",           new SAnimation(texture, 2, 0.12f, true,  4, 0) },
+                { "WalkRight",          new SAnimation(texture, 2, 0.12f, true,  2, 0) },
+                { "RunDown",            new SAnimation(texture, 2, 0.06f, true,  0, 0) },
+                { "RunUp",              new SAnimation(texture, 2, 0.06f, true,  6, 0) },
+                { "RunLeft",            new SAnimation(texture, 2, 0.06f, true,  4, 0) },
+                { "RunRight",           new SAnimation(texture, 2, 0.06f, true,  2, 0) },
+                { "IdleDownLookLeft",   new SAnimation(texture, 3, 1) },
+                { "IdleDownLookRight",  new SAnimation(texture, 1, 1) },
+                { "IdleUpLookLeft",     new SAnimation(texture, 1, 7) },
+                { "IdleUpLookRight",    new SAnimation(texture, 3, 7) },
+                { "IdleLeftLookUp",     new SAnimation(texture, 3, 5) },
+                { "IdleLeftLookDown",   new SAnimation(texture, 1, 5) },
+                { "IdleRightLookUp",    new SAnimation(texture, 1, 3) },
+                { "IdleRightLookDown",  new SAnimation(texture, 3, 3) },
             };
 
-            Sprite.SetAnimations(animations);
+            Sprite.SetAnimations(animations, "IdleDown");
             
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -106,11 +102,11 @@ namespace ZA6
                     DamageHitbox2.Position = Position + new Vector2(10, 6);
                     break;
                 case Direction.Left:
-                    DamageHitbox2.Load(8, 4);
-                    DamageHitbox2.Position = Position + new Vector2(-10, 10);
+                    DamageHitbox2.Load(4, 4);
+                    DamageHitbox2.Position = Position + new Vector2(-6, 10);
                     break;
                 case Direction.Right:
-                    DamageHitbox2.Load(8, 4);
+                    DamageHitbox2.Load(4, 4);
                     DamageHitbox2.Position = Position + new Vector2(16, 10);
                     break;
             }

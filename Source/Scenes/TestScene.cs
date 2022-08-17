@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
-using ZA6.Managers;
 using ZA6.Models;
 
 namespace ZA6
@@ -15,7 +14,7 @@ namespace ZA6
         {
             // Load basics in constructor
             Theme = Static.Content.Load<Song>("linktothepast/darkworld");
-            TileMap = new TestMap();
+            ExitTransitions[Direction.Right] = TransitionType.FadeToBlack;
         }
 
         protected override void Load()
@@ -36,8 +35,8 @@ namespace ZA6
             signEventTrigger.Trigger += ReadSign;
 
             Add(erkki);
-            Add(bat);
-            Add(guard);
+            //Add(bat);
+            //Add(guard);
             Add(signEventTrigger);
 
             var msg1 = "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!\n123456790909\nvitu juu";
@@ -49,18 +48,17 @@ namespace ZA6
 
             _erkkiEvents = new Event[]
             {
-                new ConditionEvent(EventStore.Scene, "spoken to erkki")
+                new ConditionEvent(DataStoreType.Scene, "spoken to erkki")
                 {
                     IfFalse = new Event[]
                     {
-                        new FaceEvent(erkki, Direction.Up),
-                        //new FaceEvent(erkki, Player),
+                        new FaceEvent(erkki, Player),
                         new TextEvent(new Dialog(msg1), erkki),
                         new FaceEvent(erkki, Direction.Right),
                         new WaitEvent(1),
                         new TextEvent(new Dialog(msg2), erkki),
                         new FaceEvent(erkki, Direction.Down),
-                        new SaveValueEvent(EventStore.Scene, "spoken to erkki", true)
+                        new SaveValueEvent(DataStoreType.Scene, "spoken to erkki", true)
                     },
                     IfTrue = new Event[]
                     {

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 
 namespace ZA6.Models
@@ -8,12 +9,17 @@ namespace ZA6.Models
     public class GameStateStartOver : RenderState
     {
         private ZeldaAdventure666 _game;
+        private string _mapName;
         private bool _sceneInited;
-        private bool _shaderInited;
+        private Animations.Spotlight _spotlight;
         private float _elapsedTime;
         private const float _TIME_1 = 0.0f;
         private const float _TIME_2 = 1.0f;
-        private const float _TIME_3 = 2.5f;
+
+        public class Args : StateArgs
+        {
+            public string MapName;
+        }
 
         public GameStateStartOver(ZeldaAdventure666 game)
         {
@@ -21,11 +27,12 @@ namespace ZA6.Models
             _game = game;
         }
 
-        public override void Enter(StateArgs _)
+        public override void Enter(StateArgs args)
         {
             _elapsedTime = 0;
             _sceneInited = false;
-            _shaderInited = false;
+            _spotlight = null;
+            _mapName = (args is Args a ? a.MapName : null);
         }
 
         public override void Update(GameTime gameTime)
@@ -38,41 +45,54 @@ namespace ZA6.Models
                     return;
                 
                 Static.GameStarted = false;
-                Static.SceneManager.Init();
+                Static.SessionData = new DataStore();
+                _game.TitleText = new Animations.TitleText();
+
+                if (_mapName == null)
+                    Static.SceneManager.Init();
+                else
+                    Static.SceneManager.Init(_mapName);
+                
                 _sceneInited = true;
                 return;
             }
 
-            if (!_shaderInited && _elapsedTime > _TIME_2)
+            if (_elapsedTime < _TIME_2)
             {
-                SFX.Fall.Play();
-                _shaderInited = true;
-                Static.Renderer.ApplyPostEffect(Shaders.Spotlight);
                 return;
             }
-
-            if (_elapsedTime > _TIME_3)
+            else if (_spotlight == null)
             {
-                Static.Renderer.ApplyPostEffect(null);
+                _spotlight = new Animations.Spotlight(Static.Player, false);
+                _spotlight.Enter();
+                SFX.Fall.Play();
+                return;
+            }
+            else if (!_spotlight.IsDone)
+            {
+                _spotlight.Update(gameTime);
+            }
+            else
+            {
                 _game.StateMachine.TransitionTo("Default");
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             Static.Renderer.Start();
 
-            if (_shaderInited)
-            {
-                Static.SceneManager.Draw(spriteBatch);
-                _game.Hud.Draw(spriteBatch, Static.SceneManager.Player);
-            }
-            else
+            if (_spotlight == null)
             {
                 Utility.DrawOverlay(spriteBatch, Color.Black);
             }
+            else
+            {
+                Static.SceneManager.Draw(spriteBatch);
+                _game.Hud.Draw(spriteBatch);
+            }
 
-            Static.Renderer.End(gameTime);
+            Static.Renderer.End();
         }
 
         public override void Exit() {}

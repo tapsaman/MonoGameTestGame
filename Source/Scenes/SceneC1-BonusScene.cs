@@ -14,17 +14,16 @@ namespace ZA6
         public SceneC1()
         {
             Theme = Static.Content.Load<Song>("linktothepast/forest");
-            TileMap = new MapC1();
         }
 
         protected override void Load()
         {
             _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
             _moogle = new Moogle();
-            _moogle.Position = TileMap.ConvertTileXY(4, 36);
+            _moogle.Position = TileMap.ConvertTileXY(4, 38);
             _moogle.Direction = Direction.Right;
             var yDiff = Player.Position.Y - _moogle.Position.Y;
-            var doorPos = TileMap.ConvertTileXY(4, 36);
+            var doorPos = TileMap.ConvertTileXY(26, 36);
 
             //Add(new Bubble() { Position = TileMap.ConvertTileXY(16, 20) });
             //Add(new Bari() { Position = TileMap.ConvertTileXY(10, 24) });
@@ -33,6 +32,7 @@ namespace ZA6
             {
                 //new AnimateEvent(new Animations.Walk(Player, TileMap.ConvertTileXY(2, 0))),
                 //new AnimateEvent(new Animations.Jump(_moogle)),
+                new WaitEvent(0.5f),
                 new FaceEvent(Player, _moogle),
                 new WaitEvent(0.5f),
                 new FaceEvent(_moogle, Player),
@@ -43,10 +43,15 @@ namespace ZA6
                 new FaceEvent(_moogle, Player),
                 new FaceEvent(Player, _moogle),
                 new TextEvent(new Dialog("Wellcome to the mini game\naction!"), _moogle),
-                new AnimateEvent(new Animations.Walk(_moogle, new Vector2(0, -yDiff), 100f)) { Wait = false, ID = "walk" },
+
+                new AnimateEvent(new Animations.Walk.To(_moogle, doorPos + TileMap.ConvertTileXY(0, 2), 100f)) { Wait = false, ID = "walk" },
+                new FaceEvent(_moogle, Player) { WaitForID = "walk" },
+                new AnimateEvent(new Animations.Walk.To(Player, doorPos + TileMap.ConvertTileXY(0, 4), 100f)),
+
+                /*new AnimateEvent(new Animations.Walk(_moogle, new Vector2(0, -yDiff), 100f)) { Wait = false, ID = "walk" },
                 new FaceEvent(_moogle, Player) { WaitForID = "walk" },
                 new AnimateEvent(new Animations.Walk(Player, TileMap.ConvertTileXY(2, 0), 100f)),
-                new AnimateEvent(new Animations.Walk(Player, new Vector2(0, -(yDiff - TileMap.TileHeight * 2)), 100f)),
+                new AnimateEvent(new Animations.Walk(Player, new Vector2(0, -(yDiff - TileMap.TileHeight * 2)), 100f)),*/
                 new AskEvent(Dialog.Ask("So want to play the game??", "Ye", "Nah bro"), _moogle)
                 {
                     IfOption1 = new Event[]

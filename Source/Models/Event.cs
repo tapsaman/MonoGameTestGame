@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ZA6.Managers;
 
 namespace ZA6.Models
@@ -12,7 +13,10 @@ namespace ZA6.Models
         Animate,
         Condition,
         SaveValue,
-        Wait
+        Wait,
+        Teleport,
+        Remove,
+        Run
     }
 
     public abstract class Event //: IStage
@@ -22,7 +26,6 @@ namespace ZA6.Models
         public string WaitForID;
         public bool IsDone { get; set; }
         public Action Traverse;
-        private static int _noIDCount = 0;
 
         // Events must be reset in Enter for reusage!
         public abstract void Enter();
@@ -32,8 +35,6 @@ namespace ZA6.Models
         public Event(EventType type)
         {
             Type = type;
-            //WaitForID = waitForID;
-            //ID = id == "" ? "Unnamed_" + (_noIDCount++).ToString() : id;
         }
     }
 
@@ -145,7 +146,7 @@ namespace ZA6.Models
         public override void Exit() {}
     }
 
-    public class AnimateEvent : Event
+    public class AnimateEvent : Event, IDrawable
     {
         public bool Wait = true;
         private Animation _animation;
@@ -179,6 +180,11 @@ namespace ZA6.Models
         }
 
         public override void Exit() {}
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class FaceEvent : Event
@@ -226,23 +232,21 @@ namespace ZA6.Models
 
     public class SaveValueEvent : Event
     {
-        private EventStore _eventStore;
+        private DataStoreType _dataStoreType;
         private string _id;
         private bool _value;
 
-        public SaveValueEvent(EventStore eventStore, string id, bool value)
+        public SaveValueEvent(DataStoreType dataStoreType, string id, bool value)
             : base(EventType.SaveValue)
         {
-            _eventStore = eventStore;
+            _dataStoreType = dataStoreType;
             _id = id;
             _value = value;
         }
 
         public override void Enter()
         {
-            DataStore dataStore = Static.Scene.SceneData;
-
-            dataStore.Save(_id, _value);
+            Static.GetStoreByType(_dataStoreType).Save(_id, _value);
 
             IsDone = true;
             Traverse?.Invoke();
@@ -255,25 +259,24 @@ namespace ZA6.Models
 
     public class ConditionEvent : Event
     {
-        public EventStore EventStore;
+        private DataStoreType _dataStoreType;
         public string BasedOnID;
         public bool Value;
         public Event[] IfTrue; 
         public Event[] IfFalse;
         private EventManager _eventManager;
 
-        public ConditionEvent(EventStore eventStore, string id)
+        public ConditionEvent(DataStoreType dataStoreType, string id)
             : base(EventType.Condition)
         {
-            EventStore = eventStore;
+            _dataStoreType = dataStoreType;
             BasedOnID = id;
         }
 
         public override void Enter()
         {
             IsDone = false;
-            DataStore dataStore = Static.Scene.SceneData;
-            bool condition = dataStore.Get(BasedOnID);
+            bool condition = Static.GetStoreByType(_dataStoreType).Get(BasedOnID);
 
             if (condition && IfTrue != null)
             {
@@ -312,7 +315,7 @@ namespace ZA6.Models
         private float _elapsedWaitTime;
 
         public WaitEvent(float waitTime)
-            : base(EventType.Condition)
+            : base(EventType.Wait)
         {
             WaitTime = waitTime;
         }
@@ -333,6 +336,91 @@ namespace ZA6.Models
                 Traverse?.Invoke();
             }
         }
+
+        public override void Exit() {}
+    }
+
+    public class TeleportEvent : Event
+    {
+        public string MapName;
+
+        public TeleportEvent(string mapName)
+            : base(EventType.Teleport)
+        {
+            MapName = mapName;
+        }
+
+        public override void Enter()
+        {
+            IsDone = false;
+            Static.SceneManager.GoTo(MapName);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (!Static.SceneManager.Changing)
+            {
+                IsDone = true;
+                Traverse?.Invoke();
+            }
+        }
+
+        public override void Exit() {}
+    }
+
+    public class RemoveEvent : Event
+    {
+        private MapEntity _target;
+
+        public RemoveEvent(MapEntity target)
+            : base(EventType.Remove)
+        {
+            _target = target;
+        }
+
+        public override void Enter()
+        {
+            if (_target is Character c)
+            {
+                Static.Scene.Remove(c);
+            }
+            else if (_target is MapObject mo)
+            {
+                Static.Scene.Remove(mo);
+            }
+            else
+            {
+                Static.Scene.Remove(_target);
+            }
+
+            IsDone = true;
+            Traverse?.Invoke();
+        }
+
+        public override void Update(GameTime gameTime) {}
+
+        public override void Exit() {}
+    }
+
+    public class RunEvent : Event
+    {
+        private Action _action;
+
+        public RunEvent(Action action)
+            : base(EventType.Run)
+        {
+            _action = action;
+        }
+
+        public override void Enter()
+        {
+            _action.Invoke();
+
+            IsDone = true;
+            Traverse?.Invoke();
+        }
+
+        public override void Update(GameTime gameTime) {}
 
         public override void Exit() {}
     }

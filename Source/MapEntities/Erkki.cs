@@ -22,21 +22,15 @@ namespace ZA6
                 { "IdleRight",      new SAnimation(texture, 1, 0.04f, false, 0, 0) },
             };
 
-            Sprite.SetAnimations(animations);
+            Sprite.SetAnimations(animations, "IdleDown");
             Hitbox.Load (14, 10);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-3, -18);
-            Trigger += TriggerTest;
             Interactable = true;
             Hittable = false;
             Colliding = true;
             WalkingStill = false;
             Direction = Direction.Left;
-        }
-
-        private void TriggerTest(Character _)
-        {
-            Sys.Log("triggered");
         }
     }
 }

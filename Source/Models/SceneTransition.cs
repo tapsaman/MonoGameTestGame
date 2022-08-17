@@ -41,22 +41,22 @@ namespace ZA6
                 switch (direction)
                 {
                     case Direction.Up:
-                        _playerPositionBefore = new Vector2(_player.Position.X, Static.NativeHeight);
-                        _playerPositionAfter = new Vector2(_playerPositionBefore.X, Static.NativeHeight - playerLength);
+                        _playerPositionBefore = new Vector2(_player.Position.X, _scene2.Height);
+                        _playerPositionAfter = new Vector2(_playerPositionBefore.X, _scene2.Height - playerLength);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(0, Static.NativeHeight);
-                        _scene2.DrawOffset = new Vector2(0, -Static.NativeHeight);
+                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X, Static.NativeHeight);
+                        _scene2.DrawOffset = new Vector2(_scene1.DrawOffset.X, -Static.NativeHeight);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(0, 0);
+                        _newSceneOffsetAfter = new Vector2(_scene1.DrawOffset.X, 0);
                         break;
                     case Direction.Down:
                         _playerPositionBefore = new Vector2(_player.Position.X, -playerLength);
                         _playerPositionAfter = new Vector2(_playerPositionBefore.X, 0);
                         _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(0, -Static.NativeHeight);
-                        _scene2.DrawOffset = new Vector2(0, Static.NativeHeight);
+                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X, _scene1.DrawOffset.Y - Static.NativeHeight);
+                        _scene2.DrawOffset = new Vector2(_scene1.DrawOffset.X, Static.NativeHeight);
                         _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(0, 0);
+                        _newSceneOffsetAfter = new Vector2(_scene1.DrawOffset.X, 0);
                         break;
                     case Direction.Right:
                         _playerPositionBefore = new Vector2(-playerLength, _player.Position.Y);
@@ -136,7 +136,7 @@ namespace ZA6
 
         public class FadeToBlack : SceneTransition
         {
-            private const float _LOAD_TIME = 0.2f;
+            private const float _LOAD_TIME = 1f;
             private const float _FADE_TIME = 1f;
             private float _elapsedTime;
             private Vector2 _playerPositionAfter;
@@ -168,7 +168,7 @@ namespace ZA6
                         break;
                 }
 
-                _player.Colliding = false;
+                _player.NoClip = true;
                 _walkAnimation = new Animations.Walk(_player, direction.ToVector() * playerLength);
                 _walkAnimation.Enter();
             }
@@ -193,7 +193,7 @@ namespace ZA6
                 {
                     if (_scene2 == null)
                     {
-                        _player.Colliding = true;
+                        _player.NoClip = false;
                         _scene2 = SceneManager.LoadNextScene();
                         _player.Position = _playerPositionAfter;
                         _scene2.UpdateCamera(_player.Position);
@@ -230,6 +230,89 @@ namespace ZA6
 
                 spriteBatch.Draw(_overlay, Vector2.Zero, Color.Black * _colorMultiplier);
             }
+        }
+
+        public class Doorway : SceneTransition
+        {
+            private const float _LOAD_TIME = 1f;
+            private float _elapsedTime;
+            private Animations.Spotlight _spotlightClose;
+            private Animations.Spotlight _spotlightOpen;
+
+            public override void Start(Scene scene1, Player player, Direction direction)
+            {
+                _scene1 = scene1;
+                _player = player;
+                _spotlightClose = new Animations.Spotlight(_player, true);
+                _spotlightOpen = new Animations.Spotlight(_player, false);
+                //_player.Colliding = false;
+
+                _spotlightClose.Enter();
+            }
+
+            public override void Update(GameTime gameTime)
+            {
+                if (!_spotlightClose.IsDone)
+                {
+                    _spotlightClose.Update(gameTime);
+                    _scene1.Update(gameTime);
+                    return;
+                }
+
+                _scene1.Paused = true;
+                
+                if (_scene2 == null)
+                {
+                    _scene2 = SceneManager.LoadNextScene();
+                    
+                    _player.Position = GetStartPosition(_scene2);
+                    _scene2.UpdateCamera(_player.Position);
+                    _spotlightOpen.Enter();
+
+                    if (_scene2.Theme != null)
+                        Music.FadeOutTo(_scene2.Theme, _LOAD_TIME);
+                }
+                else if (_elapsedTime < _LOAD_TIME)
+                {
+                    _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                else if (!_spotlightOpen.IsDone)
+                {
+                    _spotlightOpen.Update(gameTime);
+                }
+                else
+                {
+                    //_player.Colliding = true;
+                    Done = true;
+                }
+            }
+
+            public override void Draw(SpriteBatch spriteBatch)
+            {
+                if (_scene2 == null)
+                {
+                    _scene1.DrawGround(spriteBatch);
+                    _scene1.DrawTop(spriteBatch);
+                    _scene1.DrawOverlay(spriteBatch);
+                }
+                else
+                {
+                    _scene2.DrawGround(spriteBatch);
+                    _scene2.DrawTop(spriteBatch);
+                    _scene2.DrawOverlay(spriteBatch);
+                }
+            }
+        }
+
+        private Vector2 GetStartPosition(Scene scene)
+        {
+            foreach (var obj in scene.TileMap.Objects)
+            {
+                if (obj.TypeName == "Doorway" && obj.TextProperty == _scene1.TileMap.Name)
+                    return obj.Position;
+            }
+
+            return scene.TileMap.PlayerStartPosition;
         }
     }
 }

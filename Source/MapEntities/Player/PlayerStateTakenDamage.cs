@@ -23,10 +23,10 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
-            if (Player.CollidingX != Direction.None || Player.CollidingY != Direction.None)
+            /*if (Player.CollidingX != Direction.None || Player.CollidingY != Direction.None)
             {
                 _flyVelocity = Vector2.Zero;
-            }
+            }*/
 
             Player.Velocity = _flyVelocity;
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;

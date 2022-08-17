@@ -8,6 +8,7 @@ namespace ZA6.Managers
 {
     public static class UI
     {
+        public static Menu CurrentMenu { get; private set; }
         private static UpdatableList<Menu> _menus = new UpdatableList<Menu>();
         private static UpdatableList<Alert> _alerts = new UpdatableList<Alert>();
         private static bool _disabledMenus;
@@ -19,7 +20,6 @@ namespace ZA6.Managers
             DisableMenus();
 
             SFX.Error.Play();
-            Static.Game.StateMachine.TransitionTo("MainMenu");
         }
 
         public static void Add(Menu menu)
@@ -37,28 +37,39 @@ namespace ZA6.Managers
             _menus.SetToRemove(menu);
         }
 
+        public static void SetToClear()
+        {
+            foreach (var menu in _menus)
+            {
+                _menus.SetToRemove(menu);
+            }
+            foreach (var alert in _alerts)
+            {
+                _alerts.SetToRemove(alert);
+            }
+            CurrentMenu = null;
+        }
+
         public static void Update(GameTime gameTime)
         {
+            _menus.Update();
+            _alerts.Update();
+
+            CurrentMenu = _menus.Count == 0 ? null : _menus[_menus.Count - 1];
+
             if (!_disabledMenus && _menus.Count != 0)
             {
-                _menus[_menus.Count - 1].Update(gameTime);
+                CurrentMenu.Update(gameTime);
             }
             foreach (var alert in _alerts)
             {
                 alert.Update(gameTime);
             }
-
-            _menus.Update();
-            _alerts.Update();
             
             if (_disabledMenus && _alerts.Count == 0)
             {
-                EnableMenus();
                 // Last alert
-                foreach (var menu in _menus)
-                {
-                    menu.Disabled = false;
-                }
+                EnableMenus();
             }
         }
 
@@ -90,9 +101,9 @@ namespace ZA6.Managers
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            if (_menus.Count != 0)
+            if (CurrentMenu != null)
             {
-                _menus[_menus.Count - 1].Draw(spriteBatch);
+                CurrentMenu.Draw(spriteBatch);
             }
             foreach (var alert in _alerts)
             {

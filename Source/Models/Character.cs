@@ -15,13 +15,16 @@ namespace ZA6
         public int Health { get; protected set; }
         public bool IsInvincible;
         public Direction Direction = Direction.Down;
-        public Direction CollidingX = Direction.None;
-        public Direction CollidingY = Direction.None;
         public Direction MapBorder = Direction.None;
+        //public Direction CollidingX = Direction.None;
+        //public Direction CollidingY = Direction.None;
+        public CollisionType CollisionX;
+        public CollisionType CollisionY;
+        public bool NoClip = false;
         public bool Moving = false;
         public bool DrawingShadow = true;
         public bool Walking = false;
-        public bool WalkingStill = true;
+        public bool WalkingStill = false;
         public StateMachine StateMachine { get; protected set; }
 
         public Character()
@@ -89,34 +92,110 @@ namespace ZA6
             ElementalVelocity = Vector2.Zero;
             Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // First go through touch triggers to get elemental velocity
             if (Colliding)
             {
-                foreach (var mapEntity in Static.Scene.TouchTriggers)
+                if (Static.Game.StateMachine.CurrentStateKey == "Default")
                 {
-                    if (RightIsTouching(mapEntity) 
-                     || LeftIsTouching(mapEntity)
-                     || TopIsTouching(mapEntity)
-                     || BottomIsTouching(mapEntity)
-                    )
+                    // First go through touch triggers to get elemental velocity
+                    foreach (var mapEntity in Static.Scene.TouchTriggers)
                     {
-                        mapEntity.InvokeTrigger(this);
+                        if (RightIsTouching(mapEntity) 
+                        || LeftIsTouching(mapEntity)
+                        || TopIsTouching(mapEntity)
+                        || BottomIsTouching(mapEntity)
+                        )
+                        {
+                            mapEntity.InvokeTrigger(this);
+                        }
                     }
+
+                    Velocity += ElementalVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
 
-                Velocity += ElementalVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
                 MapBorder = Direction.None;
-                CollidingX = DetermineHorizontalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
-                CollidingY = DetermineVerticalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
+                CollisionX = DetermineHorizontalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
+                CollisionY = DetermineVerticalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
+                //Sys.Log("CollisionX " + CollisionX + " : CollisionY " + CollisionY);
 
+                if (!NoClip)
+                {
+                    ApplyCollisions();
+                }
+
+                /*
                 if (CollidingX != Direction.None)
                     Velocity.X = 0;
                 if (CollidingY != Direction.None)
                     Velocity.Y = 0;
+                */
             }
 
             Position += Velocity;
+        }
+
+        private void ApplyCollisions()
+        {
+            var ogVel = Velocity;
+            // Diagonal collision velocity multiplier
+            var dcvm = 0.5f;
+            var dcvm2 = 1.5f;
+
+            switch (CollisionX)
+            {
+                case CollisionType.None:
+                    break;
+                case CollisionType.Full:
+                    Velocity.X = 0;
+                    break;
+                case CollisionType.NorthEast:
+                    Velocity.X *= dcvm;
+                    Velocity.Y = ogVel.X * dcvm2;
+                    break;
+                case CollisionType.SouthEast:
+                    /*if (CollisionY == CollisionType.SouthEast)
+                    {
+                        Velocity = Vector2.Zero;
+                    }*/
+                    Velocity.X *= dcvm;
+                    Velocity.Y = -ogVel.X * dcvm2;
+                    break;
+                case CollisionType.SouthWest:
+                if (CollisionY == CollisionType.SouthWest)
+                    /*{
+                        Velocity = Vector2.Zero;
+                    }*/
+                    Velocity.X *= dcvm;
+                    Velocity.Y = ogVel.X * dcvm2;
+                    break;
+                case CollisionType.NorthWest:
+                    Velocity.X *= dcvm;
+                    Velocity.Y = -ogVel.X * dcvm2;
+                    break;
+            }
+            switch (CollisionY)
+            {
+                case CollisionType.None:
+                    break;
+                case CollisionType.Full:
+                    Velocity.Y = 0;
+                    break;
+                case CollisionType.NorthEast:
+                    Velocity.Y *= dcvm;
+                    Velocity.X = ogVel.Y * dcvm2;
+                    break;
+                case CollisionType.SouthEast:
+                    Velocity.Y *= dcvm;
+                    Velocity.X = -ogVel.Y * dcvm2;
+                    break;
+                case CollisionType.SouthWest:
+                    Velocity.Y *= dcvm;
+                    Velocity.X = Velocity.Y * dcvm2;
+                    break;
+                case CollisionType.NorthWest:
+                    Velocity.Y *= dcvm;
+                    Velocity.X = -ogVel.Y * dcvm2;
+                    break;
+            }
         }
 
         private bool RightIsTouching(MapEntity mapEntity)
@@ -147,120 +226,65 @@ namespace ZA6
             Hitbox.Rectangle.Right > mapEntity.Hitbox.Rectangle.Left &&
             Hitbox.Rectangle.Left < mapEntity.Hitbox.Rectangle.Right;
         }
-        private Direction DetermineHorizontalCollision(TileMap tileMap, IEnumerable<MapEntity> collidingEntities)
+
+        private CollisionType DetermineHorizontalCollision(TileMap tileMap, IEnumerable<MapEntity> collidingEntities)
         {
             if (Velocity.X < 0)
             {
-                int currentTileLeft = tileMap.ConvertX(Hitbox.Rectangle.Left);
-                int newTileLeft = tileMap.ConvertX(Hitbox.Rectangle.Left + Velocity.X);
-
-                if (newTileLeft < currentTileLeft)
-                {
-                    if (tileMap.CheckHorizontalCollision(
-                        newTileLeft,
-                        tileMap.ConvertY(Hitbox.Rectangle.Top),
-                        tileMap.ConvertY(Hitbox.Rectangle.Bottom),
-                        ref MapBorder
-                    ))
-                    {
-                        return Direction.Left;
-                    }
-                }
-
                 foreach (var mapEntity in collidingEntities)
                 {
                     if (LeftIsTouching(mapEntity))
                     {
-                        return Direction.Left;
+                        return CollisionType.Full;
                     }
                 }
+
+                return tileMap.GetLeftCollision(Hitbox.Rectangle, Velocity, ref MapBorder);            
             }
             else if (Velocity.X > 0)
             {
-                int currentTileRight = tileMap.ConvertX(Hitbox.Rectangle.Right);
-                int newTileRight = tileMap.ConvertX(Hitbox.Rectangle.Right + Velocity.X);
-
-                if (newTileRight > currentTileRight)
-                {
-                    if (tileMap.CheckHorizontalCollision(
-                        newTileRight,
-                        tileMap.ConvertY(Hitbox.Rectangle.Top),
-                        tileMap.ConvertY(Hitbox.Rectangle.Bottom),
-                        ref MapBorder
-                    ))
-                    {
-                        return Direction.Right;
-                    }
-                }
-
                 foreach (var mapEntity in collidingEntities)
                 {
                     if (RightIsTouching(mapEntity))
                     {
-                        return Direction.Right;
+                        return CollisionType.Full;
                     }
                 }
+
+                return tileMap.GetRightCollision(Hitbox.Rectangle, Velocity, ref MapBorder);
             }
 
-            return Direction.None;
+            return CollisionType.None;
         }
 
-        private Direction DetermineVerticalCollision(TileMap tileMap, IEnumerable<MapEntity> collidingEntities)
+        private CollisionType DetermineVerticalCollision(TileMap tileMap, IEnumerable<MapEntity> collidingEntities)
         {
             if (Velocity.Y < 0)
             {
-                int currentTileTop = tileMap.ConvertY(Hitbox.Rectangle.Top);
-                int newTileTop = tileMap.ConvertY(Hitbox.Rectangle.Top + Velocity.Y);
-
-                if (newTileTop < currentTileTop)
-                {
-                    if (tileMap.CheckVerticalCollision(
-                        newTileTop,
-                        tileMap.ConvertX(Hitbox.Rectangle.Left),
-                        tileMap.ConvertX(Hitbox.Rectangle.Right),
-                        ref MapBorder
-                    ))
-                    {
-                        return Direction.Up;
-                    }
-                }
-
                 foreach (var mapEntity in collidingEntities)
                 {
                     if (TopIsTouching(mapEntity))
                     {
-                        return Direction.Up;
+                        return CollisionType.Full;
                     }
                 }
+
+                return tileMap.GetTopCollision(Hitbox.Rectangle, Velocity, ref MapBorder);            
             }
             else if (Velocity.Y > 0)
             {
-                int currentTileBottom = tileMap.ConvertY(Hitbox.Rectangle.Bottom);
-                int newTileBottom = tileMap.ConvertY(Hitbox.Rectangle.Bottom + Velocity.Y);
-
-                if (newTileBottom > currentTileBottom)
-                {
-                    if (tileMap.CheckVerticalCollision(
-                        newTileBottom,
-                        tileMap.ConvertX(Hitbox.Rectangle.Left),
-                        tileMap.ConvertX(Hitbox.Rectangle.Right),
-                        ref MapBorder
-                    ))
-                    {
-                        return Direction.Down;
-                    }
-                }
-
                 foreach (var mapEntity in collidingEntities)
                 {
                     if (BottomIsTouching(mapEntity))
                     {
-                        return Direction.Down;
+                        return CollisionType.Full;
                     }
                 }
+
+                return tileMap.GetBottomCollision(Hitbox.Rectangle, Velocity, ref MapBorder);
             }
 
-            return Direction.None;
+            return CollisionType.None;
         }
     }
 }

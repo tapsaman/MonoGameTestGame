@@ -20,11 +20,11 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
-            if (Character.CollidingX != Direction.None)
+            if (Character.CollisionX != CollisionType.None)
             {
                 _velocity.X = -_velocity.X;
             }
-            if (Character.CollidingY != Direction.None)
+            if (Character.CollisionY != CollisionType.None)
             {
                 _velocity.Y = -_velocity.Y;
             }

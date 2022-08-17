@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine;
 
 namespace ZA6.Managers
 {
@@ -70,6 +71,7 @@ namespace ZA6.Managers
 
         public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, float yCrop = 0, int? highlightRow = null)
         {
+            position.Round();
             var startX = position.X;
             int line = 0;
             //position -= new Vector2(0, yCrop);

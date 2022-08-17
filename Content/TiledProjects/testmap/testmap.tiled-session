@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "B1.tmx",
+    "activeFile": "Cave.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -12,11 +12,11 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 1,
-            "selectedLayer": 0,
+            "scale": 3,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 128,
-                "y": 112
+                "x": 127.99999999999997,
+                "y": 112.33333333333334
             }
         },
         "A2.tmx": {
@@ -26,28 +26,68 @@
             "scale": 8,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 128,
-                "y": 120
+                "x": 127.9375,
+                "y": 119.9375
             }
         },
         "B1.tmx": {
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 3,
-            "selectedLayer": 0,
+            "scale": 4,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 555,
-                "y": 509.8333333333333
+                "x": -155.5,
+                "y": 393.5
+            }
+        },
+        "B2.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 173.83333333333334,
+                "y": 231.66666666666666
             }
         },
         "C1.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 128,
-                "y": 232
+                "x": 127.5,
+                "y": 232.5
             }
+        },
+        "Cave.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 125.5,
+                "y": 111.33333333333334
+            }
+        },
+        "Z1.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 96.16666666666664,
+                "y": 89.33333333333334
+            }
+        },
+        "linktothepast-cave-tiles.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 3
         },
         "linktothepast-objects.tsx": {
             "scaleInDock": 5.5,
@@ -59,8 +99,8 @@
             "scaleInEditor": 5.5
         },
         "linktothepast-tiles.tsx": {
-            "scaleInDock": 2,
-            "scaleInEditor": 11
+            "scaleInDock": 4,
+            "scaleInEditor": 4
         },
         "testmap.tmx": {
             "expandedObjectLayers": [
@@ -86,36 +126,45 @@
     "loadedWorlds": [
         "C:/git/monogame-test/MonoGameTestGame/Content/TiledProjects/testmap/testworld.world"
     ],
-    "map.height": 58,
+    "map.height": 28,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
     "map.width": 32,
     "openFiles": [
-        "B1.tmx",
+        "B2.tmx",
         "A2.tmx",
-        "linktothepast-objects.tsx",
-        "A1.tmx",
+        "Z1.tmx",
         "C1.tmx",
-        "linktothepast-tiles.tsx"
+        "linktothepast-tiles.tsx",
+        "B1.tmx",
+        "A1.tmx",
+        "linktothepast-objects.tsx",
+        "linktothepast-cave-tiles.tsx",
+        "Cave.tmx"
     ],
     "project": "testmap.tiled-project",
-    "property.type": "bool",
+    "property.type": "CollisionShape",
     "recentFiles": [
-        "linktothepast-tiles.tsx",
+        "B2.tmx",
+        "A2.tmx",
+        "Z1.tmx",
         "C1.tmx",
+        "linktothepast-tiles.tsx",
+        "B1.tmx",
         "A1.tmx",
         "linktothepast-objects.tsx",
-        "A2.tmx",
-        "B1.tmx",
+        "linktothepast-cave-tiles.tsx",
+        "Cave.tmx",
         "testmap.tmx",
-        "testmap.tsx",
-        "linktothepast-tiles-large.tsx"
+        "testmap.tsx"
     ],
+    "textEdit.monospace": true,
     "tileset.lastUsedFormat": "tsx",
+    "tileset.spacing": 1,
     "tileset.tileSize": {
-        "height": 16,
-        "width": 16
+        "height": 8,
+        "width": 8
     },
     "tileset.transparentColor": "#ffffff",
     "tileset.useTransparentColor": true

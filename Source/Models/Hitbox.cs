@@ -7,7 +7,7 @@ namespace ZA6
     {
         public Vector2 Position;
         public float x;
-        public Color Color = Color.Blue;
+        public Color Color = Color.Yellow;
         public bool Enabled = true;
         private Texture2D _texture;
         private int _width;
