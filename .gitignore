@@ -72,3 +72,6 @@ monodroid*.msi
 
 # Tiled session
 *.tiled-session
+
+# Windows stackdumps
+*.exe.stackdump
