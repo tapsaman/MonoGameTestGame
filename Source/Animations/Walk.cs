@@ -63,6 +63,7 @@ namespace ZA6.Animations
             }
             public override void Enter()
             {
+                _distance.Floor();
                 _startPosition = _target.Position;
                 _endPosition = _target.Position + _distance;
                 _velocity = _distance;

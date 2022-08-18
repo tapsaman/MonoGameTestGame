@@ -24,6 +24,7 @@ namespace ZA6
         {
             base.Start();
             Static.Game.TitleText.Enter();
+            Static.GameData.Save("gone to forest", true);
         }
 
         // NOTE drawing tree shadow overlay on top of dialog looks cool 

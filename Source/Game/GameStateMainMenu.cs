@@ -23,13 +23,15 @@ namespace ZA6.Models
             _previousStateKey = stateMachine.CurrentStateKey;
             _menu = new GameMenu(ResumeGame);
             UI.Add(_menu);
-            SFX.LowHP.Stop();
+            LifeHUD.LowHPSound.Stop();
 
             if (Static.GameStarted)
             {
                 SFX.MenuOpen.Play();
                 MediaPlayer.Pause();
             }
+
+            SaveData.CreateAndSave();
         }
 
         public override void Update(GameTime gameTime)

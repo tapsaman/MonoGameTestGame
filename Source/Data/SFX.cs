@@ -38,7 +38,8 @@ namespace ZA6
         public static SoundEffect Keese;
         public static SoundEffect Heart;
         public static SoundEffect LifeRefill;
-        public static SoundEffectInstance LowHP;
+        public static SoundEffect Rupee;
+        public static SoundEffect LowHP;
 
         public static void Load()
         {
@@ -65,12 +66,8 @@ namespace ZA6
             Keese = Static.Content.Load<SoundEffect>("linktothepast/sfx/keese");
             Heart = Static.Content.Load<SoundEffect>("linktothepast/sfx/heart");
             LifeRefill = Static.Content.Load<SoundEffect>("linktothepast/sfx/life refill");
-            var lowHP = Static.Content.Load<SoundEffect>("linktothepast/sfx/low hp");
-
-            LowHP = lowHP.CreateInstance();
-            LowHP.Volume = 0.4f;
-            LowHP.IsLooped = true;
-            //LowHP.Play();
+            Rupee = Static.Content.Load<SoundEffect>("linktothepast/sfx/rupee");
+            LowHP = Static.Content.Load<SoundEffect>("linktothepast/sfx/low hp");
         }
     }
 }

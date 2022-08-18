@@ -66,7 +66,7 @@ namespace ZA6.Models
 
                 if (Input.P1.IsAnyKeyPressed() || Input.P1.JustReleasedMouseLeft())
                 {
-                    _elapsedTime = _SHOW_MENU_TIME - 0.2f;
+                    _elapsedTime = Math.Max(_elapsedTime, _SHOW_MENU_TIME - 0.2f);
                     _overlayMultiplier = 0f;
                     _titleMultiplier = 1f;
                 }
@@ -93,7 +93,8 @@ namespace ZA6.Models
             }
             else if (_elapsedTime > _START_WAIT_TIME)
             {
-                stateMachine.TransitionTo("StartOver");
+                //stateMachine.TransitionTo("StartOver");
+                SaveData.LoadAndApply();
             }
         }
 

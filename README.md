@@ -23,14 +23,14 @@ log:
 * 5.8. - slider input, sfx/music volume sliders, select input, resolution setting, wait event, game states cutscene, start over and game over, animation class and game over animations, dialog questions, static img class, global event manager replaced with event system, spotlight shader, interfaces init, renamed StaticData to Static and Animation(Manager) to SAnimation(Manager)
 * 5.8. - moogle, c1 start event init, animation events, jump and walk animations
 * 10.8. - event manager not waiting and waiting for id, enemies bubble bari biri, moogle start event done, dialog questions and ask event, new link sprites, game over animations finished, state args for state enter
-* 11.8. - new b1 forest scene, fixed bats, excecution timer utility, diagonal map collsion with collision type on each tile (CollisionTileMap), dynamic maps with world loaded from tiled world json, dev utils and dev view, trasure chests, doorways, wait/teleport/remove/run events, cave room and  klaus, items and heart, animated life hud, opening with title + start menu, renderer revamp and renderresolution class
+* 17.8. - new b1 forest scene, fixed bats, excecution timer utility, diagonal map collsion with collision type on each tile (CollisionTileMap), dynamic maps with world loaded from tiled world json, dev utils and dev view, trasure chests, doorways, wait/teleport/remove/run events, cave room and  klaus, items and heart, animated life hud, opening with title + start menu, renderer revamp and renderresolution class
+18.8. - jump.to animation, rupee hud, moogle scene done ig, event managers by default get removed on scene change, xml data saving
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
-* treasure chests, bushes change to cut bushes
-* sys timing methods
+* bush with hole shouldn't leave leafs
 * use arrays for tilemap tiles? compare performance with timing methods
 * better text highlight shader
 * abstract class UIInput from Button
@@ -40,6 +40,11 @@ small stuff todo:
 
 could do but prob won't:
 * if any velocity becomes NaN everything breaks, could force numeric values
+* walk animation issue: collision map may block character movement before the distance is traveled. faster speed moves more by each update and is more likely to be blocked?
+    possible fixes:
+    - when blocked by collisin map move the charcter to the final possible x/y (by reducing velocity?)
+    - check in walk animation if remaining distance is smaller than what character would move with the velocity
+* harder issue with current character collision: diagonal y collision changes x velocity and vice versa. changed velocity should then be re-evaluated.  
 * rename events to commands
 * switch event based on datastore int
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)

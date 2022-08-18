@@ -6,7 +6,7 @@ namespace ZA6
 {
     public static class Music
     {
-        public static float Volume { get; set; } = 0.5f;
+        public static float Volume { get; set; } = 0.0f;
         private const float _VOLUME_MULTIPLIER = 0.4f;
         private static float _currentVolume;
         private static float _fadeOutTime;

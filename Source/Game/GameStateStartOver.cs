@@ -10,6 +10,7 @@ namespace ZA6.Models
     {
         private ZeldaAdventure666 _game;
         private string _mapName;
+        private Vector2 _location;
         private bool _sceneInited;
         private Animations.Spotlight _spotlight;
         private float _elapsedTime;
@@ -19,6 +20,7 @@ namespace ZA6.Models
         public class Args : StateArgs
         {
             public string MapName;
+            public Vector2 Location;
         }
 
         public GameStateStartOver(ZeldaAdventure666 game)
@@ -32,7 +34,12 @@ namespace ZA6.Models
             _elapsedTime = 0;
             _sceneInited = false;
             _spotlight = null;
-            _mapName = (args is Args a ? a.MapName : null);
+
+            if (args is Args a)
+            {
+                _mapName = a.MapName;
+                _location = a.Location;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -51,7 +58,7 @@ namespace ZA6.Models
                 if (_mapName == null)
                     Static.SceneManager.Init();
                 else
-                    Static.SceneManager.Init(_mapName);
+                    Static.SceneManager.Init(_mapName, _location);
                 
                 _sceneInited = true;
                 return;

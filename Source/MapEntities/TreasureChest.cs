@@ -17,6 +17,7 @@ namespace ZA6
             Hitbox.Load(16, 16);
             Hittable = false;
             Colliding = true;
+            Interactable = true;
             Trigger += Open;
 
             var dataStore = Static.GetStoreByType(DataStoreType.Session);
@@ -24,12 +25,10 @@ namespace ZA6
 
             if (!Opened)
             {
-                Interactable = true;
                 Sprite.SetTexture(Img.ObjectTexture, new Rectangle(0, 16, 16, 16));
             }
             else
             {
-                Interactable = false;
                 Sprite.SetTexture(Img.ObjectTexture, new Rectangle(16, 16, 16, 16));
             }
         }

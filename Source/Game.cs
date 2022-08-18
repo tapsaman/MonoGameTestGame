@@ -46,7 +46,7 @@ namespace ZA6
         protected override void LoadContent()
         {
             LoadGlobals();
-            InitGlobals();    
+            InitGlobals();
         }
 
         protected override void Update(GameTime gameTime)
@@ -84,9 +84,9 @@ namespace ZA6
             Shaders.Load();
             Img.Load();
             Static.DevUtils = new DevUtils();
+            Static.GameData = new DataStore();
             Static.SessionData = new DataStore();
             Hud = new HUD();
-            Hud.Load();
         }
 
         private void InitGlobals()

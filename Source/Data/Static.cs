@@ -33,6 +33,7 @@ namespace ZA6
         public static Scene Scene;
         public static DevUtils DevUtils;
         public static DataStore SessionData;
+        public static DataStore GameData;
 
         public static RenderResolution[] ResolutionOptions = new RenderResolution[]
         {

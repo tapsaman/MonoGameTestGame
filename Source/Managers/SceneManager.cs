@@ -14,13 +14,15 @@ namespace ZA6.Manangers
         public MapExit MapExit { get; private set; }
         private SceneTransition _sceneTransition;
 
-        public void Init(string startMapName = "A1")
+        public void Init(string startMapName = "A1", Vector2 location = default(Vector2))
         {
             // Static.Scene must be defined before player so that hitboxes can register
             Static.Scene = CurrentScene = LoadScene(startMapName);
             Static.Player = Static.Game.Hud.Player = Player = new Player()
             {
-                Position = CurrentScene.TileMap.PlayerStartPosition
+                Position = location == default(Vector2)
+                    ? CurrentScene.TileMap.PlayerStartPosition
+                    : location
             };
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
@@ -39,6 +41,7 @@ namespace ZA6.Manangers
             
             Changing = true;
             MapExit = exit;
+            Static.EventSystem.OnSceneChange();
             Static.Game.StateMachine.TransitionTo("Cutscene");
             _sceneTransition = TransitionTypeToSceneTransition(MapExit.TransitionType);
             _sceneTransition.SceneManager = this;

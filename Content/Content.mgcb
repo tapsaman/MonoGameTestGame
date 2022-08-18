@@ -368,6 +368,18 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast/npc-sprites-og.png
 
+#begin linktothepast/rupee-hud.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:linktothepast/rupee-hud.png
+
 #begin linktothepast/sfx/chest open.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -487,6 +499,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:linktothepast/sfx/message.wav
+
+#begin linktothepast/sfx/rupee.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:linktothepast/sfx/rupee.wav
 
 #begin linktothepast/sfx/small enemy hit.wav
 /importer:WavImporter

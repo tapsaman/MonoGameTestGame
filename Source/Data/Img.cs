@@ -12,6 +12,8 @@ namespace ZA6
         public static Texture2D ObjectTexture;
         public static Texture2D EnemySprites;
         public static Texture2D Shadow;
+        public static Texture2D LifeHUD;
+        public static Texture2D RupeeHUD;
         
         public static void Load()
         {
@@ -22,6 +24,8 @@ namespace ZA6
             ObjectTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-objects");
             EnemySprites = Static.Content.Load<Texture2D>("linktothepast/enemy-sprites");
             Shadow = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-main");
+            LifeHUD = Static.Content.Load<Texture2D>("linktothepast/life-hud");
+            RupeeHUD = Static.Content.Load<Texture2D>("linktothepast/rupee-hud");
         }
 
         public static Texture2D TilesetImageToTexture(TiledCS.TiledImage image)

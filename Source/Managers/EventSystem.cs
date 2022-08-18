@@ -11,10 +11,10 @@ namespace ZA6.Managers
         [Flags]
         public enum Settings
         {
-            None            = 0b_0000_0000,
-            Parallel        = 0b_0000_0001,
-            RemoveWithStage = 0b_0000_0010,
-            Looping         = 0b_0000_0100
+            None                = 0b_0000_0000,
+            Parallel            = 0b_0000_0001,
+            SustainSceneChange  = 0b_0000_0010,
+            Looping             = 0b_0000_0100
         }
 
         private List<EventManagerAndSettings> _queue = new List<EventManagerAndSettings>();
@@ -45,6 +45,17 @@ namespace ZA6.Managers
                     Settings = settings
                 });
             }
+        }
+
+        public void OnSceneChange()
+        {
+            _queue.RemoveAll(DoesNotSustainSceneChange);
+            _parallel.RemoveAll(DoesNotSustainSceneChange);
+        }
+
+        private bool DoesNotSustainSceneChange(EventManagerAndSettings item)
+        {
+            return (item.Settings & Settings.SustainSceneChange) != Settings.SustainSceneChange;
         }
 
         public void Update(GameTime gameTime)
