@@ -11,7 +11,6 @@ namespace ZA6
     {
         private Texture2D _overlay;
         private Moogle _moogle;
-        private Event[] _startEvent;
 
         public SceneC1()
         {

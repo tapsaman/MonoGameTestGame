@@ -11,6 +11,7 @@ namespace ZA6
         public int CurrentIndex { get; set; }
         public bool Looping { get { return false; } }
         public bool IsDone { get; set; }
+        public Vector2 DrawOffset { get; set; }
         private AnimationStage[] _stages;
 
         public void SetStages(AnimationStage[] stages)

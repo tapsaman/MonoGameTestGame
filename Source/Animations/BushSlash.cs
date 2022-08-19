@@ -4,7 +4,7 @@ using ZA6.Models;
 
 namespace ZA6.Animations
 {
-    public class BushSlash : AnimationEffect
+    public class BushSlash : SAnimationEffect
     {
         public BushSlash(Vector2 position): base(position) {}
         

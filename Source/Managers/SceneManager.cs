@@ -139,24 +139,6 @@ namespace ZA6.Manangers
             }
         }
 
-        private Scene MapCodeToScene(MapCode mapCode)
-        {
-            switch (mapCode)
-            {
-                case MapCode.A1:
-                    return new TestScene();
-                case MapCode.A2:
-                    return new SceneA2();
-                case MapCode.B1:
-                    return new SceneB1();
-                case MapCode.B2:
-                    return new SceneB2();
-                case MapCode.C1:
-                    return new SceneC1();
-            }
-            return null;
-        }
-
         private Scene MapNameToScene(string mapName)
         {
             switch (mapName)

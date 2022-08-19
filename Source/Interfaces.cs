@@ -22,6 +22,11 @@ namespace TapsasEngine
 
     public interface IDialogContent {}
 
+    public interface IAnimationEffect : IUpdate
+    {
+        public void Draw(SpriteBatch spriteBatch, Vector2 drawOffset);
+    }
+
     public interface IManager : IUpdate
     {
         public float ElapsedStageTime { get; set; }

@@ -4,7 +4,7 @@ using ZA6.Models;
 
 namespace ZA6.Animations
 {
-    public class EnemyDeath : AnimationEffect
+    public class EnemyDeath : SAnimationEffect
     {
         public EnemyDeath(Vector2 position): base(position) {}
         

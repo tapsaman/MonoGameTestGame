@@ -8,7 +8,6 @@ namespace ZA6
 {
     public class Moogle : Character
     {
-        private Event[] _talkEvent;
         public Moogle()
         {
             WalkSpeed = 70f;

@@ -30,7 +30,7 @@ namespace ZA6
         public Vector2 OverlayOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
-        private List<AnimationEffect> _animationEffects;
+        private List<IAnimationEffect> _animationEffects;
         // Register hitboxes for rendering
         private List<Hitbox> _hitboxes;
         public Dictionary<Direction, TransitionType> ExitTransitions; 
@@ -48,7 +48,7 @@ namespace ZA6
             TouchTriggers = new List<MapEntity>();
             ExitTransitions = new Dictionary<Direction, TransitionType>();
             LowerSprites = new List<Sprite>();
-            _animationEffects = new List<AnimationEffect>();
+            _animationEffects = new List<IAnimationEffect>();
             _hitboxes = new List<Hitbox>();
         }
 
@@ -295,12 +295,12 @@ namespace ZA6
             Characters.Remove(character);
         }
 
-        public void Add(AnimationEffect animationEffect)
+        public void Add(IAnimationEffect animationEffect)
         {
             _animationEffects.Add(animationEffect);
         }
 
-        public void Remove(AnimationEffect animationEffect)
+        public void Remove(IAnimationEffect animationEffect)
         {
             _animationEffects.Remove(animationEffect);
         }
