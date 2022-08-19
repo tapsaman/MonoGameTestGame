@@ -1,15 +1,12 @@
 using System;
 using Microsoft.Xna.Framework;
+using TapsasEngine.Enums;
 
-namespace ZA6
+namespace TapsasEngine.Maps
 {
-    public abstract class CollisionTileMap
+    public abstract class CollisionTileMap : Map
     {
         public abstract CollisionType GetCollisionType(int tileX, int tileY);
-        // Height in tiles
-        public int Width { get; protected set; }
-        // Width in tiles
-        public int Height { get; protected set; }
         public int TileWidth { get; protected set; }
         public int TileHeight { get; protected set; }
 

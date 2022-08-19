@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 using ZA6.Sprites;
 
@@ -12,9 +12,9 @@ namespace ZA6
         public Vector2 ElementalVelocity;
         public Vector2 Velocity;
         public float WalkSpeed = 10f;
-        public int Health { get; protected set; }
+        public int Health;
         public bool IsInvincible;
-        public Direction Direction = Direction.Down;
+        public Direction Facing = Direction.Down;
         public Direction MapBorder = Direction.None;
         //public Direction CollidingX = Direction.None;
         //public Direction CollidingY = Direction.None;
@@ -41,10 +41,10 @@ namespace ZA6
                 FaceToVelocity();
                 
                 if (WalkingStill || Velocity != Vector2.Zero) {
-                    Sprite.SafeSetAnimation("Walk" + Direction);
+                    Sprite.SafeSetAnimation("Walk" + Facing);
                 }
                 else {
-                    Sprite.SafeSetAnimation("Idle" + Direction);
+                    Sprite.SafeSetAnimation("Idle" + Facing);
                 }
             }
             else
@@ -74,7 +74,7 @@ namespace ZA6
 
         public void FaceTowards(Vector2 position)
         {
-            Direction = Utility.GetDirectionBetween(Position, position);
+            Facing = Utility.GetDirectionBetween(Position, position);
         }
 
         public void FaceToVelocity()
@@ -83,7 +83,7 @@ namespace ZA6
 
             if (velDirection != Direction.None)
             {
-                Direction = velDirection;
+                Facing = velDirection;
             }
         }
 

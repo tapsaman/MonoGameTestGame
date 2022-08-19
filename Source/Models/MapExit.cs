@@ -1,3 +1,5 @@
+using TapsasEngine.Enums;
+
 namespace ZA6
 {    
     public class MapExit

@@ -2,10 +2,11 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine;
 
 namespace ZA6
 {
-    public class HUD : IUpdatable, IDrawable
+    public class HUD : IUpdate, IDraw
     {
         public Player Player {
             get => _player;
@@ -44,7 +45,7 @@ namespace ZA6
         }
     }
 
-    public class LifeHUD : IDrawable
+    public class LifeHUD : IDraw
     {
         public int MaxHealth
         {
@@ -144,7 +145,7 @@ namespace ZA6
         }
     }
 
-    public class RupeeHUD : IDrawable
+    public class RupeeHUD : IDraw
     {
         public const float UPDATE_TIME = 0.015f;
         private static SingleSprite[] _numberSprites = new SingleSprite[]

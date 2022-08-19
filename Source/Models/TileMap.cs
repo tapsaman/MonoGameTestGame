@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
+using TapsasEngine.Enums;
+using TapsasEngine.Maps;
 
 namespace ZA6
 {

@@ -1,22 +1,28 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Maps;
 
-namespace ZA6
+namespace TapsasEngine
 {
-    public interface IUpdatable
+    public interface IMapManager
+    {
+        public Map LoadTileMap(string mapName);
+    }
+
+    public interface IUpdate
     {
         void Update(GameTime gameTime);
     }
 
-    public interface IDrawable
+    public interface IDraw
     {
         void Draw(SpriteBatch spriteBatch);
     }
 
     public interface IDialogContent {}
 
-    public interface IManager : IUpdatable
+    public interface IManager : IUpdate
     {
         public float ElapsedStageTime { get; set; }
         public bool IsDone { get; set; }
@@ -56,7 +62,7 @@ namespace ZA6
         public K CurrentKey { get; set; }
     }
 
-    public interface IStage : IUpdatable
+    public interface IStage : IUpdate
     {
         public void Enter();
         public bool IsDone { get; set; }

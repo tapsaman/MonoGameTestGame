@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using ZA6.Managers;
 using ZA6.Models;
+using TapsasEngine.Enums;
 
 namespace ZA6
 {
@@ -21,7 +22,7 @@ namespace ZA6
                 return;
 
             Static.Player.FaceTowards(Position);
-            var distance = Static.Player.Direction.ToVector() * 16;
+            var distance = Static.Player.Facing.ToVector() * 16;
             
             Static.EventSystem.Load(new Event[]
             {

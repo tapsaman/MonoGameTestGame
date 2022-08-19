@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 
 namespace ZA6.Models
@@ -24,8 +25,8 @@ namespace ZA6.Models
             _elapsedTime = 0;
             _lookIter = 0;
             _guard.Moving = false;
-            _lookDirection = _guard.Direction.NextCounterclockwise();
-            Character.Sprite.SetAnimation("Idle" + _guard.Direction + "Look" + _lookDirection);
+            _lookDirection = _guard.Facing.NextCounterclockwise();
+            Character.Sprite.SetAnimation("Idle" + _guard.Facing + "Look" + _lookDirection);
         }
         public override void Update(GameTime gameTime)
         {
@@ -50,7 +51,7 @@ namespace ZA6.Models
                     else if (_lookIter == 2)
                     {
                         _lookDirection = _lookDirection.Next();
-                        Character.Sprite.SetAnimation("Idle" + _guard.Direction + "Look" + _lookDirection);
+                        Character.Sprite.SetAnimation("Idle" + _guard.Facing + "Look" + _lookDirection);
                     }
                     else if (_lookIter == 3)
                     {
@@ -59,7 +60,7 @@ namespace ZA6.Models
                     }
                     else
                     {
-                        Character.Direction = Utility.RandomDirection();
+                        Character.Facing = Utility.RandomDirection();
                         stateMachine.TransitionTo("Default");
                     }
                 }

@@ -20,11 +20,11 @@ namespace ZA6.Models
 
             if (Player.Velocity == Vector2.Zero)
             {
-                Player.Sprite.SetAnimation("Idle" + Player.Direction);
+                Player.Sprite.SetAnimation("Idle" + Player.Facing);
             }
             else
             {
-                Player.Sprite.SetAnimation("Walk" + Player.Direction);
+                Player.Sprite.SetAnimation("Walk" + Player.Facing);
             }
         }
 

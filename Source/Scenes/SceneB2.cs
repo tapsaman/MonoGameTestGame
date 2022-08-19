@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using TapsasEngine;
+using TapsasEngine.Enums;
 
 namespace ZA6
 {
@@ -40,7 +41,7 @@ namespace ZA6
                 Sys.Log("activate seppo");
                 _seppoActivated = true;
                 //Seppo.Sprite.SetAnimation("IdleDown");
-                Seppo.Direction = Direction.Down;
+                Seppo.Facing = Direction.Down;
                 MediaPlayer.Pause();
             }
         }
@@ -52,7 +53,7 @@ namespace ZA6
                 Sys.Log("deactivate seppo");
                 _seppoActivated = false;
                 //Seppo.Sprite.SetAnimation("IdleLeft");
-                Seppo.Direction = Direction.Left;
+                Seppo.Facing = Direction.Left;
                 MediaPlayer.Resume();
             }
         }

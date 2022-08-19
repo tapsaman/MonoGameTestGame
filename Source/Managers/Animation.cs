@@ -1,9 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine;
 
 namespace ZA6
 {
-    public abstract class Animation : IArrayManager<AnimationStage>, IDrawable
+    public abstract class Animation : IArrayManager<AnimationStage>, IDraw
     {
         public float ElapsedStageTime { get; set; }
         public AnimationStage[] Stages { get => _stages; set => SetStages(value); }
@@ -76,7 +77,7 @@ namespace ZA6
         }
     }
 
-    public abstract class AnimationStage : IStage, IDrawable
+    public abstract class AnimationStage : IStage, IDraw
     {
         public bool IsDone { get; set; }
 

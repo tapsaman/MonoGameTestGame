@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 
 namespace ZA6
 {

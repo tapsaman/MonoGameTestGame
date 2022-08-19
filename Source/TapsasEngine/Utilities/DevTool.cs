@@ -2,10 +2,11 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TapsasEngine;
 
 namespace ZA6
 {
-    public abstract class DevTool : IUpdatable, IDrawable
+    public abstract class DevTool : IUpdate, IDraw
     {
         public bool Enabled = true;
         public Color TextColor = new Color(255, 255, 255);

@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 
 namespace ZA6.Animations
@@ -42,7 +43,7 @@ namespace ZA6.Animations
                 if (_elapsedTime > _frameDuration)
                 {
                     _elapsedTime = 0;
-                    _target.Direction = _target.Direction.Next();
+                    _target.Facing = _target.Facing.Next();
                     _turn_count++;
 
                     if (_turn_count > _TURNS)

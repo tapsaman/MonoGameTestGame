@@ -30,8 +30,6 @@ namespace ZA6.Models
                 SFX.MenuOpen.Play();
                 MediaPlayer.Pause();
             }
-
-            SaveData.CreateAndSave();
         }
 
         public override void Update(GameTime gameTime)

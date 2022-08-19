@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 using ZA6.Models;
 using ZA6.Sprites;
@@ -213,11 +215,11 @@ namespace ZA6
 
         private FloatRectangle GetTouchArea()
         {
-            if (Direction == Direction.Up)
+            if (Facing == Direction.Up)
                 return new FloatRectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Top - _touchAreaLength, Hitbox.Rectangle.Width, _touchAreaLength);
-            if (Direction == Direction.Right)
+            if (Facing == Direction.Right)
                 return new FloatRectangle(Hitbox.Rectangle.Right, Hitbox.Rectangle.Top, _touchAreaLength, Hitbox.Rectangle.Height);
-            if (Direction == Direction.Down)
+            if (Facing == Direction.Down)
                 return new FloatRectangle(Hitbox.Rectangle.Left, Hitbox.Rectangle.Bottom, Hitbox.Rectangle.Width, _touchAreaLength);
             
             return new FloatRectangle(Hitbox.Rectangle.Left - _touchAreaLength, Hitbox.Rectangle.Top, _touchAreaLength, Hitbox.Rectangle.Height);

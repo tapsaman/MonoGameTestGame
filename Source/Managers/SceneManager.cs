@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Models;
 
 namespace ZA6.Manangers
@@ -14,15 +15,27 @@ namespace ZA6.Manangers
         public MapExit MapExit { get; private set; }
         private SceneTransition _sceneTransition;
 
-        public void Init(string startMapName = "A1", Vector2 location = default(Vector2))
+        public void Init(string startMapName = "A1")
         {
             // Static.Scene must be defined before player so that hitboxes can register
             Static.Scene = CurrentScene = LoadScene(startMapName);
             Static.Player = Static.Game.Hud.Player = Player = new Player()
             {
-                Position = location == default(Vector2)
-                    ? CurrentScene.TileMap.PlayerStartPosition
-                    : location
+                Position = CurrentScene.TileMap.PlayerStartPosition
+            };
+            // Player must be defined for scene before scene init for events and map entities 
+            CurrentScene.Init(Player);
+            CurrentScene.UpdateCamera(Player.Position);
+        }
+
+        public void Init(SaveData saveData)
+        {
+            // Static.Scene must be defined before player so that hitboxes can register
+            Static.Scene = CurrentScene = LoadScene(saveData.MapName);
+            Static.Player = Static.Game.Hud.Player = Player = new Player()
+            {
+                Position = saveData.Location,
+                Health = saveData.Health
             };
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
@@ -52,7 +65,7 @@ namespace ZA6.Manangers
 
         public void GoTo(string mapName)
         {
-            GoTo(new MapExit(Player.Direction, mapName, TransitionType.Doorway));
+            GoTo(new MapExit(Player.Facing, mapName, TransitionType.Doorway));
         }
 
         // Exposed for ScreenTransitions
@@ -97,13 +110,16 @@ namespace ZA6.Manangers
                 _sceneTransition = null;
 
                 // Make player walk two steps
-                Static.EventSystem.Load(
+                Static.EventSystem.Load(new Event[]
+                {
                     new AnimateEvent(
                         new Animations.Walk.Timed(
                             Player,
                             MapExit.Direction.ToVector() * CurrentScene.TileMap.TileSize * 2,
                             0.2f
-                )));
+                    )),
+                    new RunEvent(() => { SaveData.CreateAndSave(); })
+                });
 
                 CurrentScene.Start();
             }

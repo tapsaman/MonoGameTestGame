@@ -19,10 +19,6 @@ namespace ZA6
 
         public ZeldaAdventure666()
         {
-            /*Static.Graphics.PreparingDeviceSettings += (object s, PreparingDeviceSettingsEventArgs args) =>
-            {
-                args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
-            };*/
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
         }
 
@@ -91,6 +87,7 @@ namespace ZA6
 
         private void InitGlobals()
         {
+            InputController.Renderer = Static.Renderer;
             Button.ClickSound = SFX.MessageFinish;
             Select<RenderResolution>.ChangeSound = SFX.ChestOpen;
             Slider.ChangeSound = SFX.ChestOpen;

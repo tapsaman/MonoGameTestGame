@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 
 namespace ZA6.Animations
@@ -40,7 +41,7 @@ namespace ZA6.Animations
                 if (_elapsedTime > 0.15f)
                 {
                     _elapsedTime = 0;
-                    _target.Direction = _target.Direction.Next();
+                    _target.Facing = _target.Facing.Next();
                     _turns++;
 
                     if (_turns > 16)
@@ -73,7 +74,7 @@ namespace ZA6.Animations
                 if (_elapsedTurnTime > 0.15f)
                 {
                     _elapsedTurnTime = 0;
-                    _target.Direction = _target.Direction.Next();
+                    _target.Facing = _target.Facing.Next();
                     _turns++;
                 }
                 

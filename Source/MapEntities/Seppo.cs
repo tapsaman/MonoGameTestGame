@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Models;
 using ZA6.Sprites;
 
@@ -28,7 +29,7 @@ namespace ZA6
             Colliding = false;
             WalkingStill = false;
             Moving = false;
-            Direction = Direction.Left;
+            Facing = Direction.Left;
         }
     }
 }

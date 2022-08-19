@@ -1,8 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-namespace ZA6
+namespace TapsasEngine
 {
     public class FloatRectangle
     {

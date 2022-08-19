@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace ZA6
+namespace TapsasEngine.Enums
 {
     public enum Direction
     {

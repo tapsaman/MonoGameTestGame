@@ -1,5 +1,3 @@
-using TapsasEngine.Utilities;
-
 namespace ZA6
 {
     public enum MapCode
@@ -23,15 +21,5 @@ namespace ZA6
         Scene,
         Session,
         Game
-    }
-
-    public enum CollisionType : ushort
-    {
-        None,
-        Full,
-        NorthEast,
-        SouthEast,
-        SouthWest,
-        NorthWest
     }
 }

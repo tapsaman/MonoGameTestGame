@@ -4,12 +4,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using TapsasEngine.Utilities;
+using TapsasEngine.Enums;
 using ZA6.Models;
 using ZA6.Sprites;
+using TapsasEngine;
 
 namespace ZA6
 {
-    public class Scene : IUpdatable
+    public class Scene : IUpdate
     {
         public Song Theme { get; protected set; }
         public DataStore SceneData;

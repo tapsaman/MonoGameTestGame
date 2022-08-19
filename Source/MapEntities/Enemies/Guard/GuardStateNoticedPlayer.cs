@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using TapsasEngine;
+using TapsasEngine.Enums;
 
 namespace ZA6.Models
 {
@@ -22,15 +23,15 @@ namespace ZA6.Models
             var direction = Utility.GetDirectionBetween(_guard.Position, Static.Scene.Player.Position);
             Sys.Log("Noticed player in direction " + direction);
             
-            if (direction == _guard.Direction)
-                _guard.Sprite.SetAnimation("Idle" + _guard.Direction);
-            else if (direction == _guard.Direction.Opposite())
+            if (direction == _guard.Facing)
+                _guard.Sprite.SetAnimation("Idle" + _guard.Facing);
+            else if (direction == _guard.Facing.Opposite())
             {
                 _guard.Sprite.SetAnimation("Idle" + direction);
-                _guard.Direction = direction;
+                _guard.Facing = direction;
             }
             else
-                _guard.Sprite.SetAnimation("Idle" + _guard.Direction + "Look" + direction);
+                _guard.Sprite.SetAnimation("Idle" + _guard.Facing + "Look" + direction);
 
         }
         public override void Update(GameTime gameTime)

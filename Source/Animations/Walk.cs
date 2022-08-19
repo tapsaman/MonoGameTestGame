@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ZA6.Managers;
 
 namespace ZA6.Animations
 {
@@ -69,7 +68,7 @@ namespace ZA6.Animations
                 _velocity = _distance;
                 _velocity.Normalize();
                 _velocity *= _speed;
-                _target.Direction = _velocity.ToDirection();
+                _target.Facing = _velocity.ToDirection();
             }
             public override void Update(GameTime gameTime)
             {
@@ -103,7 +102,7 @@ namespace ZA6.Animations
                 _velocity = _distance;
                 _velocity.Normalize();
                 _velocity *= _speed;
-                _target.Direction = _velocity.ToDirection();
+                _target.Facing = _velocity.ToDirection();
             }
         }
 

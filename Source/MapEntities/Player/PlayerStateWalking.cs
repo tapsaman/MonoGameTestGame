@@ -1,7 +1,4 @@
-using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ZA6.Managers;
 
 namespace ZA6.Models
 {
@@ -11,7 +8,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            Player.Sprite.SetAnimation("Walk" + Player.Direction);
+            Player.Sprite.SetAnimation("Walk" + Player.Facing);
         }
 
         public override void Update(GameTime gameTime)
@@ -30,7 +27,7 @@ namespace ZA6.Models
             }
             else
             {
-                Player.Sprite.SetAnimation("Walk" + Player.Direction);
+                Player.Sprite.SetAnimation("Walk" + Player.Facing);
             }
         }
 

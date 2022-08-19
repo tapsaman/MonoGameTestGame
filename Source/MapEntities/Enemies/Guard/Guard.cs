@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 using ZA6.Models;
 using ZA6.Sprites;
@@ -21,7 +22,7 @@ namespace ZA6
             Hitbox.Load(14, 14);
             SpriteOffset = new Vector2(-3, -14);
             WalkSpeed = 30f;
-            Direction = Utility.RandomDirection();
+            Facing = Utility.RandomDirection();
 
             DetectionHitbox = new Hitbox();
             DetectionHitbox.Load(60, 100);
@@ -91,7 +92,7 @@ namespace ZA6
             var playerRectangle = Static.Scene.Player.Hitbox.Rectangle;
             DamageHitbox1.Position = Position + new Vector2(-1, -1);
 
-            switch(Direction)
+            switch(Facing)
             {
                 case Direction.Up:
                     DamageHitbox2.Load(4, 8);
@@ -119,7 +120,7 @@ namespace ZA6
 
         public bool DetectingPlayer(Direction direction = Direction.None)
         {
-            direction = direction == Direction.None ? Direction : direction;
+            direction = direction == Direction.None ? Facing : direction;
 
             switch(direction)
             {

@@ -1,4 +1,4 @@
-namespace ZA6
+namespace TapsasEngine
 {
     public class Dialog
     {

@@ -1,9 +1,7 @@
 using Microsoft.Xna.Framework;
 using TapsasEngine.Utilities;
-using System.IO.IsolatedStorage;
 using System.Xml.Serialization;
 using System;
-using System.IO;
 using ZA6.Models;
 using System.Xml.Schema;
 using System.Xml;
@@ -18,7 +16,6 @@ namespace ZA6
         public string MapName;
         public Vector2 Location;
         public int Health;
-        //public Config Config;
 
         private static SaveFileManager<SaveData> _saveFileManager = new SaveFileManager<SaveData>();
 
@@ -51,8 +48,7 @@ namespace ZA6
                     "StartOver",
                     new GameStateStartOver.Args()
                     {
-                        MapName = loaded.MapName,
-                        Location = loaded.Location
+                        SaveData = loaded
                     }
                 );
             }
@@ -109,8 +105,9 @@ namespace ZA6
                         GameData.ReadXml(reader);
                         break;
                     case "Health":
-                        GameData = new DataStore();
-                        GameData.ReadXml(reader);
+                        reader.Read();
+                        Health = Int16.Parse(reader.Value);
+                        reader.Read();
                         break;
                     default:
                         throw new Exception("Unexpected row '" + reader.ReadOuterXml() + "' in SaveData");

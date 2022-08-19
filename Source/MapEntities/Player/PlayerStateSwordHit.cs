@@ -16,8 +16,8 @@ namespace ZA6.Models
         {
             SFX.Sword1.Play();
             Player.Sprite.SetAnimation(null);
-            Player.Sprite.SetAnimation("SwordHit" + Player.Direction);
-            Player.SwordHitbox.StartHit(Player.Hitbox.Rectangle, Player.Direction);
+            Player.Sprite.SetAnimation("SwordHit" + Player.Facing);
+            Player.SwordHitbox.StartHit(Player.Hitbox.Rectangle, Player.Facing);
             _elapsedHitTime = 0f;
             Player.Hitting = false;
         }

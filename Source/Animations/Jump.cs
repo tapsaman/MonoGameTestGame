@@ -92,7 +92,7 @@ namespace ZA6.Animations
                 SFX.Error.Play();
 
                 if (_target is Character character)
-                    character.Direction = _distance.ToDirection();
+                    character.Facing = _distance.ToDirection();
             }
             public override void Update(GameTime gameTime)
             {

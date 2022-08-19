@@ -30,6 +30,7 @@ roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
+* only draw tilemap inside screen
 * bush with hole shouldn't leave leafs
 * use arrays for tilemap tiles? compare performance with timing methods
 * better text highlight shader

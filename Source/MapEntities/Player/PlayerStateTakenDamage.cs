@@ -18,12 +18,12 @@ namespace ZA6.Models
             vel.Normalize();
             _flyVelocity = vel * 150f;
             Player.SwordHitbox.Enabled = false;
-            Player.Sprite.SetAnimation("Damaged" + Player.Direction);
+            Player.Sprite.SetAnimation("Damaged" + Player.Facing);
         }
 
         public override void Update(GameTime gameTime)
         {
-            /*if (Player.CollidingX != Direction.None || Player.CollidingY != Direction.None)
+            /*if (Player.CollidingX != Facing.None || Player.CollidingY != Facing.None)
             {
                 _flyVelocity = Vector2.Zero;
             }*/

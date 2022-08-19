@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using TapsasEngine;
 using ZA6.Models;
 
 namespace ZA6.Managers
 {
     
-    public class EventSystem : IUpdatable
+    public class EventSystem : IUpdate
     {
         [Flags]
         public enum Settings

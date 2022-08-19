@@ -28,7 +28,7 @@ namespace ZA6.Models
             vel.Normalize();
             _flyVelocity = vel * 150f;
             _enemy.Moving = true;
-            _enemy.Sprite.SetAnimation("Idle" + _enemy.Direction);
+            _enemy.Sprite.SetAnimation("Idle" + _enemy.Facing);
         }
 
         public override void Update(GameTime gameTime)

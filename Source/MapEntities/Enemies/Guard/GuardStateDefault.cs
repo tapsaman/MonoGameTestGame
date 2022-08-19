@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 
 namespace ZA6.Models
@@ -21,8 +22,8 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
-            _guard.Velocity = _guard.Direction.ToVector() * _guard.WalkSpeed;
+            _guard.Sprite.SetAnimation("Walk" + _guard.Facing);
+            _guard.Velocity = _guard.Facing.ToVector() * _guard.WalkSpeed;
             
             _walkTime = 2 + (float)Utility.RandomDouble() * 5;
             _turning = false;
@@ -43,23 +44,23 @@ namespace ZA6.Models
                 if (_elapsedTurnTime > _TURN_TIME)
                 {
                     _turning = false;
-                    _guard.Direction = _guard.Direction.Next();
+                    _guard.Facing = _guard.Facing.Next();
                     _elapsedTurnTime = 0;
-                    _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
+                    _guard.Sprite.SetAnimation("Walk" + _guard.Facing);
                 }
             }
             else if (_guard.CollisionX == CollisionType.Full || _guard.CollisionY == CollisionType.Full)
             {
                 // Hitting obstacle, turn around
                 _turning = true;
-                _guard.Direction = _guard.Direction.Next();
+                _guard.Facing = _guard.Facing.Next();
                 _guard.Velocity = Vector2.Zero;
-                _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
+                _guard.Sprite.SetAnimation("Walk" + _guard.Facing);
             }
             else
             {
-                _guard.Velocity = _guard.Direction.ToVector() * _guard.WalkSpeed;
-                _guard.Sprite.SetAnimation("Walk" + _guard.Direction);
+                _guard.Velocity = _guard.Facing.ToVector() * _guard.WalkSpeed;
+                _guard.Sprite.SetAnimation("Walk" + _guard.Facing);
 
                 _elapsedWalkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 

@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine;
+using TapsasEngine.Enums;
 using ZA6.Managers;
 
 namespace ZA6.Models
@@ -146,7 +148,7 @@ namespace ZA6.Models
         public override void Exit() {}
     }
 
-    public class AnimateEvent : Event, IDrawable
+    public class AnimateEvent : Event
     {
         public bool Wait = true;
         private Animation _animation;
@@ -212,7 +214,7 @@ namespace ZA6.Models
 
             if (FaceTo != null)
             {
-                Target.Direction = (Direction)FaceTo;
+                Target.Facing = (Direction)FaceTo;
             }
             else 
             {

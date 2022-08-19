@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine;
+using TapsasEngine.Enums;
 using ZA6.Models;
 
 namespace ZA6
@@ -20,7 +22,7 @@ namespace ZA6
         {
             _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
 
-            _moogle = new Moogle() { Position = TileMap.ConvertTileXY(4, 38), Direction = Direction.Right };
+            _moogle = new Moogle() { Position = TileMap.ConvertTileXY(4, 38), Facing = Direction.Right };
             _moogle.Trigger += TalkTMoogle;
             Add(_moogle);
 

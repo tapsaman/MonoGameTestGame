@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using TapsasEngine.Utilities;
 
-namespace ZA6
+namespace TapsasEngine.Utilities
 {
     public abstract class InputController
     {
+        public static PointStretchRenderer Renderer;
         public Keys Up = Keys.Up;
         public Keys Right = Keys.Right;
         public Keys Down = Keys.Down;
@@ -43,20 +45,20 @@ namespace ZA6
         public bool IsAnyKeyPressed()
         {
             return (
-                Input.P1.IsPressed(Input.P1.A)
-             || Input.P1.IsPressed(Input.P1.B)
-             || Input.P1.IsPressed(Input.P1.X)
-             || Input.P1.IsPressed(Input.P1.Y)
-             || Input.P1.IsPressed(Input.P1.Start)
-             || Input.P1.IsPressed(Input.P1.Select)
-             || Input.P1.GetDirectionVector() != Vector2.Zero
+                IsPressed(A)
+             || IsPressed(B)
+             || IsPressed(X)
+             || IsPressed(Y)
+             || IsPressed(Start)
+             || IsPressed(Select)
+             || GetDirectionVector() != Vector2.Zero
             );
         }
         public int? AnyNumberKeyJustPressed()
         {
             for (int i = 0; i < _numberKeys.Length; i++)
             {
-                if (Input.P1.JustPressed(_numberKeys[i]))
+                if (JustPressed(_numberKeys[i]))
                 {
                     return i;
                 }
@@ -78,8 +80,8 @@ namespace ZA6
         public Rectangle GetMouseRectangle()
         {
             return new Rectangle(
-                (int)((_currentMouseState.X - Static.Renderer.ScreenRectangle.X) / Static.Renderer.NativeSizeMultiplier.X),
-                (int)((_currentMouseState.Y - Static.Renderer.ScreenRectangle.Y) / Static.Renderer.NativeSizeMultiplier.Y),
+                (int)((_currentMouseState.X - Renderer.ScreenRectangle.X) / Renderer.NativeSizeMultiplier.X),
+                (int)((_currentMouseState.Y - Renderer.ScreenRectangle.Y) / Renderer.NativeSizeMultiplier.Y),
                 1,
                 1
             );

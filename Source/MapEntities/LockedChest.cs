@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using TapsasEngine;
 using TapsasEngine.Models;
 using ZA6.Models;
 using ZA6.Sprites;

@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Models;
 using ZA6.Sprites;
+using TapsasEngine.Enums;
+using TapsasEngine;
 
 namespace ZA6
 {
@@ -25,7 +27,7 @@ namespace ZA6
             Interactable = true;
             Hittable = false;
             Colliding = true;
-            Direction = Direction.Down;
+            Facing = Direction.Down;
             Trigger += TalkTo;
             Moving = true;
         }
