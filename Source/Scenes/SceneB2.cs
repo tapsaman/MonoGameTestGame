@@ -40,9 +40,11 @@ namespace ZA6
             {
                 Sys.Log("activate seppo");
                 _seppoActivated = true;
-                //Seppo.Sprite.SetAnimation("IdleDown");
                 Seppo.Facing = Direction.Down;
                 MediaPlayer.Pause();
+
+                if (Static.GameData.GetInt("progress") == 0)
+                    Static.GameData.Save("progress", 1);
             }
         }
 
@@ -52,7 +54,6 @@ namespace ZA6
             {
                 Sys.Log("deactivate seppo");
                 _seppoActivated = false;
-                //Seppo.Sprite.SetAnimation("IdleLeft");
                 Seppo.Facing = Direction.Left;
                 MediaPlayer.Resume();
             }

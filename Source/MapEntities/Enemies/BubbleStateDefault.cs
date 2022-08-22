@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using TapsasEngine.Enums;
+using TapsasEngine.Utilities;
 
 namespace ZA6.Models
 {

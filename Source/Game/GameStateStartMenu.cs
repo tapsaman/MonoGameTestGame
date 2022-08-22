@@ -2,8 +2,10 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 using ZA6.Manangers;
+using ZA6.UI;
 
 namespace ZA6.Models
 {
@@ -34,6 +36,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
+            SaveData.Load();
             Music.Stop();
             Music.Play(_song);
             _elapsedTime = 0;
@@ -84,12 +87,12 @@ namespace ZA6.Models
                     _overlayMultiplier = 0f;
                     _titleMultiplier = 1f;
                     _menu = new GameMenu(PressedStartGame, true);
-                    UI.Add(_menu);
+                    UIManager.Add(_menu);
                 }
             }
             if (!_pressedStart)
             {
-                UI.Update(gameTime);
+                UIManager.Update(gameTime);
             }
             else if (_elapsedTime > _START_WAIT_TIME)
             {
@@ -109,9 +112,9 @@ namespace ZA6.Models
             
             if (true || _menu != null)
             {
-                UI.Draw(Static.SpriteBatch);
+                UIManager.Draw(Static.SpriteBatch);
 
-                if (UI.CurrentMenu == _menu)
+                if (UIManager.CurrentMenu == _menu)
                 {
                     DrawTitle(spriteBatch);
                 }
@@ -150,8 +153,8 @@ namespace ZA6.Models
 
         public override void Exit()
         {
-            //UI.SetToRemove(_menu);
-            UI.SetToClear();
+            //UIManager.SetToRemove(_menu);
+            UIManager.SetToClear();
             _menu = null;
         }
     } 

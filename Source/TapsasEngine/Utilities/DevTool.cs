@@ -2,9 +2,9 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using TapsasEngine;
+using ZA6;
 
-namespace ZA6
+namespace TapsasEngine.Utilities
 {
     public abstract class DevTool : IUpdate, IDraw
     {
@@ -59,7 +59,7 @@ namespace ZA6
             SetMessage(txt);
         }
 
-        protected void SetMessage(string message)
+        public void SetMessage(string message)
         {
             _message = message;
             _elapsedMessageTime = 0;
@@ -71,8 +71,8 @@ namespace ZA6
             {
                 var size = Font.MeasureString(_message);
 
-                Static.SpriteBatch.DrawString(
-                    Static.Font,
+                spriteBatch.DrawString(
+                    Font,
                     _message,
                     new Vector2(1, Static.Renderer.DeviceManager.PreferredBackBufferHeight - size.Y),
                     TextColor

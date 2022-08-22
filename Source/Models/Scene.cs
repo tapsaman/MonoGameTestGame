@@ -79,7 +79,10 @@ namespace ZA6
                 {
                     // Map objects
                     case "Bush":
-                        Add(new Bush() { Position = obj.Position });
+                        Add(new Bush() {
+                            Position = obj.Position,
+                            OverHole = obj.BoolProperty && Static.GameData.GetInt("progress") > 0
+                        });
                         break;
                     case "Sign":
                         Add(new Sign() { Position = obj.Position, Text = obj.TextProperty });
@@ -166,16 +169,16 @@ namespace ZA6
         {
             TileMap.Draw(spriteBatch, TileMap.GroundLayer, DrawOffset);
 
+            foreach (var sprite in LowerSprites)
+            {
+                sprite.Draw(spriteBatch, DrawOffset);
+            }
             if (Static.RenderHitboxes)
             {
                 foreach (var hitbox in _hitboxes)
                 {
                     hitbox.Draw(spriteBatch, DrawOffset);
                 }
-            }
-            foreach (var sprite in LowerSprites)
-            {
-                sprite.Draw(spriteBatch, DrawOffset);
             }
             foreach (var mapEntity in CollidingEntities)
             {

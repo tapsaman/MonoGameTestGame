@@ -8,7 +8,7 @@ namespace TapsasEngine
     public class SaveFileManager<T> where T : class
     {
         public static bool BreakOnError = true;
-        public static string Directory = "SaveGames";
+        public string Directory = "SaveGames";
         private static XmlSerializer _serializer = new XmlSerializer(typeof(T));
 
         public void Save(T saving, string fileName)
@@ -75,6 +75,37 @@ namespace TapsasEngine
                     }
 
                     storage.Close();
+                }
+
+                return loading;
+            }
+            catch (Exception ex)
+            {
+                Sys.LogError("Load file error: " + ex);
+                
+                if (BreakOnError)
+                    throw ex;
+                
+                return null;
+            }
+        }
+
+        public T Delete(string fileName)
+        {
+            try
+            {
+                string filePath = Directory + "/" + fileName;
+                T loading = null;
+
+                using (IsolatedStorageFile storage = GetIsolatedStorageFile())
+                {
+                    if (storage.FileExists(filePath))
+                    {
+                        storage.DeleteFile(filePath);
+                    }
+
+                    storage.Close();
+                    storage.Dispose();
                 }
 
                 return loading;

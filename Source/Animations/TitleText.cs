@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 
 namespace ZA6.Animations

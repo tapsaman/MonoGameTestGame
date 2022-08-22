@@ -220,7 +220,8 @@ namespace ZA6
                 {
                     TypeName = item.name,
                     Position = new Vector2(item.x, item.y),
-                    TextProperty = GetPropertyValue(item.properties, "TextProperty")
+                    TextProperty = GetPropertyValue(item.properties, "TextProperty"),
+                    BoolProperty = GetPropertyValue(item.properties, "BoolProperty") == "true"
                 });
             }
         }
@@ -246,6 +247,7 @@ namespace ZA6
             public string TypeName;
             public Vector2 Position;
             public string TextProperty;
+            public bool BoolProperty;
         }
 
         private class TileAnimation

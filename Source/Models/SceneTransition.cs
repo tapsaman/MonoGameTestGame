@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ZA6.Manangers;
 using TapsasEngine.Enums;
 using ZA6.Models;
+using TapsasEngine.Utilities;
 
 namespace ZA6
 {

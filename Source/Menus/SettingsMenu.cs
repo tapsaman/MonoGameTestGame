@@ -3,88 +3,76 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Utilities;
 using TapsasEngine;
-using ZA6.Controls;
+using ZA6.UI;
 using ZA6.Managers;
 
 namespace ZA6
 {
     public class SettingsMenu : Menu
     {
-        private CheckBoxButton _gamePadCheckBox;
+        private bool _startMenu;
         private Slider _musicVolSlider;
         private Slider _sfxVolSlider;
         private Select<RenderResolution> _resolutionSelect;
+        private Button _clearSaveButton;
 
         public SettingsMenu(bool startMenu)
         {
-            if (!startMenu)
-                OverlayColor = new Color(50, 50, 50);
+            _startMenu = startMenu;
             
-            var buttonTexture = Static.Content.Load<Texture2D>("Button");
+            if (!_startMenu)
+                OverlayColor = new Color(50, 50, 50, 100);
+            
             var font = Static.Content.Load<SpriteFont>("Fonts/TestFont");
             var fontSmall = Static.Content.Load<SpriteFont>("Fonts/TestFontSmall");
-
-            Button backButton = new Button(buttonTexture, font)
+            
+            Row controlRow = new Row()
             {
-                Text = "< BACK"
+                Width = 200,
+                Height = 20,
+                Components = new UIComponent[]
+                {
+                    new Button(fontSmall, Save) { Text = "Save" },
+                    new Button(fontSmall, Cancel) { Text = "Cancel" },
+                }
             };
-            backButton.Click += GoBack;
 
-            _gamePadCheckBox = new CheckBoxButton(buttonTexture, fontSmall)
+            _clearSaveButton = new Button(fontSmall)
             {
-                Text = "USE GAMEPAD",
-                IsChecked = Static.GamePadEnabled
+                Text = "CLEAR SAVE"
             };
-            _gamePadCheckBox.Click += ToggleGamePad;
+            _clearSaveButton.Click += ClearSave;
 
-            _musicVolSlider = new Slider(buttonTexture, fontSmall, 0f, 1f, 0.1f)
+            _musicVolSlider = new Slider(fontSmall, 0f, 1f, 0.1f)
             {
                 Text = "MUSIC VOL",
                 Value = Music.Volume
             };
             _musicVolSlider.OnChange += ChangeMusicVol;
 
-            _sfxVolSlider = new Slider(buttonTexture, fontSmall, 0f, 1f, 0.1f)
+            _sfxVolSlider = new Slider(fontSmall, 0f, 1f, 0.1f)
             {
                 Text = "SOUND VOL",
                 Value = SFX.Volume
             };
             _sfxVolSlider.OnChange += ChangeSFXVol;
 
-            _resolutionSelect = new Select<RenderResolution>(buttonTexture, fontSmall, Static.ResolutionOptions)
+            _resolutionSelect = new Select<RenderResolution>(fontSmall, Static.ResolutionOptions)
             {
                 Text = "RESOLUTION",
                 Value = Static.Renderer.Resolution
             };
             _resolutionSelect.OnChange += ChangeResolution;
 
-            Add(_resolutionSelect);
-            Add(_gamePadCheckBox);
-            Add(_musicVolSlider);
-            Add(_sfxVolSlider);
-            Add(backButton);
-
-            CalculateSize();
-        }
-
-        private void ToggleGamePad(object sender, EventArgs e)
-        {
-            if (!Static.GamePadEnabled)
+            Components = new UIComponent[]
             {
-                try
-                {
-                    Input.EnableGamePadController();
-                }
-                catch (System.Exception ex)
-                {
-                    Sys.LogError(ex.Message);
-                    UI.CreateAlert(ex.Message);
-                }
-            }
-            else
-            {
-                Input.DisableGamePadController();
-            }
+                _resolutionSelect,
+                _musicVolSlider,
+                _sfxVolSlider,
+                _clearSaveButton,
+                new EmptySpace(0, 10),
+                controlRow
+            };
         }
 
         private void ChangeMusicVol(float value)
@@ -107,20 +95,42 @@ namespace ZA6
             _resolutionSelect.Value = Static.Renderer.Resolution;
         }
 
-        private void GoBack(object sender, EventArgs e)
+        private void Save(object sender, EventArgs e)
         {
-            UI.SetToRemove(this);
+            SavedConfig.CreateAndSave();
+            UIManager.SetToRemove(this);
+        }
+
+        private void Cancel(object sender, EventArgs e)
+        {
+            SavedConfig.LoadAndApply();
+            UIManager.SetToRemove(this);
+        }
+
+        private void ClearSave(object sender, EventArgs e)
+        {
+            UIManager.CreateConfirm(
+                "Are you sure to clear\nyour progress and\nstart over?",
+                (object sender, EventArgs e) => {
+                    SaveData.Clear();
+                    
+                    if (!_startMenu)
+                    {
+                        Static.Game.StateMachine.TransitionTo("StartMenu");
+                    }
+                }
+            );
         }
 
         public override void Update(GameTime gameTime)
         {
             if (Input.P1.JustPressed(Input.P1.B) || Input.P1.JustPressed(Input.P1.Select))
             {
-                GoBack(this, new EventArgs());
+                Cancel(this, new EventArgs());
                 return;
             }
 
-            _gamePadCheckBox.IsChecked = Static.GamePadEnabled;
+            _clearSaveButton.Disabled = Static.LoadedGame == null;
             base.Update(gameTime);
         }
     }

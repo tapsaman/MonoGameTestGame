@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 
 namespace ZA6.Models
@@ -33,6 +34,8 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
+            _elapsedWalkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
             if (_guard.DetectingPlayer())
             {
                 stateMachine.TransitionTo("NoticedPlayer");
@@ -61,8 +64,6 @@ namespace ZA6.Models
             {
                 _guard.Velocity = _guard.Facing.ToVector() * _guard.WalkSpeed;
                 _guard.Sprite.SetAnimation("Walk" + _guard.Facing);
-
-                _elapsedWalkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (_elapsedWalkTime > _walkTime)
                 {

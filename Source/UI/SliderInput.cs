@@ -4,8 +4,9 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TapsasEngine;
+using TapsasEngine.Sprites;
 
-namespace ZA6.Controls
+namespace ZA6.UI
 {
     public class Slider : Button
     {
@@ -42,8 +43,8 @@ namespace ZA6.Controls
         private const float _INPUT_WAIT_TIME = 0.2f;
         private float _elapsedInputWaitTime;
 
-        public Slider(Texture2D texture, SpriteFont font, float minValue, float maxValue, float stepInterval)
-            : base(texture, font)
+        public Slider(SpriteFont font, float minValue, float maxValue, float stepInterval)
+            : base(font)
         {
             _handleTexture = Static.Content.Load<Texture2D>("slider-handle");
             int stepCount = (int)Math.Floor((maxValue - minValue) / stepInterval);
@@ -57,24 +58,27 @@ namespace ZA6.Controls
         
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             if (Disabled)
                 return;
             
             _elapsedInputWaitTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            var mouse = Input.P1.GetMouseRectangle();
 
-            _isActive = false;
-            _isHovering = mouse.Intersects(Rectangle);
-
-            if (_isDragging)
+            if (!_isDragging && _isHovering && Input.P1.JustPressedMouseLeft())
+            {
+                _isDragging = true;
+            }
+            else if (_isDragging)
             {
                 if (Input.P1.JustReleasedMouseLeft())
                 {
                     _isDragging = false;
-                    return;
                 }
                 else
                 {
+                    _isActive = true;
+                    var mouse = Input.P1.GetMouseRectangle();
                     float startX = Rectangle.Left + Padding.X;
                     float stepDrawInterval = (Width - (Padding.X * 2)) / (_steps.Length - 1);
                     int newStepIndex = (int)Math.Round((double)(mouse.X - startX) / stepDrawInterval);
@@ -86,20 +90,9 @@ namespace ZA6.Controls
                         _stepIndex = newStepIndex;
                         OnChange?.Invoke(_steps[_stepIndex]);
                     }
-                    return;
                 }
             }
-            else if (_isHovering)
-            {
-                if (Input.P1.JustPressedMouseLeft())
-                {
-                    _isDragging = true;
-                    _isActive = true;
-                    return;
-                }
-            }
-
-            if (IsFocused == true)
+            else if (IsFocused == true)
             {
                 var dir = Input.P1.GetDirectionVector();
 
@@ -132,14 +125,7 @@ namespace ZA6.Controls
     
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var color = Color.White;
-            
-            if (_isActive || _isDragging)
-                color = ActiveColor;
-            else if (_isHovering || IsFocused == true)
-                color = Color.Gray;
-
-            spriteBatch.Draw(_texture, Rectangle, color);
+            base.Draw(spriteBatch);
 
             float startX = (int)Position.X + Padding.X;
             float stepDrawInterval = ((float)Width - (Padding.X * 2)) / (float)(_steps.Length - 1);
@@ -152,14 +138,6 @@ namespace ZA6.Controls
                 ),
                 Color.White
             );
-
-
-            if (!string.IsNullOrEmpty(Text)) {
-                var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
-                var y = (Rectangle.Y + Padding.Y);
-
-                spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColor);
-            }
         }
 
         public class Step<T>

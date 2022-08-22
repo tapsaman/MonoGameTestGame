@@ -12,6 +12,7 @@ namespace ZA6
     {
         public static ZeldaAdventure666 Game;
         public static Player Player;
+        public static SaveData LoadedGame;
         public static TiledWorld World;
         public static bool GameStarted;
         public static int NativeWidth = 256;
@@ -24,9 +25,10 @@ namespace ZA6
         public static bool RenderCollisionMap = false;
         public static bool GamePadEnabled;
         public static SpriteFont Font;
+        public static SpriteFont FontSmall;
         public static ContentManager Content;
         public static SpriteBatch SpriteBatch;
-        public static SceneManager SceneManager;
+        public static SceneManager  SceneManager;
         public static DialogManager DialogManager;
         public static GameRenderer Renderer;
         public static EventSystem EventSystem;
@@ -34,6 +36,7 @@ namespace ZA6
         public static DevUtils DevUtils;
         public static DataStore SessionData;
         public static DataStore GameData;
+        public static Timer PlayTimeTimer = new Timer();
 
         public static RenderResolution[] ResolutionOptions = new RenderResolution[]
         {

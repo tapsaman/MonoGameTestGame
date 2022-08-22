@@ -25,6 +25,7 @@ log:
 * 10.8. - event manager not waiting and waiting for id, enemies bubble bari biri, moogle start event done, dialog questions and ask event, new link sprites, game over animations finished, state args for state enter
 * 17.8. - new b1 forest scene, fixed bats, excecution timer utility, diagonal map collsion with collision type on each tile (CollisionTileMap), dynamic maps with world loaded from tiled world json, dev utils and dev view, trasure chests, doorways, wait/teleport/remove/run events, cave room and  klaus, items and heart, animated life hud, opening with title + start menu, renderer revamp and renderresolution class
 18.8. - jump.to animation, rupee hud, moogle scene done ig, event managers by default get removed on scene change, xml data saving
+22.8. - saved config, ui revamp, timer, play time, play time saved to game save, check game data dev tool action
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
@@ -73,4 +74,4 @@ e.g.
         bool Paused?
         void Draw?
         bool DisableDrawing?
-* ok nah all mmanagers work too differently to force anything except bare base interfaces, like IManageable with `bool IsDone { get; }` property
+* ok nah all managers work too differently to force anything except bare base interfaces, like IManageable with `bool IsDone { get; }` property

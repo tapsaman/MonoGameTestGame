@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 
 namespace ZA6.Models

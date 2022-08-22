@@ -40,6 +40,7 @@ namespace ZA6.Manangers
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
             CurrentScene.UpdateCamera(Player.Position);
+            Static.PlayTimeTimer.Seconds = saveData.PlayTimeSeconds;
         }
 
         public void Start()

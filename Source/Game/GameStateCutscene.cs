@@ -21,6 +21,7 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
+            Static.PlayTimeTimer.Update(gameTime);
             Static.SceneManager.Update(gameTime);
             Static.EventSystem.Update(gameTime);
             Music.Update(gameTime);

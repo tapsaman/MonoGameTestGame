@@ -27,6 +27,24 @@ namespace ZA6.Utilities
         {
             Static.DevUtils.Draw(Static.SpriteBatch);
             //_doAfterPostEffect.Invoke();
+
+            if (Static.Game.StateMachine.CurrentStateKey == "MainMenu")
+            {
+                DrawPlayTimeText();   
+            }
+        }
+
+        public void DrawPlayTimeText()
+        {
+            string playTimeText = "Play time: " + Static.PlayTimeTimer.HourMinuteSecondString;
+            Vector2 size = Static.Font.MeasureString(playTimeText);
+
+            Static.SpriteBatch.DrawString(
+                Static.Font,
+                playTimeText,
+                Resolution.Size - size,
+                Color.White
+            );
         }
 
         public void StartMenuStart()

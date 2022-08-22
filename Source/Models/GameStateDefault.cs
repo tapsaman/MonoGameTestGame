@@ -23,13 +23,14 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
+            Static.PlayTimeTimer.Update(gameTime);
             Static.EventSystem.Update(gameTime);
             Static.SceneManager.Update(gameTime);
             Music.Update(gameTime);
             _game.Hud.Update(gameTime);
             _game.TitleText.Update(gameTime);
 
-            if (Input.P1.IsPressed(Input.P1.Start) || Input.P1.IsPressed(Input.P1.Select))
+            if (Input.P1.JustReleased(Input.P1.Start) || Input.P1.JustReleased(Input.P1.Select))
                 stateMachine.TransitionTo("MainMenu");
             // To access main menu easily
             else if (Input.P1.JustReleasedMouseLeft())

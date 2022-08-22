@@ -22,7 +22,7 @@ namespace ZA6
         private bool _draw = true;
 
         public SwordHitbox SwordHitbox;
-            
+        
         public Player()
         {
             Health = MaxHealth;

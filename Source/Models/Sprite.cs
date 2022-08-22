@@ -10,8 +10,6 @@ namespace ZA6.Sprites
 {
   public class Sprite
   {
-    #region Fields
-
     public Color Color = Color.White;
     protected SAnimationManager _animationManager;
 
@@ -22,9 +20,6 @@ namespace ZA6.Sprites
     protected Texture2D _texture;
     protected Rectangle _sourceRectangle; 
 
-    #endregion
-
-    #region Properties
 
     public Vector2 Position
     {
@@ -45,11 +40,6 @@ namespace ZA6.Sprites
         return new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
       }
     }
-
-    #endregion
-
-    #region Methods
-
     public Sprite() {}
 
     public virtual void Update(GameTime gameTime)
@@ -102,7 +92,5 @@ namespace ZA6.Sprites
       _animations = animations;
       _animationManager = new SAnimationManager(_animations[initialAnimationName]);
     }
-
-    #endregion
   }
 }

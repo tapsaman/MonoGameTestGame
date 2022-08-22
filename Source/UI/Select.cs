@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine;
 
-namespace ZA6.Controls
+namespace ZA6.UI
 {
     public class Select<T> : Button
     {
@@ -30,7 +30,7 @@ namespace ZA6.Controls
                 
                 if (_optionIndex == -1)
                 {
-                    Sys.LogError("Given slider input value not in steps");
+                    Sys.LogError("Given select input value not in options");
                 }
             }
         }
@@ -41,8 +41,8 @@ namespace ZA6.Controls
         private const float _INPUT_WAIT_TIME = 0.2f;
         private float _elapsedInputWaitTime;
 
-        public Select(Texture2D texture, SpriteFont font, T[] options)
-            : base(texture, font)
+        public Select(SpriteFont font, T[] options)
+            : base(font)
         {
             _handleTexture = Static.Content.Load<Texture2D>("slider-handle");
             _options = options;
@@ -50,36 +50,26 @@ namespace ZA6.Controls
         
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             if (Disabled)
                 return;
             
             _elapsedInputWaitTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            var mouse = Input.P1.GetMouseRectangle();
-
-            _isActive = false;
-            _isHovering = mouse.Intersects(Rectangle);
 
             if (_isHovering && Input.P1.JustPressedMouseLeft())
             {
-                _isActive = true;
-
-                if (_elapsedInputWaitTime > _INPUT_WAIT_TIME)
-                {
-                    _elapsedInputWaitTime = 0;
-                    
-                    if (mouse.X < Rectangle.Center.X)
-                        _optionIndex = (_optionIndex != 0 ? _optionIndex : _options.Length) - 1;
-                    else
-                        _optionIndex = _optionIndex < _options.Length - 1 ? _optionIndex + 1: 0;
-                    
-                    ChangeSound?.Play();
-                    OnChange?.Invoke(_options[_optionIndex]);
-                }
-
-                return;
+                var mouse = Input.P1.GetMouseRectangle();
+                
+                if (mouse.X < Rectangle.Center.X)
+                    _optionIndex = (_optionIndex != 0 ? _optionIndex : _options.Length) - 1;
+                else
+                    _optionIndex = _optionIndex < _options.Length - 1 ? _optionIndex + 1: 0;
+                
+                ChangeSound?.Play();
+                OnChange?.Invoke(_options[_optionIndex]);
             }
-
-            if (IsFocused == true)
+            else if (IsFocused == true)
             {
                 var dir = Input.P1.GetDirectionVector();
 
@@ -112,14 +102,12 @@ namespace ZA6.Controls
     
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var color = Color.White;
-            
-            if (_isActive)
-                color = ActiveColor;
-            else if (_isHovering || IsFocused == true)
-                color = Color.Gray;
+            TextMargin = new Vector2(
+                (Rectangle.Width / 2) - (_font.MeasureString(Text).X / 2),
+                (Padding.Y)
+            );
 
-            spriteBatch.Draw(_texture, Rectangle, color);
+            base.Draw(spriteBatch);
 
             DrawLeftHandle(spriteBatch);
             DrawRightHandle(spriteBatch);
@@ -131,13 +119,6 @@ namespace ZA6.Controls
                 var y = (Rectangle.Bottom - Padding.Y - size.Y);
 
                 spriteBatch.DrawString(_font, Value.ToString(), new Vector2(x, y), PenColor);
-            }
-
-            if (!string.IsNullOrEmpty(Text)) {
-                var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
-                var y = (Rectangle.Y + Padding.Y);
-
-                spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColor);
             }
         }
 

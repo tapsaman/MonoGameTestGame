@@ -185,6 +185,11 @@ namespace TapsasEngine.Utilities
         public bool Stretched;
         public string Description;
 
+        public Vector2 Size
+        {
+            get => new Vector2(Width, Height);
+        }
+
         public RenderResolution(int width, int height, string description = null)
         {
             Width = width;

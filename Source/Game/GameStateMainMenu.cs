@@ -2,7 +2,9 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
+using ZA6.UI;
 
 namespace ZA6.Models
 {
@@ -22,7 +24,7 @@ namespace ZA6.Models
         {
             _previousStateKey = stateMachine.CurrentStateKey;
             _menu = new GameMenu(ResumeGame);
-            UI.Add(_menu);
+            UIManager.Add(_menu);
             LifeHUD.LowHPSound.Stop();
 
             if (Static.GameStarted)
@@ -34,7 +36,7 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
-            UI.Update(gameTime);
+            UIManager.Update(gameTime);
             Music.Update(gameTime);
         }
 
@@ -48,12 +50,8 @@ namespace ZA6.Models
                 _game.TitleText.Draw(spriteBatch);
                 _game.Hud.Draw(spriteBatch);
             }
-            else
-            {
-                Utility.DrawOverlay(spriteBatch, Color.DarkGray);
-            }
 
-            UI.Draw(spriteBatch);
+            UIManager.Draw(spriteBatch);
             
             Static.Renderer.End();
         }
@@ -65,7 +63,7 @@ namespace ZA6.Models
 
         public override void Exit()
         {
-            UI.SetToClear();
+            UIManager.SetToClear();
             _menu = null;
 
             if (Static.GameStarted)

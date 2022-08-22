@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Sprites;
 using TapsasEngine.Utilities;
-using ZA6.Controls;
+using ZA6.UI;
 using ZA6.Managers;
 using ZA6.Manangers;
 using ZA6.Models;
@@ -68,6 +69,7 @@ namespace ZA6
             Static.Renderer.Init(Static.NativeWidth, Static.NativeHeight, Static.DefaultResolution);
             Static.Content = Content;
             Static.Font = Content.Load<SpriteFont>("Fonts/TestFont");
+            Static.FontSmall = Content.Load<SpriteFont>("Fonts/TestFontSmall");
             Static.World = new TiledWorld("Content\\TiledProject", "ZA6.world");
             Static.SceneManager = new SceneManager()
             {
@@ -83,14 +85,21 @@ namespace ZA6
             Static.GameData = new DataStore();
             Static.SessionData = new DataStore();
             Hud = new HUD();
+            SavedConfig.LoadAndApply();
         }
 
         private void InitGlobals()
         {
             InputController.Renderer = Static.Renderer;
+
             Button.ClickSound = SFX.MessageFinish;
             Select<RenderResolution>.ChangeSound = SFX.ChestOpen;
             Slider.ChangeSound = SFX.ChestOpen;
+
+            var buttonTexture = Static.Content.Load<Texture2D>("Button");
+            var disabledButtonTexture = Static.Content.Load<Texture2D>("DisabledButton");
+            UIComponent.DefaultBackground = new SectionedSprite(buttonTexture, 2);
+            UIComponent.DefaultDisabledBackground = new SectionedSprite(disabledButtonTexture, 2);
 
             TitleText = new Animations.TitleText();
 

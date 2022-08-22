@@ -1,6 +1,10 @@
+
+using System.IO;
+using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TapsasEngine.Utilities;
 using ZA6.Models;
 
 namespace ZA6
@@ -35,7 +39,7 @@ namespace ZA6
                 new DevToolAction(Keys.F5, "Toggle no clip mode", ToggleNoClip),
                 new DevToolAction(Keys.F6, "Select map", StartGoToMap),
                 new DevToolAction(Keys.F7, "Select shader", StartApplyShader),
-                //new DevToolAction(Keys.F8, "Toggle enemy damage", ToggleEnemyDamage),
+                new DevToolAction(Keys.F8, "Check game data", CheckGameData),
                 new DevToolAction(Keys.F9, "Give player health", StartGiveHealth),
                 new DevToolAction(Keys.F10, "Damage player", StartDamagePlayer),
                 new DevToolAction(Keys.F11, "Force game over", GameOver),
@@ -162,6 +166,11 @@ namespace ZA6
             }
             Static.Game.StateMachine.TransitionTo("GameOver");
             return "Game over";
+        }
+
+        private string CheckGameData()
+        {
+            return "\n" + Static.GameData.ToString();
         }
 
         private string StartMenu()

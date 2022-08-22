@@ -16,8 +16,12 @@ namespace ZA6
         public string MapName;
         public Vector2 Location;
         public int Health;
+        public float PlayTimeSeconds;
 
-        private static SaveFileManager<SaveData> _saveFileManager = new SaveFileManager<SaveData>();
+        private static SaveFileManager<SaveData> _saveFileManager = new SaveFileManager<SaveData>()
+        {
+            Directory = "ZA6_GameSave"
+        };
 
         public static void CreateAndSave()
         {
@@ -26,15 +30,28 @@ namespace ZA6
                 GameData = Static.GameData,
                 MapName = Static.Scene.TileMap.Name,
                 Location = Static.Player.Position,
-                Health = Static.Player.Health
+                Health = Static.Player.Health,
+                PlayTimeSeconds = Static.PlayTimeTimer.Seconds
             };
 
             _saveFileManager.Save(saving, "SAVE_FILE.xml");
+
+            Static.LoadedGame = saving;
+
+            Static.DevUtils.SetMessage("Progress saved");
+        }
+
+        public static SaveData Load()
+        {
+            SaveData loaded = _saveFileManager.Load("SAVE_FILE.xml");
+            Static.LoadedGame = loaded;
+            
+            return loaded;
         }
 
         public static void LoadAndApply()
         {
-            SaveData loaded = _saveFileManager.Load("SAVE_FILE.xml");
+            SaveData loaded = Load();
 
             if (loaded == null)
             {
@@ -52,6 +69,14 @@ namespace ZA6
                     }
                 );
             }
+        }
+
+        public static void Clear()
+        {
+            _saveFileManager.Delete("SAVE_FILE.xml");
+            Static.LoadedGame = null;
+
+            Static.DevUtils.SetMessage("Progress deleted");
         }
 
         public XmlSchema GetSchema()
@@ -74,6 +99,10 @@ namespace ZA6
             writer.WriteValue(Health);
             writer.WriteEndElement();
 
+            writer.WriteStartElement("PlayTimeSeconds");
+            writer.WriteValue(PlayTimeSeconds);
+            writer.WriteEndElement();
+
             writer.WriteStartElement("GameData");
             GameData.WriteXml(writer);
             writer.WriteEndElement();
@@ -86,7 +115,7 @@ namespace ZA6
             
             reader.Read();
 
-            while (reader.NodeType != XmlNodeType.EndElement)
+            while (reader.NodeType != XmlNodeType.EndElement && reader.NodeType != XmlNodeType.None)
             {
                 switch (reader.Name)
                 {
@@ -107,6 +136,11 @@ namespace ZA6
                     case "Health":
                         reader.Read();
                         Health = Int16.Parse(reader.Value);
+                        reader.Read();
+                        break;
+                    case "PlayTimeSeconds":
+                        reader.Read();
+                        PlayTimeSeconds = float.Parse(reader.Value);
                         reader.Read();
                         break;
                     default:

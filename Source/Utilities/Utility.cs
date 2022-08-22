@@ -2,8 +2,9 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
+using ZA6;
 
-namespace ZA6
+namespace TapsasEngine.Utilities
 {
     public static class Utility
     {

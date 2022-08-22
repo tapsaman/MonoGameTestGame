@@ -77,6 +77,10 @@ namespace TapsasEngine.Utilities
         {
             return  _previousMouseState.LeftButton == ButtonState.Pressed && _currentMouseState.LeftButton == ButtonState.Released;
         }
+        public bool IsMouseMoving()
+        {
+            return  _currentMouseState.Position != _previousMouseState.Position;
+        }
         public Rectangle GetMouseRectangle()
         {
             return new Rectangle(
