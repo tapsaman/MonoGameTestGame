@@ -26,16 +26,15 @@ log:
 * 17.8. - new b1 forest scene, fixed bats, excecution timer utility, diagonal map collsion with collision type on each tile (CollisionTileMap), dynamic maps with world loaded from tiled world json, dev utils and dev view, trasure chests, doorways, wait/teleport/remove/run events, cave room and  klaus, items and heart, animated life hud, opening with title + start menu, renderer revamp and renderresolution class
 18.8. - jump.to animation, rupee hud, moogle scene done ig, event managers by default get removed on scene change, xml data saving
 22.8. - saved config, ui revamp, timer, play time, play time saved to game save, check game data dev tool action
+22.8. - sprite revamp, mapobject -> maplevel property
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
 * only draw tilemap inside screen
-* bush with hole shouldn't leave leafs
 * use arrays for tilemap tiles? compare performance with timing methods
 * better text highlight shader
-* abstract class UIInput from Button
 * could clean SAnimation constructor overload
 * separate generic code to own namespace and folder like TapsasEngine or smth for future games
     - TileMap to (I)Map -> TileMap

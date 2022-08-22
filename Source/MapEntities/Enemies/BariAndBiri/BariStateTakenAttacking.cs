@@ -6,7 +6,7 @@ namespace ZA6.Models
     {
         private Enemy _enemy;
         private float _elapsedTime;
-        private const float _TIME = 2F;
+        private const float _TIME = 2f;
 
         public BariStateAttacking(Enemy enemy) : base(enemy)
         {
@@ -15,7 +15,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            _enemy.Sprite.SetAnimation("Attacking");
+            _enemy.AnimatedSprite.SetAnimation("Attacking");
             //_enemy.IsInvincible = true;
             _elapsedTime = 0;
         }

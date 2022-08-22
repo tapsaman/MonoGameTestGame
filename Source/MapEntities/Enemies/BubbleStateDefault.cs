@@ -13,7 +13,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            Character.Sprite.SetAnimation("Default");
+            Character.AnimatedSprite.SetAnimation("Default");
             _velocity = Utility.RandomDiagonal() * _SPEED;
         }
 

@@ -8,7 +8,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            //Player.Sprite.SetAnimation("Idle" + Player.Direction);
+            //Player.AnimatedSprite.SetAnimation("Idle" + Player.Direction);
         }
 
         public override void Update(GameTime gameTime)
@@ -20,11 +20,11 @@ namespace ZA6.Models
 
             if (Player.Velocity == Vector2.Zero)
             {
-                Player.Sprite.SetAnimation("Idle" + Player.Facing);
+                Player.AnimatedSprite.SetAnimation("Idle" + Player.Facing);
             }
             else
             {
-                Player.Sprite.SetAnimation("Walk" + Player.Facing);
+                Player.AnimatedSprite.SetAnimation("Walk" + Player.Facing);
             }
         }
 

@@ -161,8 +161,7 @@ namespace ZA6
                             },
                             IfTrue = new Event[]
                             {
-                                new TextEvent(new Dialog("Watcha want now"), _moogle),
-                                new AskEvent(Dialog.Ask("", "Can i get out of here", "Jus chillin"), _moogle)
+                                new AskEvent(Dialog.Ask("Watcha want now", "Can i get out of here", "Jus chillin"), _moogle)
                                 {
                                     IfOption2 = new Event[]
                                     {
@@ -182,7 +181,7 @@ namespace ZA6
                                         new WaitEvent(RupeeHUD.UPDATE_TIME * 199),
                                         new TextEvent(new Dialog("Good by!"), _moogle),
                                         new AnimateEvent(new Animations.Jump.To(_moogle, TileMap.ConvertTileXY(2, 0))),
-                                        new AnimateEvent(new Animations.Jump.To(_moogle, TileMap.ConvertTileXY(50, 0))),
+                                        new AnimateEvent(new Animations.Jump.To(_moogle, TileMap.ConvertTileXY(12 , 0))),
                                         new AnimateEvent(new Animations.Walk.To(Player, TileMap.PlayerStartPosition)),
                                     }
                                 }

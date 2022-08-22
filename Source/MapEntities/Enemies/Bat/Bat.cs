@@ -3,18 +3,18 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
     public class Bat : Enemy
     {
+        public override MapLevel Level { get => MapLevel.Air; }
         public bool DidHitPlayer = false;
 
         public Bat()
         {
             Health = 2;
-            Colliding = false;
             Moving = true;
             
             var texture = Static.Content.Load<Texture2D>("linktothepast/enemy-sprites");
@@ -27,7 +27,7 @@ namespace ZA6
                 { "TakenDamage", new SAnimation(texture, 1, 0.1f, false) }
             };
 
-            Sprite.SetAnimations(animations, "Waiting");
+            AnimatedSprite = new AnimatedSprite(animations, "Waiting");
             Hitbox.Load(24, 10);
             SpriteOffset = new Vector2(-5, -14);
 

@@ -34,6 +34,10 @@ namespace ZA6.Models
         {
             Static.Player.Moving = false;
             Static.Player.StateMachine.TransitionTo("Stopped");
+            
+            if (Static.GameData.GetInt("progress") == 1)
+                Static.GameData.Save("progress", 2);
+            
             _animation = new Animations.GameOver();
             _elapsedTime = 0;
             _hasDropped = false;
@@ -44,7 +48,7 @@ namespace ZA6.Models
             {
                 Music.Stop();
                 SFX.LinkDies.Play();
-                Static.Player.Sprite.SetAnimation("Dying");
+                Static.Player.AnimatedSprite.SetAnimation("Dying");
             }
             else
             {

@@ -10,7 +10,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            Player.Sprite.SetAnimation("Idle" + Player.Facing);
+            Player.AnimatedSprite.SetAnimation("Idle" + Player.Facing);
         }
 
         public override void Update(GameTime gameTime)

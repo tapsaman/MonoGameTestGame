@@ -25,14 +25,14 @@ namespace ZA6.Models
             Sys.Log("Noticed player in direction " + direction);
             
             if (direction == _guard.Facing)
-                _guard.Sprite.SetAnimation("Idle" + _guard.Facing);
+                _guard.AnimatedSprite.SetAnimation("Idle" + _guard.Facing);
             else if (direction == _guard.Facing.Opposite())
             {
-                _guard.Sprite.SetAnimation("Idle" + direction);
+                _guard.AnimatedSprite.SetAnimation("Idle" + direction);
                 _guard.Facing = direction;
             }
             else
-                _guard.Sprite.SetAnimation("Idle" + _guard.Facing + "Look" + direction);
+                _guard.AnimatedSprite.SetAnimation("Idle" + _guard.Facing + "Look" + direction);
 
         }
         public override void Update(GameTime gameTime)

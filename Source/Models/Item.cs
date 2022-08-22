@@ -1,16 +1,13 @@
 using ZA6;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace TapsasEngine.Models
 {
     public abstract class Item : MapObject
     {
-        public string PickUpText { get; protected set; }
+        public override MapLevel Level { get => MapLevel.Air; }
 
-        public Item()
-        {
-            Colliding = false;
-        }
+        public string PickUpText { get; protected set; }
 
         public virtual void OnPickUp() {}
     }

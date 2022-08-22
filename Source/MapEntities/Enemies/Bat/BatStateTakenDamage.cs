@@ -28,7 +28,7 @@ namespace ZA6.Models
             vel.Normalize();
             _flyVelocity = vel * 150f;
             _bat.Moving = true;
-            _bat.Sprite.SetAnimation("TakenDamage");
+            _bat.AnimatedSprite.SetAnimation("TakenDamage");
         }
 
         public override void Update(GameTime gameTime)

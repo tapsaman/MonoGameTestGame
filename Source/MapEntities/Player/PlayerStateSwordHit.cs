@@ -15,8 +15,8 @@ namespace ZA6.Models
         public override void Enter(StateArgs _)
         {
             SFX.Sword1.Play();
-            Player.Sprite.SetAnimation(null);
-            Player.Sprite.SetAnimation("SwordHit" + Player.Facing);
+            Player.AnimatedSprite.SetAnimation(null);
+            Player.AnimatedSprite.SetAnimation("SwordHit" + Player.Facing);
             Player.SwordHitbox.StartHit(Player.Hitbox.Rectangle, Player.Facing);
             _elapsedHitTime = 0f;
             Player.Hitting = false;

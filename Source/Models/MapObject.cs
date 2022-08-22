@@ -1,51 +1,36 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ZA6.Sprites;
+using TapsasEngine;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
-    public abstract class MapObject : MapEntity //, IComparable<MapObject>
+    public abstract class MapObject : MapEntity, IUpdate
     {
-        public Sprite Sprite;
+        public virtual Sprite Sprite { get; set; }
+        public virtual MapLevel Level { get => MapLevel.Character; }
+        
         public bool Hittable { get; protected set; } = false;
-        public bool Colliding { get; protected set; } = true;
         public override Vector2 Position
         {
             get { return _position; }
             set
             {
                 _position = value;
-                Sprite.Position = _position + _spriteOffset;
                 Hitbox.Position = _position;
             }
         }
-        public Vector2 SpriteOffset
-        {
-            get { return _spriteOffset; }
-            set
-            {
-                _spriteOffset = value;
-                Sprite.Position = _position + _spriteOffset;
-            }
-        }
+        public Vector2 SpriteOffset;
         private Vector2 _position;
         private Vector2 _spriteOffset = Vector2.Zero;
 
-        public MapObject()
-        {
-            Sprite = new Sprite();
-        }
-
-        public virtual void Update(GameTime gameTime)
-        {
-            Sprite.Update(gameTime);
-        }
-
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
-            Sprite.Draw(spriteBatch, offset);
+            Sprite.Draw(spriteBatch, Position + SpriteOffset + offset);
         }
 
         public virtual void TakeHit(Character hitter) {}
+
+        public virtual void Update(GameTime gameTime) {}
     }
 }

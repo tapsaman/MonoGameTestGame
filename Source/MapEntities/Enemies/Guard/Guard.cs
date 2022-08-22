@@ -5,7 +5,7 @@ using TapsasEngine.Enums;
 using TapsasEngine.Utilities;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -18,7 +18,6 @@ namespace ZA6
         public Guard()
         {
             Health = 3;
-            Colliding = true;
             Moving = true;
             Hitbox.Load(14, 14);
             SpriteOffset = new Vector2(-3, -14);
@@ -58,7 +57,7 @@ namespace ZA6
                 { "IdleRightLookDown",  new SAnimation(texture, 3, 3) },
             };
 
-            Sprite.SetAnimations(animations, "IdleDown");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleDown");
             
             Dictionary<string, State> states = new Dictionary<string, State>()
             {

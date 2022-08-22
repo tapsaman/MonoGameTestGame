@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -23,7 +23,7 @@ namespace ZA6
                 { "TakenDamage", new SAnimation(texture, 1, 0.4f, false, 8) }
             };
 
-            Sprite.SetAnimations(animations, "Default");
+            AnimatedSprite = new AnimatedSprite(animations, "Default");
             Hitbox.Load(5, 5);
             DamageHitbox1.Load(8, 8);
             SpriteOffset = new Vector2(-14, -16);

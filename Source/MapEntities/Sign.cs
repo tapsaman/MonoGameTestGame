@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using TapsasEngine;
+using TapsasEngine.Sprites;
 using ZA6.Models;
 
 namespace ZA6
@@ -15,8 +16,7 @@ namespace ZA6
         public Sign()
         {
             Hittable = false;
-            Colliding = true;
-            Sprite.SetTexture(Img.ObjectTexture, new Rectangle(16 * 4, 0, 16, 16));
+            Sprite = new Sprite(Img.ObjectTexture, new Rectangle(16 * 4, 0, 16, 16));
             Hitbox.Load(16, 16);
             Interactable = true;
             Trigger += Read;

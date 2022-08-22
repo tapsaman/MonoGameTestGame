@@ -26,19 +26,11 @@ namespace ZA6
             erkki.Position = TileMap.ConvertTileXY(22, 22);
             erkki.Trigger += StartErkkiDialog;
 
-            var bat = new Bat();
-            bat.Position = new Vector2(180, 200);
-
-            var guard = new Guard();
-            guard.Position = TileMap.ConvertTileXY(4, 22);
-
             var signEventTrigger = new EventTrigger(TileMap.ConvertTileXY(9, 4), 14, 14);
             _signEvent = new TextEvent(new Dialog("ZELDA'S TENT HOME"), signEventTrigger);
             signEventTrigger.Trigger += ReadSign;
 
             Add(erkki);
-            //Add(bat);
-            //Add(guard);
             Add(signEventTrigger);
 
             var msg1 = "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!\n123456790909\nvitu juu";

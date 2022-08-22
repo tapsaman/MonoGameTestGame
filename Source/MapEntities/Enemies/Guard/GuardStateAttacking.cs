@@ -24,13 +24,13 @@ namespace ZA6.Models
             SFX.Soldier.Play();
             _elapsedTime = 0;
             //_guard.FaceTowards(Static.Scene.Player.Position);
-            //_guard.Sprite.SetAnimation("Run" + _guard.Facing);
+            //_guard.AnimatedSprite.SetAnimation("Run" + _guard.Facing);
             var vel = (Static.Scene.Player.Position - _guard.Position);
             vel.Normalize();
             _runVelocity = vel * _RUN_SPEED;
             _guard.Moving = true;
             _guard.Facing = _runVelocity.ToDirection();
-            _guard.Sprite.SetAnimation("Run" + _guard.Facing);
+            _guard.AnimatedSprite.SetAnimation("Run" + _guard.Facing);
         }
         public override void Update(GameTime gameTime)
         {
@@ -47,7 +47,7 @@ namespace ZA6.Models
                     _runVelocity = vel * _RUN_SPEED;
                     //_guard.FaceTowards(Static.Scene.Player.Position);
                     _guard.Facing = _runVelocity.ToDirection();
-                    _guard.Sprite.SetAnimation("Run" + _guard.Facing);
+                    _guard.AnimatedSprite.SetAnimation("Run" + _guard.Facing);
                 }
                 else
                 {

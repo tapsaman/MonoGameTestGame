@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -27,12 +27,11 @@ namespace ZA6
                 { "WalkLeft",       new SAnimation(texture, 3, 0.04f, true, 3) }
             };
 
-            Sprite.SetAnimations(animations, "IdleUp");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleUp");
             Hitbox.Load (14, 10);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-5, -22);
             Interactable = true;
-            Colliding = true;
             WalkingStill = false;
             Moving = true;
         }

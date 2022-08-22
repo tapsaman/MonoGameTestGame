@@ -4,12 +4,20 @@ using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
 using TapsasEngine.Utilities;
 using ZA6.Managers;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
+using System;
 
 namespace ZA6
 {
     public abstract class Character : MapObject
     {
+        public override MapLevel Level { get => MapLevel.Character; }
+        public AnimatedSprite AnimatedSprite;
+        public override Sprite Sprite
+        {
+            get => AnimatedSprite;
+            set => throw new NotImplementedException();
+        }
         public Vector2 ElementalVelocity;
         public Vector2 Velocity;
         public float WalkSpeed = 10f;
@@ -28,11 +36,6 @@ namespace ZA6
         public bool WalkingStill = false;
         public StateMachine StateMachine { get; protected set; }
 
-        public Character()
-        {
-            Sprite = new Sprite();
-        }
-
         public virtual void MakeFall() {}
 
         public override void Update(GameTime gameTime)
@@ -42,10 +45,10 @@ namespace ZA6
                 FaceToVelocity();
                 
                 if (WalkingStill || Velocity != Vector2.Zero) {
-                    Sprite.SafeSetAnimation("Walk" + Facing);
+                    AnimatedSprite.SafeSetAnimation("Walk" + Facing);
                 }
                 else {
-                    Sprite.SafeSetAnimation("Idle" + Facing);
+                    AnimatedSprite.SafeSetAnimation("Idle" + Facing);
                 }
             }
             else
@@ -57,20 +60,20 @@ namespace ZA6
                 Move(gameTime);
             }
             
-            Sprite.Update(gameTime);
+            AnimatedSprite.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
             if (DrawingShadow)
             {
-                var shadowPos = new Vector2(Hitbox.Rectangle.Left - 5, Hitbox.Rectangle.Bottom - 6 - 20) + offset;
+                var shadowPos = new Vector2(Hitbox.Rectangle.Center.X - 12, Hitbox.Rectangle.Bottom - 26) + offset;
                 shadowPos.Round();
 
                 spriteBatch.Draw(Img.Shadow, shadowPos, new Rectangle(168, 308, 24, 28), Color.White);
             }
             
-            base.Draw(spriteBatch, offset);
+            AnimatedSprite.Draw(spriteBatch, Position + SpriteOffset + offset);
         }
 
         public void FaceTowards(Vector2 position)
@@ -93,7 +96,7 @@ namespace ZA6
             ElementalVelocity = Vector2.Zero;
             Velocity *= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (Colliding)
+            if (Level == MapLevel.Character)
             {
                 if (Static.Game.StateMachine.CurrentStateKey == "Default")
                 {
@@ -114,8 +117,8 @@ namespace ZA6
                 }
 
                 MapBorder = Direction.None;
-                CollisionX = DetermineHorizontalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
-                CollisionY = DetermineVerticalCollision(Static.Scene.TileMap, Static.Scene.CollidingEntities);
+                CollisionX = DetermineHorizontalCollision(Static.Scene.TileMap, Static.Scene.CharacterLevel);
+                CollisionY = DetermineVerticalCollision(Static.Scene.TileMap, Static.Scene.CharacterLevel);
                 //Sys.Log("CollisionX " + CollisionX + " : CollisionY " + CollisionY);
 
                 if (!NoClip)

@@ -8,7 +8,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            Player.Sprite.SetAnimation("Walk" + Player.Facing);
+            Player.AnimatedSprite.SetAnimation("Walk" + Player.Facing);
         }
 
         public override void Update(GameTime gameTime)
@@ -27,7 +27,7 @@ namespace ZA6.Models
             }
             else
             {
-                Player.Sprite.SetAnimation("Walk" + Player.Facing);
+                Player.AnimatedSprite.SetAnimation("Walk" + Player.Facing);
             }
         }
 

@@ -21,7 +21,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            _enemy.Sprite.SetAnimation("TakenDamage");
+            _enemy.AnimatedSprite.SetAnimation("TakenDamage");
             SFX.EnemyHit.Play();
             _elapsedTime = 0;
             _colorIndex = 0;

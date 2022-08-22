@@ -336,7 +336,7 @@ namespace ZA6
             txt += "XY: " + c.Position.X
                 + "/" + c.Position.Y + "\n";
             
-            if (c.Colliding)
+            if (c.Level == MapLevel.Character)
             {
                 txt += "CollX: " + c.CollisionX
                     + "\nCollY: " + c.CollisionY;

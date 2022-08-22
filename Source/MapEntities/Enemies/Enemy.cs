@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -40,12 +40,12 @@ namespace ZA6
         {
             if (!IsInvincible)
             {
-                Sprite.Draw(spriteBatch, offset);
+                base.Draw(spriteBatch, offset);
             }
             else
             {
                 Static.Renderer.ChangeToDamageEffect();
-                Sprite.Draw(spriteBatch, offset);
+                base.Draw(spriteBatch, offset);
                 Static.Renderer.ChangeToDefault();
             }
         }

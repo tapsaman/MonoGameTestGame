@@ -74,12 +74,12 @@ namespace ZA6.Manangers
         {
             ChangingToScene = LoadScene(MapExit.MapName);
             ChangingToScene.Paused = true;
-            
+
             Static.Scene = ChangingToScene;
             ChangingToScene.Init(Player);
             ChangingToScene.RegisterHitbox(Player.Hitbox);
             ChangingToScene.RegisterHitbox(Player.SwordHitbox);
-            Static.Scene = ChangingToScene;
+            Static.Scene = CurrentScene;
             
             return ChangingToScene;
         }
@@ -105,6 +105,7 @@ namespace ZA6.Manangers
 
             if (_sceneTransition.Done)
             {
+                CurrentScene.Remove(Player);
                 CurrentScene = Static.Scene = ChangingToScene;
                 ChangingToScene = null;
                 Changing = false;

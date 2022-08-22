@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -12,8 +12,7 @@ namespace ZA6
             Hitbox.Load(16, 16);
             Interactable = false;
             Hittable = true;
-            Colliding = true;
-            Sprite.SetTexture(Img.ObjectTexture, new Rectangle(0, 0, 16, 16));
+            Sprite = new Sprite(Img.ObjectTexture, new Rectangle(0, 0, 16, 16));
         }
 
         public override void TakeHit(Character _)
@@ -23,17 +22,11 @@ namespace ZA6
 
             if (!OverHole)
             {
-                var stumpSprite = new Sprite();
-                stumpSprite.SetTexture(Img.ObjectTexture, new Rectangle(16, 0, 16, 16));
-                stumpSprite.Position = Position;
-
-                Static.Scene.Add(stumpSprite);
+                Static.Scene.Add(new BushStump() { Position = Position });
             }
             else
             {
-                var hole = new Hole(Position);
-
-                Static.Scene.Add(hole);
+                Static.Scene.Add(new Hole(Position));
             }
         }
     }

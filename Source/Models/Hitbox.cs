@@ -8,7 +8,6 @@ namespace ZA6
     public class Hitbox
     {
         public Vector2 Position;
-        public float x;
         public Color Color = Color.Yellow;
         public bool Enabled = true;
         private Texture2D _texture;
@@ -42,7 +41,7 @@ namespace ZA6
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
-            if (Enabled)
+            if (Enabled && _texture != null)
                 spriteBatch.Draw(_texture, Position + offset, Color * 0.5f);
         }
         public FloatRectangle Rectangle

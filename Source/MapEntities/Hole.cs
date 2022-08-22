@@ -1,34 +1,34 @@
 using Microsoft.Xna.Framework;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
-    public class Hole : Sprite
+    public class Hole : MapObject
     {
-        private TouchEventTrigger _holeEventTrigger;
-
+        public override MapLevel Level { get => MapLevel.Ground; }
+        
         public Hole(Vector2 position)
         {
             Position = position;
-
-            SetTexture(Img.ObjectTexture, new Rectangle(48, 0, 16, 16));
-
-            _holeEventTrigger = new TouchEventTrigger(Position, 16, 16);
-            _holeEventTrigger.Trigger += PullToHole;
+            
+            Sprite = new Sprite(Img.ObjectTexture, new Rectangle(48, 0, 16, 16));
+            Hitbox.Load(16, 16);
+            TriggeredOnTouch = true;
+            Trigger += PullToHole;
+            
             var innerHoleEventTrigger = new TouchEventTrigger(Position + new Vector2(6, 0), 4, 16);
             innerHoleEventTrigger.Trigger += PullToHole;
 
-            Static.Scene.Add(_holeEventTrigger);
             Static.Scene.Add(innerHoleEventTrigger);
         }
 
         private void PullToHole(Character character)
         {
-            character.ElementalVelocity = _holeEventTrigger.Hitbox.Rectangle.Center - character.Hitbox.Rectangle.Center;
+            character.ElementalVelocity = Hitbox.Rectangle.Center - character.Hitbox.Rectangle.Center;
             character.ElementalVelocity.Normalize();
             character.ElementalVelocity *= 33f;
 
-            if (_holeEventTrigger.Hitbox.Rectangle.Contains(character.Hitbox.Rectangle))
+            if (Hitbox.Rectangle.Contains(character.Hitbox.Rectangle))
             {
                 character.MakeFall();
             }

@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
     public class Seppo : Character
     {       
+        public override MapLevel Level { get => MapLevel.Ground; }
+
         public Seppo()
         {
             var texture = Static.Content.Load<Texture2D>("linktothepast/npc-sprites");
@@ -21,12 +23,11 @@ namespace ZA6
                 { "IdleDown",       new SAnimation(texture, 1, 0.5f, false, 1, 2) }
             };
 
-            Sprite.SetAnimations(animations, "IdleLeft");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleLeft");
             Hitbox.Load(16, 16);
             SpriteOffset = new Vector2(-1, -12);
             Interactable = false;
             Hittable = false;
-            Colliding = false;
             WalkingStill = false;
             Moving = false;
             Facing = Direction.Left;

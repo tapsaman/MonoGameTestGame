@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Media;
 using TapsasEngine.Utilities;
 using TapsasEngine.Enums;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 using TapsasEngine;
 
 namespace ZA6
@@ -14,40 +14,43 @@ namespace ZA6
     public class Scene : IUpdate
     {
         public Song Theme { get; protected set; }
-        public DataStore SceneData;
         public TileMap TileMap;
         public Player Player;
-        public List<MapEntity> InteractableEntities { get; private set; }
-        public List<Character> Characters { get; private set; }
-        public List<MapObject> MapObjects { get; private set; }
-        public List<MapObject> HittableEntities { get; private set; }
-        public List<MapObject> CollidingEntities { get; private set; }
-        public List<MapObject> UncollidingEntities { get; private set; }
-        public List<MapEntity> TouchTriggers { get; private set; }
-        public List<Sprite> LowerSprites { get; private set; }
+        public DataStore SceneData;
+        public Dictionary<Direction, TransitionType> ExitTransitions;
         public bool Paused = true;
         public Vector2 DrawOffset = Vector2.Zero;
         public Vector2 OverlayOffset = Vector2.Zero;
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public List<MapEntity> InteractableEntities { get; private set; }
+        public List<Character> Characters { get; private set; }
+        public List<MapObject> MapObjects { get; private set; }
+        public List<MapObject> HittableEntities { get; private set; }
+        /*public List<MapObject> CollidingEntities { get; private set; }
+        public List<MapObject> UncollidingEntities { get; private set; }*/
+        public List<MapEntity> TouchTriggers { get; private set; }
+        public List<MapObject> GroundLevel { get; private set; }
+        public List<MapObject> CharacterLevel { get; private set; }
+        public List<MapObject> AirLevel { get; private set; }
+        
         private List<IAnimationEffect> _animationEffects;
         // Register hitboxes for rendering
         private List<Hitbox> _hitboxes;
-        public Dictionary<Direction, TransitionType> ExitTransitions; 
 
         public Scene()
         {
             // Load basics in constructor
             SceneData = new DataStore();
+            GroundLevel = new List<MapObject>();
+            CharacterLevel = new List<MapObject>();
+            AirLevel = new List<MapObject>();
             MapObjects = new List<MapObject>();
             Characters = new List<Character>();
             InteractableEntities = new List<MapEntity>();
             HittableEntities = new List<MapObject>();
-            CollidingEntities = new List<MapObject>();
-            UncollidingEntities = new List<MapObject>();
             TouchTriggers = new List<MapEntity>();
             ExitTransitions = new Dictionary<Direction, TransitionType>();
-            LowerSprites = new List<Sprite>();
             _animationEffects = new List<IAnimationEffect>();
             _hitboxes = new List<Hitbox>();
         }
@@ -143,7 +146,7 @@ namespace ZA6
                 MapObjects[i].Update(gameTime);
             }
 
-            CollidingEntities.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
+            CharacterLevel.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
 
             if (Player.Velocity != Vector2.Zero)
                 UpdateCamera(Player.Position);
@@ -169,7 +172,7 @@ namespace ZA6
         {
             TileMap.Draw(spriteBatch, TileMap.GroundLayer, DrawOffset);
 
-            foreach (var sprite in LowerSprites)
+            foreach (var sprite in GroundLevel)
             {
                 sprite.Draw(spriteBatch, DrawOffset);
             }
@@ -180,7 +183,7 @@ namespace ZA6
                     hitbox.Draw(spriteBatch, DrawOffset);
                 }
             }
-            foreach (var mapEntity in CollidingEntities)
+            foreach (var mapEntity in CharacterLevel)
             {
                 mapEntity.Draw(spriteBatch, DrawOffset);
             }
@@ -190,7 +193,7 @@ namespace ZA6
         {
             TileMap.Draw(spriteBatch, TileMap.TopLayer, DrawOffset);
 
-            foreach (var mapEntity in UncollidingEntities)
+            foreach (var mapEntity in AirLevel)
             {
                 mapEntity.Draw(spriteBatch, DrawOffset);
             }
@@ -211,10 +214,21 @@ namespace ZA6
             Player.Draw(spriteBatch, DrawOffset);
         }
 
-        public void Add(Sprite sprite)
+        public List<MapObject> LevelToList(MapLevel level)
         {
-            LowerSprites.Add(sprite);
+            switch (level)
+            {
+                case MapLevel.Character:
+                    return CharacterLevel;
+                case MapLevel.Ground:
+                    return GroundLevel;
+                case MapLevel.Air:
+                    return AirLevel;
+                default:
+                    throw new Exception("Unexpected MapLevel value '" + level + "'");
+            }
         }
+
 
         public void Add(MapEntity mapEntity)
         {
@@ -226,37 +240,29 @@ namespace ZA6
             {
                 TouchTriggers.Add(mapEntity);
             }
-        }
 
-        public void Add(MapObject mapobject)
-        {
-            Add((MapEntity)mapobject);
-
-            MapObjects.Add(mapobject);
-
-            if (mapobject.Hittable)
+            if (mapEntity is MapObject mapObject)
             {
-                HittableEntities.Add(mapobject);
-            }
-            if (mapobject.Colliding)
-            {
-                CollidingEntities.Add(mapobject);
-            }
-            else
-            {
-                UncollidingEntities.Add(mapobject);
-            }
-        }
+                MapObjects.Add(mapObject);
+                LevelToList(mapObject.Level).Add(mapObject);
 
-        public void Add(Character character)
-        {
-            Add((MapObject)character);
+                if (mapObject.Hittable)
+                {
+                    HittableEntities.Add(mapObject);
+                }
 
-            Characters.Add(character);
+                if (mapObject is Character character)
+                {
+                    Characters.Add(character);
+                }
+            }
         }
 
         public void Remove(MapEntity mapEntity)
         {
+            UnregisterHitbox(mapEntity.Hitbox);
+            mapEntity.Unload();
+
             if (mapEntity.Interactable)
             {
                 InteractableEntities.Remove(mapEntity);
@@ -266,36 +272,21 @@ namespace ZA6
                 TouchTriggers.Remove(mapEntity);
             }
 
-            UnregisterHitbox(mapEntity.Hitbox);
-
-            mapEntity.Unload();
-        }
-
-        public void Remove(MapObject mapobject)
-        {
-            Remove((MapEntity)mapobject);
-
-            MapObjects.Remove(mapobject);
-
-            if (mapobject.Hittable)
+            if (mapEntity is MapObject mapObject)
             {
-                HittableEntities.Remove(mapobject);
-            }
-            if (mapobject.Colliding)
-            {
-                CollidingEntities.Remove(mapobject);
-            }
-            else
-            {
-                UncollidingEntities.Remove(mapobject);
-            }
-        }
+                MapObjects.Remove(mapObject);
+                LevelToList(mapObject.Level).Remove(mapObject);
 
-        public void Remove(Character character)
-        {
-            Remove((MapObject)character);
+                if (mapObject.Hittable)
+                {
+                    HittableEntities.Remove(mapObject);
+                }
 
-            Characters.Remove(character);
+                if (mapObject is Character character)
+                {
+                    Characters.Remove(character);
+                }
+            }
         }
 
         public void Add(IAnimationEffect animationEffect)

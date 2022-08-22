@@ -27,7 +27,7 @@ namespace ZA6.Models
             _lookIter = 0;
             _guard.Moving = false;
             _lookDirection = _guard.Facing.NextCounterclockwise();
-            Character.Sprite.SetAnimation("Idle" + _guard.Facing + "Look" + _lookDirection);
+            Character.AnimatedSprite.SetAnimation("Idle" + _guard.Facing + "Look" + _lookDirection);
         }
         public override void Update(GameTime gameTime)
         {
@@ -47,17 +47,17 @@ namespace ZA6.Models
                     if (_lookIter == 1)
                     {
                         _lookDirection = _lookDirection.Next();
-                        Character.Sprite.SetAnimation("Idle" + _lookDirection);
+                        Character.AnimatedSprite.SetAnimation("Idle" + _lookDirection);
                     }
                     else if (_lookIter == 2)
                     {
                         _lookDirection = _lookDirection.Next();
-                        Character.Sprite.SetAnimation("Idle" + _guard.Facing + "Look" + _lookDirection);
+                        Character.AnimatedSprite.SetAnimation("Idle" + _guard.Facing + "Look" + _lookDirection);
                     }
                     else if (_lookIter == 3)
                     {
                         _lookDirection = _lookDirection.NextCounterclockwise();
-                        Character.Sprite.SetAnimation("Idle" + _lookDirection);
+                        Character.AnimatedSprite.SetAnimation("Idle" + _lookDirection);
                     }
                     else
                     {

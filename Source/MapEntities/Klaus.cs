@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 using TapsasEngine.Enums;
 using TapsasEngine;
 
@@ -21,12 +21,11 @@ namespace ZA6
                 { "IdleRight",       new SAnimation(texture, 6, 1, 20, 30) }
             };
 
-            Sprite.SetAnimations(animations, "IdleDown");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleDown");
             Hitbox.Load(16, 16);
             SpriteOffset = new Vector2(-3, -12);
             Interactable = true;
             Hittable = false;
-            Colliding = true;
             Facing = Direction.Down;
             Trigger += TalkTo;
             Moving = true;

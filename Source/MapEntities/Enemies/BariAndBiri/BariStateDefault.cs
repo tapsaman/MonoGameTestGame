@@ -20,7 +20,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            _bari.Sprite.SetAnimation("Default");
+            _bari.AnimatedSprite.SetAnimation("Default");
             _time = 0.5f + (float)Utility.RandomDouble() * 3f;
             _bari.IsInvincible = false;
         }

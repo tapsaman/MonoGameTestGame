@@ -18,7 +18,7 @@ namespace ZA6.Models
             vel.Normalize();
             _flyVelocity = vel * 150f;
             Player.SwordHitbox.Enabled = false;
-            Player.Sprite.SetAnimation("Damaged" + Player.Facing);
+            Player.AnimatedSprite.SetAnimation("Damaged" + Player.Facing);
         }
 
         public override void Update(GameTime gameTime)

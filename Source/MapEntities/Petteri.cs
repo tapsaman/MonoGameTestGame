@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -31,13 +31,12 @@ namespace ZA6
                 { "SwordHitRight",  new SAnimation(texture, 5, 0.04f, false, 7, 0) },
             };
 
-            Sprite.SetAnimations(animations, "IdleDown");
-            Hitbox.Load (14, 14);
+            AnimatedSprite = new AnimatedSprite(animations, "IdleDown");
+            Hitbox.Load(14, 14);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-13, -24);
             Interactable = true;
             Hittable = false;
-            Colliding = true;
             WalkingStill = true;
             Facing = Direction.Down;
         }

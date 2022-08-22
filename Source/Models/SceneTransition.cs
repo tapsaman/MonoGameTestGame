@@ -247,7 +247,6 @@ namespace ZA6
                 _player = player;
                 _spotlightClose = new Animations.Spotlight(_player, true);
                 _spotlightOpen = new Animations.Spotlight(_player, false);
-                //_player.Colliding = false;
 
                 _spotlightClose.Enter();
             }
@@ -284,7 +283,6 @@ namespace ZA6
                 }
                 else
                 {
-                    //_player.Colliding = true;
                     Done = true;
                 }
             }

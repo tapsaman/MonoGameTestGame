@@ -22,7 +22,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            Character.Sprite.SetAnimation("Default");
+            Character.AnimatedSprite.SetAnimation("Default");
             SFX.Keese.Play();
             _angle = (Math.PI / 2);
         }

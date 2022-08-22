@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -23,13 +23,12 @@ namespace ZA6
                 { "IdleRight",      new SAnimation(texture, 1, 0.04f, false, 0, 0) },
             };
 
-            Sprite.SetAnimations(animations, "IdleDown");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleDown");
             Hitbox.Load (14, 10);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-3, -18);
             Interactable = true;
             Hittable = false;
-            Colliding = true;
             WalkingStill = false;
             Facing = Direction.Left;
         }

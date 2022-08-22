@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Enums;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -23,7 +23,7 @@ namespace ZA6
                 { "TakenDamage", new SAnimation(texture, 0, 7) }
             };
             
-            Sprite.SetAnimations(animations, "Default");
+            AnimatedSprite = new AnimatedSprite(animations, "Default");
         }
 
         public override void Die()

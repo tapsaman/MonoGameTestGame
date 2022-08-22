@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -16,7 +16,6 @@ namespace ZA6
         {
             Health = 2;
             Hittable = true;
-            Colliding = true;
             Moving = true;
             
             var texture = Img.EnemySprites;
@@ -29,7 +28,7 @@ namespace ZA6
                 { "TakenDamage", new SAnimation(texture, 0, 6) }
             };
 
-            Sprite.SetAnimations(animations, "Default");
+            AnimatedSprite = new AnimatedSprite(animations, "Default");
             Hitbox.Load(10, 10);
             DamageHitbox1 = new Hitbox();
             DamageHitbox1.Load(14, 14);

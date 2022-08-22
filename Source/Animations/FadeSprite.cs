@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Managers;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6.Animations
 {

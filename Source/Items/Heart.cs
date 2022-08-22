@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using TapsasEngine.Models;
+using TapsasEngine.Sprites;
 
 namespace ZA6.Items
 {
@@ -8,7 +9,7 @@ namespace ZA6.Items
         public Heart()
         {
             PickUpText = "You got +1 HEART !";
-            Sprite.SetTexture(Img.ObjectTexture, new Rectangle(32, 16, 8, 8));
+            Sprite = new Sprite(Img.ObjectTexture, new Rectangle(32, 16, 8, 8));
             Hitbox.Load(8, 8);
         }
 

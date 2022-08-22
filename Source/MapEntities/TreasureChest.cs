@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using TapsasEngine;
 using TapsasEngine.Models;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -17,7 +17,6 @@ namespace ZA6
             _chestId = id;
             Hitbox.Load(16, 16);
             Hittable = false;
-            Colliding = true;
             Interactable = true;
             Trigger += Open;
 
@@ -26,11 +25,11 @@ namespace ZA6
 
             if (!Opened)
             {
-                Sprite.SetTexture(Img.ObjectTexture, new Rectangle(0, 16, 16, 16));
+                Sprite = new Sprite(Img.ObjectTexture, new Rectangle(0, 16, 16, 16));
             }
             else
             {
-                Sprite.SetTexture(Img.ObjectTexture, new Rectangle(16, 16, 16, 16));
+                Sprite = new Sprite(Img.ObjectTexture, new Rectangle(16, 16, 16, 16));
             }
         }
 
@@ -40,7 +39,7 @@ namespace ZA6
                 return;
             
             SFX.ChestOpen.Play();
-            Sprite.SetTexture(Img.ObjectTexture, new Rectangle(16, 16, 16, 16));
+            Sprite = new Sprite(Img.ObjectTexture, new Rectangle(16, 16, 16, 16));
             Opened = true;
 
             var dataStore = Static.GetStoreByType(DataStoreType.Session);

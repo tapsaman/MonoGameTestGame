@@ -17,7 +17,7 @@ namespace ZA6.Models
         {
             SFX.LinkFall.Play();
             _elapsedTime = 0f;
-            Player.Sprite.SetAnimation("Dying");
+            Player.AnimatedSprite.SetAnimation("Dying");
             Static.Game.StateMachine.TransitionTo("Cutscene");
         }
 

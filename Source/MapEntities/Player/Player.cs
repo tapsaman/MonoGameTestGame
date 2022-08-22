@@ -6,7 +6,7 @@ using TapsasEngine;
 using TapsasEngine.Enums;
 using ZA6.Managers;
 using ZA6.Models;
-using ZA6.Sprites;
+using TapsasEngine.Sprites;
 
 namespace ZA6
 {
@@ -28,7 +28,6 @@ namespace ZA6
             Health = MaxHealth;
             Interactable = false;
             Hittable = false;
-            Colliding = true;
             Moving = true;
             WalkSpeed = 90f;
             SpriteOffset = new Vector2(-13, -24);
@@ -80,7 +79,7 @@ namespace ZA6
             };
 
             Hitbox.Load(14, 14);
-            Sprite.SetAnimations(animations, "IdleDown");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleDown");
 
             // First parameter is considered width when Link faces up or down
             SwordHitbox = new SwordHitbox(14, 10) { Color = Color.HotPink };

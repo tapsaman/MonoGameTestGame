@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine;
+using TapsasEngine.Sprites;
 using TapsasEngine.Utilities;
 
 namespace ZA6
@@ -54,14 +55,14 @@ namespace ZA6
             set
             {
                 _maxHealth = value;
-                _drawnSprites = new SingleSprite[_maxHealth /  2];
+                _drawnSprites = new Sprite[_maxHealth /  2];
             }
         }
         public static SoundEffectInstance LowHPSound;
-        private SingleSprite[] _drawnSprites;
-        private SingleSprite _emptyHeart = new SingleSprite(Img.LifeHUD, new Rectangle(0, 9, 7, 7));
-        private SingleSprite _fullHeart = new SingleSprite(Img.LifeHUD, new Rectangle(8, 9, 7, 7));
-        private SingleSprite _halfHeart = new SingleSprite(Img.LifeHUD, new Rectangle(24, 9, 7, 7));
+        private Sprite[] _drawnSprites;
+        private Sprite _emptyHeart = new Sprite(Img.LifeHUD, new Rectangle(0, 9, 7, 7));
+        private Sprite _fullHeart = new Sprite(Img.LifeHUD, new Rectangle(8, 9, 7, 7));
+        private Sprite _halfHeart = new Sprite(Img.LifeHUD, new Rectangle(24, 9, 7, 7));
         private int _maxHealth;
         private int _drawnHealth;
         private float _elapsedTime;
@@ -149,27 +150,27 @@ namespace ZA6
     public class RupeeHUD : IDraw
     {
         public const float UPDATE_TIME = 0.015f;
-        private static SingleSprite[] _numberSprites = new SingleSprite[]
+        private static Sprite[] _numberSprites = new Sprite[]
         {
-            new SingleSprite(Img.RupeeHUD, new Rectangle(0, 9, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(7, 9, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(14, 9, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(21, 9, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(28, 9, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(0, 16, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(7, 16, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(14, 16, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(21, 16, 7, 7)),
-            new SingleSprite(Img.RupeeHUD, new Rectangle(28, 16, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(0, 9, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(7, 9, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(14, 9, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(21, 9, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(28, 9, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(0, 16, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(7, 16, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(14, 16, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(21, 16, 7, 7)),
+            new Sprite(Img.RupeeHUD, new Rectangle(28, 16, 7, 7)),
         };
         private const int _MAX_CHARS = 5;
         private float _elapsedTime;
         private int _drawnRupees;
         private bool _initDone;
         private SoundEffectInstance _sfx;
-        private SingleSprite[] _drawnSprites = new SingleSprite[_MAX_CHARS];
-        private SingleSprite _head = new SingleSprite(Img.RupeeHUD, new Rectangle(0, 0, 15, 8));
-        private SingleSprite _minusSprite = new SingleSprite(Img.RupeeHUD, new Rectangle(28, 2, 7, 7));
+        private Sprite[] _drawnSprites = new Sprite[_MAX_CHARS];
+        private Sprite _head = new Sprite(Img.RupeeHUD, new Rectangle(0, 0, 15, 8));
+        private Sprite _minusSprite = new Sprite(Img.RupeeHUD, new Rectangle(28, 2, 7, 7));
 
         public RupeeHUD()
         {
@@ -239,23 +240,6 @@ namespace ZA6
 
                 numberPosition.X += 7;
             }
-        }
-    }
-
-    public class SingleSprite
-    {
-        public Texture2D Texture;
-        public Rectangle Rectangle;
-    
-        public SingleSprite(Texture2D texture, Rectangle rectangle)
-        {
-            Texture = texture;
-            Rectangle = rectangle;
-        }
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
-        {
-            spriteBatch.Draw(Texture, position, Rectangle, Color.White);
         }
     }
 }

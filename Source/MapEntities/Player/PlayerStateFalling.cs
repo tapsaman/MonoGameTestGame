@@ -15,7 +15,7 @@ namespace ZA6.Models
         public override void Enter(StateArgs _)
         {
             SFX.LinkFall.Play();
-            Player.Sprite.SetAnimation("Falling");
+            Player.AnimatedSprite.SetAnimation("Falling");
             Player.Moving = false;
             Player.DrawingShadow = false;
             _elapsedFallTime = 0f;
