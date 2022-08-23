@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine;
+using TapsasEngine.Sprites;
+using TapsasEngine.Utilities;
 
 namespace ZA6.UI
 {
@@ -36,35 +38,50 @@ namespace ZA6.UI
         }
         private T _value;
         private T[] _options;
+        private UIComponent[] _buttons;
+        private DropdownMenu _menu;
         private int _optionIndex;
-        private const float _INPUT_WAIT_TIME = 0.2f;
-        private float _elapsedInputWaitTime;
+        private static Sprite _buttonBackground = new Sprite(
+            Utility.CreateColorTexture(1, 1, Color.White)
+        );
 
         public Dropdown(SpriteFont font, T[] options)
             : base(font)
         {
-            _options = options;
             Click += OpenDropdownMenu;
-        }
-
-        private void OpenDropdownMenu(object sender, EventArgs e)
-        {
-            var buttons = new UIComponent[_options.Length];
+            _options = options;
+            _buttons = new UIComponent[_options.Length];
 
             for (int i = 0; i < _options.Length; i++)
             {
-                buttons[i] = new Button(Static.FontSmall)
+                _buttons[i] = new Button(_buttonBackground, Static.FontSmall, MenuButtonClick)
                 {
                     Text = _options[i].ToString()
                 };
             }
+        }
 
-            var menu = new DropdownMenu()
+        private void OpenDropdownMenu(object sender, EventArgs e)
+        {
+            _menu = new DropdownMenu()
             {
-                Position = new Vector2(Position.X, Position.Y + Height),
+                Position = new Vector2(Position.X, Position.Y + Height - 2),
                 Width = Width,
-                Components = buttons
+                Components = _buttons
             };
+
+            UIManager.Add(_menu);
+            _menu.FocusOn(_buttons[_optionIndex]);
+        }
+
+        private void MenuButtonClick(object sender, EventArgs e)
+        {
+            int optionIndex = Array.IndexOf(_buttons, sender);
+
+            if (optionIndex >= 0 && optionIndex < _options.Length)
+            {
+                OnChange?.Invoke(_options[optionIndex]);
+            }
         }
     
         public override void Draw(SpriteBatch spriteBatch)
@@ -83,6 +100,5 @@ namespace ZA6.UI
 
             spriteBatch.DrawString(_font, Value.ToString(), new Vector2(x, y), PenColor);
         }
-
     }
 }

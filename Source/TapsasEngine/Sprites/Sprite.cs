@@ -30,7 +30,12 @@ namespace TapsasEngine.Sprites
                 Texture,
                 position,
                 SourceRectangle,
-                Color
+                Color,
+                0,
+                Vector2.Zero,
+                scale,
+                SpriteEffects.None,
+                0
             );
         }
     }

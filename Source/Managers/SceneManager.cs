@@ -30,6 +30,9 @@ namespace ZA6.Manangers
 
         public void Init(SaveData saveData)
         {
+            Static.PlayTimeTimer.Seconds = saveData.PlayTimeSeconds;
+            Static.GameData = saveData.GameData;
+
             // Static.Scene must be defined before player so that hitboxes can register
             Static.Scene = CurrentScene = LoadScene(saveData.MapName);
             Static.Player = Static.Game.Hud.Player = Player = new Player()
@@ -40,7 +43,6 @@ namespace ZA6.Manangers
             // Player must be defined for scene before scene init for events and map entities 
             CurrentScene.Init(Player);
             CurrentScene.UpdateCamera(Player.Position);
-            Static.PlayTimeTimer.Seconds = saveData.PlayTimeSeconds;
         }
 
         public void Start()

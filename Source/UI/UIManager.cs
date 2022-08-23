@@ -9,9 +9,25 @@ namespace ZA6.UI
     public static class UIManager
     {
         public static Menu CurrentMenu { get; private set; }
-        private static UpdatableList<Menu> _menus = new UpdatableList<Menu>();
-        private static UpdatableList<Menu> _alerts = new UpdatableList<Menu>();
+        private static List<Menu> _menus = new List<Menu>();
+        private static List<Menu> _alerts = new List<Menu>();
         private static bool _disabledMenus;
+
+        public static bool IsDisplaying(Menu menu)
+        {
+            foreach (var item in _menus)
+            {
+                if (item == menu)
+                    return true;
+            }
+            foreach (var item in _alerts)
+            {
+                if (item == menu)
+                    return true;
+            }
+
+            return false;
+        }
 
         public static void CreateAlert(string message)
         {
@@ -28,8 +44,6 @@ namespace ZA6.UI
 
         public static void CreateConfirm(string message, EventHandler onYes)
         {
-            SFX.Error.Play();
-
             var confirm = new Confirm(message, onYes);
 
             _alerts.Add(confirm);
@@ -41,9 +55,6 @@ namespace ZA6.UI
 
         public static void Add(Menu menu)
         {
-            if (menu is Menu == false)
-                return;
-            
             _menus.Add(menu);
 
             if (_disabledMenus)
@@ -52,36 +63,40 @@ namespace ZA6.UI
                 CurrentMenu = menu;
         }
 
+        public static void Replace(Menu menu)
+        {
+            if (CurrentMenu != null)
+            {
+                menu.Replacing = CurrentMenu;
+                _menus.Remove(CurrentMenu);
+            }
+
+            Add(menu);
+        }
+
         public static void SetToRemove(Menu menu)
         {
-            _menus.SetToRemove(menu);
+            _menus.Remove(menu);
 
-            if (CurrentMenu == menu)
+            if (menu.Replacing != null)
             {
-                CurrentMenu = _menus.Count < 2 ? null : _menus[_menus.Count - 2];
+                Add(menu.Replacing);
+            }
+            else if (CurrentMenu == menu)
+            {
+                CurrentMenu = _menus.Count == 0 ? null : _menus[_menus.Count - 1];
             }
         }
 
         public static void SetToClear()
         {
-            foreach (var menu in _menus)
-            {
-                _menus.SetToRemove(menu);
-            }
-            foreach (var alert in _alerts)
-            {
-                _alerts.SetToRemove(alert);
-            }
+            _menus.Clear();
+            _alerts.Clear();
             CurrentMenu = null;
         }
 
         public static void Update(GameTime gameTime)
         {
-            _menus.Update();
-            _alerts.Update();
-
-            //CurrentMenu = _menus.Count == 0 ? null : _menus[_menus.Count - 1];
-
             if (CurrentMenu != null)
             {
                 if (!CurrentMenu.IsFocused)
@@ -129,14 +144,14 @@ namespace ZA6.UI
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            if (CurrentMenu != null)
+            foreach (var menu in _menus)
             {
-                CurrentMenu.Draw(spriteBatch);
+                menu.Draw(spriteBatch);
             }
-            /*foreach (var alert in _alerts)
+            foreach (var alert in _alerts)
             {
                 alert.Draw(spriteBatch);
-            }*/
+            }
         }
 
         private class Alert : Menu
@@ -156,7 +171,7 @@ namespace ZA6.UI
 
             private void OK(object sender, EventArgs e)
             {
-                UIManager._alerts.SetToRemove(this);
+                UIManager._alerts.Remove(this);
             }
         }
 
@@ -186,16 +201,15 @@ namespace ZA6.UI
                 };
             }
 
-
             private void OK(object sender, EventArgs e)
             {
                 _onYes.Invoke(sender, e);
-                UIManager._alerts.SetToRemove(this);
+                UIManager._alerts.Remove(this);
             }
 
             private void Cancel(object sender, EventArgs e)
             {
-                UIManager._alerts.SetToRemove(this);
+                UIManager._alerts.Remove(this);
             }
         }
     }

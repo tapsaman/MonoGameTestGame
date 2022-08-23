@@ -69,7 +69,7 @@ namespace ZA6.Managers
             return new Point(w, h);
         }
 
-        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, float yCrop = 0, int? highlightRow = null)
+        public static void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, float yCrop = 0, int? highlightRow = null, Color? color = null)
         {
             position.Round();
             var startX = position.X;
@@ -150,7 +150,7 @@ namespace ZA6.Managers
                     Font.Texture,
                     position + offset,
                     sourceRectangle,
-                    Color.White
+                    color ?? Color.White
                 );
 
                 position.X += xAdvance + Font.LetterSpacing;

@@ -8,19 +8,25 @@ using ZA6.Managers;
 using ZA6.Manangers;
 using ZA6.Models;
 using ZA6.Utilities;
+using System;
+using Microsoft.Xna.Framework.Media;
 
 namespace ZA6
 {
     public class ZeldaAdventure666 : Game
     {
         public RenderStateMachine StateMachine;
+        public bool WindowIsActive { get; private set; } = true;
         public HUD Hud;
         public Animations.TitleText TitleText;
         private GraphicsDeviceManager _graphicsDeviceManager;
+        private bool _deactivationPausedMusic;
 
         public ZeldaAdventure666()
         {
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
+            Deactivated += DectivateWindow;
+            Activated += ActivateWindow;
         }
 
         protected override void Initialize()
@@ -48,6 +54,9 @@ namespace ZA6
 
         protected override void Update(GameTime gameTime)
         {
+            if (!WindowIsActive)
+                return;
+            
             Input.P1.Update();
             Static.DevUtils.Update(gameTime);
             StateMachine.Update(gameTime);
@@ -108,12 +117,13 @@ namespace ZA6
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
                 { "StartMenu", new GameStateStartMenu(this) },
-                { "MainMenu", new GameStateMainMenu(this) },
-                { "Default", new GameStateDefault(this) },
-                { "Dialog", new GameStateDialog(this) },
-                { "GameOver", new GameStateGameOver(this) },
+                { "Intro", new GameStateIntro(this) },
                 { "StartOver", new GameStateStartOver(this) },
-                { "Cutscene", new GameStateCutscene(this) }
+                { "Default", new GameStateDefault(this) },
+                { "MainMenu", new GameStateMainMenu(this) },
+                { "Dialog", new GameStateDialog(this) },
+                { "Cutscene", new GameStateCutscene(this) },
+                { "GameOver", new GameStateGameOver(this) },
             };
 
             StateMachine = new RenderStateMachine(states, "StartMenu");
@@ -122,6 +132,27 @@ namespace ZA6
         private void QuitDialogState()
         {
             StateMachine.TransitionTo("Default");
+        }
+
+        private void DectivateWindow(object sendet, EventArgs args)
+        {
+            WindowIsActive = false;
+
+            if (MediaPlayer.State == MediaState.Playing)
+            {
+                _deactivationPausedMusic = true;
+                MediaPlayer.Pause();
+            }
+        }
+
+        private void ActivateWindow(object sendet, EventArgs args)
+        {
+            WindowIsActive = true;
+
+            if (_deactivationPausedMusic)
+            {
+                MediaPlayer.Resume();
+            }
         }
     }
 }

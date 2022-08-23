@@ -67,7 +67,7 @@ namespace ZA6
 
         private void GoToSettings(object sender, EventArgs e)
         {
-            UIManager.Add(new SettingsMenu(_startMenu));
+            UIManager.Replace(new SettingsMenu(_startMenu));
         }
 
         private void QuitGame(object sender, EventArgs e)

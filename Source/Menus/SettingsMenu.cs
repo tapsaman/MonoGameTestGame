@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Utilities;
 using TapsasEngine;
 using ZA6.UI;
-using ZA6.Managers;
 
 namespace ZA6
 {
@@ -13,7 +12,7 @@ namespace ZA6
         private bool _startMenu;
         private Slider _musicVolSlider;
         private Slider _sfxVolSlider;
-        private Select<RenderResolution> _resolutionSelect;
+        private Dropdown<RenderResolution> _resolutionDropdown;
         private Button _clearSaveButton;
 
         public SettingsMenu(bool startMenu)
@@ -24,7 +23,7 @@ namespace ZA6
                 OverlayColor = new Color(50, 50, 50, 100);
             
             var font = Static.Content.Load<SpriteFont>("Fonts/TestFont");
-            var fontSmall = Static.Content.Load<SpriteFont>("Fonts/TestFontSmall");
+            var fontSmall = Static.FontSmall;
             
             Row controlRow = new Row()
             {
@@ -57,16 +56,16 @@ namespace ZA6
             };
             _sfxVolSlider.OnChange += ChangeSFXVol;
 
-            _resolutionSelect = new Select<RenderResolution>(fontSmall, Static.ResolutionOptions)
+            _resolutionDropdown = new Dropdown<RenderResolution>(fontSmall, Static.ResolutionOptions)
             {
                 Text = "RESOLUTION",
                 Value = Static.Renderer.Resolution
             };
-            _resolutionSelect.OnChange += ChangeResolution;
+            _resolutionDropdown.OnChange += ChangeResolution;
 
             Components = new UIComponent[]
             {
-                _resolutionSelect,
+                _resolutionDropdown,
                 _musicVolSlider,
                 _sfxVolSlider,
                 _clearSaveButton,
@@ -92,7 +91,7 @@ namespace ZA6
         private void ChangeResolution(RenderResolution res)
         {
             Static.Renderer.Resolution = res;
-            _resolutionSelect.Value = Static.Renderer.Resolution;
+            _resolutionDropdown.Value = Static.Renderer.Resolution;
         }
 
         private void Save(object sender, EventArgs e)

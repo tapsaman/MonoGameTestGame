@@ -2,9 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using TapsasEngine;
-using TapsasEngine.Sprites;
 
 namespace ZA6.UI
 {

@@ -96,7 +96,6 @@ namespace ZA6.Models
             }
             else if (_elapsedTime > _START_WAIT_TIME)
             {
-                //stateMachine.TransitionTo("StartOver");
                 SaveData.LoadAndApply();
             }
         }
@@ -110,7 +109,11 @@ namespace ZA6.Models
             
             Static.Renderer.StartMenuStartUI();
             
-            if (true || _menu != null)
+            if (_menu == null)
+            {
+                DrawTitle(spriteBatch);
+            }
+            else
             {
                 UIManager.Draw(Static.SpriteBatch);
 

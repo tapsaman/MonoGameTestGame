@@ -76,7 +76,7 @@ namespace ZA6
             if (borderless)
                 return;
 
-            _background.Draw(spriteBatch, position, _width, height, Color.White);
+            _background.Draw(spriteBatch, position, _width, height);
         }
     }
 

@@ -38,8 +38,6 @@ namespace ZA6.Animations
                 {
                     float changePercentage = _elapsedTime / Time;
                     float value = 1f - changePercentage;
-                    //_target.Color.A = (byte)(255 - (255 * _elapsedTime / Time));
-                    //_target.Color = new Color(255, 255, 255, 255 - (255 * (_elapsedTime / Time)));
                     _target.Color = new Color(value, value, value, value);
                 }
                 else

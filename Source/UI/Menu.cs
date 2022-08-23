@@ -9,6 +9,7 @@ namespace ZA6.UI
     {
         public Color? OverlayColor = null;
         public Sides Margin;
+        public Menu Replacing;
         public SectionedSprite Background;
         private Rectangle _contentRectangle;
         private Rectangle _outerRectangle;
@@ -54,7 +55,7 @@ namespace ZA6.UI
 
             if (Background != null)
             {
-                Background.Draw(spriteBatch, _outerRectangle, Color.White);
+                Background.Draw(spriteBatch, _outerRectangle);
             }
 
             float y = _contentRectangle.Y;

@@ -31,6 +31,8 @@ namespace ZA6
             };
 
             _saveFileManager.Save(saving, "CONFIG.xml");
+            
+            Static.DevUtils.SetMessage("Config saved");
         }
 
         public static void LoadAndApply()

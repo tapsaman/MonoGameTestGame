@@ -2,7 +2,6 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using TapsasEngine.Sprites;
 
 namespace ZA6.UI
@@ -10,7 +9,7 @@ namespace ZA6.UI
     public class Button : FocusableComponent
     {
         #region Fields
-        protected SectionedSprite _background;
+        protected Sprite _background;
         protected SpriteFont _font;
         protected bool _isHovering;
         protected bool _isActive;
@@ -20,7 +19,19 @@ namespace ZA6.UI
         public Vector2? TextMargin;
         public static SoundEffect ClickSound;
         public event EventHandler Click;
-        public bool Clicked { get; private set; }
+        public override bool IsFocused
+        {
+            get => base.IsFocused;
+            set
+            {
+                if (!base.IsFocused && value)
+                {
+                    SFX.Cursor.Play();
+                }
+
+                base.IsFocused = value;
+            }
+        }
         public Color PenColor = Color.Black;
         public Rectangle Rectangle
         {
@@ -37,7 +48,7 @@ namespace ZA6.UI
         public Button(SpriteFont font, EventHandler onClick = null)
             : this(DefaultBackground, font, onClick) {}
 
-        public Button(SectionedSprite background, SpriteFont font, EventHandler onClick = null)
+        public Button(Sprite background, SpriteFont font, EventHandler onClick = null)
         {
             _background = background;
             _font = font;
@@ -102,11 +113,13 @@ namespace ZA6.UI
             if (Disabled)
             {
                 penColor = new Color(127, 127, 127);
-                DefaultDisabledBackground.Draw(spriteBatch, Position, Width, Height, color);
+                DefaultDisabledBackground.Color = color;
+                DefaultDisabledBackground.Draw(spriteBatch, Position, Width, Height);
             }
             else
             {
-                _background.Draw(spriteBatch, Position, Width, Height, color);
+                _background.Color = color;
+                _background.Draw(spriteBatch, Position, Width, Height);
             }
 
             if (!string.IsNullOrEmpty(Text)) {

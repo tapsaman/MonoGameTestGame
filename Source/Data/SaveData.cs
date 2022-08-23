@@ -55,12 +55,10 @@ namespace ZA6
 
             if (loaded == null)
             {
-                Static.Game.StateMachine.TransitionTo("StartOver");
+                Static.Game.StateMachine.TransitionTo("Intro");
             }
             else
             {
-                Static.GameData = loaded.GameData;
-
                 Static.Game.StateMachine.TransitionTo(
                     "StartOver",
                     new GameStateStartOver.Args()

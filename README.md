@@ -27,6 +27,7 @@ log:
 18.8. - jump.to animation, rupee hud, moogle scene done ig, event managers by default get removed on scene change, xml data saving
 22.8. - saved config, ui revamp, timer, play time, play time saved to game save, check game data dev tool action
 22.8. - sprite revamp, mapobject -> maplevel property
+23.8. - dropdown input, ui finished, intro init
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game

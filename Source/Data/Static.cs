@@ -10,6 +10,7 @@ namespace ZA6
 {
     public static class Static
     {
+        public const bool Debug = true;
         public static ZeldaAdventure666 Game;
         public static Player Player;
         public static SaveData LoadedGame;

@@ -3,9 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TapsasEngine.Sprites
 {
-    public class SectionedSprite
+    public class SectionedSprite : Sprite
     {
-        public Texture2D Texture;
         private int _borderWidth;
         private Rectangle _sourceBackground;
         private Rectangle _sourceTop;
@@ -18,8 +17,8 @@ namespace TapsasEngine.Sprites
         private Rectangle _sourceBottomRight;
 
         public SectionedSprite(Texture2D texture, int borderWidth)
+            : base(texture)
         {
-            Texture = texture;
             _borderWidth = borderWidth;
 
             int height = Texture.Height;
@@ -38,21 +37,16 @@ namespace TapsasEngine.Sprites
             _sourceBottomRight = new Rectangle(width - _borderWidth, height - _borderWidth, _borderWidth, _borderWidth);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
+        public void Draw(SpriteBatch spriteBatch, Rectangle drawTarget)
         {
-            spriteBatch.Draw(Texture, position, color);
+            Draw(spriteBatch, new Vector2(drawTarget.X, drawTarget.Y), drawTarget.Width, drawTarget.Height);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Rectangle drawTarget,  Color color)
-        {
-            Draw(spriteBatch, new Vector2(drawTarget.X, drawTarget.Y), drawTarget.Width, drawTarget.Height, color);
-        }
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, int width, int height, Color color)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, int width, int height)
         {
             if (height == Texture.Height && width == Texture.Width)
             {
-                Draw(spriteBatch, position, color);
+                Draw(spriteBatch, position);
                 return;
             }
 
@@ -61,26 +55,26 @@ namespace TapsasEngine.Sprites
             Vector2 yScale = new Vector2(1, height);
 
             // Backgorund
-            spriteBatch.Draw(Texture, position, _sourceBackground, color, 0, Vector2.Zero, backgroundScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, position, _sourceBackground, Color, 0, Vector2.Zero, backgroundScale, SpriteEffects.None, 0);
 
             // atm corners render on top of borders, this could be fixed
             // Top
-            spriteBatch.Draw(Texture, position, _sourceTop, color, 0, Vector2.Zero, xScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, position, _sourceTop, Color, 0, Vector2.Zero, xScale, SpriteEffects.None, 0);
             // Bottom
-            spriteBatch.Draw(Texture, position + new Vector2(0, height), _sourceBottom, color, 0, Vector2.Zero, xScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, position + new Vector2(0, height), _sourceBottom, Color, 0, Vector2.Zero, xScale, SpriteEffects.None, 0);
             // Left
-            spriteBatch.Draw(Texture, position, _sourceLeft, color, 0, Vector2.Zero, yScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, position, _sourceLeft, Color, 0, Vector2.Zero, yScale, SpriteEffects.None, 0);
             // Right    
-            spriteBatch.Draw(Texture, position + new Vector2(width - _borderWidth, 0), _sourceRight, color, 0, Vector2.Zero, yScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, position + new Vector2(width - _borderWidth, 0), _sourceRight, Color, 0, Vector2.Zero, yScale, SpriteEffects.None, 0);
 
             // Top left
-            spriteBatch.Draw(Texture, position, _sourceTopLeft, color);
+            spriteBatch.Draw(Texture, position, _sourceTopLeft, Color);
             // Top right
-            spriteBatch.Draw(Texture, position + new Vector2(width - _borderWidth, 0), _sourceTopRight, color);
+            spriteBatch.Draw(Texture, position + new Vector2(width - _borderWidth, 0), _sourceTopRight, Color);
             // Bottom left
-            spriteBatch.Draw(Texture, position + new Vector2(0, height), _sourceBottomLeft, color);
+            spriteBatch.Draw(Texture, position + new Vector2(0, height), _sourceBottomLeft, Color);
             // Bottom right
-            spriteBatch.Draw(Texture, position + new Vector2(width - _borderWidth, height), _sourceBottomRight, color);
+            spriteBatch.Draw(Texture, position + new Vector2(width - _borderWidth, height), _sourceBottomRight, Color);
         }
     }
 }

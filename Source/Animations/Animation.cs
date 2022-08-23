@@ -86,4 +86,38 @@ namespace ZA6
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(SpriteBatch spriteBatch);
     }
+
+    public class WaitStage : AnimationStage
+    {
+        private float _time;
+        private bool _started;
+        private float _elapsedTime;
+
+        public WaitStage(float time)
+        {
+            _time = time;
+        }
+
+        public override void Enter()
+        {
+            _started = true;
+            _elapsedTime = 0f;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (!_started)
+                return;
+            
+            _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_elapsedTime > _time)
+            {
+                _started = false;
+                IsDone = true;
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch) {}
+    }
 }

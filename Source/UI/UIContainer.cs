@@ -7,7 +7,7 @@ namespace ZA6.UI
 {
     public abstract class UIContainer : FocusableComponent
     {
-        private const float _INPUT_WAIT_TIME = 0.24f;
+        private const float _INPUT_WAIT_TIME = 0.2f;
         private float _elapsedInputWaitTime;
 
         public UIComponent[] Components
@@ -43,16 +43,30 @@ namespace ZA6.UI
                     FocusIndex = null;
                 else if (FocusIndex == null)
                     FocusIndex = 0;
-                
-                UpdateFocus();
             }
         }
         protected UIComponent[] _components;
         protected FocusableComponent[] _focusableComponents;
         public int Padding = 5;
-        public int? FocusIndex { get; private set; } = null;
+        public int? FocusIndex
+        {
+            get => _focusIndex;
+            private set
+            {
+                if (_focusIndex != value)
+                {
+                    _focusIndex = value;
+
+                    for (int i = 0; i < _focusableComponents.Length; i++)
+                    {
+                        _focusableComponents[i].IsFocused = i == _focusIndex;
+                    }
+                }
+            }
+        }
 
         protected bool _disabled;
+        private int? _focusIndex = null;
 
         protected abstract void CalculateSize();
         
@@ -65,10 +79,17 @@ namespace ZA6.UI
             {
                 _elapsedInputWaitTime += gameTime.GetSeconds();
 
-                if (_elapsedInputWaitTime > _INPUT_WAIT_TIME && DetermineKeyInput())
+                if (_elapsedInputWaitTime > _INPUT_WAIT_TIME)
                 {
-                    _elapsedInputWaitTime = 0f;
-                    return;
+                    if (DetermineKeyInput())
+                    {
+                        _elapsedInputWaitTime = 0f;
+                        return;
+                    }
+                    else
+                    {
+                        _elapsedInputWaitTime = _INPUT_WAIT_TIME;
+                    }
                 }
             }
 
@@ -98,9 +119,11 @@ namespace ZA6.UI
 
         public void FocusPrevious(bool goOutsideContainer = false)
         {
-            FocusIndex -= 1;
-
-            if (FocusIndex < 0)
+            if (FocusIndex > 0)
+            {
+                FocusIndex -= 1;
+            }
+            else
             {
                 if (goOutsideContainer && Container != null)
                 {
@@ -109,20 +132,17 @@ namespace ZA6.UI
                 else
                 {
                     FocusIndex = _focusableComponents.Length - 1;
-                    UpdateFocus();
                 }
-            }
-            else
-            {
-                UpdateFocus();
             }
         }
 
         public void FocusNext(bool goOutsideContainer = false)
         {
-            FocusIndex += 1;
-
-            if (FocusIndex >= _focusableComponents.Length)
+            if (FocusIndex < _focusableComponents.Length - 1)
+            {
+                FocusIndex += 1;
+            }
+            else
             {
                 if (goOutsideContainer && Container != null)
                 {
@@ -131,12 +151,7 @@ namespace ZA6.UI
                 else
                 {
                     FocusIndex = 0;
-                    UpdateFocus();
                 }
-            }
-            else
-            {
-                UpdateFocus();
             }
         }
 
@@ -145,19 +160,10 @@ namespace ZA6.UI
             if (Container != null)
                 Container.FocusOn(this);
 
-            IsFocused = true;
+            if (!IsFocused)
+                IsFocused = true;
+            
             FocusIndex = Array.IndexOf(_focusableComponents, component);
-            UpdateFocus();
-        }
-
-        private void UpdateFocus()
-        {
-            SFX.Cursor.Play();
-
-            for (int i = 0; i < _focusableComponents.Length; i++)
-            {
-                _focusableComponents[i].IsFocused = i == FocusIndex;
-            }
         }
     }
 }

@@ -548,6 +548,12 @@
 /processorParam:TextureFormat=Color
 /build:linktothepast/shadedwoodtransparency.png
 
+#begin loz_intro.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:loz_intro.mp3
+
 #begin moogle2.png
 /importer:TextureImporter
 /processor:TextureProcessor
