@@ -144,7 +144,7 @@ namespace ZA6
             private Vector2 _playerPositionAfter;
             private Texture2D _overlay;
             private float _colorMultiplier = 0f;
-            private Animation _walkAnimation;
+            private Animations.Walk _walkAnimation;
 
             public override void Start(Scene scene1, Player player, Direction direction)
             {

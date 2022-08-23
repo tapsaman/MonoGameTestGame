@@ -20,7 +20,6 @@ namespace ZA6.Animations
         private class TurnAroundStage : AnimationStage
         {
             private Character _target;
-            private float _elapsedTime = 0;
             private float _frameDuration = 0;
             private const int _TURNS = 12;
             private int _turn_count;
@@ -33,16 +32,13 @@ namespace ZA6.Animations
 
             public override void Enter()
             {
-                _turn_count = 0;
-                _elapsedTime = 0;
+                _turn_count = -1;
             }
-            public override void Update(GameTime gameTime)
-            {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (_elapsedTime > _frameDuration)
+            public override void Update(float elapsedTime)
+            {
+                if (elapsedTime > _frameDuration * _turn_count)
                 {
-                    _elapsedTime = 0;
                     _target.Facing = _target.Facing.Next();
                     _turn_count++;
 
@@ -52,7 +48,6 @@ namespace ZA6.Animations
                     }
                 }
             }
-            public override void Draw(SpriteBatch spriteBatch) {}
         }
 
         private class FallStage : AnimationStage
@@ -66,18 +61,12 @@ namespace ZA6.Animations
                 _target = target;
                 _frameDuration = frameDuration;
             }
-            public override void Enter()
-            {
-                _elapsedTime = 0;
-            }
-            public override void Update(GameTime gameTime)
+
+            public override void Update(float elapsedTime)
             {
                 IsDone = true;
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                
-                _target.Position -= new Vector2((float)gameTime.ElapsedGameTime.TotalSeconds * 70f, 0f);
+                _target.Position -= new Vector2(Animation.Delta * 70f, 0f);
             }
-            public override void Draw(SpriteBatch spriteBatch) {}
         }
     }
 }

@@ -11,42 +11,40 @@ namespace ZA6.Animations
         {
             Stages = new AnimationStage[]
             {
+                new WaitForEnterStage(),
                 new WaitStage(2.5f),
-                new TitleTextStage()
+                new TitleTextStage("zeldan seikkailut mikä mikä maassa vittu")
             };
         }
 
         private class TitleTextStage : AnimationStage
         {
-            private const string _TEXT = "zeldan seikkailut mikä mikä maassa vittu";
             public float Time = 26f;
-            private string _text = null;
+            public string Text = null;
             private float _x;
             private float _y;
             private float _distance;
-            private float _elapsedTime;
             
-            public TitleTextStage() {}
+            public TitleTextStage(string text)
+            {
+                Text = text;
+            }
 
             public override void Enter()
             {
-                _text = _TEXT;
-                var textSize = BitmapFontRenderer.CalculateSize(_text);
+                var textSize = BitmapFontRenderer.CalculateSize(Text);
                 _x = Static.NativeWidth;
                 _y = Static.NativeHeight / 2 - textSize.Y / 2;
                 _distance = _x - -textSize.X;
             }
-            public override void Update(GameTime gameTime)
+            public override void Update(float elapsedTime)
             {
-                if (_text == null)
-                    return;
+                //if (Text == null)
+                 //   return;
                 
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_elapsedTime <= Time)
+                if (elapsedTime <= Time)
                 {
-                    _x = Static.NativeWidth - _distance * (_elapsedTime / Time);
-                    
+                    _x = Static.NativeWidth - _distance * (elapsedTime / Time);
                 }
                 else
                 {
@@ -56,10 +54,10 @@ namespace ZA6.Animations
 
             public override void Draw(SpriteBatch spriteBatch)
             {
-                if (_text == null || IsDone)
+                if (IsDone/* || Text == null*/)
                     return;
                 
-                BitmapFontRenderer.DrawString(spriteBatch, _text, new Vector2(_x, _y));
+                BitmapFontRenderer.DrawString(spriteBatch, Text, new Vector2(_x, _y));
             }
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Utilities;
@@ -12,7 +11,8 @@ namespace ZA6.Animations
         {
             Stages = new AnimationStage[]
             {
-                //new TextFade() { Text = text1 },
+                new WaitStage(1f),
+                new TextFade(text1, false),
                 new WaitStage(3f),
                 new TextFade(text2, true),
             };
@@ -20,137 +20,33 @@ namespace ZA6.Animations
 
         private class TextFade : AnimationStage
         {
+            public override bool DrawAfterDone { get => true; }
             public string Text;
             public bool IsLower;
-            private float _elapsedTime = 0;
+            private Point _size;
+            private Color _color;
 
             public TextFade(string text, bool isLower)
             {
                 Text = text;
                 IsLower = isLower;
+                _size = BitmapFontRenderer.CalculateSize(text);
+                StageTime = 3f;
             }
             
-            public override void Update(GameTime gameTime)
+            public override void Update(float elapsedTime)
             {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                float v = Utility.RoundTo(elapsedTime / (float)StageTime, 0.15f);
+                _color = new Color(v, v, v, v);
             }
             
             public override void Draw(SpriteBatch spriteBatch)
             {
+                Vector2 position = !IsLower
+                    ? new Vector2(40, Static.NativeHeight / 2 - 20 - _size.Y)
+                    : new Vector2(40, Static.NativeHeight / 2 + 20);
                 
-            }
-        }
-
-        private class TextStack : AnimationStage
-        {
-            public static string Text = "GAMEOVER";
-            private int _y = 60;
-            private int _xPadding = 40;
-            private int _nextXPadding = 85;
-            private float _time = 0.4f;
-            private float _elapsedTime = 0;
-
-            
-            public override void Update(GameTime gameTime)
-            {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_elapsedTime > _time)
-                    IsDone = true;
-            }
-
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                Utility.DrawOverlay(spriteBatch, Color.Black);
-                Static.Scene.DrawPlayerOnly(spriteBatch);
-
-                int letterSpace = 20; //Static.NativeWidth - xPadding * 2 / Text.Length;
-                Vector2 endPosition = new Vector2(_nextXPadding + letterSpace / 2, _y);
-                float donePercentage = Math.Min(1f, _elapsedTime / _time);
-                
-                for (int i = Text.Length - 1; i >= 0; i--)
-                {
-                    string t = Text.Substring(i, 1);    
-                    float startX = _xPadding + i * letterSpace + letterSpace / 2;
-                    var position = Vector2.Lerp(new Vector2(startX, _y), endPosition, donePercentage);
-
-                    BitmapFontRenderer.DrawString(spriteBatch, t, position);
-                }
-            }
-        }
-
-        private class TextFinish : AnimationStage
-        {
-            public static string Text = "GAME OVER";
-            private int _y = 60;
-            private int _xPadding = 85;
-            private float _time = 0.2f;
-            private float _elapsedTime = 0;
-
-            public override void Enter()
-            {
-                SFX.LargeBeam.Play();
-            }
-
-            public override void Update(GameTime gameTime)
-            {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_elapsedTime > _time)
-                    IsDone = true;
-            }
-
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                Utility.DrawOverlay(spriteBatch, Color.Black);
-                Static.Scene.DrawPlayerOnly(spriteBatch);
-
-                int letterSpace = 8; //Static.NativeWidth - xPadding * 2 / Text.Length;
-                float donePercentage = Math.Min(1f, _elapsedTime / _time);
-                Vector2 startPosition = new Vector2(_xPadding + letterSpace / 2, _y);
-                
-                for (int i = Text.Length - 1; i >= 0; i--)
-                {
-                    string t = Text.Substring(i, 1);
-                    float endX = _xPadding + i * letterSpace + letterSpace / 2;
-                    Vector2 endPosition = new Vector2(endX, _y);
-                    var position = Vector2.Lerp(startPosition, endPosition, donePercentage);
-
-                    BitmapFontRenderer.DrawString(spriteBatch, t, position);
-                }
-            }
-        }
-
-        private class WhiteFlash : AnimationStage
-        {
-            public static string Text = "GAME OVER";
-            private int _y = 60;
-            private int _xPadding = 85;
-            private float _time = 0.4f;
-            private float _elapsedTime = 0;
-
-            public override void Update(GameTime gameTime)
-            {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                
-                if (_elapsedTime > _time)
-                    IsDone = true;
-            }
-
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                float reverseDonePercentage = 1f - Math.Min(1f, _elapsedTime / _time);
-                Utility.DrawOverlay(spriteBatch, new Color(reverseDonePercentage, reverseDonePercentage, reverseDonePercentage));
-                int letterSpace = 8; //Static.NativeWidth - xPadding * 2 / Text.Length;
-
-                for (int i = Text.Length - 1; i >= 0; i--)
-                {
-                    string t = Text.Substring(i, 1);
-                    float x = _xPadding + i * letterSpace + letterSpace / 2;
-                    var position = new Vector2(x, _y);
-
-                    BitmapFontRenderer.DrawString(spriteBatch, t, position);
-                }
+                BitmapFontRenderer.DrawString(spriteBatch, Text, position, color: _color);
             }
         }
     }

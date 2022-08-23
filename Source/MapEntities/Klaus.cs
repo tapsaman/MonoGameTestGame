@@ -36,7 +36,7 @@ namespace ZA6
             Static.EventSystem.Load(new Event[]
             {
                 new FaceEvent(this, Static.Player),
-                new TextEvent(new Dialog("This is the pain room"), this),
+                new TextEvent(new Dialog("This is the pain room."), this),
                 new AnimateEvent(new Animations.FadeSprite(Sprite)),
                 new RemoveEvent(this),
                 new SaveValueEvent(DataStoreType.Session, "spoken to klaus", true),

@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine;
 
-namespace ZA6.Models
+namespace ZA6.Animations
 {
     public class AnimationEffect : IAnimationEffect
     {

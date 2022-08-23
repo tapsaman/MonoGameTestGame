@@ -28,11 +28,13 @@ log:
 22.8. - saved config, ui revamp, timer, play time, play time saved to game save, check game data dev tool action
 22.8. - sprite revamp, mapobject -> maplevel property
 23.8. - dropdown input, ui finished, intro init
+23.8. - animations/animation stages revamp, intro done
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
+* fix panning up
 * only draw tilemap inside screen
 * use arrays for tilemap tiles? compare performance with timing methods
 * better text highlight shader

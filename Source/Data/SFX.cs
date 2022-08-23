@@ -40,6 +40,7 @@ namespace ZA6
         public static SoundEffect LifeRefill;
         public static SoundEffect Rupee;
         public static SoundEffect LowHP;
+        public static SoundEffect Jump;
 
         public static void Load()
         {
@@ -68,6 +69,7 @@ namespace ZA6
             LifeRefill = Static.Content.Load<SoundEffect>("linktothepast/sfx/life refill");
             Rupee = Static.Content.Load<SoundEffect>("linktothepast/sfx/rupee");
             LowHP = Static.Content.Load<SoundEffect>("linktothepast/sfx/low hp");
+            Jump = Static.Content.Load<SoundEffect>("linktothepast/sfx/error");
         }
     }
 }

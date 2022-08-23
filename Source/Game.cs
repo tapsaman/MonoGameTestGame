@@ -28,7 +28,7 @@ namespace ZA6
             Deactivated += DectivateWindow;
             Activated += ActivateWindow;
         }
-
+    
         protected override void Initialize()
         {
             Content.RootDirectory = "Content";

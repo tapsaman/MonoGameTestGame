@@ -1,52 +1,36 @@
-using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ZA6.Managers;
 using TapsasEngine.Sprites;
 
 namespace ZA6.Animations
 {
     public class FadeSprite : Animation
     {
-        public FadeSprite(Sprite target)
+        public FadeSprite(Sprite target, float time = 1.5f)
         {
             Stages = new AnimationStage[]
             {
-                new FadeSpriteStage(target)
+                new FadeSpriteStage() { Target = target, Time = time }
             };
         }
 
         private class FadeSpriteStage : AnimationStage
         {
-            public float Time = 1.5f;
-            private Sprite _target;
-            private float _elapsedTime = 0;
-            
-            public FadeSpriteStage(Sprite target)
-            {
-                _target = target;
-            }
-            public override void Enter()
-            {
-                _elapsedTime = 0;
-            }
-            public override void Update(GameTime gameTime)
-            {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            public float Time;
+            public Sprite Target;
 
-                if (_elapsedTime < Time)
+            public override void Update(float elapsedTime)
+            {
+                if (elapsedTime < Time)
                 {
-                    float changePercentage = _elapsedTime / Time;
+                    float changePercentage = elapsedTime / Time;
                     float value = 1f - changePercentage;
-                    _target.Color = new Color(value, value, value, value);
+                    Target.Color = new Color(value, value, value, value);
                 }
                 else
                 {
-                    //_target.Color.A = 0;
                     IsDone = true;
                 }
             }
-            public override void Draw(SpriteBatch spriteBatch) {}
         }
     }
 }

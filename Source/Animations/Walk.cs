@@ -47,7 +47,6 @@ namespace ZA6.Animations
 
         private class WalkStage : AnimationStage
         {
-            public float Time = 1f;
             protected Vector2 _distance;
             protected float _speed;
             protected Vector2 _endPosition;
@@ -71,7 +70,7 @@ namespace ZA6.Animations
                 _velocity *= _speed;
                 _target.Facing = _velocity.ToDirection();
             }
-            public override void Update(GameTime gameTime)
+            public override void Update(float _)
             {
                 var travel = _target.Position - _startPosition;
 
@@ -86,7 +85,6 @@ namespace ZA6.Animations
                     _target.Velocity = _velocity;
                 }
             }
-            public override void Draw(SpriteBatch spriteBatch) {}
         }
 
         private class WalkToStage : WalkStage
@@ -113,7 +111,6 @@ namespace ZA6.Animations
             private Vector2 _distance;
             private Vector2 _endPosition;
             private Character _target;
-            private float _elapsedTime = 0f;
             
             public TimedWalkStage(Character target, Vector2 distance, float time)
             {
@@ -125,11 +122,9 @@ namespace ZA6.Animations
             {
                 _endPosition = _target.Position + _distance;
             }
-            public override void Update(GameTime gameTime)
+            public override void Update(float elapsedTime)
             {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_elapsedTime > Time)
+                if (elapsedTime > Time)
                 {
                     IsDone = true;
                     _target.Position = _endPosition;
@@ -140,7 +135,6 @@ namespace ZA6.Animations
                     _target.Velocity = _distance / Time;
                 }
             }
-            public override void Draw(SpriteBatch spriteBatch) {}
         }
     }
 }

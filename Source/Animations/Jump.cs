@@ -11,7 +11,7 @@ namespace ZA6.Animations
         {
             Stages = new AnimationStage[]
             {
-                new JumpStage(target)
+                new JumpToStage(target, Vector2.Zero)
             };
         }
 
@@ -25,46 +25,6 @@ namespace ZA6.Animations
                 };
             }
         }
-
-        private class JumpStage : AnimationStage
-        {
-            public float Time = 0.5f;
-            public float JumpHeight = 0.5f;
-            private Vector2 _defaultPosition;
-            private MapObject _target;
-            private float _gravity = 0;
-            private Vector2 _velocity;
-            private float _elapsedTime = 0;
-            
-            public JumpStage(MapObject target)
-            {
-                _target = target;
-            }
-            public override void Enter()
-            {
-                _defaultPosition = _target.SpriteOffset;
-                _gravity = (float)(8 * (JumpHeight / Math.Pow(Time, 2)));
-                _velocity = new Vector2(0, -(float)(_gravity * 0.5 * Time));
-                SFX.Error.Play();
-            }
-            public override void Update(GameTime gameTime)
-            {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_elapsedTime < Time)
-                {
-                    _velocity.Y += _gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    _target.SpriteOffset += _velocity;
-                    
-                }
-                else
-                {
-                    IsDone = true;
-                    _target.SpriteOffset = _defaultPosition;
-                }
-            }
-            public override void Draw(SpriteBatch spriteBatch) {}
-        }
         
         private class JumpToStage : AnimationStage
         {
@@ -74,9 +34,8 @@ namespace ZA6.Animations
             private Vector2 _startPosition;
             private Vector2 _startOffset;
             private MapObject _target;
-            private float _gravity = 0;
+            private float _gravity;
             private Vector2 _velocity;
-            private float _elapsedTime = 0;
             
             public JumpToStage(MapObject target, Vector2 distance)
             {
@@ -89,20 +48,18 @@ namespace ZA6.Animations
                 _startOffset = _target.SpriteOffset;
                 _gravity = (float)(8 * (JumpHeight / Math.Pow(Time, 2)));
                 _velocity = new Vector2(0, -(float)(_gravity * 0.5 * Time));
-                SFX.Error.Play();
+                SFX.Jump.Play();
 
                 if (_target is Character character)
                     character.Facing = _distance.ToDirection();
             }
-            public override void Update(GameTime gameTime)
+            public override void Update(float elapsedTime)
             {
-                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_elapsedTime < Time)
+                if (elapsedTime < Time)
                 {
-                    _velocity.Y += _gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    _velocity.Y += _gravity * Animation.Delta;
                     _target.SpriteOffset += _velocity;
-                    _target.Position = _startPosition + _distance * (_elapsedTime / Time);
+                    _target.Position = _startPosition + _distance * (elapsedTime / Time);
                 }
                 else
                 {

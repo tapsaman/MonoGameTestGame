@@ -81,7 +81,7 @@ namespace ZA6.Manangers
             ChangingToScene.Init(Player);
             ChangingToScene.RegisterHitbox(Player.Hitbox);
             ChangingToScene.RegisterHitbox(Player.SwordHitbox);
-            Static.Scene = CurrentScene;
+            //Static.Scene = CurrentScene;
             
             return ChangingToScene;
         }

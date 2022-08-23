@@ -1,123 +1,110 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine;
 
-namespace ZA6
+namespace ZA6.Animations
 {
-    public abstract class Animation : IArrayManager<AnimationStage>, IDraw
+    public abstract class Animation : IDraw
     {
-        public float ElapsedStageTime { get; set; }
-        public AnimationStage[] Stages { get => _stages; set => SetStages(value); }
-        public int CurrentIndex { get; set; }
-        public bool Looping { get { return false; } }
-        public bool IsDone { get; set; }
-        public Vector2 DrawOffset { get; set; }
-        private AnimationStage[] _stages;
-
-        public void SetStages(AnimationStage[] stages)
-        {
-            _stages = stages;
-
-            /*foreach (var item in _stages)
+        public float Delta { get; private set; }
+        public float ElapsedTime { get; private set; }
+        public float ElapsedStageTime { get; private set; }
+        public int CurrentIndex { get; private set; }
+        public virtual bool Looping { get => false; }
+        public bool IsDone { get; private set; }
+        public Vector2 DrawOffset { private get; set; }
+        public AnimationStage[] Stages {
+            get => _stages;
+            set
             {
-                item.Manager = this;
-            }*/
+                _stages = value;
+
+                foreach (var stage in _stages)
+                {
+                    stage.Animation = this;
+                }
+
+                _drawingStages = new List<AnimationStage>();
+            }
         }
+        private AnimationStage[] _stages;
+        private List<AnimationStage> _drawingStages;
 
         public void Enter()
         {
-            Stages[CurrentIndex].Enter();
-
-            if (Stages[CurrentIndex].IsDone)
-            {
-                GoToNext();
-            }
+            EnterStage(0);
         }
-
 
         public void GoToNext()
         {
-            if (CurrentIndex + 1 == Stages.Length)
+            if (!Stages[CurrentIndex].DrawAfterDone)
+            {
+                _drawingStages.Remove(Stages[CurrentIndex]);
+            }
+
+            if (CurrentIndex < Stages.Length - 1)
+            {
+                EnterStage(CurrentIndex + 1);
+            }
+            else
             {
                 if (Looping)
                 {
-                    ElapsedStageTime = 0f;
-                    CurrentIndex = 0;
-                    Stages[CurrentIndex].Enter();
+                    EnterStage(0);
                 }
                 else
                 {
                     IsDone = true;
                 }
             }
-            else
-            {
-                ElapsedStageTime = 0f;
-                CurrentIndex += 1;
-                Stages[CurrentIndex].Enter();
-            }
         }
 
         public void Update(GameTime gameTime)
         {
-            //if (IsDone)
-            //    return;
-            
-            ElapsedStageTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Stages[CurrentIndex].Update(gameTime);
+            Delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            ElapsedTime += Delta;
+            ElapsedStageTime += Delta;
 
-            if (Stages[CurrentIndex].IsDone)
-            {
-                GoToNext();
-            }
+            UpdateStage(CurrentIndex);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-           Stages[CurrentIndex].Draw(spriteBatch);
-        }
-    }
-
-    public abstract class AnimationStage : IStage, IDraw
-    {
-        public bool IsDone { get; set; }
-
-        public virtual void Enter() {}
-        public abstract void Update(GameTime gameTime);
-        public abstract void Draw(SpriteBatch spriteBatch);
-    }
-
-    public class WaitStage : AnimationStage
-    {
-        private float _time;
-        private bool _started;
-        private float _elapsedTime;
-
-        public WaitStage(float time)
-        {
-            _time = time;
-        }
-
-        public override void Enter()
-        {
-            _started = true;
-            _elapsedTime = 0f;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            if (!_started)
-                return;
-            
-            _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (_elapsedTime > _time)
+            foreach (var stage in _drawingStages)
             {
-                _started = false;
-                IsDone = true;
+                stage.Draw(spriteBatch);
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {}
+        private void EnterStage(int index)
+        {
+            CurrentIndex = index;
+            ElapsedStageTime = 0f;
+            _drawingStages.Add(Stages[CurrentIndex]);
+            Stages[CurrentIndex].Enter();
+            AfterStageUpdate(CurrentIndex);
+         }
+
+        private void UpdateStage(int index)
+        {
+            Stages[index].Update(ElapsedStageTime);
+            AfterStageUpdate(index);
+        }
+
+        private void AfterStageUpdate(int index)
+        {
+            var stage = Stages[index];
+
+            if (stage.StageTime != null && ElapsedStageTime > stage.StageTime)
+            {
+                stage.IsDone = true;
+                GoToNext();
+            }
+            else if (stage.IsDone)
+            {
+                GoToNext();
+            }
+        }
     }
 }
