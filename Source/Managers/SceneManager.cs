@@ -28,23 +28,6 @@ namespace ZA6.Manangers
             CurrentScene.UpdateCamera(Player.Position);
         }
 
-        public void Init(SaveData saveData)
-        {
-            Static.PlayTimeTimer.Seconds = saveData.PlayTimeSeconds;
-            Static.GameData = saveData.GameData;
-
-            // Static.Scene must be defined before player so that hitboxes can register
-            Static.Scene = CurrentScene = LoadScene(saveData.MapName);
-            Static.Player = Static.Game.Hud.Player = Player = new Player()
-            {
-                Position = saveData.Location,
-                Health = saveData.Health
-            };
-            // Player must be defined for scene before scene init for events and map entities 
-            CurrentScene.Init(Player);
-            CurrentScene.UpdateCamera(Player.Position);
-        }
-
         public void Start()
         {
             CurrentScene.Start();
@@ -52,9 +35,11 @@ namespace ZA6.Manangers
 
         public void GoTo(MapExit exit)
         {
-            if (Changing)
+            if (Changing || CurrentScene.Locked)
                 return;
-            
+            else if (exit.TransitionType == TransitionType.GoToRitual)
+                exit.MapName = "Ritual";
+
             Changing = true;
             MapExit = exit;
             Static.EventSystem.OnSceneChange();
@@ -107,23 +92,27 @@ namespace ZA6.Manangers
 
             if (_sceneTransition.Done)
             {
+                CurrentScene.Exit();
                 CurrentScene.Remove(Player);
                 CurrentScene = Static.Scene = ChangingToScene;
                 ChangingToScene = null;
                 Changing = false;
                 _sceneTransition = null;
 
-                // Make player walk two steps
-                Static.EventSystem.Load(new Event[]
+                if (MapExit.TransitionType != TransitionType.GoToRitual)
                 {
-                    new AnimateEvent(
-                        new Animations.Walk.Timed(
-                            Player,
-                            MapExit.Direction.ToVector() * CurrentScene.TileMap.TileSize * 2,
-                            0.2f
-                    )),
-                    new RunEvent(() => { SaveData.CreateAndSave(); })
-                });
+                    // Make player walk two steps
+                    Static.EventSystem.Load(new Event[]
+                    {
+                        new AnimateEvent(
+                            new Animations.Walk.Timed(
+                                Player,
+                                MapExit.Direction.ToVector() * CurrentScene.TileMap.TileSize * 2,
+                                0.2f
+                            ))
+                    });
+                }
+
 
                 CurrentScene.Start();
             }
@@ -151,6 +140,10 @@ namespace ZA6.Manangers
                     return new TestScene();
                 case "A2":
                     return new SceneA2();
+                case "AB1":
+                    return new SceneAB1();
+                case "Ritual":
+                    return new RitualScene();
                 case "B1":
                     return new SceneB1();
                 case "B2":
@@ -174,6 +167,8 @@ namespace ZA6.Manangers
                     return new SceneTransition.FadeToBlack();
                 case TransitionType.Doorway:
                     return new SceneTransition.Doorway();
+                case TransitionType.GoToRitual:
+                    return new SceneTransition.GoToRitual();
             }
             return null;
         }

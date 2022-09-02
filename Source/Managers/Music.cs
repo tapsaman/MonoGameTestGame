@@ -1,19 +1,23 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using TapsasEngine;
+using ZA6.Utilities;
 
 namespace ZA6
 {
     public static class Music
     {
-        public static float Volume { get; set; } = 0.0f;
+        public static float Volume { get; set; } = 0.4f;
+        public static bool IsPaused { get; private set; }
+        public static MusicScrambler Scrambler { get; set; }
         private const float _VOLUME_MULTIPLIER = 0.4f;
+        private static Song _currentSong;
+        private static Song _nextSong;
         private static float _currentVolume;
         private static float _fadeOutTime;
         private static float _elapsedFadeTime;
         private static bool _fadingOut;
-        private static Song _currentSong;
-        private static Song _nextSong;
+        private static object _pausedBy;
 
         public static void Play(Song song)
         {
@@ -36,6 +40,26 @@ namespace ZA6
         {
             Play(song);
             MediaPlayer.IsRepeating = false;
+        }
+
+        public static void Pause(object pauser)
+        {
+            if (IsPaused || MediaPlayer.State != MediaState.Playing)
+                return;
+            
+            IsPaused = true;
+            MediaPlayer.Pause();
+            _pausedBy = pauser;
+        }
+
+        public static void Resume(object pauser)
+        {
+            if (!IsPaused || _pausedBy != pauser)
+                return;
+            
+            IsPaused = false;
+            MediaPlayer.Resume();
+            _pausedBy = null;
         }
 
         public static void FadeOut(float timeInSeconds)
@@ -64,7 +88,17 @@ namespace ZA6
 
         public static void Update(GameTime gameTime)
         {
-            if (_fadingOut)
+            if (IsPaused)
+                return;
+            
+            if (Scrambler != null)
+            {
+                Scrambler.Update(gameTime);
+
+                if (Scrambler.IsDone)
+                    Scrambler = null;
+            }
+            else if (_fadingOut)
             {
                 _elapsedFadeTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -94,6 +128,9 @@ namespace ZA6
             }
 
             MediaPlayer.Volume = _currentVolume * _VOLUME_MULTIPLIER;
+
+        if (MediaPlayer.Queue.ActiveSong != null)
+                Sys.Debug(MediaPlayer.Queue.ActiveSong.Name.ToString());
         }
     }
 }

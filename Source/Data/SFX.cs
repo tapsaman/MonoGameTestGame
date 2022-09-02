@@ -41,6 +41,8 @@ namespace ZA6
         public static SoundEffect Rupee;
         public static SoundEffect LowHP;
         public static SoundEffect Jump;
+        public static SoundEffect ItemGet;
+        public static SoundEffect RitualEndSound;
 
         public static void Load()
         {
@@ -70,6 +72,8 @@ namespace ZA6
             Rupee = Static.Content.Load<SoundEffect>("linktothepast/sfx/rupee");
             LowHP = Static.Content.Load<SoundEffect>("linktothepast/sfx/low hp");
             Jump = Static.Content.Load<SoundEffect>("linktothepast/sfx/error");
+            ItemGet = Static.Content.Load<SoundEffect>("linktothepast/sfx/item get 1");
+            RitualEndSound = Static.Content.Load<SoundEffect>("halloween-impact-wav");
         }
     }
 }

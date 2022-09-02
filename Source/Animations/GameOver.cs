@@ -8,13 +8,13 @@ namespace ZA6.Animations
 {
     public class GameOver : Animation
     {
-        public GameOver()
+        public GameOver(string text1 = "GAMEOVER", string text2 = "GAMEOVER", string text3 = "GAME OVER")
         {
             Stages = new AnimationStage[]
             {
-                new TextSlide(),
-                new TextStack(),
-                new TextFinish(),
+                new TextSlide() { Text = text1  },
+                new TextStack() { Text = text2  },
+                new TextFinish() { Text = text3  },
                 new WhiteFlash()
             };
         }
@@ -61,7 +61,7 @@ namespace ZA6.Animations
 
         private class TextStack : AnimationStage
         {
-            public static string Text = "GAMEOVER";
+            public string Text = "GAMEOVER";
             private int _y = 60;
             private int _xPadding = 40;
             private int _nextXPadding = 85;
@@ -93,7 +93,7 @@ namespace ZA6.Animations
 
         private class TextFinish : AnimationStage
         {
-            public static string Text = "GAME OVER";
+            public string Text = "GAME OVER";
             private int _y = 60;
             private int _xPadding = 85;
 
@@ -130,7 +130,7 @@ namespace ZA6.Animations
 
         private class WhiteFlash : AnimationStage
         {
-            public static string Text = "GAME OVER";
+            private const string Text = "GAME OVER";
             public override bool DrawAfterDone { get => true; }
             private int _y = 60;
             private int _xPadding = 85;

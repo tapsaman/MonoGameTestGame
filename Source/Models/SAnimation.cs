@@ -28,21 +28,21 @@ namespace ZA6.Models
             FrameRectangles = CreateHorizontalFrameRectangles(frameCount, DefaultFrameWidth, DefaultFrameHeight, textureYPos, textureXPos);
         }
 
-        public SAnimation(Texture2D texture, int frameCount, int frameWidth, int frameHeight, float frameDuration = 0.1f, int textureYPos = 0, int textureXPos = 0, Vector2 offset = new Vector2())
+        public SAnimation(Texture2D texture, int frameCount, int frameWidth, int frameHeight, float frameDuration = 0.1f, int textureYPos = 0, int textureXPos = 0, Vector2 offset = new Vector2(), bool isLooping = false)
         {
             Texture = texture;
-            IsLooping = false;
+            IsLooping = isLooping;
             FrameDuration = frameDuration;
             FrameCount = frameCount;
             Offset = offset;
             FrameRectangles = CreateHorizontalFrameRectangles(frameCount, frameWidth, frameHeight, textureYPos, textureXPos);
         }
 
-        public SAnimation(Texture2D texture, float frameDuration, Vector2 offset, Rectangle[] frameRectangles)
+        public SAnimation(Texture2D texture, float frameDuration, Vector2 offset, Rectangle[] frameRectangles, bool isLooping = false)
         {
             Texture = texture;
             FrameCount = frameRectangles.Length;
-            IsLooping = false;
+            IsLooping = isLooping;
             FrameDuration = frameDuration;
             FrameRectangles = frameRectangles;
             Offset = offset;

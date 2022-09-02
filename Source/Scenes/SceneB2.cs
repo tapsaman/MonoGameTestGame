@@ -14,24 +14,27 @@ namespace ZA6
 
         public SceneB2()
         {
-            Theme = Static.Content.Load<Song>("linktothepast/forest");
+            Theme = Static.Content.Load<Song>("linktothepast/darkworld");
+            ExitTransitions[Direction.Up] = TransitionType.FadeToBlack;
         }
 
         protected override void Load()
         {
-            _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
-            Seppo = new Seppo();
-            Seppo.Position = TileMap.ConvertTileXY(35, 8);
+            if (Static.GameData.GetInt("progress") == 0)
+            {
+                Seppo = new Seppo();
+                Seppo.Position = TileMap.ConvertTileXY(35, 8);
 
-            var seppoActivateEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(35, 16), 16, 8);
-            seppoActivateEventTrigger.Trigger += SeppoActivateEvent;
-            
-            var seppoDectivateEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(35, 20), 16, 8);
-            seppoDectivateEventTrigger.Trigger += SeppoDeactivateEvent;
+                var seppoActivateEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(35, 16), 16, 8);
+                seppoActivateEventTrigger.Trigger += SeppoActivateEvent;
+                
+                var seppoDectivateEventTrigger = new TouchEventTrigger(TileMap.ConvertTileXY(32, 26), 16, 8);
+                seppoDectivateEventTrigger.Trigger += SeppoDeactivateEvent;
 
-            Add(Seppo);
-            Add(seppoActivateEventTrigger);
-            Add(seppoDectivateEventTrigger);
+                Add(Seppo);
+                Add(seppoActivateEventTrigger);
+                Add(seppoDectivateEventTrigger);
+            }
         }
 
         private void SeppoActivateEvent(Character toucher)
@@ -41,7 +44,7 @@ namespace ZA6
                 Sys.Log("activate seppo");
                 _seppoActivated = true;
                 Seppo.Facing = Direction.Down;
-                MediaPlayer.Pause();
+                Music.Pause(this);
 
                 if (Static.GameData.GetInt("progress") == 0)
                     Static.GameData.Save("progress", 1);
@@ -55,22 +58,8 @@ namespace ZA6
                 Sys.Log("deactivate seppo");
                 _seppoActivated = false;
                 Seppo.Facing = Direction.Left;
-                MediaPlayer.Resume();
+                Music.Resume(this);
             }
-        }
-
-        // NOTE drawing tree shadow overlay on top of dialog looks cool 
-        public override void DrawOverlay(SpriteBatch spriteBatch)
-        {
-            // Reduce native size for panning
-            var overlayPosition = OverlayOffset + DrawOffset * 0.5f - Static.NativeSize;
-            
-            spriteBatch.Draw(
-                _overlay,
-                overlayPosition,
-                new Rectangle(0, 0, Width * 3, Height * 2),
-                new Color(255, 255, 255, 0.5f)
-            );
         }
     }
 }

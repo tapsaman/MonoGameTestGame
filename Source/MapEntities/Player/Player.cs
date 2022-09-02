@@ -52,6 +52,7 @@ namespace ZA6
                 { "WalkUp",         new SAnimation(txt1, 8, 0.04f, true, 1, 0, offset: offset1) },
                 { "WalkRight",      new SAnimation(txt1, 8, 0.04f, true, 2, 0, offset: offset1) },
                 { "WalkLeft",       new SAnimation(txt1, 8, 0.04f, true, 3, 0, offset: offset1) },
+                { "GotItem",        new SAnimation(txt1, 6, 12, 24, 28, offset: offset1) },
                 { "Falling",        new SAnimation(txt1, 7, 0.2f, false, 11, 0, offset: offset1) },
                 { "Dying",          new SAnimation(txt1, 0.07f, offset1, new Rectangle[]
                     {

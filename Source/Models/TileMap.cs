@@ -226,12 +226,6 @@ namespace ZA6
             }
         }
 
-
-        private void CollisionTypeToSourceRectangle()
-        {
-
-        }
-
         public class Tile
         {
             public Vector2 Position;

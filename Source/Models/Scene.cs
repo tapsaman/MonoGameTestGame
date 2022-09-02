@@ -13,6 +13,8 @@ namespace ZA6
 {
     public class Scene : IUpdate
     {
+        public bool Locked;
+        public bool LockedCamera;
         public Song Theme { get; protected set; }
         public TileMap TileMap;
         public Player Player;
@@ -159,6 +161,9 @@ namespace ZA6
 
         public void UpdateCamera(Vector2 targetPosition)
         {
+            if (LockedCamera)
+                return;
+            
             int halfWidth = Static.NativeWidth / 2;
             int x = Math.Min(TileMap.DrawWidth - Static.NativeWidth, Math.Max(0, (int)targetPosition.X - halfWidth));
 
@@ -204,6 +209,11 @@ namespace ZA6
         }
 
         public virtual void DrawOverlay(SpriteBatch spriteBatch)
+        {
+            // Do nothing by default
+        }
+
+        public virtual void Exit()
         {
             // Do nothing by default
         }

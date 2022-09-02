@@ -13,7 +13,8 @@ namespace ZA6.Animations
         public int CurrentIndex { get; private set; }
         public virtual bool Looping { get => false; }
         public bool IsDone { get; private set; }
-        public Vector2 DrawOffset { private get; set; }
+        public bool IsEntered { get; private set; }
+        public Vector2 DrawOffset { get; set; }
         public AnimationStage[] Stages {
             get => _stages;
             set
@@ -34,6 +35,7 @@ namespace ZA6.Animations
         public void Enter()
         {
             EnterStage(0);
+            IsEntered = true;
         }
 
         public void GoToNext()
@@ -42,6 +44,9 @@ namespace ZA6.Animations
             {
                 _drawingStages.Remove(Stages[CurrentIndex]);
             }
+
+            // Reset stage.IsDone for looping animations
+            Stages[CurrentIndex].IsDone = false;
 
             if (CurrentIndex < Stages.Length - 1)
             {

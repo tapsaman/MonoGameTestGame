@@ -10,10 +10,12 @@ namespace ZA6
         public static Texture2D TileTexture;
         public static Texture2D CaveTileTexture;
         public static Texture2D ObjectTexture;
+        public static Texture2D NPCSprites;
         public static Texture2D EnemySprites;
         public static Texture2D Shadow;
         public static Texture2D LifeHUD;
         public static Texture2D RupeeHUD;
+        public static Texture2D SeppoFace;
         
         public static void Load()
         {
@@ -22,10 +24,12 @@ namespace ZA6
             TileTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-tiles");
             CaveTileTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-cave-tiles");
             ObjectTexture = Static.Content.Load<Texture2D>("TiledProject/linktothepast-objects");
+            NPCSprites = Static.Content.Load<Texture2D>("linktothepast/npc-sprites");
             EnemySprites = Static.Content.Load<Texture2D>("linktothepast/enemy-sprites");
             Shadow = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-main");
             LifeHUD = Static.Content.Load<Texture2D>("linktothepast/life-hud");
             RupeeHUD = Static.Content.Load<Texture2D>("linktothepast/rupee-hud");
+            SeppoFace = Static.Content.Load<Texture2D>("seppo_face");
         }
 
         public static Texture2D TilesetImageToTexture(TiledCS.TiledImage image)

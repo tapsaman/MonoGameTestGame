@@ -36,7 +36,7 @@ namespace ZA6.Animations
             
             public override void Update(float elapsedTime)
             {
-                float v = Utility.RoundTo(elapsedTime / (float)StageTime, 0.15f);
+                float v = Utility.RoundTo(elapsedTime / (float)StageTime, 0.10f);
                 _color = new Color(v, v, v, v);
             }
             

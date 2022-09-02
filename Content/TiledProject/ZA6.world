@@ -4,14 +4,14 @@
             "fileName": "A1.tmx",
             "height": 224,
             "width": 256,
-            "x": 0,
+            "x": -512,
             "y": 0
         },
         {
             "fileName": "A2.tmx",
             "height": 240,
             "width": 256,
-            "x": 0,
+            "x": -512,
             "y": 224
         },
         {
@@ -46,8 +46,22 @@
             "fileName": "Z1.tmx",
             "height": 224,
             "width": 128,
-            "x": -128,
+            "x": -640,
             "y": 0
+        },
+        {
+            "fileName": "AB1.tmx",
+            "height": 224,
+            "width": 512,
+            "x": -256,
+            "y": 0
+        },
+        {
+            "fileName": "Ritual.tmx",
+            "height": 224,
+            "width": 512,
+            "x": -256,
+            "y": -264
         }
     ],
     "onlyShowAdjacentMaps": false,

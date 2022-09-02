@@ -25,7 +25,7 @@ namespace ZA6.Models
             Static.SceneManager.Update(gameTime);
             Static.EventSystem.Update(gameTime);
             Music.Update(gameTime);
-            _game.TitleText.Update(gameTime);
+            //_game.TitleText.Update(gameTime);
             _game.Hud.Update(gameTime);
 
             if (Input.P1.IsPressed(Input.P1.Start) || Input.P1.IsPressed(Input.P1.Select))
@@ -40,7 +40,7 @@ namespace ZA6.Models
             Static.Renderer.Start();
             
             Static.SceneManager.Draw(spriteBatch);
-            _game.TitleText.Draw(spriteBatch);
+            //_game.TitleText.Draw(spriteBatch);
             _game.Hud.Draw(spriteBatch);
             
             Static.Renderer.End();
@@ -48,7 +48,7 @@ namespace ZA6.Models
 
         public override void Exit()
         {
-            Static.Player.StateMachine.TransitionTo("Idle");
+            //Static.Player.StateMachine.TransitionTo("Idle");
         }
     } 
 }

@@ -26,12 +26,8 @@ namespace ZA6.Models
             _menu = new GameMenu(ResumeGame);
             UIManager.Add(_menu);
             LifeHUD.LowHPSound.Stop();
-
-            if (Static.GameStarted)
-            {
-                SFX.MenuOpen.Play();
-                MediaPlayer.Pause();
-            }
+            SFX.MenuOpen.Play();
+            Music.Pause(this);
         }
 
         public override void Update(GameTime gameTime)
@@ -44,12 +40,16 @@ namespace ZA6.Models
         {
             Static.Renderer.Start();
 
-            if (Static.GameStarted)
+            //if (Static.GameStarted)
+            //{
+            Static.SceneManager.Draw(spriteBatch);
+
+            if (_game.TitleText.IsEntered)
             {
-                Static.SceneManager.Draw(spriteBatch);
                 _game.TitleText.Draw(spriteBatch);
-                _game.Hud.Draw(spriteBatch);
             }
+            _game.Hud.Draw(spriteBatch);
+            //}
 
             UIManager.Draw(spriteBatch);
             
@@ -66,11 +66,8 @@ namespace ZA6.Models
             UIManager.SetToClear();
             _menu = null;
 
-            if (Static.GameStarted)
-            {
-                SFX.MenuClose.Play();
-                MediaPlayer.Resume();
-            }
+            SFX.MenuClose.Play();
+            Music.Resume(this);
         }
     } 
 }

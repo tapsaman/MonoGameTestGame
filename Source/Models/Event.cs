@@ -57,7 +57,7 @@ namespace ZA6.Models
         {
             IsDone = false;
             _previousGameState = Static.Game.StateMachine.CurrentStateKey;
-            bool topDialogBox = Speaker.Position.Y > Static.NativeHeight / 2;
+            bool topDialogBox = Speaker.Position.Y + Static.Scene.DrawOffset.Y > Static.NativeHeight / 2;
             Static.DialogManager.Load(Dialog, topDialogBox);
             Static.Game.StateMachine.TransitionTo("Dialog");
             Static.DialogManager.DialogEnd += OnDone;

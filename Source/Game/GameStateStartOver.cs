@@ -10,7 +10,6 @@ namespace ZA6.Models
     {
         private ZeldaAdventure666 _game;
         private string _mapName;
-        private SaveData _saveData;
         private bool _sceneInited;
         private Animations.Spotlight _spotlight;
         private float _elapsedTime;
@@ -20,7 +19,6 @@ namespace ZA6.Models
         public class Args : StateArgs
         {
             public string MapName = null;
-            public SaveData SaveData = null;
         }
 
         public GameStateStartOver(ZeldaAdventure666 game)
@@ -36,13 +34,14 @@ namespace ZA6.Models
             _spotlight = null;
 
             _mapName = null;
-            _saveData = null;
 
             if (args is Args a)
             {
                 _mapName = a.MapName;
-                _saveData = a.SaveData;
             }
+
+            if (Static.Scene != null)
+                Static.Scene.Exit();
         }
 
         public override void Update(GameTime gameTime)
@@ -54,14 +53,12 @@ namespace ZA6.Models
                 if (_elapsedTime < _TIME_1)
                     return;
                 
-                Static.GameStarted = false;
+                Static.GameStarted = true;
                 Static.SessionData = new DataStore();
                 _game.TitleText = new Animations.TitleText();
 
                 if (_mapName != null)
                     Static.SceneManager.Init(_mapName);
-                else if (_saveData != null)
-                    Static.SceneManager.Init(_saveData);
                 else
                     Static.SceneManager.Init();
                 
@@ -87,6 +84,8 @@ namespace ZA6.Models
             else
             {
                 _game.StateMachine.TransitionTo("Default");
+                Music.Play(Songs.DarkWorld);
+                Static.SceneManager.Start();
             }
         }
 

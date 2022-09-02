@@ -131,7 +131,7 @@ namespace TapsasEngine.Utilities
                         {
                             string key = reader.GetAttribute("Key");
                             string value = reader.GetAttribute("Value");
-                            BoolStore[key] = value == "true";
+                            BoolStore[key] = value == "True" || value == "true";
                             reader.Read();
                         }
 

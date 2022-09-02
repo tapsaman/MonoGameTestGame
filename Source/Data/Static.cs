@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,8 @@ namespace ZA6
 {
     public static class Static
     {
-        public const bool Debug = true;
+        public const bool Debug = false;
+        public const bool PauseOnWindowDeactive = !Debug;
         public static ZeldaAdventure666 Game;
         public static Player Player;
         public static SaveData LoadedGame;
@@ -55,6 +57,8 @@ namespace ZA6
         {
             switch (type)
             {
+                case DataStoreType.Game:
+                    return Static.GameData;
                 case DataStoreType.Session:
                     return Static.SessionData;
                 case DataStoreType.Scene:

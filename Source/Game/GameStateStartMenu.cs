@@ -6,6 +6,7 @@ using TapsasEngine.Utilities;
 using ZA6.Managers;
 using ZA6.Manangers;
 using ZA6.UI;
+using ZA6.Utilities;
 
 namespace ZA6.Models
 {
@@ -25,6 +26,7 @@ namespace ZA6.Models
         private bool _pressedStart;
         private Texture2D _overlay;
         private Song _song;
+        private MusicScrambler _scrambler;
 
         public GameStateStartMenu(ZeldaAdventure666 game)
         {
@@ -36,6 +38,12 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
+            if (Static.Scene != null)
+                Static.Scene.Exit();
+            
+            // Static.GameData = new DataStore();
+            Static.EventSystem.Clear();
+            Static.GameStarted = false;
             SaveData.Load();
             Music.Stop();
             Music.Play(_song);
@@ -94,7 +102,7 @@ namespace ZA6.Models
             {
                 UIManager.Update(gameTime);
             }
-            else if (_elapsedTime > _START_WAIT_TIME)
+            else if (Music.Scrambler == null || Music.Scrambler.IsDone)
             {
                 SaveData.LoadAndApply();
             }
@@ -134,6 +142,8 @@ namespace ZA6.Models
                 Color.White * _titleMultiplier
             );
 
+            Shaders.Wavy.Parameters["waveWidth"].SetValue(0.02f);
+            Shaders.Wavy.Parameters["waveHeight"].SetValue(10f);
             Shaders.Wavy.Parameters["yOffset"].SetValue(_elapsedTime / 4);
             Static.Renderer.ChangeToEffect(Shaders.Wavy);
 
@@ -148,10 +158,8 @@ namespace ZA6.Models
 
         private void PressedStartGame(object sender, EventArgs e)
         {
-            //_menu.Enabled = false;
             _pressedStart = true;
-            _elapsedTime = 0f;
-            Music.FadeOut(_START_WAIT_TIME);
+            Music.Scrambler = new StartMenuScrambler();
         }
 
         public override void Exit()

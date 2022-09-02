@@ -14,7 +14,7 @@ namespace ZA6
 
         public SceneC1()
         {
-            Theme = Static.Content.Load<Song>("linktothepast/forest");
+            Theme = Songs.DarkWorld;
         }
 
         protected override void Load()
@@ -28,8 +28,6 @@ namespace ZA6
             var lockedChest = new LockedChest() { Position = TileMap.ConvertTileXY(4, 34) };
             lockedChest.Trigger += (Character _) => { SceneData.Save("tried chest", true); };
             Add(lockedChest);
-
-            SceneData.Save("tried chest", true);
         }
 
         public override void Start()
@@ -176,10 +174,11 @@ namespace ZA6
                                         new FaceEvent(_moogle, Direction.Down),
                                         new AnimateEvent(new Animations.Walk(Player, TileMap.ConvertTileXY(-2, 0))),
                                         new FaceEvent(Player, Direction.Up),
-                                        new TextEvent(new Dialog("The mini game game costs 199\nrupees to play\n kupo.\nGotta feed the kids and all that"), _moogle),
+                                        new TextEvent(new Dialog("The mini game game costs 199\nrupees to play\n kupo.\nGotta feed the kids and all\nthat"), _moogle),
                                         new RunEvent(() => { Static.Game.Hud.Rupees -= 199; }),
                                         new WaitEvent(RupeeHUD.UPDATE_TIME * 199),
                                         new TextEvent(new Dialog("Good by!"), _moogle),
+                                        new SaveValueEvent(DataStoreType.Game, "minigame done", true),
                                         new AnimateEvent(new Animations.Jump.To(_moogle, TileMap.ConvertTileXY(2, 0))),
                                         new AnimateEvent(new Animations.Jump.To(_moogle, TileMap.ConvertTileXY(12 , 0))),
                                         new AnimateEvent(new Animations.Walk.To(Player, TileMap.PlayerStartPosition)),
@@ -192,7 +191,7 @@ namespace ZA6
             });
         }
 
-        public override void DrawOverlay(SpriteBatch spriteBatch)
+       /* public override void DrawOverlay(SpriteBatch spriteBatch)
         {
             // Reduce native size for panning
             var overlayPosition = OverlayOffset + DrawOffset * 0.5f - Static.NativeSize;
@@ -203,6 +202,6 @@ namespace ZA6
                 new Rectangle(0, 0, Width * 3, Height * 2),
                 new Color(255, 255, 255, 0.5f)
             );
-        }
+        }*/
     }
 }

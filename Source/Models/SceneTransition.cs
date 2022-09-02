@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZA6.Manangers;
 using TapsasEngine.Enums;
-using ZA6.Models;
 using TapsasEngine.Utilities;
 
 namespace ZA6
@@ -142,35 +141,20 @@ namespace ZA6
             private const float _FADE_TIME = 1f;
             private float _elapsedTime;
             private Vector2 _playerPositionAfter;
+            private Direction _direction;
             private Texture2D _overlay;
             private float _colorMultiplier = 0f;
             private Animations.Walk _walkAnimation;
 
             public override void Start(Scene scene1, Player player, Direction direction)
             {
+                _direction = direction;
                 _scene1 = scene1;
                 _player = player;
                 _overlay = Utility.CreateColorTexture(Static.NativeWidth, Static.NativeHeight, Color.Black);
 
-                const int playerLength = 14;
-
-                switch (direction)
-                {
-                    case Direction.Up:
-                        _playerPositionAfter = new Vector2(_player.Position.X, Static.NativeHeight - playerLength);
-                        break;
-                    case Direction.Down:
-                        _playerPositionAfter = new Vector2(_player.Position.X, 0);
-                        break;
-                    case Direction.Right:
-                        _playerPositionAfter = new Vector2(0, _player.Position.Y);
-                        break;
-                    case Direction.Left:
-                        _playerPositionAfter = new Vector2(Static.NativeWidth - playerLength, _player.Position.Y);
-                        break;
-                }
-
                 _player.NoClip = true;
+                const int playerLength = 14;
                 _walkAnimation = new Animations.Walk(_player, direction.ToVector() * playerLength);
                 _walkAnimation.Enter();
             }
@@ -197,6 +181,26 @@ namespace ZA6
                     {
                         _player.NoClip = false;
                         _scene2 = SceneManager.LoadNextScene();
+                        _playerPositionAfter = new Vector2(_scene2.Width - 14, _player.Position.Y);
+
+                        const int playerLength = 14;
+
+                        switch (_direction)
+                        {
+                            case Direction.Up:
+                                _playerPositionAfter = new Vector2(_player.Position.X, Static.NativeHeight - playerLength);
+                                break;
+                            case Direction.Down:
+                                _playerPositionAfter = new Vector2(_player.Position.X, 0);
+                                break;
+                            case Direction.Right:
+                                _playerPositionAfter = new Vector2(0, _player.Position.Y);
+                                break;
+                            case Direction.Left:
+                                _playerPositionAfter = new Vector2(_scene2.Width - 14, _player.Position.Y);
+                                break;
+                        }
+
                         _player.Position = _playerPositionAfter;
                         _scene2.UpdateCamera(_player.Position);
                         
@@ -313,6 +317,86 @@ namespace ZA6
             }
 
             return scene.TileMap.PlayerStartPosition;
+        }
+
+        public class GoToRitual : SceneTransition
+        {
+            private const float _LOAD_TIME = 1f;
+            private const float _FADE_TIME = 1f;
+            private float _elapsedTime;
+            private Texture2D _overlay;
+            private float _colorMultiplier = 0f;
+            private Animations.Walk _walkAnimation;
+
+            public override void Start(Scene scene1, Player player, Direction direction)
+            {
+                _scene1 = scene1;
+                _player = player;
+                _overlay = Utility.CreateColorTexture(Static.NativeWidth, Static.NativeHeight, Color.Black);
+
+                _player.NoClip = true;
+                var playerLength = 14;
+                _walkAnimation = new Animations.Walk(_player, direction.ToVector() * playerLength);
+                _walkAnimation.Enter();
+            }
+
+            public override void Update(GameTime gameTime)
+            {
+                if (!_walkAnimation.IsDone)
+                {
+                    _walkAnimation.Update(gameTime);
+                    _scene1.Update(gameTime);
+                    return;
+                }
+
+                _scene1.Paused = true;
+                _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                
+                if (_elapsedTime < _FADE_TIME)
+                {
+                    _colorMultiplier = (_elapsedTime) / _FADE_TIME;
+                }
+                else if (_elapsedTime < _FADE_TIME + _LOAD_TIME)
+                {
+                    if (_scene2 == null)
+                    {
+                        _player.NoClip = false;
+                        _scene2 = SceneManager.LoadNextScene();
+                        _player.Position = _scene2.TileMap.PlayerStartPosition;
+                        _scene2.UpdateCamera(_player.Position);
+                        
+                        //if (_scene1.Theme != _scene2.Theme)
+                        //Music.FadeOutTo(_scene2.Theme, _FADE_TIME + _LOAD_TIME);
+                    }
+                }
+                else if (_elapsedTime < _FADE_TIME * 2 + _LOAD_TIME)
+                {
+                    _colorMultiplier = (_FADE_TIME - (_elapsedTime - _FADE_TIME - _LOAD_TIME)) / _FADE_TIME;
+                }
+                else
+                {
+                    _overlay.Dispose();
+                    Done = true;
+                }
+            }
+
+            public override void Draw(SpriteBatch spriteBatch)
+            {
+                if (_elapsedTime < _FADE_TIME)
+                {
+                    _scene1.DrawGround(spriteBatch);
+                    _scene1.DrawTop(spriteBatch);
+                    _scene1.DrawOverlay(spriteBatch);
+                }
+                else if (_elapsedTime >= _FADE_TIME + _LOAD_TIME)
+                {
+                    _scene2.DrawGround(spriteBatch);
+                    _scene2.DrawTop(spriteBatch);
+                    _scene2.DrawOverlay(spriteBatch);
+                }
+
+                spriteBatch.Draw(_overlay, Vector2.Zero, Color.Black * _colorMultiplier);
+            }
         }
     }
 }

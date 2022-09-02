@@ -30,7 +30,7 @@ namespace ZA6
 
         public override void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false)
         {
-            var position = new Vector2(33, top ? 18 : Static.NativeHeight - _height - 18);
+            var position = new Vector2(33, top ? 36 : Static.NativeHeight - _height - 18);
 
             spriteBatch.Draw(_texture, position, Color.White);
 

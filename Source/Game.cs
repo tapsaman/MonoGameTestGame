@@ -20,13 +20,16 @@ namespace ZA6
         public HUD Hud;
         public Animations.TitleText TitleText;
         private GraphicsDeviceManager _graphicsDeviceManager;
-        private bool _deactivationPausedMusic;
 
         public ZeldaAdventure666()
         {
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
-            Deactivated += DectivateWindow;
-            Activated += ActivateWindow;
+
+            if (Static.PauseOnWindowDeactive)
+            {
+                Deactivated += DectivateWindow;
+                Activated += ActivateWindow;
+            }
         }
     
         protected override void Initialize()
@@ -90,6 +93,7 @@ namespace ZA6
             SFX.Load();
             Shaders.Load();
             Img.Load();
+            Songs.Load();
             Static.DevUtils = new DevUtils();
             Static.GameData = new DataStore();
             Static.SessionData = new DataStore();
@@ -111,8 +115,6 @@ namespace ZA6
             UIComponent.DefaultDisabledBackground = new SectionedSprite(disabledButtonTexture, 2);
 
             TitleText = new Animations.TitleText();
-
-            //Static.SceneManager.Init();
             
             Dictionary<string, State> states = new Dictionary<string, State>()
             {
@@ -127,6 +129,11 @@ namespace ZA6
             };
 
             StateMachine = new RenderStateMachine(states, "StartMenu");
+
+            if (Static.Debug)
+            {
+                SaveData.LoadAndApply();
+            }
         }
 
         private void QuitDialogState()
@@ -137,22 +144,13 @@ namespace ZA6
         private void DectivateWindow(object sendet, EventArgs args)
         {
             WindowIsActive = false;
-
-            if (MediaPlayer.State == MediaState.Playing)
-            {
-                _deactivationPausedMusic = true;
-                MediaPlayer.Pause();
-            }
+            Music.Pause(this);
         }
 
         private void ActivateWindow(object sendet, EventArgs args)
         {
             WindowIsActive = true;
-
-            if (_deactivationPausedMusic)
-            {
-                MediaPlayer.Resume();
-            }
+            Music.Resume(this);
         }
     }
 }

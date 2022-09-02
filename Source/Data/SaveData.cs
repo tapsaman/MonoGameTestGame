@@ -6,6 +6,8 @@ using ZA6.Models;
 using System.Xml.Schema;
 using System.Xml;
 using TapsasEngine;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace ZA6
 {
@@ -13,9 +15,6 @@ namespace ZA6
     public class SaveData : IXmlSerializable
     {
         public DataStore GameData;
-        public string MapName;
-        public Vector2 Location;
-        public int Health;
         public float PlayTimeSeconds;
 
         private static SaveFileManager<SaveData> _saveFileManager = new SaveFileManager<SaveData>()
@@ -28,9 +27,6 @@ namespace ZA6
             SaveData saving = new SaveData()
             {
                 GameData = Static.GameData,
-                MapName = Static.Scene.TileMap.Name,
-                Location = Static.Player.Position,
-                Health = Static.Player.Health,
                 PlayTimeSeconds = Static.PlayTimeTimer.Seconds
             };
 
@@ -59,13 +55,10 @@ namespace ZA6
             }
             else
             {
-                Static.Game.StateMachine.TransitionTo(
-                    "StartOver",
-                    new GameStateStartOver.Args()
-                    {
-                        SaveData = loaded
-                    }
-                );
+                Static.PlayTimeTimer.Seconds = loaded.PlayTimeSeconds;
+                Static.GameData = loaded.GameData;
+
+                Static.Game.StateMachine.TransitionTo("StartOver");
             }
         }
 
@@ -84,19 +77,6 @@ namespace ZA6
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement("MapName");
-            writer.WriteValue(MapName);
-            writer.WriteEndElement();
-
-            writer.WriteStartElement("Location");
-            writer.WriteAttributeString("X", Location.X.ToString());
-            writer.WriteAttributeString("Y", Location.Y.ToString());
-            writer.WriteEndElement();
-
-            writer.WriteStartElement("Health");
-            writer.WriteValue(Health);
-            writer.WriteEndElement();
-
             writer.WriteStartElement("PlayTimeSeconds");
             writer.WriteValue(PlayTimeSeconds);
             writer.WriteEndElement();
@@ -117,24 +97,9 @@ namespace ZA6
             {
                 switch (reader.Name)
                 {
-                    case "MapName":
-                        reader.Read();
-                        MapName = reader.Value;
-                        reader.Read();
-                        break;
-                    case "Location":
-                        string x = reader.GetAttribute("X");
-                        string y = reader.GetAttribute("Y");
-                        Location = new Vector2(float.Parse(x), float.Parse(y));
-                        break;
                     case "GameData":
                         GameData = new DataStore();
                         GameData.ReadXml(reader);
-                        break;
-                    case "Health":
-                        reader.Read();
-                        Health = Int16.Parse(reader.Value);
-                        reader.Read();
                         break;
                     case "PlayTimeSeconds":
                         reader.Read();

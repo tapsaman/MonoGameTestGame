@@ -11,7 +11,8 @@ namespace ZA6
     {
         Pan,
         FadeToBlack,
-        Doorway
+        Doorway,
+        GoToRitual
     }
 
     public enum DataStoreType

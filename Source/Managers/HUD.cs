@@ -10,6 +10,7 @@ namespace ZA6
 {
     public class HUD : IUpdate, IDraw
     {
+        public bool Drawing = true;
         public Player Player {
             get => _player;
             set
@@ -39,7 +40,7 @@ namespace ZA6
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_player == null)
+            if (!Drawing || _player == null)
                 return;
 
             _rupeeHUD.Draw(spriteBatch);

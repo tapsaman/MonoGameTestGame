@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace ZA6.Animations
 {
@@ -13,7 +12,7 @@ namespace ZA6.Animations
             };
         }
 
-        private class MoveStage : AnimationStage
+        public class MoveStage : AnimationStage
         {
             private float _time;
             private MapEntity _target;

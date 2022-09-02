@@ -20,7 +20,7 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
-            var diff = Static.Player.Position - _bat.Position;
+            var diff = Static.Player.Hitbox.Rectangle.Center - _bat.Hitbox.Rectangle.Center;
 
             if (Math.Pow(diff.X, 2) + Math.Pow(diff.Y, 2) < Math.Pow(_ATTACK_DISTANCE, 2))
             {

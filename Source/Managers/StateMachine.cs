@@ -13,7 +13,7 @@ namespace ZA6.Managers
         public virtual Dictionary<string, State> States
         {
             get { return _states; }
-            set
+            private set
             {
                 _states = value;
                 
@@ -33,6 +33,11 @@ namespace ZA6.Managers
             CurrentStateKey = initialStateName;
         }
 
+        public StateMachine(Dictionary<string, State> states)
+        {
+            States = states;
+        }
+
         public void Update(GameTime gameTime)
         {
             CurrentState.Update(gameTime);
@@ -43,15 +48,26 @@ namespace ZA6.Managers
             if (!States.ContainsKey(newStateName))
             {
                 Sys.LogError("StateMachine attempted to transition to undefined state '" + newStateName + "'");
+                return;
             }
-            else if (CurrentState.CanReEnter || CurrentState != States[newStateName])
+            else if (CurrentState == null)
+            {
+                Sys.Debug("StateMachine entering first state " + newStateName);
+            }
+            else if (CurrentState == States[newStateName] && !CurrentState.CanReEnter)
+            {
+                Sys.Debug("StateMachine can't re-enter state " + newStateName);
+                return;
+            }
+            else
             {
                 CurrentState.Exit();
                 Sys.Debug("StateMachine entering state " + newStateName);
-                CurrentState = States[newStateName];
-                CurrentState.Enter(args);
-                CurrentStateKey = newStateName;
             }
+
+            CurrentState = States[newStateName];
+            CurrentState.Enter(args);
+            CurrentStateKey = newStateName;
         }
     }
 }

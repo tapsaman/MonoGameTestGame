@@ -54,7 +54,7 @@ namespace ZA6
                 Text = "QUIT",
                 Height = 20
             };
-            quitButton.Click += QuitGame;
+            quitButton.Click += AskToQuitGame;
 
             Components = new UIComponent[]
             {
@@ -70,9 +70,22 @@ namespace ZA6
             UIManager.Replace(new SettingsMenu(_startMenu));
         }
 
-        private void QuitGame(object sender, EventArgs e)
+        private void AskToQuitGame(object sender, EventArgs e)
         {
-            Static.Game.Exit();
+            if (_startMenu)
+            {
+                Static.Game.Exit();
+            }
+            else
+            {
+                UIManager.CreateConfirm(
+                    "Are you sure to quit\nthe game?\nUnsaved progress will\nbe lost.",
+                    (object sender, EventArgs e) =>
+                    {
+                        Static.Game.StateMachine.TransitionTo("StartMenu");
+                    }
+                );
+            }
         }
 
         private void ToggleGamePad(object sender, EventArgs e)

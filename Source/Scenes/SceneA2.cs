@@ -8,8 +8,6 @@ namespace ZA6
     public class SceneA2 : Scene
     {
         private Petteri _petteri;
-
-        public SceneA2() {}
         
         protected override void Load()
         {

@@ -19,7 +19,7 @@ namespace ZA6.Animations
 
         private class TitleTextStage : AnimationStage
         {
-            public float Time = 26f;
+            public float Time = 30f;
             public string Text = null;
             private float _x;
             private float _y;

@@ -5,6 +5,11 @@ using System.IO;
 
 namespace TapsasEngine
 {
+    /*
+    Helpful info on isolated storages:
+    http://www.albahari.com/nutshell/IsolatedStorage.pdf
+    */
+
     public class SaveFileManager<T> where T : class
     {
         public static bool BreakOnError = true;

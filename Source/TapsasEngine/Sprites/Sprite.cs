@@ -17,6 +17,12 @@ namespace TapsasEngine.Sprites
             SourceRectangle = sourceRectangle;
         }
 
+        public Sprite(Texture2D texture, int spriteX, int spriteY, int width, int height)
+        {
+            Texture = texture;
+            SourceRectangle = new Rectangle(spriteX * width, spriteY * height, width, height);
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             spriteBatch.Draw(Texture, position, SourceRectangle, Color);

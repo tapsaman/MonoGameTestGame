@@ -13,6 +13,7 @@ namespace ZA6
         public static Effect MildNoise;
         public static Effect Spotlight;
         public static Effect Highlight;
+        public static Effect Crispy;
         public static Effect TestEffect;
 
         public static void Load()
@@ -26,6 +27,7 @@ namespace ZA6
             MildNoise = Static.Content.Load<Effect>("Shaders/MildNoiseEffect");
             Spotlight = Static.Content.Load<Effect>("Shaders/SpotlightEffect");
             Highlight = Static.Content.Load<Effect>("Shaders/HighlightEffect");
+            Crispy = Static.Content.Load<Effect>("Shaders/CrispyEffect");
             TestEffect = Static.Content.Load<Effect>("Shaders/ShaderTestSpriteEffect");
         }
     }

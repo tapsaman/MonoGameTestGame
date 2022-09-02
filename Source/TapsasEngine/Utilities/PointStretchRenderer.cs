@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -46,6 +47,7 @@ namespace TapsasEngine.Utilities
         }
 
         public Vector2 ScreenPosition { get; private set; }
+        public Action OnPostDraw;
         protected RenderTarget2D _nativeRenderTarget;
         protected Effect _currentEffect;
         protected Effect _postEffect;
@@ -87,6 +89,7 @@ namespace TapsasEngine.Utilities
             SpriteBatch.Draw(_nativeRenderTarget, ScreenRectangle, Color.White/*, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f*/);
             
             PostDraw();
+            OnPostDraw?.Invoke();
             
             SpriteBatch.End();
         }

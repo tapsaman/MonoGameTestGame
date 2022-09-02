@@ -10,17 +10,22 @@ namespace ZA6
     {
         private Event[] _erkkiEvents;
         private Event _signEvent;
-        private float _elapsedSongTime = 0;
+        private float _noiseSeed = 0f;
 
         public TestScene()
         {
             // Load basics in constructor
-            Theme = Static.Content.Load<Song>("linktothepast/darkworld");
-            ExitTransitions[Direction.Right] = TransitionType.FadeToBlack;
+            // Theme = Static.Content.Load<Song>("linktothepast/darkworld");
+            //ExitTransitions[Direction.Right] = TransitionType.FadeToBlack;
         }
 
         protected override void Load()
         {
+            if (Static.GameData.GetString("scenario") == "end")
+            {
+                Static.DevUtils.RenderDevInfo = true;
+            }
+
             // Init events and map objects in Load
             var erkki = new Erkki();
             erkki.Position = TileMap.ConvertTileXY(22, 22);
@@ -33,8 +38,7 @@ namespace ZA6
             Add(erkki);
             Add(signEventTrigger);
 
-            var msg1 = "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!\n123456790909\nvitu juu";
-            var msg2 = "Simo ruumishuoneelta\nmoi. Oletko ajatellut kuolla?\nNyt se nimittäin kannattaa.";
+            var msg1 = "Hi Zelda. Good thing\nyour awake. Zelda has\nbeen capture again!\nLooks Like Ganondorf is at it\nagain!\nplz hurry and save the world!!!";
 
             var erkkiDialog2 = new Dialog(
                 "Sample text"
@@ -48,9 +52,6 @@ namespace ZA6
                     {
                         new FaceEvent(erkki, Player),
                         new TextEvent(new Dialog(msg1), erkki),
-                        new FaceEvent(erkki, Direction.Right),
-                        new WaitEvent(1),
-                        new TextEvent(new Dialog(msg2), erkki),
                         new FaceEvent(erkki, Direction.Down),
                         new SaveValueEvent(DataStoreType.Scene, "spoken to erkki", true)
                     },
@@ -64,20 +65,22 @@ namespace ZA6
             };
         }
 
-        /*
-        public override void Update(GameTime gameTime)
+        public override void Start()
         {
-            base.Update(gameTime);
-
-            _elapsedSongTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            base.Start();
             
-            if (_elapsedSongTime > 0.1f)
+            if (Static.GameData.GetString("scenario") == "noise")
             {
-                _elapsedSongTime = 0f;
-                MediaPlayer.Play(_song, new System.TimeSpan(0,0,Utility.RandomBetween(0,30)));
+                Static.Renderer.ApplyPostEffect(Shaders.Noise);
+                Static.Renderer.OnPostDraw += IterateNoiseEffect;
             }
         }
-        */
+
+        private void IterateNoiseEffect()
+        {
+            _noiseSeed += 0.001f;
+            Shaders.Noise.Parameters["seed"].SetValue(_noiseSeed);
+        }
         
         private void StartErkkiDialog(Character _)
         {

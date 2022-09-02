@@ -36,7 +36,7 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="3" name="Objects" visible="0">
+ <objectgroup id="3" name="Objects">
   <object id="46" name="Bush" gid="8121" x="0" y="64" width="16" height="16"/>
   <object id="47" name="Bush" gid="8121" x="16" y="64" width="16" height="16"/>
   <object id="48" name="Bush" gid="8121" x="32" y="64" width="16" height="16"/>

@@ -22,6 +22,11 @@ namespace TapsasEngine.Utilities
             return _random.NextDouble();
         }
 
+        public static double RandomDoubleBetween(double lowest, double highest)
+        {
+            return _random.NextDouble() * (highest - lowest) + lowest;
+        }
+
         public static Direction RandomDirection()
         {
             return (Direction)RandomBetween(0, 3);

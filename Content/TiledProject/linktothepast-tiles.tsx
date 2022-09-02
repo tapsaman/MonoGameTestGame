@@ -902,6 +902,7 @@
  </tile>
  <tile id="610">
   <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
@@ -943,6 +944,7 @@
  </tile>
  <tile id="617">
   <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
@@ -1050,7 +1052,7 @@
  </tile>
  <tile id="726">
   <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
@@ -1092,7 +1094,7 @@
  </tile>
  <tile id="733">
   <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
@@ -1348,6 +1350,11 @@
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="952">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
  <tile id="953">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
@@ -1364,6 +1371,11 @@
   </properties>
  </tile>
  <tile id="956">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="957">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
   </properties>
@@ -1516,11 +1528,13 @@
  </tile>
  <tile id="1077">
   <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="4"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="1078">
   <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="3"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
@@ -2136,6 +2150,11 @@
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="1532">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="4"/>
+  </properties>
+ </tile>
  <tile id="1533">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="4"/>
@@ -2152,6 +2171,11 @@
   </properties>
  </tile>
  <tile id="1536">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="3"/>
+  </properties>
+ </tile>
+ <tile id="1537">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="3"/>
   </properties>
@@ -2676,13 +2700,13 @@
  </tile>
  <tile id="1885">
   <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="3"/>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="1886">
   <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="4"/>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
@@ -2690,6 +2714,16 @@
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="1888">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="1889">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
   </properties>
  </tile>
  <tile id="1899">
@@ -2868,18 +2902,28 @@
  </tile>
  <tile id="2001">
   <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
   </properties>
  </tile>
  <tile id="2002">
   <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
   </properties>
  </tile>
  <tile id="2003">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="2004">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2005">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
   </properties>
  </tile>
  <tile id="2094">
@@ -2974,6 +3018,791 @@
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="2120">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2121">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2206">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2213">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2216">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2217">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2218">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2219">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2230">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2231">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2323">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2324">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2327">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2328">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2331">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2332">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2335">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2338">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2340">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2341">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2343">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2438">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2441">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2442">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2445">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2448">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2451">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2453">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2454">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2455">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2456">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2457">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2458">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2459">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2460">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2462">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2463">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2464">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2465">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2466">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2467">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2552">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2553">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2554">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2555">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2556">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2557">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2558">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2559">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2560">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2561">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2562">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2563">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2564">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2567">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2568">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2570">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2571">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2574">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2575">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2577">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2578">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2579">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2580">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2581">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2582">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2583">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2670">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2671">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2672">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2673">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2674">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2675">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2676">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2677">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2681">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2682">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2684">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2685">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2687">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2690">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2692">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2693">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2696">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2697">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2698">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="5"/>
+  </properties>
+ </tile>
+ <tile id="2699">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="2"/>
+  </properties>
+ </tile>
+ <tile id="2786">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2787">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2788">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2789">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2790">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2791">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2792">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2793">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2800">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2801">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2803">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2806">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2808">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2809">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2902">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2903">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2904">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2905">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2906">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2907">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2908">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2909">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2917">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2918">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2919">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2920">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2921">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2922">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2923">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2924">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2928">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="2929">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3017">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3019">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3020">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3021">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3022">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3023">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3024">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3026">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3036">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3037">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3134">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3135">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3136">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3137">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3138">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3139">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3140">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3141">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3152">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3153">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3251">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3252">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3253">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3254">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3255">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3256">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3366">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3367">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3368">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3369">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3370">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3371">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3372">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3373">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3484">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3485">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3486">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
+  </properties>
+ </tile>
+ <tile id="3487">
+  <properties>
+   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
   </properties>
  </tile>
 </tileset>

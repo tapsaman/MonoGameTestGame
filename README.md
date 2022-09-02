@@ -24,11 +24,12 @@ log:
 * 5.8. - moogle, c1 start event init, animation events, jump and walk animations
 * 10.8. - event manager not waiting and waiting for id, enemies bubble bari biri, moogle start event done, dialog questions and ask event, new link sprites, game over animations finished, state args for state enter
 * 17.8. - new b1 forest scene, fixed bats, excecution timer utility, diagonal map collsion with collision type on each tile (CollisionTileMap), dynamic maps with world loaded from tiled world json, dev utils and dev view, trasure chests, doorways, wait/teleport/remove/run events, cave room and  klaus, items and heart, animated life hud, opening with title + start menu, renderer revamp and renderresolution class
-18.8. - jump.to animation, rupee hud, moogle scene done ig, event managers by default get removed on scene change, xml data saving
-22.8. - saved config, ui revamp, timer, play time, play time saved to game save, check game data dev tool action
-22.8. - sprite revamp, mapobject -> maplevel property
-23.8. - dropdown input, ui finished, intro init
-23.8. - animations/animation stages revamp, intro done
+* 18.8. - jump.to animation, rupee hud, moogle scene done ig, event managers by default get removed on scene change, xml data saving
+* 22.8. - saved config, ui revamp, timer, play time, play time saved to game save, check game data dev tool action
+* 22.8. - sprite revamp, mapobject -> maplevel property
+* 23.8. - dropdown input, ui finished, intro init
+* 23.8. - animations/animation stages revamp, intro done
+* 2.9. - 1ST DEMO VER - real owl animation, music scrambler, new map AB1, mushroom, etc. tbd.
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
@@ -48,32 +49,14 @@ could do but prob won't:
     possible fixes:
     - when blocked by collisin map move the charcter to the final possible x/y (by reducing velocity?)
     - check in walk animation if remaining distance is smaller than what character would move with the velocity
-* harder issue with current character collision: diagonal y collision changes x velocity and vice versa. changed velocity should then be re-evaluated.  
+* harder issue with current character collision: diagonal y collision changes x velocity and vice versa. changed velocity should then be re-evaluated
 * rename events to commands
 * switch event based on datastore int
 * async loading, maybe enough for scene load methods (task lists or IEnumerator "yield" methods?)
 * parametrizable sprite animation speed, e.g. to bind with walk speed
-* forwards/backwards looping sprite animation 
-* Character's direction prop should be named Facing?
+* forwards/backwards looping sprite animation
 * action fields/"callbacks" could be named uniformly (OnThing or WhenThing)
 * rename Content to Assets
 * could use milliseconds instead of seconds for updates because ints take less space than floats
 * circle/polygon collision shapes (???)
-* ~~there's shitload of managers + manageables (animations, dialog, ui, events), could maybe have Manager + Manageable interfaces to enforce uniformity~~
-e.g.
-    IManager<TKey, IManageable>  ->
-        Dictionary<TKey, IManageable> Lookup/Children/Collection/Stages?
-        float ElapsedStageTime
-        void Update
-        void GoTo(TKey)
-        void Draw?
-        void SetToRemove
-    IManageable ->
-        IManager Manager
-        bool IsDone
-        bool CanReEnter
-        void Update
-        bool Paused?
-        void Draw?
-        bool DisableDrawing?
-* ok nah all managers work too differently to force anything except bare base interfaces, like IManageable with `bool IsDone { get; }` property
+* figure out serialiazing instance of system.random to savedata, or a custom random number generator, for a "deterministic" program -> important gameplay choices would be determined from rng seeded by the new game start time

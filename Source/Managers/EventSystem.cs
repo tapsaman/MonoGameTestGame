@@ -48,6 +48,12 @@ namespace ZA6.Managers
             }
         }
 
+        public void Clear()
+        {
+            _queue.Clear();
+            _parallel.Clear();
+        }
+
         public void OnSceneChange()
         {
             _queue.RemoveAll(DoesNotSustainSceneChange);
@@ -85,9 +91,23 @@ namespace ZA6.Managers
             }
             else
             {
-                foreach (var item in _parallel)
+                for (int i = _parallel.Count - 1; i >= 0 ; i--)
                 {
-                    item.EventManager.Update(gameTime);
+                    var item = _parallel[i];
+                    var manager = item.EventManager;
+
+                    if (!manager.IsEntered)
+                    {
+                        manager.Enter();
+                    }
+                    else if (!manager.IsDone)
+                    {
+                        manager.Update(gameTime);
+                    }
+                    else
+                    {
+                        _parallel.RemoveAt(i);
+                    }
                 }
             }
         }

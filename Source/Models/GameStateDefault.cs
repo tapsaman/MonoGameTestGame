@@ -14,15 +14,14 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            if (!Static.GameStarted)
-            {
-                Static.SceneManager.Start();
-                Static.GameStarted = true;
-            }
+            Static.Player.StateMachine.TransitionTo("Idle");
         }
 
         public override void Update(GameTime gameTime)
         {
+
+
+            
             Static.PlayTimeTimer.Update(gameTime);
             Static.EventSystem.Update(gameTime);
             Static.SceneManager.Update(gameTime);

@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Utilities;
+using TapsasEngine.Enums;
 
 namespace ZA6.Animations
 {
@@ -45,7 +46,7 @@ namespace ZA6.Animations
             }
         }
 
-        private class WalkStage : AnimationStage
+        public class WalkStage : AnimationStage
         {
             protected Vector2 _distance;
             protected float _speed;
@@ -133,6 +134,52 @@ namespace ZA6.Animations
                 else
                 {
                     _target.Velocity = _distance / Time;
+                }
+            }
+        }
+
+        public class WalkUntilBlockedStage : AnimationStage
+        {
+            protected Vector2 _distance;
+            protected float _speed;
+            protected Vector2 _endPosition;
+            protected Vector2 _startPosition;
+            protected Vector2 _velocity;
+            protected Character _target;
+            
+            public WalkUntilBlockedStage(Character target, Vector2 distance, float speed)
+            {
+                _target = target;
+                _distance = distance;
+                _speed = speed;
+            }
+            public override void Enter()
+            {
+                _startPosition = _target.Position;
+                _endPosition = _target.Position + _distance;
+                _velocity = _distance;
+                _velocity.Normalize();
+                _velocity *= _speed;
+                _target.Facing = _velocity.ToDirection();
+            }
+            public override void Update(float _)
+            {
+                var travel = _target.Position - _startPosition;
+
+                if (Math.Abs(travel.X) >= Math.Abs(_distance.X) && Math.Abs(travel.Y) >= Math.Abs(_distance.Y))
+                {
+                    IsDone = true;
+                    _target.Position = _endPosition;
+                    _target.Velocity = Vector2.Zero;
+                }
+                else if (_target.CollisionX != CollisionType.None || _target.CollisionY != CollisionType.None)
+                {
+                    IsDone = true;
+                    _target.Velocity = Vector2.Zero;
+                }
+                else
+                {
+                    _target.Velocity = _velocity;
                 }
             }
         }

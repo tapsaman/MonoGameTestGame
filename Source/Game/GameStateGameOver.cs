@@ -15,11 +15,12 @@ namespace ZA6.Models
         private float _elapsedTime = 0;
         private const float _DROP_TIME = 2f;
         private const float _WAIT_TIME = 1f;
-        private bool _fallDeath;
         private bool _hasDropped;
+        private Args _args;
 
         public class Args : StateArgs
         {
+            public string Question = null;
             public bool Falling;
         }
 
@@ -32,19 +33,23 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs args = null)
         {
+            Static.EventSystem.Clear();
             Static.Player.Moving = false;
             Static.Player.StateMachine.TransitionTo("Stopped");
             
             if (Static.GameData.GetInt("progress") == 1)
                 Static.GameData.Save("progress", 2);
             
-            _animation = new Animations.GameOver();
+            if (Static.GameData.GetString("scenario") != "crispy")
+                _animation = new Animations.GameOver();
+            else
+                _animation = new Animations.GameOver("PLEASE", "IMINPAIN", "IM IN PAIN");
             _elapsedTime = 0;
             _hasDropped = false;
 
-            _fallDeath = (args is Args a && a.Falling);
+            _args = args != null && args is Args a ? a : new Args();
 
-            if (!_fallDeath)
+            if (!_args.Falling)
             {
                 Music.Stop();
                 SFX.LinkDies.Play();
@@ -63,7 +68,7 @@ namespace ZA6.Models
             Static.SceneManager.Update(gameTime);
             _game.Hud.Update(gameTime);
 
-            if (!_fallDeath && !_hasDropped)
+            if (!_args.Falling && !_hasDropped)
             {
                 _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -85,7 +90,7 @@ namespace ZA6.Models
                 {
                     _dialogManager = new DialogManager() { Borderless = true };
                     _dialogManager.Load(new Dialog(
-                        new DialogAsk("Continue?", "Yes", "Ok?")
+                        new DialogAsk(_args.Question ?? "Continue?", "Save And Continue", "Save And Quit"/*, "Do Not Save And Continue"*/)
                     ));
                 }
                 else if (!_dialogManager.IsDone)
@@ -98,7 +103,20 @@ namespace ZA6.Models
                     
                     if (_elapsedTime > _WAIT_TIME)
                     {
-                        _game.StateMachine.TransitionTo("StartOver");
+                        if (_dialogManager.AnswerIndex == 0)
+                        {
+                            SaveData.CreateAndSave();
+                            _game.StateMachine.TransitionTo("StartOver");
+                        }
+                        else if (_dialogManager.AnswerIndex == 1)
+                        {
+                            SaveData.CreateAndSave();
+                            _game.StateMachine.TransitionTo("StartMenu");
+                        }  
+                        else
+                        {
+                            _game.StateMachine.TransitionTo("StartOver");
+                        }
                     }
                 }
             }

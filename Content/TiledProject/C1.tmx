@@ -64,14 +64,14 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="2" name="Bubble" x="124" y="204" width="16" height="16"/>
-  <object id="6" name="RedBari" x="40" y="240" width="16" height="16"/>
+  <object id="2" name="Bubble" x="152" y="204" width="16" height="16"/>
+  <object id="6" name="RedBari" x="36" y="240" width="16" height="16"/>
   <object id="8" name="Bubble" x="200" y="172" width="16" height="16"/>
-  <object id="11" name="Bari" x="40" y="176" width="16" height="16"/>
-  <object id="13" name="Bari" x="124" y="160" width="16" height="16"/>
+  <object id="11" name="Bari" x="36" y="176" width="16" height="16"/>
+  <object id="13" name="Bari" x="152" y="152" width="16" height="16"/>
   <object id="14" name="Red Bari" x="192" y="260" width="16" height="16"/>
-  <object id="15" name="RedBari" x="108" y="256" width="16" height="16"/>
-  <object id="16" name="Bubble" x="76" y="136" width="16" height="16"/>
+  <object id="15" name="RedBari" x="120" y="256" width="16" height="16"/>
+  <object id="16" name="Bubble" x="88" y="152" width="16" height="16"/>
   <object id="18" name="PlayerStart" x="0" y="352" width="16" height="16"/>
  </objectgroup>
  <layer id="2" name="Top" width="32" height="58">

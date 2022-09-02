@@ -101,8 +101,10 @@ namespace ZA6
                 if (Static.Game.StateMachine.CurrentStateKey == "Default")
                 {
                     // First go through touch triggers to get elemental velocity
-                    foreach (var mapEntity in Static.Scene.TouchTriggers)
+                    for (int i = Static.Scene.TouchTriggers.Count - 1; i >= 0 ; i--)
                     {
+                        var mapEntity = Static.Scene.TouchTriggers[i];
+
                         if (RightIsTouching(mapEntity) 
                         || LeftIsTouching(mapEntity)
                         || TopIsTouching(mapEntity)
