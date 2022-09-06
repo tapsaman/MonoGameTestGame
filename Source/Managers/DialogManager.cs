@@ -19,12 +19,13 @@ namespace ZA6.Managers
             QuestionAnswered
         }
 
-        public bool IsDone { get; set; }
+        public bool IsDone { get; set; } = true;
         public bool Borderless { get; set; }
         public event Action DialogEnd;
         public DialogBox DialogBox = new LinkToThePastSectionedDialogBox();
         public string Answer { get; private set; } = null;
         public int? AnswerIndex { get; private set; } = null;
+        public Vector2 DrawOffset = Vector2.Zero;
         private State _state;
         const float _LETTER_TIME = 0.018f;
         const float _INPUT_WAIT_TIME = 0.2f;
@@ -86,6 +87,21 @@ namespace ZA6.Managers
             {
                 if (i == optionIndex)
                     text += "\n     > " + ask.Options[i];
+                else
+                    text += "\n        " + ask.Options[i];
+            }
+
+            return text;
+        }
+
+        private static string DialogAskToAnsweredText(DialogAsk ask, int answerIndex)
+        {
+            string text = ask.Question;
+            
+            for (int i = 0; i < ask.Options.Length; i++)
+            {
+                if (i == answerIndex)
+                    text += "\n     \f01> " + ask.Options[i] + "\f00";
                 else
                     text += "\n        " + ask.Options[i];
             }
@@ -173,14 +189,17 @@ namespace ZA6.Managers
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (_currentString == null)
+                return;
+            
             DialogBox.Draw(
                 spriteBatch,
                 _topDialogBox,
                 _currentString,
                 _cropY,
                 _dialogBoxTextHeight, 
-                Borderless,
-                AnswerIndex != null ? AnswerIndex + 1 : null
+                DrawOffset,
+                Borderless
             );
         }
 
@@ -302,6 +321,7 @@ namespace ZA6.Managers
                     Answer = ask.Options[(int)_currentOptionIndex];
                     _elapsedTime = 0;
                     _state = State.QuestionAnswered;
+                    _currentString = DialogAskToAnsweredText(ask, (int)AnswerIndex);
                     //NextContent();
                     SFX.WalkGrass.Play();
                 }

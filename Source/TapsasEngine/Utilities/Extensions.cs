@@ -60,6 +60,17 @@ namespace TapsasEngine.Utilities
             return Math.Abs(vector.X) + Math.Abs(vector.Y);
         }
 
+        public static Vector2 AddX(this Vector2 vector, float value)
+        {
+            return new Vector2(vector.X + value, vector.Y);
+        }
+
+        public static Vector2 AddY(this Vector2 vector, float value)
+        {
+            return new Vector2(vector.X, vector.Y + value);
+        }
+
+
         /* Microsoft.Xna.Framework.Graphics.SpriteBatch */
 
         public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color, float thickness = 1f)

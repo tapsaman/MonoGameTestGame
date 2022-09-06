@@ -1,3 +1,4 @@
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Utilities;
@@ -20,7 +21,7 @@ namespace ZA6.Animations
 
         private class TextFade : AnimationStage
         {
-            public override bool DrawAfterDone { get => true; }
+            public override bool DrawAfterDone => true;
             public string Text;
             public bool IsLower;
             private Point _size;

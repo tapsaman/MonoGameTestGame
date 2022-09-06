@@ -11,7 +11,7 @@ namespace ZA6
         public Moogle()
         {
             WalkSpeed = 70f;
-            var texture = Static.Content.Load<Texture2D>("moogle2");
+            var texture = Static.Content.Load<Texture2D>("Sprites/moogle");
             SAnimation.DefaultFrameWidth = 24;
             SAnimation.DefaultFrameHeight = 32;
 

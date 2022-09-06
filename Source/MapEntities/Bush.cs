@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 using TapsasEngine.Sprites;
+using TapsasEngine.Utilities;
+using ZA6.Items;
 
 namespace ZA6
 {
@@ -23,6 +25,11 @@ namespace ZA6
             if (!OverHole)
             {
                 Static.Scene.Add(new BushStump() { Position = Position });
+
+                if (Utility.RandomBetween(0, 8) == 0)
+                {
+                    Static.Scene.Add(new Heart() { Position = Position + new Vector2(4) });
+                }
             }
             else
             {

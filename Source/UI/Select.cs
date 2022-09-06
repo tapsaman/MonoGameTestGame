@@ -44,7 +44,7 @@ namespace ZA6.UI
         public Select(SpriteFont font, T[] options)
             : base(font)
         {
-            _handleTexture = Static.Content.Load<Texture2D>("slider-handle");
+            _handleTexture = Static.Content.Load<Texture2D>("UI/slider-handle");
             _options = options;
         }
         

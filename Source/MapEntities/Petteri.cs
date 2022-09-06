@@ -11,7 +11,7 @@ namespace ZA6
     {       
         public Petteri()
         {
-            var texture = Static.Content.Load<Texture2D>("linktothepast/link-sprites-red");
+            var texture = Static.Content.Load<Texture2D>("Sprites/link-sprites-red");
             SAnimation.DefaultFrameWidth = 40;
             SAnimation.DefaultFrameHeight = 50;
 

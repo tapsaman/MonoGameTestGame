@@ -17,14 +17,18 @@ namespace ZA6
         public bool LockedCamera;
         public Song Theme { get; protected set; }
         public TileMap TileMap;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public Player Player;
         public DataStore SceneData;
         public Dictionary<Direction, TransitionType> ExitTransitions;
+        public string[] UseAlternativeLayers = new string[0];
         public bool Paused = true;
         public Vector2 DrawOffset = Vector2.Zero;
         public Vector2 OverlayOffset = Vector2.Zero;
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public Vector2 ShakeVelocity = Vector2.Zero;
+        public Vector2 ShakeOffset { get; private set; } = Vector2.Zero;
+        public Vector2? CameraTarget = null;
         public List<MapEntity> InteractableEntities { get; private set; }
         public List<Character> Characters { get; private set; }
         public List<MapObject> MapObjects { get; private set; }
@@ -64,19 +68,10 @@ namespace ZA6
 
         public void Init(Player player)
         {
-            Player = player;
-            Add((Character)Player);
-            Load();
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
-
-            foreach (var exitKeyValue in TileMap.Exits)
-            {
-                if (ExitTransitions.ContainsKey(exitKeyValue.Key))
-                {
-                    exitKeyValue.Value.TransitionType = ExitTransitions[exitKeyValue.Key];
-                }
-            }
+            Player = player;
+            Add(Player);
 
             foreach(var obj in TileMap.Objects)
             {
@@ -86,7 +81,7 @@ namespace ZA6
                     case "Bush":
                         Add(new Bush() {
                             Position = obj.Position,
-                            OverHole = obj.BoolProperty && Static.GameData.GetInt("progress") > 0
+                            OverHole = obj.BoolProperty && Static.GameData.GetString("scenario") != null
                         });
                         break;
                     case "Sign":
@@ -126,6 +121,16 @@ namespace ZA6
                         break;
                 }
             }
+
+            Load();
+
+            foreach (var exitKeyValue in TileMap.Exits)
+            {
+                if (ExitTransitions.ContainsKey(exitKeyValue.Key))
+                {
+                    exitKeyValue.Value.TransitionType = ExitTransitions[exitKeyValue.Key];
+                }
+            }
         }
 
         public virtual void Start()
@@ -150,8 +155,8 @@ namespace ZA6
 
             CharacterLevel.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
 
-            if (Player.Velocity != Vector2.Zero)
-                UpdateCamera(Player.Position);
+            //if (Player.Velocity != Vector2.Zero)
+            UpdateCamera(CameraTarget ?? Player.Position);
 
             for (int i = _animationEffects.Count - 1; i >= 0 ; i--)
             {
@@ -170,12 +175,26 @@ namespace ZA6
             int halfHeight = Static.NativeHeight / 2;
             int y = Math.Min(TileMap.DrawHeight - Static.NativeHeight, Math.Max(0, (int)targetPosition.Y - halfHeight));
 
-            DrawOffset = new Vector2(-x, -y);
+            if (ShakeVelocity != Vector2.Zero)
+            {
+                ShakeVelocity.X = (float)Math.Max(ShakeVelocity.X - 0.1, 0);
+                ShakeVelocity.Y = (float)Math.Max(ShakeVelocity.Y - 0.1, 0);
+
+                ShakeOffset = new Vector2(
+                    Utility.RandomBetween((int)-ShakeVelocity.X, (int)ShakeVelocity.X),
+                    Utility.RandomBetween((int)-ShakeVelocity.Y, (int)ShakeVelocity.Y)
+                );
+
+                x += Utility.RandomBetween((int)-ShakeVelocity.X, (int)ShakeVelocity.X);
+                y += Utility.RandomBetween((int)-ShakeVelocity.Y, (int)ShakeVelocity.Y);
+            }
+
+            DrawOffset = new Vector2(-x, -y) + ShakeOffset;
         }
 
         public void DrawGround(SpriteBatch spriteBatch)
         {
-            TileMap.Draw(spriteBatch, TileMap.GroundLayer, DrawOffset);
+            TileMap.DrawGround(spriteBatch, DrawOffset);
 
             foreach (var sprite in GroundLevel)
             {
@@ -196,7 +215,7 @@ namespace ZA6
 
         public void DrawTop(SpriteBatch spriteBatch)
         {
-            TileMap.Draw(spriteBatch, TileMap.TopLayer, DrawOffset);
+            TileMap.DrawTop(spriteBatch, DrawOffset);
 
             foreach (var mapEntity in AirLevel)
             {

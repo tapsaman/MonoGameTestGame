@@ -44,7 +44,7 @@ namespace ZA6
             }
             else
             {
-                Static.Renderer.ChangeToDamageEffect();
+                Static.Renderer.ChangeToEffect(Shaders.EnemyDamage);
                 base.Draw(spriteBatch, offset);
                 Static.Renderer.ChangeToDefault();
             }

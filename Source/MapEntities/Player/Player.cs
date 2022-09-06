@@ -13,6 +13,7 @@ namespace ZA6
     public class Player : Character
     {
         public int MaxHealth { get; private set; } = 12;
+        public int Rupees;
         public bool Hitting = false;
         public bool CanDie = true;
         private const int _touchAreaLength = 10;
@@ -32,8 +33,8 @@ namespace ZA6
             WalkSpeed = 90f;
             SpriteOffset = new Vector2(-13, -24);
 
-            var txt1 = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-main");
-            var txt2 = Static.Content.Load<Texture2D>("linktothepast/new-link-sprite-sword");
+            var txt1 = Static.Content.Load<Texture2D>("Sprites/new-link-sprite-main");
+            var txt2 = Static.Content.Load<Texture2D>("Sprites/new-link-sprite-sword");
             var offset1 = new Vector2(8, 11);
             var offset2 = new Vector2(-4, -1);
             SAnimation.DefaultFrameWidth = 24;

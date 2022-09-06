@@ -45,7 +45,7 @@ namespace ZA6
             var dataStore = Static.GetStoreByType(DataStoreType.Session);
             dataStore.Save("chest " + _chestId + " opened", true);
 
-            var item = ItemIDToItem(ItemID);
+            var item = Collectible.ByID(ItemID);
 
             if (item == null)
             {
@@ -57,30 +57,18 @@ namespace ZA6
             }
             else
             {
+                item.ItemLevel = MapLevel.Air;
                 item.Position = Hitbox.Rectangle.Center - new Vector2(item.Hitbox.Rectangle.Width / 2, item.Hitbox.Rectangle.Height);
                 Static.Scene.Add(item);
 
                 Static.EventSystem.Load(new Event[]
                 {
                     new AnimateEvent(new Animations.Move(item, new Vector2(0, -10), 0.6f)),
-                    new TextEvent(new Dialog(item.PickUpText), this),
-                    new RunEvent(() => {
-                        item.OnPickUp();
-                    }),
-                    new RemoveEvent(item)
+                    new TextEvent(new Dialog(item.CollectText), this),
+                    new RunEvent(item.Collect)
                 });
             }
         }
 
-        public static Item ItemIDToItem(string itemID)
-        {
-            switch (itemID)
-            {
-                case "Heart":
-                    return new Items.Heart();
-                default:
-                    return null;
-            }
-        }
     }
 }

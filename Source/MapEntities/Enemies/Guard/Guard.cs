@@ -29,7 +29,7 @@ namespace ZA6
             DamageHitbox1 = new Hitbox(16, 16) { Color = Color.Orange };
             DamageHitbox2 = new Hitbox(4, 8) { Color = Color.Pink };
             
-            var texture = Static.Content.Load<Texture2D>("linktothepast/guard-sprites");
+            var texture = Static.Content.Load<Texture2D>("Sprites/guard-sprites");
             SAnimation.DefaultFrameWidth = 20;
             SAnimation.DefaultFrameHeight = 28;
 

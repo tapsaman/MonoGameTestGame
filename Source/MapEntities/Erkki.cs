@@ -11,7 +11,7 @@ namespace ZA6
     {       
         public Erkki()
         {
-            var texture = Static.Content.Load<Texture2D>("linktothepast/npc-sprites");
+            var texture = Img.NPCSprites;
             SAnimation.DefaultFrameWidth = 20;
             SAnimation.DefaultFrameHeight = 30;
 

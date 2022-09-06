@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TiledCS;
 using TapsasEngine.Enums;
 using TapsasEngine.Maps;
+using System.Linq;
 
 namespace ZA6
 {
@@ -16,9 +17,9 @@ namespace ZA6
         // Height in pixels
         public int DrawHeight { get; private set; }
         public Vector2 TileSize { get; private set; }
-        public ushort GroundLayer { get; protected set; } = 0;
-        public ushort TopLayer { get; protected set; } = 1;
-        public ushort ObjectLayer { get; protected set; } = 2;
+        //public ushort GroundLayer { get; protected set; } = 0;
+        //public ushort TopLayer { get; protected set; } = 1;
+        //public ushort ObjectLayer { get; protected set; } = 2;
         public Vector2 PlayerStartPosition { get; protected set; } = Vector2.Zero;
         public Dictionary<Direction, MapExit> Exits;
         public TiledTileset Tileset;
@@ -26,15 +27,18 @@ namespace ZA6
         public Texture2D CollisionTileTexture;
         private int TilesetTilesWide;
         private int TilesetTilesHeight;
-        public Dictionary<int, Dictionary<int, Tile>> Tiles;
-        public List<Object> Objects;
+        //public Dictionary<int, Dictionary<int, Tile>> Tiles;
+        public Tile[] GroundTiles;
+        public Tile[] TopTiles;
+        public string[] UseAlternativeLayers;
+        public Object[] Objects;
         private Dictionary<int, TileAnimation> _tileAnimations;
         private static Dictionary<CollisionType, Rectangle> _collisionTypeRectangles;
         private static Color _collisionTileColor = new Color(120, 120, 120, 120);
     
         public void Load(TiledCS.TiledMap map)
         {
-            CollisionTileTexture = Static.Content.Load<Texture2D>("CollisionTiles");
+            CollisionTileTexture = Static.Content.Load<Texture2D>("TiledProject/CollisionTiles");
             _collisionTypeRectangles = new Dictionary<CollisionType, Rectangle> 
             {
                 { CollisionType.None, new Rectangle(0, 0, 8, 8) },
@@ -58,12 +62,36 @@ namespace ZA6
             // Amount of tiles on each column (up down)
             TilesetTilesHeight = Tileset.TileCount / Tileset.Columns;
 
-            Tiles = new Dictionary<int, Dictionary<int, Tile>>();
             _tileAnimations = new Dictionary<int, TileAnimation>();
 
-            LoadTiles(map, GroundLayer);
-            LoadTiles(map, TopLayer);
-            LoadObjects(map, ObjectLayer);
+            for (int i = 0; i < map.Layers.Length; i++)
+            {
+                var mapLayer = map.Layers[i];
+
+                if (mapLayer.name == "Ground")
+                {
+                    var alternativeIndexes = UseAlternativeLayers.Select(
+                        (string layerId) => {
+                            int index = Array.FindIndex<TiledLayer>(map.Layers, (TiledLayer l) => l.name == "Alternative" + layerId);
+
+                            if (index == -1)
+                                throw new Exception("No layer 'Alternative" + layerId + "' found");
+                        
+                            return index;
+                        }
+                    );
+
+                    GroundTiles = LoadTiles(map, i, alternativeIndexes.ToArray());
+                }
+                else if (mapLayer.name == "Top")
+                {
+                    TopTiles = LoadTiles(map, i);
+                }
+                else if (mapLayer.name == "Objects")
+                {
+                    Objects = LoadObjects(map, i);
+                }
+            }
         }
 
         private Rectangle TileFrameToSourceRectangle(int tileFrame)
@@ -88,21 +116,33 @@ namespace ZA6
         {
             foreach (var tileAnimation in _tileAnimations.Values)
             {
-                tileAnimation.Update(gameTime, Tiles[0]);
+                tileAnimation.Update(gameTime, GroundTiles);
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, int layerIndex, Vector2 drawOffset)
+        public void DrawGround(SpriteBatch spriteBatch, Vector2 drawOffset)
         {
-            foreach (var tile in Tiles[layerIndex].Values)
+            foreach (Tile tile in GroundTiles)
             {
-                spriteBatch.Draw(TilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
+                if (tile != null)
+                    spriteBatch.Draw(TilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
             }
+        }
+
+        public void DrawTop(SpriteBatch spriteBatch, Vector2 drawOffset)
+        {
+            foreach (Tile tile in TopTiles)
+            {
+                if (tile != null)
+                    spriteBatch.Draw(TilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
+            }
+
             if (Static.RenderCollisionMap)
             {
-                foreach (Tile tile in Tiles[layerIndex].Values)
+                foreach (Tile tile in GroundTiles)
                 {
-                    spriteBatch.Draw(CollisionTileTexture, tile.Position + drawOffset, tile.CollisionTileRectangle, _collisionTileColor);
+                    if (tile != null)
+                        spriteBatch.Draw(CollisionTileTexture, tile.Position + drawOffset, tile.CollisionTileRectangle, _collisionTileColor);
                 }
             }
         }
@@ -111,9 +151,11 @@ namespace ZA6
         {
             int index = x + y * Width;
 
-            if (Tiles[GroundLayer].ContainsKey(index))
+            if (index < GroundTiles.Length)
             {
-                return Tiles[GroundLayer][index].CollisionShape;
+                return GroundTiles[index] == null
+                    ? CollisionType.None
+                    : GroundTiles[index].CollisionShape;
             }
 
             return CollisionType.None;
@@ -133,9 +175,27 @@ namespace ZA6
             return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
         }
 
-        private void LoadTiles(TiledCS.TiledMap map, int layerIndex)
+        private Tile[] LoadTiles(TiledCS.TiledMap map, int layerIndex, int[] alternativeIndexes = null)
         {
-            Tiles[layerIndex] = new Dictionary<int, Tile>();
+            var tiles = new Tile[map.Layers[layerIndex].data.Length];
+
+            if (alternativeIndexes != null)
+            {
+                foreach (var alternativeIndex in alternativeIndexes)
+                {
+                    for (var i = 0; i < map.Layers[alternativeIndex].data.Length; i++)
+                    {
+                        int gid = map.Layers[alternativeIndex].data[i];
+
+                        // Empty tile, do nothing
+                        if (gid == 0)
+                            continue;
+                        
+                        // Replace in main layer
+                        map.Layers[layerIndex].data[i] = gid;
+                    }
+                }
+            }
 
             for (var i = 0; i < map.Layers[layerIndex].data.Length; i++)
             {
@@ -158,7 +218,7 @@ namespace ZA6
                     SourceRectangle = sourceRectangle
                 };
 
-                Tiles[layerIndex][i] = tile;
+                tiles[i] = tile;
 
                 if (tiledTile != null)
                 {
@@ -205,25 +265,31 @@ namespace ZA6
                     }
                 }
             }
+
+            return tiles;
         }
 
-        private void LoadObjects(TiledCS.TiledMap map, int layerIndex)
+        private Object[] LoadObjects(TiledCS.TiledMap map, int layerIndex)
         {
-            Objects = new List<Object>();
+            var objects = new Object[map.Layers[layerIndex].objects.Length];
 
-            foreach (var item in map.Layers[layerIndex].objects)
+            for (var i = 0; i < map.Layers[layerIndex].objects.Length; i++)
             {
+                var item = map.Layers[layerIndex].objects[i];
+
                 if (item.name == "PlayerStart")
                     PlayerStartPosition = new Vector2(item.x, item.y);
                 
-                Objects.Add(new Object()
+                objects[i] = new Object()
                 {
                     TypeName = item.name,
                     Position = new Vector2(item.x, item.y),
                     TextProperty = GetPropertyValue(item.properties, "TextProperty"),
                     BoolProperty = GetPropertyValue(item.properties, "BoolProperty") == "true"
-                });
+                };
             }
+
+            return objects;
         }
 
         public class Tile
@@ -252,7 +318,7 @@ namespace ZA6
             private float _elapsedTime = 0;
             private int _currentIndex = 0;
 
-            public void Update(GameTime gameTime, Dictionary<int, Tile> tiles)
+            public void Update(GameTime gameTime, Tile[] tiles)
             {
                 _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 

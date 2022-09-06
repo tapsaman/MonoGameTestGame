@@ -15,8 +15,6 @@ namespace ZA6
         public TestScene()
         {
             // Load basics in constructor
-            // Theme = Static.Content.Load<Song>("linktothepast/darkworld");
-            //ExitTransitions[Direction.Right] = TransitionType.FadeToBlack;
         }
 
         protected override void Load()

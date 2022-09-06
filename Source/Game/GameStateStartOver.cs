@@ -9,7 +9,7 @@ namespace ZA6.Models
     public class GameStateStartOver : RenderState
     {
         private ZeldaAdventure666 _game;
-        private string _mapName;
+        private Args _args;
         private bool _sceneInited;
         private Animations.Spotlight _spotlight;
         private float _elapsedTime;
@@ -19,6 +19,7 @@ namespace ZA6.Models
         public class Args : StateArgs
         {
             public string MapName = null;
+            public bool NoSpotlight = false;
         }
 
         public GameStateStartOver(ZeldaAdventure666 game)
@@ -33,12 +34,7 @@ namespace ZA6.Models
             _sceneInited = false;
             _spotlight = null;
 
-            _mapName = null;
-
-            if (args is Args a)
-            {
-                _mapName = a.MapName;
-            }
+            _args = (args != null && args is Args a ? a : new Args());
 
             if (Static.Scene != null)
                 Static.Scene.Exit();
@@ -57,8 +53,8 @@ namespace ZA6.Models
                 Static.SessionData = new DataStore();
                 _game.TitleText = new Animations.TitleText();
 
-                if (_mapName != null)
-                    Static.SceneManager.Init(_mapName);
+                if (_args.MapName != null)
+                    Static.SceneManager.Init(_args.MapName);
                 else
                     Static.SceneManager.Init();
                 
@@ -70,14 +66,14 @@ namespace ZA6.Models
             {
                 return;
             }
-            else if (_spotlight == null)
+            else if (!_args.NoSpotlight && _spotlight == null)
             {
                 _spotlight = new Animations.Spotlight(Static.Player, false);
                 _spotlight.Enter();
                 SFX.Fall.Play();
                 return;
             }
-            else if (!_spotlight.IsDone)
+            else if (!_args.NoSpotlight && !_spotlight.IsDone)
             {
                 _spotlight.Update(gameTime);
             }

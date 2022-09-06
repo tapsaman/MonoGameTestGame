@@ -1,6 +1,5 @@
 
-using System.IO;
-using System.Xml;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,10 +23,30 @@ namespace ZA6
             Shaders.MildNoise,
             Shaders.Highlight
         };
-        private bool _askingMapIndex;
-        private bool _askingShaderIndex;
-        private bool _askingHealthAmount;
-        private bool _askingDamageAmount;
+        public string[] GameStateKeyList =
+        {
+            "Default",
+            "MainMenu",
+            "Intro",
+            "Dialog",
+            "Cutscene",
+            "GameOver",
+            "StartMenu",
+            "Cartoon"
+        };
+        public string[] ScenarioList =
+        {
+            null,
+            "hole",
+            "crispy",
+            "mushroom",
+            "noise",
+            "arrows",
+            "scrambled",
+            "end"
+        };
+        private bool _askingNumber;
+        private Func<int, string> _onNumberAnswer;
 
         public DevUtils()
         {
@@ -37,14 +56,13 @@ namespace ZA6
                 new DevToolAction(Keys.F3, "Toggle dev info", ToggleDevInfo),
                 new DevToolAction(Keys.F4, "Toggle collision map", ToggleCollisionMap),
                 new DevToolAction(Keys.F5, "Toggle no clip mode", ToggleNoClip),
-                new DevToolAction(Keys.F6, "Select map", StartGoToMap),
-                //new DevToolAction(Keys.F7, "Select shader", StartApplyShader),
-                new DevToolAction(Keys.F7, "Go to intro", GoToIntro),
-                new DevToolAction(Keys.F8, "Check game data", CheckGameData),
-                new DevToolAction(Keys.F9, "Give player health", StartGiveHealth),
-                new DevToolAction(Keys.F10, "Damage player", StartDamagePlayer),
-                new DevToolAction(Keys.F11, "Force game over", GameOver),
-                new DevToolAction(Keys.F12, "Start menu", StartMenu)
+                new DevToolAction(Keys.F6, "Go to map", StartGoToMap),
+                new DevToolAction(Keys.F7, "Go to game state", StartGoToGameState),
+                new DevToolAction(Keys.F8, "Go to scenario", StartGoToScenario),
+                new DevToolAction(Keys.F9, "Apply shader", StartApplyShader),
+                new DevToolAction(Keys.F10, "Check game data", CheckGameData),
+                new DevToolAction(Keys.F11, "Give player health", StartGiveHealth),
+                new DevToolAction(Keys.F12, "Damage player", StartDamagePlayer)
             };
         }
 
@@ -55,54 +73,21 @@ namespace ZA6
 
             base.Update(gameTime);
 
-            if (_askingMapIndex)
+            if (_askingNumber)
             {
                 int? number = Input.P1.AnyNumberKeyJustPressed();
 
                 if (number != null)
                 {
                     Reset();
-                    SetMessage(GoToMap((int)number));
-                }
-            }
-            else if (_askingShaderIndex)
-            {
-                int? number = Input.P1.AnyNumberKeyJustPressed();
-
-                if (number != null)
-                {
-                    Reset();
-                    SetMessage(ApplyShader((int)number));
-                }
-            }
-            else if (_askingHealthAmount)
-            {
-                int? number = Input.P1.AnyNumberKeyJustPressed();
-
-                if (number != null)
-                {
-                    Reset();
-                    SetMessage(GiveHealth((int)number));
-                }
-            }
-            else if (_askingDamageAmount)
-            {
-                int? number = Input.P1.AnyNumberKeyJustPressed();
-
-                if (number != null)
-                {
-                    Reset();
-                    SetMessage(DamagePlayer((int)number));
+                    SetMessage(_onNumberAnswer((int)number));
                 }
             }
         }
 
         public override void Reset()
         {
-            _askingShaderIndex = false;
-            _askingMapIndex = false;
-            _askingHealthAmount = false;
-            _askingDamageAmount = false;
+            _askingNumber = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -159,75 +144,41 @@ namespace ZA6
             return "Damaged player from " + Vector2.Zero + " by " + amount;
         }
 
-        private string GameOver()
-        {
-            if (!Static.GameStarted)
-            {
-                return "Can't do this dev tool action until game has started";
-            }
-            Static.Game.StateMachine.TransitionTo("GameOver");
-            return "Game over";
-        }
-
-        private string GoToIntro()
-        {
-            if (!Static.GameStarted)
-            {
-                return "Can't do this dev tool action until game has started";
-            }
-            Static.Game.StateMachine.TransitionTo("Intro");
-            return "Intro";
-        }
-
         private string CheckGameData()
         {
             return "\n" + Static.GameData.ToString();
         }
 
-        private string StartMenu()
-        {
-            Static.Game.StateMachine.TransitionTo("StartMenu");
-            return "Start menu";
-        }
-
         private string StartGiveHealth()
         {
-            _askingHealthAmount = true;
+            _askingNumber = true;
+            _onNumberAnswer = GiveHealth;
             return "Input number to replenish health";
         }
 
         private string StartDamagePlayer()
         {
-            _askingDamageAmount = true;
+            _askingNumber = true;
+            _onNumberAnswer = DamagePlayer;
             return "Input number to do damage";
         }
 
         private string StartGoToMap()
         {
-            var maps = Static.SceneManager.World.Maps;
-            string txt = "Select map";
-            
-            for (int i = 0; i < maps.Length; i++)
-            {
-                txt += "\n(" + i + ") " + maps[i].Name;
-            }
-
-            _askingMapIndex = true;
-            return txt;
+            _askingNumber = true;
+            _onNumberAnswer = GoToMap;
+            return "Select map" + ArrayToListString(Static.SceneManager.World.Maps);
         }
 
-        private string GoToMap(int mapIndex)
+        private string GoToMap(int index)
         {
-            var maps = Static.SceneManager.World.Maps;
-
-            if (mapIndex >= maps.Length)
+            if (index >= Static.SceneManager.World.Maps.Length)
             {
-                return "Error: No map by index " + mapIndex;
+                return "Error: No map by index " + index;
             }
 
-            var map = maps[mapIndex];
+            var map = Static.SceneManager.World.Maps[index];
 
-            //Static.SceneManager.Init(map.Name);
             Static.Game.StateMachine.TransitionTo(
                 "StartOver",
                 new GameStateStartOver.Args() { MapName = map.Name }
@@ -238,34 +189,19 @@ namespace ZA6
 
         private string StartApplyShader()
         {
-            var shaders = ShaderList;
-            string txt = "Select shader";
-            
-            for (int i = 0; i < shaders.Length; i++)
-            {
-                var shader = shaders[i];
-                txt += "\n(" + i + ") ";
-
-                if (shader == null)
-                    txt += "None";
-                else
-                    txt += shader.Name;
-            }
-
-            _askingShaderIndex = true;
-            return txt;
+            _askingNumber = true;
+            _onNumberAnswer = ApplyShader;
+            return "Select shader" + ArrayToListString(ShaderList);
         }
 
-        private string ApplyShader(int shaderIndex)
+        private string ApplyShader(int index)
         {
-            var shaders = ShaderList;
-
-            if (shaderIndex >= shaders.Length)
+            if (index >= ShaderList.Length)
             {
-                return "Error: No shader by index " + shaderIndex;
+                return "Error: No shader by index " + index;
             }
 
-            var shader = shaders[shaderIndex];
+            var shader = ShaderList[index];
 
             Static.Renderer.ApplyPostEffect(shader);
 
@@ -273,6 +209,48 @@ namespace ZA6
                 return "Removed post effects";
             else
                 return "Applied post effect " + shader.Name;
+        }
+
+        private string StartGoToGameState()
+        {
+            _askingNumber = true;
+            _onNumberAnswer = GoToGameState;
+            return "Select game state" + ArrayToListString(GameStateKeyList);
+        }
+
+        private string GoToGameState(int index)
+        {
+            if (index >= GameStateKeyList.Length)
+            {
+                return "Error: No game state by index " + index;
+            }
+
+            var gameState = GameStateKeyList[index];
+
+            Static.Game.StateMachine.TransitionTo(gameState);
+
+            return "Transitioned to game state " + gameState;
+        }
+
+        private string StartGoToScenario()
+        {
+            _askingNumber = true;
+            _onNumberAnswer = GoToScenario;
+            return "Select scenario" + ArrayToListString(ScenarioList);;
+        }
+
+        private string GoToScenario(int index)
+        {
+            if (index >= ScenarioList.Length)
+            {
+                return "Error: No scenario by index " + index;
+            }
+
+            var scenario = ScenarioList[index];
+
+            Static.GameData.Save("scenario", scenario);
+
+            return "Set scenario to '" + scenario + "'";
         }
 
         private void DrawDevInfo(SpriteBatch spriteBatch)
@@ -287,6 +265,18 @@ namespace ZA6
             );
 
             DrawCharacterData(spriteBatch);
+        }
+
+        private static string ArrayToListString(object[] array)
+        {
+            string txt = "";
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                txt += "\n(" + i + ") " + (array[i] == null ? "None" : array[i]);
+            }
+
+            return txt;
         }
 
         private void DrawMapGrid(SpriteBatch spriteBatch)

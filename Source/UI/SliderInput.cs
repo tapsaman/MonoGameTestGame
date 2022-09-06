@@ -44,7 +44,7 @@ namespace ZA6.UI
         public Slider(SpriteFont font, float minValue, float maxValue, float stepInterval)
             : base(font)
         {
-            _handleTexture = Static.Content.Load<Texture2D>("slider-handle");
+            _handleTexture = Static.Content.Load<Texture2D>("UI/slider-handle");
             int stepCount = (int)Math.Floor((maxValue - minValue) / stepInterval);
             _steps = new float[stepCount];
 

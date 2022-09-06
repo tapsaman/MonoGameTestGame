@@ -30,20 +30,24 @@ log:
 * 23.8. - dropdown input, ui finished, intro init
 * 23.8. - animations/animation stages revamp, intro done
 * 2.9. - 1ST DEMO VER - real owl animation, music scrambler, new map AB1, mushroom, etc. tbd.
+* 5.9. - collectible hearts, growing hole, cartoon, go to game state devutil, dynamic tilemap layers + alternative layers, content files reorganized, text shaders set/unset with codes, set scenario devutil, updatable effects (TapsasEngine.Shader), touchtriggers use Intersects for collision instead of 'side is touching'
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
-* fix panning up
-* only draw tilemap inside screen
-* use arrays for tilemap tiles? compare performance with timing methods
 * better text highlight shader
+* void (infinite empty map)
+* fix item pickup anim
+* only draw tilemap inside screen
+* fix panning up
 * could clean SAnimation constructor overload
 * separate generic code to own namespace and folder like TapsasEngine or smth for future games
     - TileMap to (I)Map -> TileMap
 
 could do but prob won't:
+* replace most of Static with Engine, simple static collection class
+* MapEntities should have own reference to their scene, currently using Static.Scene
 * if any velocity becomes NaN everything breaks, could force numeric values
 * walk animation issue: collision map may block character movement before the distance is traveled. faster speed moves more by each update and is more likely to be blocked?
     possible fixes:

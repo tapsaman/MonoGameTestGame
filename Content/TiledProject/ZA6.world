@@ -62,6 +62,13 @@
             "width": 512,
             "x": -256,
             "y": -264
+        },
+        {
+            "fileName": "Void.tmx",
+            "height": 128,
+            "width": 128,
+            "x": 1168,
+            "y": 776
         }
     ],
     "onlyShowAdjacentMaps": false,

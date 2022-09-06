@@ -25,8 +25,6 @@ namespace ZA6
         public bool IsInvincible;
         public Direction Facing = Direction.Down;
         public Direction MapBorder = Direction.None;
-        //public Direction CollidingX = Direction.None;
-        //public Direction CollidingY = Direction.None;
         public CollisionType CollisionX;
         public CollisionType CollisionY;
         public bool NoClip = false;
@@ -105,14 +103,19 @@ namespace ZA6
                     {
                         var mapEntity = Static.Scene.TouchTriggers[i];
 
-                        if (RightIsTouching(mapEntity) 
+                        if (Hitbox.Rectangle.Intersects(mapEntity.Hitbox.Rectangle))
+                        {
+                            mapEntity.InvokeTrigger(this);
+                        }
+
+                        /*if (RightIsTouching(mapEntity) 
                         || LeftIsTouching(mapEntity)
                         || TopIsTouching(mapEntity)
                         || BottomIsTouching(mapEntity)
                         )
                         {
                             mapEntity.InvokeTrigger(this);
-                        }
+                        }*/
                     }
 
                     Velocity += ElementalVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;

@@ -80,24 +80,6 @@ namespace ZA6.Utilities
             SpriteBatch.End();
         }
 
-        public void ChangeToDamageEffect()
-        {
-            ChangeToEffect(Shaders.EnemyDamage);
-
-            Shaders.EnemyDamage.Parameters["paramColorIter"].SetValue(_damageEffectIter++);
-            if (_damageEffectIter == 3)
-                _damageEffectIter = 0;
-        }
-
-        public void ChangeToHighlightEffect()
-        {
-            ChangeToEffect(Shaders.Highlight);
-
-            Shaders.Highlight.Parameters["paramIter"].SetValue(_highlightEffectIter++);
-            if (_highlightEffectIter == 2)
-                _highlightEffectIter = 0;
-        }
-
         public override void ApplyPostEffect(Effect effect)
         {
             base.ApplyPostEffect(effect);
@@ -122,13 +104,6 @@ namespace ZA6.Utilities
             //_noiseSeed += (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
             _noiseSeed += 0.001f;
             _postEffect.Parameters["seed"].SetValue(_noiseSeed);
-        }
-
-        private void AfterSpotlightEffect(GameTime gameTime)
-        {
-            _spotlightSize += (float)gameTime.ElapsedGameTime.TotalSeconds * 0.8f;
-            _postEffect.Parameters["size"].SetValue(_spotlightSize);
-            _postEffect.Parameters["target"].SetValue((Static.Player.Hitbox.Rectangle.Center + Static.Scene.DrawOffset) / Static.NativeSize);
         }
     }
 }

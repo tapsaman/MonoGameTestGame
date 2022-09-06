@@ -15,7 +15,7 @@ namespace ZA6.UI
         public CheckBoxButton(SpriteFont font, EventHandler onClick = null)
             : base(font, onClick)
         {
-            _checkBoxTexture = Static.Content.Load<Texture2D>("Checkboxes");
+            _checkBoxTexture = Static.Content.Load<Texture2D>("UI/checkboxes");
             _uncheckedSourceRectangle = new Rectangle(0, 0, 12, 12);
             _checkedSourceRectangle = new Rectangle(12, 0, 12, 12);
         }

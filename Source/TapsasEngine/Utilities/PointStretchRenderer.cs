@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine.Models;
 
 namespace TapsasEngine.Utilities
 {
@@ -101,6 +102,11 @@ namespace TapsasEngine.Utilities
             SpriteBatch.End();
             SpriteBatch.Begin(samplerState: SamplerState.PointWrap, effect: effect);
             _currentEffect = effect;
+
+            if (effect is Shader shader)
+            {
+                shader.Update();
+            }
         }
 
         public void ChangeToDefault()

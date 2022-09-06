@@ -16,6 +16,11 @@ namespace ZA6
         {
             Theme = Songs.DarkWorld;
             ExitTransitions[Direction.Right] = TransitionType.FadeToBlack;
+
+            if (Static.GameData.GetString("scenario") == "noise")
+            {
+                UseAlternativeLayers = new string[] { "Noise" };
+            }
         }
 
         protected override void Load()
@@ -23,6 +28,11 @@ namespace ZA6
             if (Static.GameData.GetString("scenario") == "mushroom")
             {
                 Add(new Items.Mushroom() { Position = TileMap.ConvertTileXY(30, 15) });
+            }
+            else if (Static.GameData.GetString("scenario") == "noise")
+            {
+                Add(new Text() { Position = TileMap.ConvertTileXY(57, 15), Message = "FUCK YOU" });
+                Add(new Doorway(new Vector2(31 * 8, 27 * 8 + 4), "Void"));
             }
             else
             {
@@ -35,9 +45,8 @@ namespace ZA6
         {
             base.Start();
 
-            if (Static.GameData.GetString("scenario") == null && Static.GameData.GetInt("progress") == 2 && Static.GameData.Get("minigame done"))
+            if (Static.GameData.GetString("scenario") == "crispy")
             {
-                Static.GameData.Save("scenario", "crispy");
                 _crispyAnimation = new Animations.Crispy();
                 _crispyAnimation.Enter();
             }

@@ -17,6 +17,7 @@ namespace ZA6
         public static Player Player;
         public static SaveData LoadedGame;
         public static TiledWorld World;
+        public static GameTime GameTime;
         public static bool GameStarted;
         public static int NativeWidth = 256;
         public static int NativeHeight = 224;

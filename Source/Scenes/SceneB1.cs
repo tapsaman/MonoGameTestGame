@@ -18,38 +18,37 @@ namespace ZA6
 
         public SceneB1()
         {
-            if (!Static.SessionData.Get("eaten mushroom"))
-            {
-                Theme = Static.Content.Load<Song>("linktothepast/forest");
-            }
-            else
-            {
-                Theme = Static.Content.Load<Song>("mushroom_song");
-            }
-
-            if (Static.GameData.GetString("scenario") != "noise")
-                ExitTransitions[Direction.Left] = TransitionType.FadeToBlack;
-            else
-                ExitTransitions[Direction.Left] = TransitionType.GoToRitual;
-            
             ExitTransitions[Direction.Down] = TransitionType.FadeToBlack;
+            ExitTransitions[Direction.Left] = TransitionType.FadeToBlack;
+            
+            if (Static.SessionData.Get("eaten mushroom"))
+            {
+                Theme = Static.Content.Load<Song>("Songs/mushroom_song");
+            }
+            else
+            {
+                Theme = Songs.Forest;
 
+                if (Static.GameData.GetString("scenario") == "noise")
+                {
+                    ExitTransitions[Direction.Left] = TransitionType.GoToRitual;
+                }
+                else if (Static.GameData.GetString("scenario") == "arrows")
+                {
+                    UseAlternativeLayers = new string[] { "Arrows" };
+                }
+            }
         }
 
         protected override void Load()
         {
-            _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
+            _overlay = Static.Content.Load<Texture2D>("Images/shadedwoodtransparency");
 
             if (Static.SessionData.Get("bird scared"))
             {
                 return;
             }
-            else if (!Static.GameStarted)
-            {
-                _bird = new ScaredBirdParrot() { Position = TileMap.ConvertTileXY(50, 21) };
-                Add(_bird);
-            }
-            else if (Static.GameData.GetInt("bird scare count") == 0)
+            else if (!Static.GameStarted || Static.GameData.GetInt("bird scare count") == 0)
             {
                 _bird = new ScaredBirdParrot() { Position = TileMap.ConvertTileXY(50, 21) };
                 Add(_bird);
@@ -72,13 +71,6 @@ namespace ZA6
                 return;
 
             base.Start();
-
-            if (Static.GameData.GetString("scenario")  == "crispy")
-            {
-                _seppoScreamer = new Animations.SeppoScreamer();
-                _seppoScreamer.Enter();
-                return;
-            }
             
             if (_realOwlAnimation != null)
             {
@@ -86,7 +78,7 @@ namespace ZA6
                 _realOwlAnimation.Enter();
             }
 
-            if (!Static.SessionData.Get("title shown"))
+            if (!Static.GameData.Get("title shown"))
             { 
                 Static.Game.TitleText.Enter();
                 Static.GameData.Save("title shown", true);
@@ -111,6 +103,17 @@ namespace ZA6
                     },
                     EventSystem.Settings.Parallel | EventSystem.Settings.SustainSceneChange
                 );
+            }
+            else if (Static.GameData.GetString("scenario") == "crispy")
+            {
+                _seppoScreamer = new Animations.SeppoScreamer();
+                _seppoScreamer.Enter();
+                return;
+            }
+            else if (Static.GameData.GetString("scenario") == "scrambled")
+            {
+                Static.Renderer.ApplyPostEffect(Shaders.MildNoise);
+                return;
             }
         }
 

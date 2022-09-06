@@ -16,7 +16,7 @@ namespace ZA6.Models
         {
             SFX.LinkFall.Play();
             Player.AnimatedSprite.SetAnimation("Falling");
-            Player.Moving = false;
+            //Player.Moving = false;
             Player.DrawingShadow = false;
             _elapsedFallTime = 0f;
         }

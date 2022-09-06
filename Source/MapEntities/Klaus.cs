@@ -12,7 +12,7 @@ namespace ZA6
     {       
         public Klaus()
         {
-            var texture = Static.Content.Load<Texture2D>("linktothepast/npc-sprites");
+            var texture = Img.NPCSprites;
 
             Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {

@@ -18,9 +18,11 @@ namespace ZA6.Animations
 
         private class SeppoScreamerStage : AnimationStage
         {
-            public float Time = 5f;
+            public float Time = 4f;
             public Texture2D Image = Img.SeppoFace;
             private Vector2 _position = Vector2.Zero;
+            public float _textToggleTime = 0.5f;
+            public bool _showText;
 
             public override void Enter()
             {
@@ -33,6 +35,12 @@ namespace ZA6.Animations
                 if (elapsedTime < Time)
                 {
                     _position = new Vector2((float)Utility.RandomBetween(-15, 15), (float)Utility.RandomBetween(-30, 0));
+                
+                    if (elapsedTime > _textToggleTime)
+                    {
+                        _showText = !_showText;
+                        _textToggleTime += 0.5f;
+                    }
                 }
                 else
                 {
@@ -46,6 +54,16 @@ namespace ZA6.Animations
             public override void Draw(SpriteBatch spriteBatch)
             {
                 spriteBatch.Draw(Image, _position, Color.White);
+
+                if (_showText)
+                {
+                    spriteBatch.DrawString(
+                        Static.Font,
+                        "LIKE &\nSUCSRIBE",
+                        new Vector2(40),
+                        Color.Red
+                    );
+                }
             }
         }
 
@@ -61,7 +79,7 @@ namespace ZA6.Animations
                 }
                 else if (elapsedTime < Time)
                 {
-                    Static.Player.TakeDamage(Vector2.Zero, 2);
+                    Static.Player.TakeDamage(Vector2.Zero, 4);
                 }
             }
         }

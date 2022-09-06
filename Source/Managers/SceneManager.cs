@@ -73,8 +73,8 @@ namespace ZA6.Manangers
 
         private Scene LoadScene(string mapName)
         {
-            TileMap map = World.LoadTileMap(mapName);
             Scene scene = MapNameToScene(mapName);
+            TileMap map = World.LoadTileMap(mapName, scene.UseAlternativeLayers);
             scene.TileMap = map;
 
             return scene;

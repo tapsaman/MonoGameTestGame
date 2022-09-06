@@ -10,6 +10,7 @@ using ZA6.Models;
 using ZA6.Utilities;
 using System;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine;
 
 namespace ZA6
 {
@@ -60,6 +61,9 @@ namespace ZA6
             if (!WindowIsActive)
                 return;
             
+            Static.GameTime = gameTime;
+            Tengine.GameTime = gameTime;
+            Tengine.Delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Input.P1.Update();
             Static.DevUtils.Update(gameTime);
             StateMachine.Update(gameTime);
@@ -76,6 +80,8 @@ namespace ZA6
 
         private void LoadGlobals()
         {
+            Tengine.Content = Content;
+
             Static.Game = this;
             Static.SpriteBatch = Static.Renderer.SpriteBatch;
             Static.Renderer.Init(Static.NativeWidth, Static.NativeHeight, Static.DefaultResolution);
@@ -89,11 +95,17 @@ namespace ZA6
             };
             Static.EventSystem = new EventSystem();
             Static.DialogManager = new DialogManager();
-            BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
             SFX.Load();
             Shaders.Load();
             Img.Load();
             Songs.Load();
+            BitmapFontRenderer.Font = new BitmapFont.LinkToThePast();
+            BitmapFontRenderer.FontEffects = new Effect[]
+            {
+                null,
+                Shaders.Highlight,
+                Shaders.Rainbow
+            };
             Static.DevUtils = new DevUtils();
             Static.GameData = new DataStore();
             Static.SessionData = new DataStore();
@@ -109,8 +121,8 @@ namespace ZA6
             Select<RenderResolution>.ChangeSound = SFX.ChestOpen;
             Slider.ChangeSound = SFX.ChestOpen;
 
-            var buttonTexture = Static.Content.Load<Texture2D>("Button");
-            var disabledButtonTexture = Static.Content.Load<Texture2D>("DisabledButton");
+            var buttonTexture = Static.Content.Load<Texture2D>("UI/Button");
+            var disabledButtonTexture = Static.Content.Load<Texture2D>("UI/DisabledButton");
             UIComponent.DefaultBackground = new SectionedSprite(buttonTexture, 2);
             UIComponent.DefaultDisabledBackground = new SectionedSprite(disabledButtonTexture, 2);
 
@@ -126,6 +138,7 @@ namespace ZA6
                 { "Dialog", new GameStateDialog(this) },
                 { "Cutscene", new GameStateCutscene(this) },
                 { "GameOver", new GameStateGameOver(this) },
+                { "Cartoon", new GameStateCartoon(this) },
             };
 
             StateMachine = new RenderStateMachine(states, "StartMenu");

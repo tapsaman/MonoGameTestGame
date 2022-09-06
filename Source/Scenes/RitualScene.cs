@@ -18,7 +18,7 @@ namespace ZA6
 
         public RitualScene()
         {
-            Theme = Static.Content.Load<Song>("colin_stetson_reborn");
+            Theme = Static.Content.Load<Song>("Songs/colin_stetson_reborn");
         }
 
         protected override void Load()

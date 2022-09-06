@@ -19,12 +19,13 @@ namespace ZA6
             Maps = Loader.LoadMaps(Directory + worldFileName);
         }
 
-        public TileMap LoadTileMap(string mapName)
+        public TileMap LoadTileMap(string mapName, string[] useAlternativeLayers)
         {
             WorldMap worldMap = FindWorldMap(mapName);
 
             TileMap map = new TileMap();
             map.Name = mapName;
+            map.UseAlternativeLayers = useAlternativeLayers;
             
             var tiledMap = new TiledCS.TiledMap(Directory + worldMap.FileName);
             map.Tileset = new TiledCS.TiledTileset(Directory + tiledMap.Tilesets[0].source);
@@ -147,6 +148,11 @@ namespace ZA6
                 return X  == map.X + map.Width
                     && ((Y >= map.Y && Y + Height <= map.Y + map.Height)
                     || (map.Y >= Y && map.Y + map.Height <= Y + Height));
+            }
+
+            public override string ToString()
+            {
+                return Name;
             }
         }
 

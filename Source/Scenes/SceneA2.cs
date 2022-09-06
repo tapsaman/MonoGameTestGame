@@ -11,7 +11,7 @@ namespace ZA6
         
         protected override void Load()
         {
-            if (Static.GameData.GetInt("progress") > 0 && !Static.GameData.Get("spoken to petteri"))
+            if (Static.GameData.GetString("scenario") != null && !Static.GameData.Get("spoken to petteri"))
             {
                 _petteri = new Petteri()
                 {
@@ -27,7 +27,7 @@ namespace ZA6
             Static.GameData.Save("spoken to petteri", true);
             Static.EventSystem.Load(new Event[]
             {
-                new TextEvent(new Dialog("i know it is here                    .\nmy hole"), _petteri),
+                new TextEvent(new Dialog("i know it is here                              .\nmy hole"), _petteri),
                 new FaceEvent(_petteri, Player),
                 new TextEvent(new Dialog("have you seen it?"), _petteri),
                 new FaceEvent(_petteri, Direction.Down),

@@ -26,14 +26,13 @@ namespace ZA6.Models
         private bool _pressedStart;
         private Texture2D _overlay;
         private Song _song;
-        private MusicScrambler _scrambler;
 
         public GameStateStartMenu(ZeldaAdventure666 game)
         {
             CanReEnter = true;
             _game = game;
             _overlay = Utility.CreateColorTexture(Static.NativeWidth * 2, Static.NativeHeight * 2, Color.Black);
-            _song = Static.Content.Load<Song>("oot_title_theme");
+            _song = Static.Content.Load<Song>("Songs/oot_title_theme");
         }
 
         public override void Enter(StateArgs _)
@@ -47,6 +46,7 @@ namespace ZA6.Models
             SaveData.Load();
             Music.Stop();
             Music.Play(_song);
+            Shaders.Wavy.SetParameters(0.02f, 10f, 0.25f);
             _elapsedTime = 0;
             _overlayMultiplier = 1f;
             _titleMultiplier = 0f;
@@ -56,7 +56,7 @@ namespace ZA6.Models
                 World = Static.World
             };
             _sceneManager.Init("B1");
-            _sceneManager.CurrentScene.UpdateCamera(new Vector2(450, 150));
+            _sceneManager.CurrentScene.CameraTarget = new Vector2(450, 150);
             _sceneManager.CurrentScene.Paused = false;
             _sceneManager.Player.StateMachine.TransitionTo("Stopped");
             _menu = null;
@@ -142,9 +142,6 @@ namespace ZA6.Models
                 Color.White * _titleMultiplier
             );
 
-            Shaders.Wavy.Parameters["waveWidth"].SetValue(0.02f);
-            Shaders.Wavy.Parameters["waveHeight"].SetValue(10f);
-            Shaders.Wavy.Parameters["yOffset"].SetValue(_elapsedTime / 4);
             Static.Renderer.ChangeToEffect(Shaders.Wavy);
 
             spriteBatch.Draw(

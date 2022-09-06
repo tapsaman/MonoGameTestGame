@@ -8,20 +8,20 @@ namespace ZA6
 {
     public class SceneB2 : Scene
     {
-        private Texture2D _overlay;
         public Seppo Seppo;
         private bool _seppoActivated;
 
         public SceneB2()
         {
-            Theme = Static.Content.Load<Song>("linktothepast/darkworld");
+            Theme = Songs.DarkWorld;
             ExitTransitions[Direction.Up] = TransitionType.FadeToBlack;
         }
 
         protected override void Load()
         {
-            if (Static.GameData.GetInt("progress") == 0)
+            if (Static.GameData.GetString("scenario") == null)
             {
+                MediaPlayer.Stop();
                 Seppo = new Seppo();
                 Seppo.Position = TileMap.ConvertTileXY(35, 8);
 
@@ -35,19 +35,31 @@ namespace ZA6
                 Add(seppoActivateEventTrigger);
                 Add(seppoDectivateEventTrigger);
             }
+            else if (Static.GameData.GetString("scenario") == "hole")
+            {
+                for (int i = Characters.Count - 1; i >= 0 ; i--)
+                {
+                    if (Characters[i] is Guard guard)
+                    {
+                        Remove(guard);
+                    }
+                }
+
+                Add(new GrowingHole(TileMap.ConvertTileXY(22, 40)));
+                //Locked = true;
+            }
         }
 
         private void SeppoActivateEvent(Character toucher)
         {
             if (!_seppoActivated && toucher == Player)
             {
-                Sys.Log("activate seppo");
+                Sys.Log("ACTIVATE SEPPO");
                 _seppoActivated = true;
                 Seppo.Facing = Direction.Down;
                 Music.Pause(this);
 
-                if (Static.GameData.GetInt("progress") == 0)
-                    Static.GameData.Save("progress", 1);
+                Static.GameData.Save("scenario", "hole");
             }
         }
 
@@ -55,10 +67,26 @@ namespace ZA6
         {
             if (_seppoActivated && toucher == Player)
             {
-                Sys.Log("deactivate seppo");
+                Sys.Log("DEACTIVATE SEPPO");
                 _seppoActivated = false;
                 Seppo.Facing = Direction.Left;
                 Music.Resume(this);
+
+                for (int i = Characters.Count - 1; i >= 0 ; i--)
+                {
+                    if (Characters[i] is Guard guard)
+                    {
+                        Remove(guard);
+                    }
+                }
+
+                foreach (TileMap.Object obj in TileMap.Objects)
+                {
+                    if (obj.TypeName == "Guard")
+                    {
+                        Add(new SeppoStatue() { Position = obj.Position });
+                    }
+                }
             }
         }
     }

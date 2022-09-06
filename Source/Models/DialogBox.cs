@@ -16,14 +16,14 @@ namespace ZA6
 
         public virtual void Draw(SpriteBatch spriteBatch, string name, string text, bool drawArrow, bool top = false) {}
         public virtual void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop) {}
-        public virtual void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, bool borderless = false, int? highlightRow = null) {}
+        public virtual void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, Vector2 offset, bool borderless = false) {}
     }
 
     public class LinkToThePastDialogBox : DialogBox
     {
         public LinkToThePastDialogBox()
         {
-            _texture = Static.Content.Load<Texture2D>("linktothepast/dialogbox");
+            _texture = Static.Content.Load<Texture2D>("UI/dialogbox");
             _height = _texture.Height;
             _textOffset = new Vector2(8,6);
         }
@@ -59,7 +59,7 @@ namespace ZA6
 
         public LinkToThePastSectionedDialogBox()
         {
-            _texture = Static.Content.Load<Texture2D>("linktothepast/dialogbox");
+            _texture = Static.Content.Load<Texture2D>("UI/dialogbox");
             
             _width = _texture.Width;
             _textOffset = new Vector2(8,6);
@@ -67,11 +67,11 @@ namespace ZA6
             _background = new SectionedSprite(_texture, 7);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, bool borderless = false, int? highlightRow = null)
+        public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, Vector2 offset, bool borderless = false)
         {
             int height = (int)(preservedTextHeight + _textOffset.Y * 1.5); // don't know why 1.5 works here but it does
-            var position = new Vector2(33, top ? 18 : Static.NativeHeight - height - 18);
-            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, yCrop, highlightRow);
+            var position = new Vector2(33, top ? 38 : Static.NativeHeight - height - 18) + offset;
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, yCrop);
 
             if (borderless)
                 return;
@@ -84,8 +84,8 @@ namespace ZA6
     {
         public FantasyDialogBox()
         {
-            _texture = Static.Content.Load<Texture2D>("dialogbox-fantasy-scaled");
-            _arrowTexture = Static.Content.Load<Texture2D>("dialogbox-fantasy-arrow-scaled");
+            _texture = Static.Content.Load<Texture2D>("UI/dialogbox-fantasy-scaled");
+            _arrowTexture = Static.Content.Load<Texture2D>("UI/dialogbox-fantasy-arrow-scaled");
             _height = _texture.Height;
             _arrowOffset = new Vector2(230,50);
             _nameOffset = new Vector2(44,2);

@@ -36,7 +36,6 @@ namespace ZA6.Models
             _introAnimation = null;
 
             _args = args != null && args is Args a ? a : new Args();
-            //Music.Stop();
         }
 
         public override void Update(GameTime gameTime)

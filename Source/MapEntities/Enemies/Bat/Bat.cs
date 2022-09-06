@@ -17,7 +17,7 @@ namespace ZA6
             Health = 2;
             Moving = true;
             
-            var texture = Static.Content.Load<Texture2D>("linktothepast/enemy-sprites");
+            var texture = Img.EnemySprites;
             SAnimation.DefaultFrameWidth = SAnimation.DefaultFrameHeight = 34;
 
             Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()

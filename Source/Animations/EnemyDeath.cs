@@ -10,7 +10,7 @@ namespace ZA6.Animations
         
         protected override SAnimation Load()
         {
-            var texture = Static.Content.Load<Texture2D>("linktothepast/animation-enemy-death");
+            var texture = Static.Content.Load<Texture2D>("Sprites/animation-enemy-death");
             Position -= new Vector2(15, 21);
             return new SAnimation(texture, 7, 26, 32, 0.1f);
         }

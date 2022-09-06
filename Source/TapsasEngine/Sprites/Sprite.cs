@@ -30,7 +30,9 @@ namespace TapsasEngine.Sprites
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 position, int width, int height)
         {
-            var scale = new Vector2(width / Texture.Width, height / Texture.Height);
+            var scale = SourceRectangle != null
+                ? new Vector2(width / ((Rectangle)SourceRectangle).Width, height / ((Rectangle)SourceRectangle).Height)
+                : new Vector2(width / Texture.Width, height / Texture.Height);
 
             spriteBatch.Draw(
                 Texture,

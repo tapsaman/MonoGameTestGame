@@ -43,37 +43,45 @@ namespace ZA6
         public static SoundEffect Jump;
         public static SoundEffect ItemGet;
         public static SoundEffect RitualEndSound;
+        public static SoundEffect Quake1;
+        public static SoundEffect Quake2;
+        public static SoundEffect MoveObject;
+        public static SoundEffect Ram;
 
         public static void Load()
         {
             Volume = 0.5f;
-            ChestOpen = Static.Content.Load<SoundEffect>("linktothepast/sfx/chest open");
-            Cursor = Static.Content.Load<SoundEffect>("linktothepast/sfx/cursor");
-            EnemyDies = Static.Content.Load<SoundEffect>("linktothepast/sfx/enemy dies");
-            EnemyHit = Static.Content.Load<SoundEffect>("linktothepast/sfx/enemy hit");
-            Error = Static.Content.Load<SoundEffect>("linktothepast/sfx/error");
-            MenuClose = Static.Content.Load<SoundEffect>("linktothepast/sfx/menu close");
-            MenuOpen = Static.Content.Load<SoundEffect>("linktothepast/sfx/menu open");
-            Message = Static.Content.Load<SoundEffect>("linktothepast/sfx/message");
-            MessageFinish = Static.Content.Load<SoundEffect>("linktothepast/sfx/message finish");
-            Sword1 = Static.Content.Load<SoundEffect>("linktothepast/sfx/fighter sword 1");
-            Sword2 = Static.Content.Load<SoundEffect>("linktothepast/sfx/fighter sword 2");
-            WalkGrass = Static.Content.Load<SoundEffect>("linktothepast/sfx/walk grass");
-            Soldier = Static.Content.Load<SoundEffect>("linktothepast/sfx/soldier");
-            SmallEnemyHit = Static.Content.Load<SoundEffect>("linktothepast/sfx/small enemy hit");
-            LinkHurt = Static.Content.Load<SoundEffect>("linktothepast/sfx/link hurt");
-            LinkFall = Static.Content.Load<SoundEffect>("linktothepast/sfx/link falls");
-            LinkDies = Static.Content.Load<SoundEffect>("linktothepast/sfx/link dies");
-            Fall = Static.Content.Load<SoundEffect>("linktothepast/sfx/fall");
-            LargeBeam = Static.Content.Load<SoundEffect>("linktothepast/sfx/large beam");
-            Keese = Static.Content.Load<SoundEffect>("linktothepast/sfx/keese");
-            Heart = Static.Content.Load<SoundEffect>("linktothepast/sfx/heart");
-            LifeRefill = Static.Content.Load<SoundEffect>("linktothepast/sfx/life refill");
-            Rupee = Static.Content.Load<SoundEffect>("linktothepast/sfx/rupee");
-            LowHP = Static.Content.Load<SoundEffect>("linktothepast/sfx/low hp");
-            Jump = Static.Content.Load<SoundEffect>("linktothepast/sfx/error");
-            ItemGet = Static.Content.Load<SoundEffect>("linktothepast/sfx/item get 1");
-            RitualEndSound = Static.Content.Load<SoundEffect>("halloween-impact-wav");
+            ChestOpen = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/chest open");
+            Cursor = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/cursor");
+            EnemyDies = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/enemy dies");
+            EnemyHit = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/enemy hit");
+            Error = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/error");
+            MenuClose = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/menu close");
+            MenuOpen = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/menu open");
+            Message = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/message");
+            MessageFinish = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/message finish");
+            Sword1 = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/fighter sword 1");
+            Sword2 = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/fighter sword 2");
+            WalkGrass = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/walk grass");
+            Soldier = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/soldier");
+            SmallEnemyHit = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/small enemy hit");
+            LinkHurt = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/link hurt");
+            LinkFall = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/link falls");
+            LinkDies = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/link dies");
+            Fall = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/fall");
+            LargeBeam = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/large beam");
+            Keese = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/keese");
+            Heart = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/heart");
+            LifeRefill = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/life refill");
+            Rupee = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/rupee");
+            LowHP = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/low hp");
+            Jump = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/error");
+            ItemGet = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/item get 1");
+            Quake1 = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/quake 1");
+            Quake2 = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/quake 2");
+            MoveObject = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/move object");
+            Ram = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/ram");
+            RitualEndSound = Static.Content.Load<SoundEffect>("SFX/halloween-impact-wav");
         }
     }
 }

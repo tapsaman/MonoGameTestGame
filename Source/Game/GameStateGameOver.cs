@@ -28,7 +28,7 @@ namespace ZA6.Models
         {
             CanReEnter = false;
             _game = game;
-            _song = Static.Content.Load<Song>("oot_game_over");
+            _song = Static.Content.Load<Song>("Songs/oot_game_over");
         }
 
         public override void Enter(StateArgs args = null)
@@ -37,13 +37,11 @@ namespace ZA6.Models
             Static.Player.Moving = false;
             Static.Player.StateMachine.TransitionTo("Stopped");
             
-            if (Static.GameData.GetInt("progress") == 1)
-                Static.GameData.Save("progress", 2);
-            
-            if (Static.GameData.GetString("scenario") != "crispy")
-                _animation = new Animations.GameOver();
-            else
+            if (Static.GameData.GetString("scenario") == "crispy")
                 _animation = new Animations.GameOver("PLEASE", "IMINPAIN", "IM IN PAIN");
+            else
+                _animation = new Animations.GameOver();
+            
             _elapsedTime = 0;
             _hasDropped = false;
 
@@ -95,6 +93,7 @@ namespace ZA6.Models
                 }
                 else if (!_dialogManager.IsDone)
                 {
+                    _dialogManager.DrawOffset = Static.Scene.ShakeOffset;
                     _dialogManager.Update(gameTime);
                 }
                 else

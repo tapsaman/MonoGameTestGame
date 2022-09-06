@@ -16,10 +16,10 @@ namespace ZA6
             TriggeredOnTouch = true;
             Trigger += PullToHole;
             
-            var innerHoleEventTrigger = new TouchEventTrigger(Position + new Vector2(6, 0), 4, 16);
+           /* var innerHoleEventTrigger = new TouchEventTrigger(Position + new Vector2(6, 0), 4, 16);
             innerHoleEventTrigger.Trigger += PullToHole;
 
-            Static.Scene.Add(innerHoleEventTrigger);
+            Static.Scene.Add(innerHoleEventTrigger);*/
         }
 
         private void PullToHole(Character character)

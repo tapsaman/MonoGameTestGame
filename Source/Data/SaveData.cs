@@ -16,6 +16,7 @@ namespace ZA6
     {
         public DataStore GameData;
         public float PlayTimeSeconds;
+        public int Rupees;
 
         private static SaveFileManager<SaveData> _saveFileManager = new SaveFileManager<SaveData>()
         {
@@ -27,7 +28,8 @@ namespace ZA6
             SaveData saving = new SaveData()
             {
                 GameData = Static.GameData,
-                PlayTimeSeconds = Static.PlayTimeTimer.Seconds
+                PlayTimeSeconds = Static.PlayTimeTimer.Seconds,
+                Rupees = Static.Player.Rupees
             };
 
             _saveFileManager.Save(saving, "SAVE_FILE.xml");
@@ -57,6 +59,7 @@ namespace ZA6
             {
                 Static.PlayTimeTimer.Seconds = loaded.PlayTimeSeconds;
                 Static.GameData = loaded.GameData;
+                Static.Player.Rupees = loaded.Rupees;
 
                 Static.Game.StateMachine.TransitionTo("StartOver");
             }
@@ -79,6 +82,10 @@ namespace ZA6
         {
             writer.WriteStartElement("PlayTimeSeconds");
             writer.WriteValue(PlayTimeSeconds);
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("Rupees");
+            writer.WriteValue(Rupees);
             writer.WriteEndElement();
 
             writer.WriteStartElement("GameData");
@@ -104,6 +111,11 @@ namespace ZA6
                     case "PlayTimeSeconds":
                         reader.Read();
                         PlayTimeSeconds = float.Parse(reader.Value);
+                        reader.Read();
+                        break;
+                    case "Rupees":
+                        reader.Read();
+                        Rupees = Int32.Parse(reader.Value);
                         reader.Read();
                         break;
                     default:

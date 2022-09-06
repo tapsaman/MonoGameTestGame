@@ -19,7 +19,7 @@ namespace ZA6
 
         protected override void Load()
         {
-            _overlay = Static.Content.Load<Texture2D>("linktothepast/shadedwoodtransparency");
+            _overlay = Static.Content.Load<Texture2D>("Images/shadedwoodtransparency");
 
             _moogle = new Moogle() { Position = TileMap.ConvertTileXY(4, 38), Facing = Direction.Right };
             _moogle.Trigger += TalkTMoogle;
@@ -175,7 +175,7 @@ namespace ZA6
                                         new AnimateEvent(new Animations.Walk(Player, TileMap.ConvertTileXY(-2, 0))),
                                         new FaceEvent(Player, Direction.Up),
                                         new TextEvent(new Dialog("The mini game game costs 199\nrupees to play\n kupo.\nGotta feed the kids and all\nthat"), _moogle),
-                                        new RunEvent(() => { Static.Game.Hud.Rupees -= 199; }),
+                                        new RunEvent(() => { Static.Player.Rupees -= 199; }),
                                         new WaitEvent(RupeeHUD.UPDATE_TIME * 199),
                                         new TextEvent(new Dialog("Good by!"), _moogle),
                                         new SaveValueEvent(DataStoreType.Game, "minigame done", true),

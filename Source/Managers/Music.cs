@@ -58,8 +58,8 @@ namespace ZA6
                 return;
             
             IsPaused = false;
-            MediaPlayer.Resume();
             _pausedBy = null;
+            MediaPlayer.Resume();
         }
 
         public static void FadeOut(float timeInSeconds)
@@ -83,6 +83,8 @@ namespace ZA6
             _fadingOut = false;
             _currentSong = null;
             _nextSong = null;
+            IsPaused = false;
+            _pausedBy = null;
             MediaPlayer.Stop();
         }
 
@@ -128,9 +130,6 @@ namespace ZA6
             }
 
             MediaPlayer.Volume = _currentVolume * _VOLUME_MULTIPLIER;
-
-        if (MediaPlayer.Queue.ActiveSong != null)
-                Sys.Debug(MediaPlayer.Queue.ActiveSong.Name.ToString());
         }
     }
 }

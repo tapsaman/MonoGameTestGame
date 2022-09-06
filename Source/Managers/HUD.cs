@@ -17,10 +17,9 @@ namespace ZA6
             {
                 _player = value;
                 _lifeHUD = new LifeHUD() { MaxHealth = _player.MaxHealth };
-                _rupeeHUD = new RupeeHUD();
+                _rupeeHUD = new RupeeHUD() { Rupees = _player.Rupees };
             }
         }
-        public int Rupees { get; set; }
         private Player _player;
         private LifeHUD _lifeHUD;
         private RupeeHUD _rupeeHUD;
@@ -30,7 +29,7 @@ namespace ZA6
             if (_player == null)
                 return;
 
-            _rupeeHUD.Update(gameTime, Rupees);
+            _rupeeHUD.Update(gameTime, _player.Rupees);
             _lifeHUD.Update(
                 gameTime,
                 _player.Health,
@@ -151,6 +150,7 @@ namespace ZA6
     public class RupeeHUD : IDraw
     {
         public const float UPDATE_TIME = 0.015f;
+        public int Rupees { set => _drawnRupees = value; } 
         private static Sprite[] _numberSprites = new Sprite[]
         {
             new Sprite(Img.RupeeHUD, new Rectangle(0, 9, 7, 7)),
