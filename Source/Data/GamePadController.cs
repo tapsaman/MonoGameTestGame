@@ -76,5 +76,9 @@ namespace ZA6
         {
             return _previousGamePadState.IsButtonDown((Buttons)key) && _currentGamePadState.IsButtonUp((Buttons)key);
         }
+        public override bool IsAnyKeyPressed()
+        {
+            return IsAnyDefinedKeyPressed();
+        }
     }
 }

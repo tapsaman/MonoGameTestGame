@@ -8,11 +8,6 @@ namespace ZA6.Utilities
     public class GameRenderer : PointStretchRenderer
     {
         private RenderTarget2D _startMenuSceneRenderTarget;
-        private int _damageEffectIter = 0;
-        private int _highlightEffectIter = 0;
-        private event Action<GameTime> _doAfterPostEffect;
-        private float _noiseSeed = 0f;
-        private float _spotlightSize = 0f;
 
         public GameRenderer(GraphicsDevice device, GraphicsDeviceManager deviceManager)
             : base(device, deviceManager) {}
@@ -21,30 +16,7 @@ namespace ZA6.Utilities
         {
             base.Init(nativeWidth, nativeHeight, resolution);
             _startMenuSceneRenderTarget = new RenderTarget2D(Device, NativeWidth * 2, NativeHeight * 2);
-        }
-
-        public override void PostDraw()
-        {
-            Static.DevUtils.Draw(Static.SpriteBatch);
-            //_doAfterPostEffect.Invoke();
-
-            if (Static.Game.StateMachine.CurrentStateKey == "MainMenu")
-            {
-                DrawPlayTimeText();   
-            }
-        }
-
-        public void DrawPlayTimeText()
-        {
-            string playTimeText = "Play time: " + Static.PlayTimeTimer.HourMinuteSecondString;
-            Vector2 size = Static.Font.MeasureString(playTimeText);
-
-            Static.SpriteBatch.DrawString(
-                Static.Font,
-                playTimeText,
-                Resolution.Size - size,
-                Color.White
-            );
+            OnPostDraw += PostDraw;
         }
 
         public void StartMenuStart()
@@ -58,13 +30,12 @@ namespace ZA6.Utilities
         {
             SpriteBatch.End();
 
-            Device.SetRenderTarget(_nativeRenderTarget);
+            Device.SetRenderTarget(_nativeTarget);
             SpriteBatch.Begin(samplerState: SamplerState.LinearClamp);
             SpriteBatch.Draw(_startMenuSceneRenderTarget, new Rectangle(0, 0, Static.NativeWidth, Static.NativeHeight), Color.White);
             SpriteBatch.End();
             SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
         }
-
 
         public void StartMenuEnd()
         {
@@ -75,35 +46,33 @@ namespace ZA6.Utilities
             SpriteBatch.Draw(_startMenuSceneRenderTarget, new Rectangle(0, 0, Static.NativeWidth, Static.NativeHeight), Color.White);
             SpriteBatch.End();*/
             SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            SpriteBatch.Draw(_nativeRenderTarget, ScreenRectangle, Color.White);
+            SpriteBatch.Draw(_nativeTarget, ScreenRectangle, Color.White);
             Static.DevUtils.Draw(Static.SpriteBatch);
             SpriteBatch.End();
         }
 
-        public override void ApplyPostEffect(Effect effect)
+        private void PostDraw()
         {
-            base.ApplyPostEffect(effect);
+            Static.DevUtils.Draw(Static.SpriteBatch);
+            //_doAfterPostEffect.Invoke();
 
-            _doAfterPostEffect -= _doAfterPostEffect;
-
-            if (effect == Shaders.MildNoise || effect == Shaders.Noise)
+            if (Static.Game.StateMachine.CurrentStateKey == "MainMenu")
             {
-                _doAfterPostEffect += AfterNoiseEffect;
+                DrawPlayTimeText();   
             }
-            /*else if (effect == Shaders.Spotlight)
-            {
-                _spotlightSize = 0f;
-                _postEffect.Parameters["size"].SetValue(_spotlightSize);
-                _postEffect.Parameters["target"].SetValue(Static.Player.Hitbox.Rectangle.Center / Static.NativeSize);
-                _doAfterPostEffect += AfterSpotlightEffect;
-            }*/
         }
 
-        private void AfterNoiseEffect(GameTime gameTime)
+        private void DrawPlayTimeText()
         {
-            //_noiseSeed += (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
-            _noiseSeed += 0.001f;
-            _postEffect.Parameters["seed"].SetValue(_noiseSeed);
+            string playTimeText = "Play time: " + Static.PlayTimeTimer.HourMinuteSecondString;
+            Vector2 size = Static.Font.MeasureString(playTimeText);
+
+            Static.SpriteBatch.DrawString(
+                Static.Font,
+                playTimeText,
+                Resolution.Size - size,
+                Color.White
+            );
         }
     }
 }

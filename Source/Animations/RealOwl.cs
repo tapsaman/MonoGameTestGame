@@ -16,7 +16,7 @@ namespace ZA6.Animations
         {
             MapPosition = mapPosition;
 
-            var owlTexture = Static.Content.Load<Texture2D>("real_owl-255x248");
+            var owlTexture = Static.Content.Load<Texture2D>("Sprites/real_owl-255x248");
             Dictionary<string, SAnimation> animations = new Dictionary<string, SAnimation>()
             {
                 { "Idle", new SAnimation(owlTexture, 2, 0, 255, 248) },
@@ -34,7 +34,7 @@ namespace ZA6.Animations
             Static.Renderer.OnPostDraw += DrawOwl;
         }
 
-        public void Exit()
+        public override void Exit()
         {
             Static.Renderer.OnPostDraw -= DrawOwl;
         }

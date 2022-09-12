@@ -25,20 +25,24 @@ struct VertexShaderOutput
 // When we passed our effect to spritebatch.Begin( .., ...,, effect,..) this is what effects all the Draw calls we now make.
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float4 color = input.Color;
     float2 coords = input.TextureCoordinates;
+    float4 imageColor = tex2D(SpriteTextureSampler, coords);
+    float4 color;
     
-    if (!any(color)) return color;
+    //if (imageColor.a == 0)
+    //   return float4(0,0,0,0);
+
+    if (!any(imageColor)) return imageColor;
 
     float step = 1.0/7;
 
-    if      (coords.x < (step * 1)) color = float4(1, 0, 0, 1);
+    if      (coords.x < (step * 1)) color = float4(1, .8, 1, 1);
     else if (coords.x < (step * 2)) color = float4(1, .5, 0, 1);
     else if (coords.x < (step * 3)) color = float4(1, 1, 0, 1);
     else if (coords.x < (step * 4)) color = float4(0, 1, 0, 1);
     else if (coords.x < (step * 5)) color = float4(0, 0, 1, 1);
     else if (coords.x < (step * 6)) color = float4(.3, 0, .8, 1);
-    else                            color = float4(1, .8, 1, 1);
+    else                            color = float4(1, 0, 0, 1);
 
     return color;
 }

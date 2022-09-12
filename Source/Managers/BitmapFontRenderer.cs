@@ -123,8 +123,12 @@ namespace ZA6.Managers
                     // 12 = \f = fromfeed page break
                     // Apply effect
 
-                    string effectNumber = text.Substring(i + 1, 2);
-                    Static.Renderer.ChangeToEffect(FontEffects[Int32.Parse(effectNumber)]);
+                    if (text.Length > i + 2)
+                    {
+                        string effectNumber = text.Substring(i + 1, 2);
+                        Static.Renderer.ChangeToEffect(FontEffects[Int32.Parse(effectNumber)]);
+                    }
+                    
                     i += 2;
 
                     continue;

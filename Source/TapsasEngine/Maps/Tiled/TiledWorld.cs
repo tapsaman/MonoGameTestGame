@@ -21,12 +21,12 @@ namespace ZA6
 
         public TileMap LoadTileMap(string mapName, string[] useAlternativeLayers)
         {
-            WorldMap worldMap = FindWorldMap(mapName);
-
             TileMap map = new TileMap();
             map.Name = mapName;
             map.UseAlternativeLayers = useAlternativeLayers;
-            
+            map.Infinite = mapName == "Void";
+
+            WorldMap worldMap = FindWorldMap(mapName);
             var tiledMap = new TiledCS.TiledMap(Directory + worldMap.FileName);
             map.Tileset = new TiledCS.TiledTileset(Directory + tiledMap.Tilesets[0].source);
             map.TilesetTexture = Img.TilesetImageToTexture(map.Tileset.Image);

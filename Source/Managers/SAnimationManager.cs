@@ -58,7 +58,7 @@ namespace ZA6.Managers
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 offset)
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
             Vector2 position = (Position + offset + _animation.Offset);
             position.Round();

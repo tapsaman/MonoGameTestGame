@@ -93,7 +93,7 @@ namespace ZA6.Models
                 }
                 else if (!_dialogManager.IsDone)
                 {
-                    _dialogManager.DrawOffset = Static.Scene.ShakeOffset;
+                    _dialogManager.DrawOffset = Static.Scene.Camera.ShakeOffset;
                     _dialogManager.Update(gameTime);
                 }
                 else

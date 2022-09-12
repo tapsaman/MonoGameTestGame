@@ -85,12 +85,12 @@ namespace ZA6
                         break;
                     case "MusicVolume":
                         reader.Read();
-                        MusicVolume = float.Parse(reader.Value);
+                        MusicVolume = float.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
                         reader.Read();
                         break;
                     case "SFXVolume":
                         reader.Read();
-                        SFXVolume = float.Parse(reader.Value);
+                        SFXVolume = float.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
                         reader.Read();
                         break;
                     default:

@@ -1107,13 +1107,11 @@
  <tile id="813">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-   <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="814">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-   <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="815">
@@ -1263,13 +1261,11 @@
  <tile id="929">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-   <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="930">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-   <property name="IsBlocking" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="931">
@@ -1417,18 +1413,6 @@
   </properties>
  </tile>
  <tile id="1044">
-  <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-   <property name="IsBlocking" type="bool" value="true"/>
-  </properties>
- </tile>
- <tile id="1045">
-  <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-   <property name="IsBlocking" type="bool" value="true"/>
-  </properties>
- </tile>
- <tile id="1046">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
    <property name="IsBlocking" type="bool" value="true"/>

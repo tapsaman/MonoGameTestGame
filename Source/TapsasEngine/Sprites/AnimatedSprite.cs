@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using ZA6;
 using ZA6.Managers;
 using ZA6.Models;
 
@@ -8,6 +9,7 @@ namespace TapsasEngine.Sprites
 {
     public class AnimatedSprite : Sprite
     {
+        public Effect Effect;
         protected SAnimationManager _animationManager;
 
         protected Dictionary<string, SAnimation> _animations;
@@ -25,7 +27,16 @@ namespace TapsasEngine.Sprites
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            _animationManager.Draw(spriteBatch, position, Color);
+            if (Effect == null)
+            {
+                _animationManager.Draw(spriteBatch, position, Color);
+            }
+            else
+            {
+                Static.Renderer.ChangeToEffect(Shaders.Evaporate);
+                _animationManager.Draw(spriteBatch, position, Color);
+                Static.Renderer.ChangeToDefault();
+            }
         }
 
         public void SetAnimation(string animationName = null)

@@ -55,5 +55,10 @@ namespace ZA6
         {
             return _previousKeyboardState.IsKeyDown(key) && _currentKeyboardState.IsKeyUp(key);
         }
+
+        public override bool IsAnyKeyPressed()
+        {
+            return _currentKeyboardState.GetPressedKeyCount() != 0;
+        }
     }
 }

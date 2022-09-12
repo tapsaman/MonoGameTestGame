@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using TapsasEngine;
 using TapsasEngine.Utilities;
 using ZA6.Managers;
 using ZA6.UI;
@@ -32,6 +33,7 @@ namespace ZA6.Models
 
         public override void Update(GameTime gameTime)
         {
+            Tengine.Delta = 0f;
             UIManager.Update(gameTime);
             Music.Update(gameTime);
         }
@@ -40,8 +42,6 @@ namespace ZA6.Models
         {
             Static.Renderer.Start();
 
-            //if (Static.GameStarted)
-            //{
             Static.SceneManager.Draw(spriteBatch);
 
             if (_game.TitleText.IsEntered)
@@ -49,7 +49,10 @@ namespace ZA6.Models
                 _game.TitleText.Draw(spriteBatch);
             }
             _game.Hud.Draw(spriteBatch);
-            //}
+
+            //Static.Renderer.StartUI();
+
+            Static.Renderer.ChangeToUITarget();
 
             UIManager.Draw(spriteBatch);
             

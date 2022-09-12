@@ -42,7 +42,8 @@ namespace TapsasEngine.Utilities
         public abstract bool IsPressed(Keys key);
         public abstract bool JustPressed(Keys key);
         public abstract bool JustReleased(Keys key);
-        public bool IsAnyKeyPressed()
+        public abstract bool IsAnyKeyPressed();
+        public bool IsAnyDefinedKeyPressed()
         {
             return (
                 IsPressed(A)

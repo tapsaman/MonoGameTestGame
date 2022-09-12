@@ -21,7 +21,8 @@ namespace ZA6
             Shaders.Wavy,
             Shaders.Noise,
             Shaders.MildNoise,
-            Shaders.Highlight
+            Shaders.Highlight,
+            Shaders.VHS
         };
         public string[] GameStateKeyList =
         {
@@ -43,6 +44,7 @@ namespace ZA6
             "noise",
             "arrows",
             "scrambled",
+            "tape",
             "end"
         };
         private bool _askingNumber;
@@ -259,7 +261,8 @@ namespace ZA6
                 Static.Font,
                 "Game state: " + Static.Game.StateMachine.CurrentStateKey
                     + "\nMap: " + Static.Scene.TileMap.Name
-                    + "\nDraw offset: " + Static.Scene.DrawOffset,
+                    + "\nDraw offset: " + Static.Scene.Camera.Offset
+                    + "\nPaused: " + Static.Scene.Paused,
                 Vector2.One,
                 TextColor
             );
@@ -285,8 +288,8 @@ namespace ZA6
             var sizeMultiplier = Static.Renderer.NativeSizeMultiplier;
 
             var color = new Color(0, 0, 0, 120);
-            var x = Static.Renderer.ScreenRectangle.X + scene.DrawOffset.X * sizeMultiplier.X + 1;
-            var y = Static.Renderer.ScreenRectangle.Y + scene.DrawOffset.Y * sizeMultiplier.Y + 1;
+            var x = Static.Renderer.ScreenRectangle.X + Static.Scene.Camera.Offset.X * sizeMultiplier.X + 1;
+            var y = Static.Renderer.ScreenRectangle.Y +Static. Scene.Camera.Offset.Y * sizeMultiplier.Y + 1;
             
             while (x < Static.Renderer.ScreenRectangle.Right)
             {    
@@ -315,7 +318,7 @@ namespace ZA6
             foreach (var c in characters)
             {
                 var txt = CharacterToDataString(c);
-                var pos = (new Vector2(c.Position.X, c.Hitbox.Rectangle.Bottom) + Static.Scene.DrawOffset) * Static.Renderer.NativeSizeMultiplier + Static.Renderer.ScreenPosition;
+                var pos = (new Vector2(c.Position.X, c.Hitbox.Rectangle.Bottom) + Static.Scene.Camera.Offset) * Static.Renderer.NativeSizeMultiplier + Static.Renderer.ScreenPosition;
 
                 Static.SpriteBatch.DrawString(
                     Static.Font,

@@ -30,12 +30,36 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/linktothepast/linktothepast_0.png
 
+#begin Fonts/msgothic/msgothic.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Fonts/msgothic/msgothic.xml
+
+#begin Fonts/msgothic/msgothic_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/msgothic/msgothic_0.png
+
 #begin Fonts/TestFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TestFont.spritefont
+
+#begin Fonts/TestFontLarge.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TestFontLarge.spritefont
 
 #begin Fonts/TestFontSmall.spritefont
 /importer:FontDescriptionImporter
@@ -320,6 +344,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/zelda_adventure_title.png
 
+#begin SFX/fyou.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SFX/fyou.wav
+
+#begin SFX/fyou-jackblack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SFX/fyou-jackblack.wav
+
 #begin SFX/halloween-impact-wav.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -554,6 +590,12 @@
 /processorParam:Quality=Best
 /build:SFX/LinkToThePast/walk grass.wav
 
+#begin Shaders/ColorRoundEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ColorRoundEffect.fx
+
 #begin Shaders/CrispyEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -571,6 +613,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/EnemyDamageEffect.fx
+
+#begin Shaders/EvaporateEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/EvaporateEffect.fx
 
 #begin Shaders/GrayScale.fx
 /importer:EffectImporter
@@ -637,6 +685,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/SpriteNoiseEffect.fx
+
+#begin Shaders/VHSEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/VHSEffect.fx
 
 #begin Shaders/WavyEffect.fx
 /importer:EffectImporter
@@ -920,6 +974,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/real_owl-255x248.png
 
+#begin Sprites/taalasmaa-146x135.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/taalasmaa-146x135.png
+
 #begin Sprites/white_owl-64x64.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1135,4 +1201,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI/slider-handle.png
+
+#begin UI/tape-pause.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/tape-pause.png
+
+#begin UI/tape-play.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/tape-play.png
 

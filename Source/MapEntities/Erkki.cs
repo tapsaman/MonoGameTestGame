@@ -8,7 +8,7 @@ using TapsasEngine.Sprites;
 namespace ZA6
 {
     public class Erkki : Character
-    {       
+    {
         public Erkki()
         {
             var texture = Img.NPCSprites;
@@ -23,14 +23,14 @@ namespace ZA6
                 { "IdleRight",      new SAnimation(texture, 1, 0.04f, false, 0, 0) },
             };
 
-            AnimatedSprite = new AnimatedSprite(animations, "IdleDown");
+            AnimatedSprite = new AnimatedSprite(animations, "IdleLeft");
+            Facing = Direction.Left;
             Hitbox.Load (14, 10);
             Hitbox.Color = Color.Red;
             SpriteOffset = new Vector2(-3, -18);
             Interactable = true;
             Hittable = false;
             WalkingStill = false;
-            Facing = Direction.Left;
         }
     }
 }

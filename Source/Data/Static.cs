@@ -11,7 +11,7 @@ namespace ZA6
 {
     public static class Static
     {
-        public const bool Debug = false;
+        public const bool Debug = true;
         public const bool PauseOnWindowDeactive = !Debug;
         public static ZeldaAdventure666 Game;
         public static Player Player;
@@ -27,9 +27,9 @@ namespace ZA6
         //public static int BackBufferHeight = (NativeHeight * NativeSizeMultiplier);
         public static bool RenderHitboxes = false;
         public static bool RenderCollisionMap = false;
-        public static bool GamePadEnabled;
         public static SpriteFont Font;
         public static SpriteFont FontSmall;
+        public static SpriteFont FontLarge;
         public static ContentManager Content;
         public static SpriteBatch SpriteBatch;
         public static SceneManager  SceneManager;

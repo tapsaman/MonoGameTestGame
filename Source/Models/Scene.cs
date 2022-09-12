@@ -8,6 +8,7 @@ using TapsasEngine.Enums;
 using ZA6.Models;
 using TapsasEngine.Sprites;
 using TapsasEngine;
+using ZA6.Managers;
 
 namespace ZA6
 {
@@ -17,6 +18,7 @@ namespace ZA6
         public bool LockedCamera;
         public Song Theme { get; protected set; }
         public TileMap TileMap;
+        public Camera Camera { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Player Player;
@@ -24,10 +26,7 @@ namespace ZA6
         public Dictionary<Direction, TransitionType> ExitTransitions;
         public string[] UseAlternativeLayers = new string[0];
         public bool Paused = true;
-        public Vector2 DrawOffset = Vector2.Zero;
         public Vector2 OverlayOffset = Vector2.Zero;
-        public Vector2 ShakeVelocity = Vector2.Zero;
-        public Vector2 ShakeOffset { get; private set; } = Vector2.Zero;
         public Vector2? CameraTarget = null;
         public List<MapEntity> InteractableEntities { get; private set; }
         public List<Character> Characters { get; private set; }
@@ -47,6 +46,7 @@ namespace ZA6
         public Scene()
         {
             // Load basics in constructor
+            Camera = new Camera();
             SceneData = new DataStore();
             GroundLevel = new List<MapObject>();
             CharacterLevel = new List<MapObject>();
@@ -70,6 +70,11 @@ namespace ZA6
         {
             Width = TileMap.DrawWidth;
             Height = TileMap.DrawHeight;
+            
+            Camera.SceneWidth = Width;
+            Camera.SceneHeight = Height;
+            Camera.ScrollX = Camera.ScrollY = TileMap.Infinite;
+
             Player = player;
             Add(Player);
 
@@ -136,8 +141,14 @@ namespace ZA6
         public virtual void Start()
         {
             Paused = false;
+
             if (Theme != null)
                 Music.Play(Theme);
+            
+            if (Static.GameData.GetString("scenario") == "tape")
+            {
+                Static.Renderer.ApplyPostEffect(Shaders.VHS);
+            }
         }
 
         public virtual void Update(GameTime gameTime)
@@ -155,8 +166,7 @@ namespace ZA6
 
             CharacterLevel.Sort((a, b) => a.Position.Y.CompareTo(b.Position.Y));
 
-            //if (Player.Velocity != Vector2.Zero)
-            UpdateCamera(CameraTarget ?? Player.Position);
+            Camera.Target = CameraTarget ?? Player.Hitbox.Rectangle.Center;
 
             for (int i = _animationEffects.Count - 1; i >= 0 ; i--)
             {
@@ -166,64 +176,41 @@ namespace ZA6
 
         public void UpdateCamera(Vector2 targetPosition)
         {
-            if (LockedCamera)
-                return;
-            
-            int halfWidth = Static.NativeWidth / 2;
-            int x = Math.Min(TileMap.DrawWidth - Static.NativeWidth, Math.Max(0, (int)targetPosition.X - halfWidth));
-
-            int halfHeight = Static.NativeHeight / 2;
-            int y = Math.Min(TileMap.DrawHeight - Static.NativeHeight, Math.Max(0, (int)targetPosition.Y - halfHeight));
-
-            if (ShakeVelocity != Vector2.Zero)
-            {
-                ShakeVelocity.X = (float)Math.Max(ShakeVelocity.X - 0.1, 0);
-                ShakeVelocity.Y = (float)Math.Max(ShakeVelocity.Y - 0.1, 0);
-
-                ShakeOffset = new Vector2(
-                    Utility.RandomBetween((int)-ShakeVelocity.X, (int)ShakeVelocity.X),
-                    Utility.RandomBetween((int)-ShakeVelocity.Y, (int)ShakeVelocity.Y)
-                );
-
-                x += Utility.RandomBetween((int)-ShakeVelocity.X, (int)ShakeVelocity.X);
-                y += Utility.RandomBetween((int)-ShakeVelocity.Y, (int)ShakeVelocity.Y);
-            }
-
-            DrawOffset = new Vector2(-x, -y) + ShakeOffset;
+            Camera.Target = targetPosition;
         }
 
         public void DrawGround(SpriteBatch spriteBatch)
         {
-            TileMap.DrawGround(spriteBatch, DrawOffset);
+            TileMap.DrawGround(spriteBatch, Camera.Screen);
 
             foreach (var sprite in GroundLevel)
             {
-                sprite.Draw(spriteBatch, DrawOffset);
+                sprite.Draw(spriteBatch, Camera.Offset);
             }
             if (Static.RenderHitboxes)
             {
                 foreach (var hitbox in _hitboxes)
                 {
-                    hitbox.Draw(spriteBatch, DrawOffset);
+                    hitbox.Draw(spriteBatch, Camera.Offset);
                 }
             }
             foreach (var mapEntity in CharacterLevel)
             {
-                mapEntity.Draw(spriteBatch, DrawOffset);
+                mapEntity.Draw(spriteBatch, Camera.Offset);
             }
         }
 
         public void DrawTop(SpriteBatch spriteBatch)
         {
-            TileMap.DrawTop(spriteBatch, DrawOffset);
+            TileMap.DrawTop(spriteBatch, Camera.Offset);
 
             foreach (var mapEntity in AirLevel)
             {
-                mapEntity.Draw(spriteBatch, DrawOffset);
+                mapEntity.Draw(spriteBatch, Camera.Offset);
             }
             foreach (var animationEffect in _animationEffects)
             {
-                animationEffect.Draw(spriteBatch, DrawOffset);
+                animationEffect.Draw(spriteBatch, Camera.Offset);
             }
         }
 
@@ -240,7 +227,7 @@ namespace ZA6
         // For animations
         public void DrawPlayerOnly(SpriteBatch spriteBatch)
         {
-            Player.Draw(spriteBatch, DrawOffset);
+            Player.Draw(spriteBatch, Camera.Offset);
         }
 
         public List<MapObject> LevelToList(MapLevel level)

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,13 +16,16 @@ namespace ZA6.Models
         public override void Enter(StateArgs _)
         {
             Static.Player.StateMachine.TransitionTo("Idle");
+            Static.Renderer.OnPostDraw -= DrawTapeTime;
+
+            if (Static.GameData.GetString("scenario") == "tape")
+            {
+                Static.Renderer.OnPostDraw += DrawTapeTime;
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-
-
-            
             Static.PlayTimeTimer.Update(gameTime);
             Static.EventSystem.Update(gameTime);
             Static.SceneManager.Update(gameTime);
@@ -40,6 +44,7 @@ namespace ZA6.Models
         {
             Static.Renderer.Start();
 
+            //Static.Renderer.ChangeToEffect(Shaders.VertexShaderTest);
             Static.SceneManager.Draw(spriteBatch);
             _game.TitleText.Draw(spriteBatch);
             _game.Hud.Draw(spriteBatch);
@@ -48,5 +53,19 @@ namespace ZA6.Models
         }
 
         public override void Exit() {}
+
+        private void DrawTapeTime()
+        {
+            string text = Static.PlayTimeTimer.Seconds.ToString();
+            text = text.Substring(0, Math.Min(6, text.Length));
+            Vector2 size = Static.FontLarge.MeasureString(text);
+
+            Static.SpriteBatch.DrawString(
+                Static.FontLarge,
+                text,
+                new Vector2(Static.Renderer.Resolution.Size.X - size.X - 10, 10),
+                Color.Black
+            );
+        }
     } 
 }

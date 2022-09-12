@@ -47,6 +47,7 @@ namespace ZA6
         public static SoundEffect Quake2;
         public static SoundEffect MoveObject;
         public static SoundEffect Ram;
+        public static SoundEffect FYou;
 
         public static void Load()
         {
@@ -82,6 +83,7 @@ namespace ZA6
             MoveObject = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/move object");
             Ram = Static.Content.Load<SoundEffect>("SFX/LinkToThePast/ram");
             RitualEndSound = Static.Content.Load<SoundEffect>("SFX/halloween-impact-wav");
+            FYou = Static.Content.Load<SoundEffect>("SFX/fyou");
         }
     }
 }

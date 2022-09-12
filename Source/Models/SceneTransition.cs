@@ -44,37 +44,37 @@ namespace ZA6
                     case Direction.Up:
                         _playerPositionBefore = new Vector2(_player.Position.X, _scene2.Height);
                         _playerPositionAfter = new Vector2(_playerPositionBefore.X, _scene2.Height - playerLength);
-                        _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X, Static.NativeHeight);
-                        _scene2.DrawOffset = new Vector2(_scene1.DrawOffset.X, -Static.NativeHeight);
-                        _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(_scene1.DrawOffset.X, 0);
+                        _scene1OffsetBefore = _scene1.Camera.Offset;
+                        _scene1OffsetAfter = new Vector2(_scene1.Camera.Offset.X, Static.NativeHeight);
+                        _scene2.Camera.Offset = new Vector2(_scene1.Camera.Offset.X, -Static.NativeHeight);
+                        _newSceneOffsetBefore = _scene2.Camera.Offset;
+                        _newSceneOffsetAfter = new Vector2(_scene1.Camera.Offset.X, 0);
                         break;
                     case Direction.Down:
                         _playerPositionBefore = new Vector2(_player.Position.X, -playerLength);
                         _playerPositionAfter = new Vector2(_playerPositionBefore.X, 0);
-                        _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X, _scene1.DrawOffset.Y - Static.NativeHeight);
-                        _scene2.DrawOffset = new Vector2(_scene1.DrawOffset.X, Static.NativeHeight);
-                        _newSceneOffsetBefore = _scene2.DrawOffset;
-                        _newSceneOffsetAfter = new Vector2(_scene1.DrawOffset.X, 0);
+                        _scene1OffsetBefore = _scene1.Camera.Offset;
+                        _scene1OffsetAfter = new Vector2(_scene1.Camera.Offset.X, _scene1.Camera.Offset.Y - Static.NativeHeight);
+                        _scene2.Camera.Offset = new Vector2(_scene1.Camera.Offset.X, Static.NativeHeight);
+                        _newSceneOffsetBefore = _scene2.Camera.Offset;
+                        _newSceneOffsetAfter = new Vector2(_scene1.Camera.Offset.X, 0);
                         break;
                     case Direction.Right:
                         _playerPositionBefore = new Vector2(-playerLength, _player.Position.Y);
                         _playerPositionAfter = new Vector2(0, _playerPositionBefore.Y);
-                        _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(_scene1.DrawOffset.X - Static.NativeWidth, _scene1.DrawOffset.Y);
-                        _scene2.DrawOffset = new Vector2(Static.NativeWidth, _scene1.DrawOffset.Y);
-                        _newSceneOffsetBefore = _scene2.DrawOffset;
+                        _scene1OffsetBefore = _scene1.Camera.Offset;
+                        _scene1OffsetAfter = new Vector2(_scene1.Camera.Offset.X - Static.NativeWidth, _scene1.Camera.Offset.Y);
+                        _scene2.Camera.Offset = new Vector2(Static.NativeWidth, _scene1.Camera.Offset.Y);
+                        _newSceneOffsetBefore = _scene2.Camera.Offset;
                         _newSceneOffsetAfter = new Vector2(0, _newSceneOffsetBefore.Y);
                         break;
                     case Direction.Left:
                         _playerPositionBefore = new Vector2(_scene2.Width, _player.Position.Y);
                         _playerPositionAfter = new Vector2(_scene2.Width - playerLength, _playerPositionBefore.Y);
-                        _scene1OffsetBefore = _scene1.DrawOffset;
-                        _scene1OffsetAfter = new Vector2(Static.NativeWidth, _scene1.DrawOffset.Y);
-                        _scene2.DrawOffset = new Vector2(Static.NativeWidth - _scene2.Width - Static.NativeWidth, _scene1.DrawOffset.Y);
-                        _newSceneOffsetBefore = _scene2.DrawOffset;
+                        _scene1OffsetBefore = _scene1.Camera.Offset;
+                        _scene1OffsetAfter = new Vector2(Static.NativeWidth, _scene1.Camera.Offset.Y);
+                        _scene2.Camera.Offset = new Vector2(Static.NativeWidth - _scene2.Width - Static.NativeWidth, _scene1.Camera.Offset.Y);
+                        _newSceneOffsetBefore = _scene2.Camera.Offset;
                         _newSceneOffsetAfter = new Vector2(Static.NativeWidth - _scene2.Width, _newSceneOffsetBefore.Y);
                         break;
                 }
@@ -93,13 +93,13 @@ namespace ZA6
                     //Sys.Log(_elapsedTime.ToString());
                     //Sys.Log("running slow = " + gameTime.IsRunningSlowly);
                     float changePercentage = (_elapsedTime - _LOAD_TIME) / _CHANGE_TIME;
-                    _scene1.DrawOffset = Vector2.Lerp(_scene1OffsetBefore, _scene1OffsetAfter, changePercentage);
-                    _scene2.DrawOffset = Vector2.Lerp(_newSceneOffsetBefore, _newSceneOffsetAfter, changePercentage);
+                    _scene1.Camera.Offset = Vector2.Lerp(_scene1OffsetBefore, _scene1OffsetAfter, changePercentage);
+                    _scene2.Camera.Offset = Vector2.Lerp(_newSceneOffsetBefore, _newSceneOffsetAfter, changePercentage);
                     _player.Position = Vector2.Lerp(_playerPositionBefore, _playerPositionAfter, changePercentage);
                 }
                 else
                 {
-                    _scene2.DrawOffset = _newSceneOffsetAfter;
+                    _scene2.Camera.Offset = _newSceneOffsetAfter;
                     _scene2.OverlayOffset = _scene1OffsetAfter * 0.5f; //- _scene1OffsetAfter * 0.5f + Static.NativeSize;
                     _player.Position = _playerPositionAfter;
                     Done = true;

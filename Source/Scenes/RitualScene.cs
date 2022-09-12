@@ -116,7 +116,7 @@ namespace ZA6
 
         public override void DrawOverlay(SpriteBatch spriteBatch)
         {
-            DeadErkki.Draw(spriteBatch, TileMap.ConvertTileXY(16, 19) + DrawOffset);
+            DeadErkki.Draw(spriteBatch, TileMap.ConvertTileXY(16, 19) + Camera.Offset);
 
             // Sepia overlay
             Utility.DrawOverlay(spriteBatch, new Color(146, 99, 45, 60));

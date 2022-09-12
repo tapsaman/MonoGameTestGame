@@ -15,6 +15,7 @@ namespace ZA6
         private ScaredBird _bird;
         private Animations.RealOwl _realOwlAnimation;
         private Animations.SeppoScreamer _seppoScreamer;
+        private Animations.PausedTape _pausedTape;
 
         public SceneB1()
         {
@@ -74,7 +75,7 @@ namespace ZA6
             
             if (_realOwlAnimation != null)
             {
-                _realOwlAnimation.DrawOffset = DrawOffset;
+                _realOwlAnimation.DrawOffset = Camera.Offset;
                 _realOwlAnimation.Enter();
             }
 
@@ -115,6 +116,11 @@ namespace ZA6
                 Static.Renderer.ApplyPostEffect(Shaders.MildNoise);
                 return;
             }
+            else if (Static.GameData.GetString("scenario") == "tape")
+            {
+                _pausedTape = new Animations.PausedTape();
+                //_pausedTape.Enter();
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -125,10 +131,14 @@ namespace ZA6
             {
                 _seppoScreamer.Update(gameTime);
             }
+            else if (_pausedTape != null)
+            {
+                _pausedTape.Update(gameTime);
+            }
             
             if (_realOwlAnimation != null)
             {
-                _realOwlAnimation.DrawOffset = DrawOffset;
+                _realOwlAnimation.DrawOffset = Camera.Offset;
                 _realOwlAnimation.OwlSprite.Update(gameTime);
                 _realOwlAnimation.Update(gameTime);
             }
@@ -139,6 +149,7 @@ namespace ZA6
             if (_realOwlAnimation != null)
             {
                 _realOwlAnimation.Exit();
+                _realOwlAnimation = null;
             }
         }
 
@@ -146,11 +157,16 @@ namespace ZA6
         public override void DrawOverlay(SpriteBatch spriteBatch)
         {
             // Reduce native size for panning
-            var overlayPosition = OverlayOffset + DrawOffset * 0.5f - Static.NativeSize;
+            var overlayPosition = OverlayOffset + Camera.Offset * 0.5f - Static.NativeSize;
             
             if (_seppoScreamer != null)
             {
                 _seppoScreamer.Draw(spriteBatch);
+            }
+            else if (_pausedTape != null)
+            {
+                //_pausedTape.Draw(spriteBatch);
+                Static.Renderer.DrawOnUILayer(_pausedTape);
             }
 
             spriteBatch.Draw(

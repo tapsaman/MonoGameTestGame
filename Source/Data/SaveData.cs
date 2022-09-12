@@ -110,12 +110,12 @@ namespace ZA6
                         break;
                     case "PlayTimeSeconds":
                         reader.Read();
-                        PlayTimeSeconds = float.Parse(reader.Value);
+                        PlayTimeSeconds = float.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
                         reader.Read();
                         break;
                     case "Rupees":
                         reader.Read();
-                        Rupees = Int32.Parse(reader.Value);
+                        Rupees = Int32.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
                         reader.Read();
                         break;
                     default:

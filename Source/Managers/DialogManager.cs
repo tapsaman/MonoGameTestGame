@@ -9,7 +9,7 @@ namespace ZA6.Managers
 {
     public class DialogManager
     {
-        private enum State
+        public enum State
         {
             Typing,
             ShiftingLine,
@@ -26,6 +26,7 @@ namespace ZA6.Managers
         public string Answer { get; private set; } = null;
         public int? AnswerIndex { get; private set; } = null;
         public Vector2 DrawOffset = Vector2.Zero;
+        public State CurrentState => _state;
         private State _state;
         const float _LETTER_TIME = 0.018f;
         const float _INPUT_WAIT_TIME = 0.2f;

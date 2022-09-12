@@ -26,12 +26,19 @@ namespace ZA6
         {
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
 
+            //_graphicsDeviceManager.PreparingDeviceSettings += new EventHandler<PreparingDeviceSettingsEventArgs>(SetToPreserve);
+
             if (Static.PauseOnWindowDeactive)
             {
                 Deactivated += DectivateWindow;
                 Activated += ActivateWindow;
             }
         }
+
+        /*private void SetToPreserve(object sender, PreparingDeviceSettingsEventArgs eventargs)
+        {
+            eventargs.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+        }*/
     
         protected override void Initialize()
         {
@@ -46,6 +53,8 @@ namespace ZA6
                 GraphicsDevice,
                 _graphicsDeviceManager
             );
+
+            Input.DetectGamePadController();
 
             base.Initialize();
         }
@@ -64,7 +73,7 @@ namespace ZA6
             Static.GameTime = gameTime;
             Tengine.GameTime = gameTime;
             Tengine.Delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Input.P1.Update();
+            Input.Update();
             Static.DevUtils.Update(gameTime);
             StateMachine.Update(gameTime);
 
@@ -73,6 +82,7 @@ namespace ZA6
 
         protected override void Draw(GameTime gameTime)
         {
+            Tengine.DrawCount++;
             StateMachine.Draw(Static.SpriteBatch);
 
             base.Draw(gameTime);
@@ -88,6 +98,7 @@ namespace ZA6
             Static.Content = Content;
             Static.Font = Content.Load<SpriteFont>("Fonts/TestFont");
             Static.FontSmall = Content.Load<SpriteFont>("Fonts/TestFontSmall");
+            Static.FontLarge = Content.Load<SpriteFont>("Fonts/TestFontLarge");
             Static.World = new TiledWorld("Content\\TiledProject", "ZA6.world");
             Static.SceneManager = new SceneManager()
             {
@@ -139,11 +150,12 @@ namespace ZA6
                 { "Cutscene", new GameStateCutscene(this) },
                 { "GameOver", new GameStateGameOver(this) },
                 { "Cartoon", new GameStateCartoon(this) },
+                { "Stopped", new GameStateStopped(this) },
             };
 
             StateMachine = new RenderStateMachine(states, "StartMenu");
 
-            if (Static.Debug)
+            if (false && Static.Debug)
             {
                 SaveData.LoadAndApply();
             }

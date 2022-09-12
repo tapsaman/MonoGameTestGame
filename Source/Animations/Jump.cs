@@ -26,7 +26,7 @@ namespace ZA6.Animations
             }
         }
         
-        private class JumpToStage : AnimationStage
+        public class JumpToStage : AnimationStage
         {
             public float Time = 0.5f;
             public float JumpHeight = 0.5f;

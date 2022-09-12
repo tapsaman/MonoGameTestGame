@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using TapsasEngine;
 using TapsasEngine.Enums;
+using ZA6.Managers;
+using ZA6.Models;
 
 namespace ZA6
 {
@@ -10,6 +12,7 @@ namespace ZA6
     {
         public Seppo Seppo;
         private bool _seppoActivated;
+        private Animations.JapanLevel _japanLevel;
 
         public SceneB2()
         {
@@ -48,6 +51,38 @@ namespace ZA6
                 Add(new GrowingHole(TileMap.ConvertTileXY(22, 40)));
                 //Locked = true;
             }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+
+            if (true || Static.SessionData.Get("japan"))
+            {
+                _japanLevel = new Animations.JapanLevel();
+            }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime); 
+
+            if (_japanLevel != null)
+            {
+                if (!_japanLevel.IsEntered)
+                    _japanLevel.Enter();
+                else if (!_japanLevel.IsDone)
+                    _japanLevel.Update(gameTime);
+                else
+                    _japanLevel = null;
+            }
+        }
+
+        public override void DrawOverlay(SpriteBatch spriteBatch)
+        {
+            base.DrawOverlay(spriteBatch);
+
+            _japanLevel?.Draw(spriteBatch);
         }
 
         private void SeppoActivateEvent(Character toucher)

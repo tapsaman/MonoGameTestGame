@@ -60,13 +60,15 @@ namespace ZA6
             }
         }
 
-        public class Courier : BitmapFont
+        public class MSGothic : BitmapFont
         {
-            public Courier()
+            public MSGothic()
             {
-                Texture = Static.Content.Load<Texture2D>("Fonts/bitmapfonttest_0");
-                var rawCharData = Static.Content.Load<Dictionary<int, int[]>>("Fonts/bitmapfonttest");
+                var rawCharData = Static.Content.Load<Dictionary<int, int[]>>("Fonts/msgothic/msgothic");
                 Load(rawCharData);
+                Texture = Static.Content.Load<Texture2D>("Fonts/msgothic/msgothic_0");
+                LineHeight = 14;
+                LetterSpacing = 0;
             }
         }
     }

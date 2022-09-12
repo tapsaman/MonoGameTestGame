@@ -32,19 +32,19 @@ namespace ZA6.Animations
             public override void Enter()
             {
                 _effect.Parameters["target"].SetValue(
-                    (Static.Scene.DrawOffset + Static.Player.Hitbox.Rectangle.Center) / Static.NativeSize
+                    (Static.Scene.Camera.Offset + Static.Player.Hitbox.Rectangle.Center) / Static.NativeSize
                 );
                 _effect.Parameters["size"].SetValue(
                     _closing ? _FULL_SIZE : 0f
                 );
-                Static.Renderer.ApplyPostEffect(_effect);
+                Static.Renderer.FinalEffect = _effect;
             }
 
             public override void Update(float elapsedTime)
             {
                 if (elapsedTime < Time)
                 {
-                    Vector2 target = (Static.Scene.DrawOffset + Static.Player.Hitbox.Rectangle.Center) / Static.NativeSize;
+                    Vector2 target = (Static.Scene.Camera.Offset + Static.Player.Hitbox.Rectangle.Center) / Static.NativeSize;
                     float size = _FULL_SIZE * (elapsedTime / Time);
                     
                     if (_closing)
@@ -57,7 +57,7 @@ namespace ZA6.Animations
                 {
                     if (!_closing)
                     {
-                        Static.Renderer.ApplyPostEffect(null);
+                        Static.Renderer.FinalEffect = null;
                     }
                     else
                     {

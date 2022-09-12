@@ -50,14 +50,35 @@ namespace ZA6.Managers
 
         public void Clear()
         {
+            foreach (var item in _queue)
+                item.EventManager.Exit();
+
+            foreach (var item in _parallel)
+                item.EventManager.Exit();
+            
             _queue.Clear();
             _parallel.Clear();
         }
 
         public void OnSceneChange()
         {
-            _queue.RemoveAll(DoesNotSustainSceneChange);
-            _parallel.RemoveAll(DoesNotSustainSceneChange);
+            for (int i = _queue.Count - 1; i >= 0 ; i--)
+            {
+                if (DoesNotSustainSceneChange(_queue[i]))
+                {
+                    _queue[i].EventManager.Exit();
+                    _queue.RemoveAt(i);
+                }
+            }
+
+            for (int i = _parallel.Count - 1; i >= 0 ; i--)
+            {
+                if (DoesNotSustainSceneChange(_parallel[i]))
+                {
+                    _parallel[i].EventManager.Exit();
+                    _parallel.RemoveAt(i);
+                }
+            }
         }
 
         private bool DoesNotSustainSceneChange(EventManagerAndSettings item)
@@ -79,8 +100,14 @@ namespace ZA6.Managers
                 {
                     firstEventManager.Update(gameTime);
                 }
+                else if ((_queue[0].Settings & Settings.Looping) != 0)
+                {
+                    firstEventManager.Exit();
+                    firstEventManager.Enter();
+                }
                 else
                 {
+                    firstEventManager.Exit();
                     _queue.RemoveAt(0);
 
                     if (_queue.Count == 0)
@@ -104,8 +131,14 @@ namespace ZA6.Managers
                     {
                         manager.Update(gameTime);
                     }
+                    else if ((item.Settings & Settings.Looping) != 0)
+                    {
+                        manager.Exit();
+                        manager.Enter();
+                    }
                     else
                     {
+                        manager.Exit();
                         _parallel.RemoveAt(i);
                     }
                 }

@@ -38,6 +38,8 @@ namespace ZA6.Animations
             IsEntered = true;
         }
 
+        public virtual void Exit() {}
+
         public void GoToNext()
         {
             if (!Stages[CurrentIndex].DrawAfterDone)
@@ -61,6 +63,7 @@ namespace ZA6.Animations
                 else
                 {
                     IsDone = true;
+                    Exit();
                 }
             }
         }

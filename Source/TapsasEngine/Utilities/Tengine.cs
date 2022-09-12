@@ -8,5 +8,6 @@ namespace TapsasEngine
         public static GameTime GameTime { get; set; }
         public static float Delta { get; set; }
         public static ContentManager Content;
+        public static int DrawCount;
     }
 }

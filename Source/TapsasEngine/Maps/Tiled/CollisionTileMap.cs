@@ -6,6 +6,7 @@ namespace TapsasEngine.Maps
 {
     public abstract class CollisionTileMap : Map
     {
+        public bool Infinite;
         public abstract CollisionType GetCollisionType(int tileX, int tileY);
         public int TileWidth { get; protected set; }
         public int TileHeight { get; protected set; }
@@ -24,10 +25,13 @@ namespace TapsasEngine.Maps
 
         public CollisionType GetTopCollision(FloatRectangle hitbox, Vector2 velocity, ref Direction mapBorder)
         {
+            if (Infinite)
+                return CollisionType.None;
+            
             hitbox = hitbox.AddY(velocity.Y);
             int y = ConvertY(hitbox.Top);
 
-            if (y < 0)
+            if (!Infinite && y < 0)
             {
                 mapBorder = Direction.Up;
                 return CollisionType.Full;
@@ -69,10 +73,13 @@ namespace TapsasEngine.Maps
 
         public CollisionType GetBottomCollision(FloatRectangle hitbox, Vector2 velocity, ref Direction mapBorder)
         {
+            if (Infinite)
+                return CollisionType.None;
+            
             hitbox = hitbox.AddY(velocity.Y);
             var y = ConvertY(hitbox.Bottom);
 
-            if (y >= Height)
+            if (!Infinite && y >= Height)
             {
                 mapBorder = Direction.Down;
                 return CollisionType.Full;
@@ -114,10 +121,13 @@ namespace TapsasEngine.Maps
 
         public CollisionType GetRightCollision(FloatRectangle hitbox, Vector2 velocity, ref Direction mapBorder)
         {
+            if (Infinite)
+                return CollisionType.None;
+            
             hitbox = hitbox.AddX(velocity.X);
             int x = ConvertX(hitbox.Right);
 
-            if (x >= Width)
+            if (!Infinite && x >= Width)
             {
                 mapBorder = Direction.Right;
                 return CollisionType.Full;
@@ -159,10 +169,13 @@ namespace TapsasEngine.Maps
 
         public CollisionType GetLeftCollision(FloatRectangle hitbox, Vector2 velocity, ref Direction mapBorder)
         {
+            if (Infinite)
+                return CollisionType.None;
+            
             hitbox = hitbox.AddX(velocity.X);
             int x = ConvertX(hitbox.Left);
 
-            if (x < 0)
+            if (!Infinite && x < 0)
             {
                 mapBorder = Direction.Left;
                 return CollisionType.Full;

@@ -70,7 +70,7 @@ namespace ZA6
 
         private void GrowInSize()
         {
-            Static.Scene.ShakeVelocity = new Vector2(10, 10);
+            Static.Scene.Camera.ShakeVelocity = new Vector2(10, 10);
 
             _width += 16;
             _height += 16;

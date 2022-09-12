@@ -231,16 +231,6 @@
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
   </properties>
  </tile>
- <tile id="195">
-  <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-  </properties>
- </tile>
- <tile id="196">
-  <properties>
-   <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>
-  </properties>
- </tile>
  <tile id="197">
   <properties>
    <property name="CollisionShape" type="int" propertytype="CollisionShape" value="1"/>

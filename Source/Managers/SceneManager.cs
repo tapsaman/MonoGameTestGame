@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TapsasEngine;
 using TapsasEngine.Enums;
 using ZA6.Models;
 
@@ -67,6 +68,12 @@ namespace ZA6.Manangers
             ChangingToScene.RegisterHitbox(Player.Hitbox);
             ChangingToScene.RegisterHitbox(Player.SwordHitbox);
             //Static.Scene = CurrentScene;
+
+            if (CurrentScene.SceneData.Get("tape paused"))
+            {
+                Static.SessionData.Save("japan", true);
+                Static.EventSystem.Load(new TextEvent(new Dialog("I see you :)")));
+            }
             
             return ChangingToScene;
         }
@@ -113,7 +120,6 @@ namespace ZA6.Manangers
                     });
                 }
 
-
                 CurrentScene.Start();
             }
         }
@@ -152,6 +158,8 @@ namespace ZA6.Manangers
                     return new SceneC1();
                 case "Cave":
                     return new SceneCave();
+                case "Void":
+                    return new SceneVoid();
                 default:
                     return new Scene();
             }

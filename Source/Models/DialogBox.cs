@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine.Sprites;
+using TapsasEngine.Utilities;
 using ZA6.Managers;
 
 namespace ZA6
@@ -80,12 +81,40 @@ namespace ZA6
         }
     }
 
+    public class JapanDialogBox : DialogBox
+    {
+        private int _width;
+        private Sprite _background;
+
+        public JapanDialogBox()
+        {
+            _width = 236;
+            _textOffset = new Vector2(4, 10);
+
+            _background = new Sprite(Utility.CreateColorTexture(1, 1, Color.DarkBlue));
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, Vector2 offset, bool borderless = false)
+        {
+            int height = (int)(preservedTextHeight + _textOffset.Y * 2); // don't know why 1.5 works here but it does
+            var position = new Vector2(10, 18); //top ? 18 : Static.NativeHeight - height - 18) + offset;
+
+            if (!borderless)
+                _background.Draw(spriteBatch, position, _width, height);
+            
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, yCrop);
+        }
+    }
+
     public class FantasyDialogBox : DialogBox
     {
+        private Sprite _background;
+
         public FantasyDialogBox()
         {
             _texture = Static.Content.Load<Texture2D>("UI/dialogbox-fantasy-scaled");
             _arrowTexture = Static.Content.Load<Texture2D>("UI/dialogbox-fantasy-arrow-scaled");
+            _background = new Sprite(_texture);
             _height = _texture.Height;
             _arrowOffset = new Vector2(230,50);
             _nameOffset = new Vector2(44,2);
@@ -113,6 +142,17 @@ namespace ZA6
         public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, bool top, string text, float yCrop, int preservedTextHeight, Vector2 offset, bool borderless = false)
+        {
+            //int height = (int)(preservedTextHeight + _textOffset.Y * 1.5); // don't know why 1.5 works here but it does
+            var position = new Vector2(0, top ? 0 : Static.NativeHeight - _texture.Height) + offset;
+
+            if (!borderless)
+                _background.Draw(spriteBatch, position);
+
+            BitmapFontRenderer.DrawString(spriteBatch, text, position + _textOffset, yCrop);
         }
     }
 }

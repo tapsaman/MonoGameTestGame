@@ -50,7 +50,7 @@ namespace TapsasEngine.Utilities
             return v;
         }
 
-        /* Rounds to closest number divisible by divider or zero */
+        /* Rounds to closest number divisible by divider */
         public static float RoundTo(float value, float divider)
         {
             return (float)Math.Round(value / divider) * divider;

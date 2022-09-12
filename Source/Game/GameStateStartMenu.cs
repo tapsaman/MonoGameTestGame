@@ -56,6 +56,8 @@ namespace ZA6.Models
                 World = Static.World
             };
             _sceneManager.Init("B1");
+            _sceneManager.CurrentScene.Camera.Width = Static.NativeWidth * 2;
+            _sceneManager.CurrentScene.Camera.Height = Static.NativeHeight * 2;
             _sceneManager.CurrentScene.CameraTarget = new Vector2(450, 150);
             _sceneManager.CurrentScene.Paused = false;
             _sceneManager.Player.StateMachine.TransitionTo("Stopped");

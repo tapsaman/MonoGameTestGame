@@ -31,13 +31,18 @@ log:
 * 23.8. - animations/animation stages revamp, intro done
 * 2.9. - 1ST DEMO VER - real owl animation, music scrambler, new map AB1, mushroom, etc. tbd.
 * 5.9. - collectible hearts, growing hole, cartoon, go to game state devutil, dynamic tilemap layers + alternative layers, content files reorganized, text shaders set/unset with codes, set scenario devutil, updatable effects (TapsasEngine.Shader), touchtriggers use Intersects for collision instead of 'side is touching'
+* 13.9. - ui render layer, vhs shader, tape scenario (bone rattlers, paused tape, japan level/taalasmaa), msgothic for japanese bitmapfont, evaporate shader/animation, do event, camera class, tilemap only draws tiles on screen, void seppo, infinite void map, looping events, auto detect controller
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game
 
 small stuff todo:
+* test auto deteccontroller 
+* dev tools should work regardless of Input.P1
+* only draw shown tiles all layers
+* fix: dev util text is invisibile outside display (full screen reso)
+* animation: enter first stage on first update so animation.enter doesn't need to be called?
 * better text highlight shader
-* void (infinite empty map)
 * fix item pickup anim
 * only draw tilemap inside screen
 * fix panning up
@@ -46,6 +51,23 @@ small stuff todo:
     - TileMap to (I)Map -> TileMap
 
 could do but prob won't:
+* fix infinite map negative position tile rendering (void map is all black so don't need to)
+* animations/events could be combined, current differences between:
+    - unlike animation stages, events are not drawn
+    - animation stages can be drawn after they are done
+        - with global render layer
+    - events (unless defined parallel) operate in cutscene game state
+    - animation stages don't have exit methods
+    -> new classes
+        > abstract Cmd, methods Enter, Update, Exit, Draw (IStage, IDraw), properties Wait, WaitForId
+        > CmdList(params Cmd[]), CmdList(CmdSettings, params Cmd[])
+        > maybe abstract CmdManager : Cmd
+            > possible examples
+                CmdSystem
+                ConditionCmd
+
+* global Draw systems with renderlayers, use IDraw objects
+* RenderTargets, RenderLayers
 * replace most of Static with Engine, simple static collection class
 * MapEntities should have own reference to their scene, currently using Static.Scene
 * if any velocity becomes NaN everything breaks, could force numeric values
@@ -64,3 +86,7 @@ could do but prob won't:
 * could use milliseconds instead of seconds for updates because ints take less space than floats
 * circle/polygon collision shapes (???)
 * figure out serialiazing instance of system.random to savedata, or a custom random number generator, for a "deterministic" program -> important gameplay choices would be determined from rng seeded by the new game start time
+
+resources
+* hlsl shader basics [https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-writing-shaders-9]
+* hlsl built-in functions [https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-intrinsic-functions]

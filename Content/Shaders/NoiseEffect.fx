@@ -24,7 +24,7 @@ struct VertexShaderOutput
 float seed = 0;
 
 float rand(float2 co){
-  return frac(sin(dot(co.xy ,float2(12.9898,78.233))) * 43758.5453);
+    return frac(sin(dot(co.xy ,float2(12.9898,78.233))) * 43758.5453);
 }
 
 float calculateWave(float y, float yOffset)
@@ -38,7 +38,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float r = rand(input.TextureCoordinates + seed);
 
-    if (r < 0.02)
+    if (r < 0.005)
     {
         return float4(1,0,0,0);
     }

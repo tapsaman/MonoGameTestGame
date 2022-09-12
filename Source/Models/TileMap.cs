@@ -6,6 +6,7 @@ using TiledCS;
 using TapsasEngine.Enums;
 using TapsasEngine.Maps;
 using System.Linq;
+using TapsasEngine;
 
 namespace ZA6
 {
@@ -120,13 +121,140 @@ namespace ZA6
             }
         }
 
-        public void DrawGround(SpriteBatch spriteBatch, Vector2 drawOffset)
+        public void _DrawGround(SpriteBatch spriteBatch, Vector2 drawOffset)
         {
             foreach (Tile tile in GroundTiles)
             {
                 if (tile != null)
                     spriteBatch.Draw(TilesetTexture, tile.Position + drawOffset, tile.SourceRectangle, Color.White);
             }
+        }
+
+        public void DrawJankyGround(SpriteBatch spriteBatch, Vector2 drawOffset)
+        {
+            // Only draw shown tiles
+
+            float x = -drawOffset.X;
+            float endX = x + Static.NativeWidth + TileWidth;
+            int tileX = (int)(x < 0
+                ? ((Static.NativeWidth + x) / TileWidth) % Width
+                : (x / TileWidth) % Width);
+
+            while (x < endX)
+            {
+                float y = -drawOffset.Y;
+                float endY = y + Static.NativeHeight + TileHeight;
+                int tileY = (int)((y < 0 ? Static.NativeHeight - y : y) / TileHeight) % Height;
+
+                while (y < endY)
+                {
+                    Tile tile = GroundTiles[tileX + tileY * Width];
+
+                    if (tile != null)
+                    {
+                        spriteBatch.Draw(TilesetTexture, new Vector2(x, y) + drawOffset, tile.SourceRectangle, Color.White);
+                    }
+
+                    y += TileHeight;
+                    tileY = (tileY + 1) % Height;
+                }
+
+                x += TileWidth;
+                tileX = (tileX + 1) % Width;
+            }
+        }
+
+
+        public void DrawGround(SpriteBatch spriteBatch, Rectangle screen)
+        {
+            // Only draw shown tiles
+
+            // TODO make do without local drawOffset
+            Vector2 drawOffset = -screen.Location.ToVector2();
+            int drawn = 0;
+            float x, endX;
+            int tileX;
+
+            if (Infinite)
+            {
+                x = drawOffset.X > 0
+                    ? (drawOffset.X % TileWidth) - TileWidth
+                    : drawOffset.X % TileWidth;
+                endX = x + screen.Width + TileWidth;
+                tileX = (int)(drawOffset.X > 0
+                    ? ((DrawWidth - (drawOffset.X % DrawWidth)) / TileWidth) % Width
+                    : (-drawOffset.X / TileWidth) % Width);
+            }
+            else
+            {
+                x = drawOffset.X > 0 ? drawOffset.X : drawOffset.X % TileWidth;
+                endX = screen.Width;
+                tileX = drawOffset.X > 0 ? 0 : (int)-drawOffset.X / TileWidth;
+            }
+
+            while (x < endX)
+            {
+                float y, endY;
+                int tileY;
+
+                if (Infinite)
+                {
+                    y = drawOffset.Y > 0
+                        ? (drawOffset.Y % TileHeight) - TileHeight
+                        : drawOffset.Y % TileHeight;
+                    endY = y + screen.Height + TileHeight;
+                    tileY = (int)(drawOffset.Y > 0
+                        ? ((DrawHeight - (drawOffset.Y % DrawHeight)) / TileHeight) % Height
+                        : (-drawOffset.Y / TileHeight) % Height);
+                }
+                else 
+                {
+                    y = drawOffset.Y > 0 ? drawOffset.Y : drawOffset.Y % TileHeight;
+                    endY = screen.Height;
+                    tileY = drawOffset.Y > 0 ? 0 : (int)-drawOffset.Y / TileHeight;
+                }
+
+                
+
+                //float y = drawOffset.Y % TileHeight;
+                //float endY = y + Static.NativeHeight + TileHeight;
+                //int tileY = (int)((y < 0 ? DrawHeight - y : y) / TileHeight) % Height;
+
+                while (y < endY)
+                {
+                    Tile tile = GroundTiles[tileX + tileY * Width];
+                    drawn++;
+
+                    if (tile != null)
+                    {
+                        spriteBatch.Draw(TilesetTexture, new Vector2(x, y), tile.SourceRectangle, Color.White);
+                    }
+
+                    y += TileHeight;
+                    tileY += 1;
+
+                    if (tileY >= Height)
+                    {
+                        if (Infinite)
+                            tileY = 0;
+                        else
+                            break;
+                    }
+                }
+
+                x += TileWidth;
+                tileX += 1;
+
+                if (tileX >= Width)
+                {
+                    if (Infinite)
+                        tileX = 0;
+                    else
+                        break;
+                }
+            }
+
+            Sys.Log(Name + " drawn tiles count " + drawn);
         }
 
         public void DrawTop(SpriteBatch spriteBatch, Vector2 drawOffset)

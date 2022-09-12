@@ -19,11 +19,6 @@ namespace ZA6
 
         protected override void Load()
         {
-            if (Static.GameData.GetString("scenario") == "end")
-            {
-                Static.DevUtils.RenderDevInfo = true;
-            }
-
             // Init events and map objects in Load
             var erkki = new Erkki();
             erkki.Position = TileMap.ConvertTileXY(22, 22);
@@ -42,6 +37,7 @@ namespace ZA6
                 "Sample text"
             );
 
+            //Static.EventSystem.Load(new AnimateEvent(new Animations.Evaporate(erkki.AnimatedSprite, true)));
             _erkkiEvents = new Event[]
             {
                 new ConditionEvent(DataStoreType.Scene, "spoken to erkki")
@@ -51,7 +47,18 @@ namespace ZA6
                         new FaceEvent(erkki, Player),
                         new TextEvent(new Dialog(msg1), erkki),
                         new FaceEvent(erkki, Direction.Down),
-                        new SaveValueEvent(DataStoreType.Scene, "spoken to erkki", true)
+                        new ConditionEvent(() => Static.GameData.GetString("scenario") == null)
+                        {
+                            IfTrue = new Event[]
+                            {
+                                new SaveValueEvent(DataStoreType.Scene, "spoken to erkki", true)
+                            },
+                            IfFalse = new Event[]
+                            {
+                                new AnimateEvent(new Animations.Evaporate(erkki.AnimatedSprite, true)),
+                                new RemoveEvent(erkki)
+                            }
+                        }
                     },
                     IfTrue = new Event[]
                     {
@@ -70,14 +77,7 @@ namespace ZA6
             if (Static.GameData.GetString("scenario") == "noise")
             {
                 Static.Renderer.ApplyPostEffect(Shaders.Noise);
-                Static.Renderer.OnPostDraw += IterateNoiseEffect;
             }
-        }
-
-        private void IterateNoiseEffect()
-        {
-            _noiseSeed += 0.001f;
-            Shaders.Noise.Parameters["seed"].SetValue(_noiseSeed);
         }
         
         private void StartErkkiDialog(Character _)

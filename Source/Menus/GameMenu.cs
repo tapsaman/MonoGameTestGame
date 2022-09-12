@@ -16,7 +16,7 @@ namespace ZA6
             _startMenu = startMenu;
 
             if (!_startMenu) {
-                OverlayColor =  new Color(50, 50, 50, 100);
+                OverlayColor =  new Color(40, 40, 100, 215);
             }
             else
             {
@@ -38,7 +38,7 @@ namespace ZA6
             {
                 Text = "USE GAMEPAD",
                 Height = 20,
-                IsChecked = Static.GamePadEnabled
+                IsChecked = Input.GamePadEnabled
             };
             gamePadCheckBox.Click += ToggleGamePad;
 
@@ -90,7 +90,7 @@ namespace ZA6
 
         private void ToggleGamePad(object sender, EventArgs e)
         {
-            if (!Static.GamePadEnabled)
+            if (!Input.GamePadEnabled)
             {
                 try
                 {

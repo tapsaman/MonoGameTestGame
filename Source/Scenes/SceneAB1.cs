@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using TapsasEngine.Enums;
 using ZA6.Animations;
+using ZA6.Models;
 
 namespace ZA6
 {
@@ -38,6 +39,26 @@ namespace ZA6
             {
                 _bunny = new Bunny() { Position = TileMap.ConvertTileXY(31, 25) };
                 Add(_bunny);
+
+                if (Static.GameData.GetString("scenario") == "tape")
+                {
+                    var frog1 = new FrogGuy() { Position = TileMap.ConvertTileXY(24, 12) };
+                    var frog2 = new FrogGuy() { Position = TileMap.ConvertTileXY(36, 18) };
+                    Add(frog1);
+                    Add(frog2);
+                    Static.EventSystem.Load(
+                        new AnimateEvent(new Animations.RunAround(frog1)),
+                        Managers.EventSystem.Settings.Parallel
+                    );
+                    Static.EventSystem.Load(
+                        new AnimateEvent(new Animations.RunAround(frog2)),
+                        Managers.EventSystem.Settings.Parallel
+                    );
+                    var rattler1 = new Rattler() { Position = TileMap.ConvertTileXY(23, 4) };
+                    var rattler2 = new Rattler() { Position = TileMap.ConvertTileXY(39, 4) };
+                    Add(rattler1);
+                    Add(rattler2);
+                }
             }
         }
 
@@ -69,6 +90,18 @@ namespace ZA6
                 {
                     _bunny.NoClip = true;
                     _bunny.RunningOff = true;
+
+                    /*if (Static.GameData.GetString("scenario") == "tape")
+                    {
+                        Locked = false;
+                        SceneData.Save("tape paused", true);
+
+                        Static.EventSystem.Load(new Event[]
+                        {
+                            new RunEvent(() => Static.Game.StateMachine.TransitionTo("Stopped")),
+                            new AnimateEvent(new Animations.PausedTape())
+                        });
+                    }*/
                 }
             }
         }

@@ -8,7 +8,7 @@ namespace ZA6.Animations
     {
         public Animation Animation { get; set; }
         public bool IsDone { get; set; }
-        public float? StageTime { get; protected set; } = null;
+        public float? StageTime = null;
         public virtual bool DrawAfterDone { get => false; }
 
         public virtual void Enter() {}

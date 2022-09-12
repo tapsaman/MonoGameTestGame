@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TapsasEngine;
 using TapsasEngine.Enums;
+using TapsasEngine.Utilities;
 using ZA6.Animations;
 using ZA6.Managers;
 
@@ -46,6 +47,12 @@ namespace ZA6.Models
         public Dialog Dialog;
         public MapEntity Speaker;
         private string _previousGameState;
+        public TextEvent(Dialog dialog)
+            : base(EventType.Text)
+        {
+            Dialog = dialog;
+        }
+
         public TextEvent(Dialog dialog, MapEntity speaker)
             : base(EventType.Text)
         {
@@ -57,7 +64,10 @@ namespace ZA6.Models
         {
             IsDone = false;
             _previousGameState = Static.Game.StateMachine.CurrentStateKey;
-            bool topDialogBox = Speaker.Position.Y + Static.Scene.DrawOffset.Y > Static.NativeHeight / 2;
+            bool topDialogBox = Speaker == null
+                ? false
+                : Speaker.Position.Y + Static.Scene.Camera.Offset.Y > Static.NativeHeight / 2;
+            
             Static.DialogManager.Load(Dialog, topDialogBox);
             Static.Game.StateMachine.TransitionTo("Dialog");
             Static.DialogManager.DialogEnd += OnDone;
@@ -146,7 +156,11 @@ namespace ZA6.Models
             }
         }
 
-        public override void Exit() {}
+        public override void Exit()
+        {
+            if (_eventManager != null)
+                _eventManager.Exit();
+        }
     }
 
     public class AnimateEvent : Event
@@ -182,11 +196,9 @@ namespace ZA6.Models
             }
         }
 
-        public override void Exit() {}
-
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Exit()
         {
-            throw new NotImplementedException();
+            _animation.Exit();
         }
     }
 
@@ -262,31 +274,34 @@ namespace ZA6.Models
 
     public class ConditionEvent : Event
     {
-        private DataStoreType _dataStoreType;
-        public string BasedOnID;
-        public bool Value;
         public Event[] IfTrue; 
         public Event[] IfFalse;
+        private Func<bool> _condition;
         private EventManager _eventManager;
+
+        public ConditionEvent(Func<bool> condition)
+            : base(EventType.Condition)
+        {
+            _condition = condition;
+        }
 
         public ConditionEvent(DataStoreType dataStoreType, string id)
             : base(EventType.Condition)
         {
-            _dataStoreType = dataStoreType;
-            BasedOnID = id;
+            _condition = () => Static.GetStoreByType(dataStoreType).Get(id);
         }
 
         public override void Enter()
         {
             IsDone = false;
-            bool condition = Static.GetStoreByType(_dataStoreType).Get(BasedOnID);
+            bool conditionResult = _condition();
 
-            if (condition && IfTrue != null)
+            if (conditionResult && IfTrue != null)
             {
                 _eventManager = new EventManager(IfTrue);
                 _eventManager.Enter();
             }
-            else if (!condition && IfFalse != null)
+            else if (!conditionResult && IfFalse != null)
             {
                 _eventManager = new EventManager(IfFalse);
                 _eventManager.Enter();
@@ -309,7 +324,11 @@ namespace ZA6.Models
                 _eventManager.Update(gameTime);
         }
 
-        public override void Exit() {}
+        public override void Exit()
+        {
+            if (_eventManager != null)
+                _eventManager.Exit();
+        }
     }
 
     public class WaitEvent : Event
@@ -426,5 +445,42 @@ namespace ZA6.Models
         public override void Update(GameTime gameTime) {}
 
         public override void Exit() {}
+    }
+
+    public class DoEvent : Event
+    {
+        private Func<Event[]> _callback;
+        private EventManager _eventManager;
+
+        public DoEvent(Func<Event[]> callback)
+            : base(EventType.Run)
+        {
+            _callback = callback;
+        }
+
+        public override void Enter()
+        {
+            IsDone = false;
+            _eventManager = new EventManager(_callback());
+            _eventManager.Enter();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (_eventManager.IsDone)
+            {
+                IsDone = true;
+                Traverse?.Invoke();
+            }
+            else
+            {
+                _eventManager.Update(gameTime);
+            }
+        }
+
+        public override void Exit()
+        {
+            _eventManager.Exit();
+        }
     }
 }

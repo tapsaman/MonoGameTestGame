@@ -47,7 +47,17 @@ namespace ZA6.Managers
         public void Enter()
         {
             IsEntered = true;
+            IsDone = false;
+            _eventIndex = 0;
             InitEvent(_eventList[_eventIndex]);
+        }
+
+        public void Exit()
+        {
+            foreach (var item in _updating)
+            {
+                item.Exit();
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -119,7 +129,7 @@ namespace ZA6.Managers
             else
             {
                 IsDone = true;
-                Unload();
+                //Unload();
             }
         }
 
