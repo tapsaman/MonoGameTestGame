@@ -112,6 +112,7 @@ namespace ZA6
                 "Are you sure to clear\nyour progress and\nstart over?",
                 (object sender, EventArgs e) => {
                     SaveData.Clear();
+                    Static.LoadedGame = SaveData.Empty;
                     
                     if (!_startMenu)
                     {

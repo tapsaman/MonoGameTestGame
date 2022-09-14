@@ -33,6 +33,7 @@ namespace ZA6
         public Tile[] TopTiles;
         public string[] UseAlternativeLayers;
         public Object[] Objects;
+        private TiledMap _map;
         private Dictionary<int, TileAnimation> _tileAnimations;
         private static Dictionary<CollisionType, Rectangle> _collisionTypeRectangles;
         private static Color _collisionTileColor = new Color(120, 120, 120, 120);
@@ -50,6 +51,7 @@ namespace ZA6
                 { CollisionType.SouthEast, new Rectangle(16, 8, 8, 8) }
             };
 
+            _map = map;
             Width = map.Width;
             Height = map.Height;
             TileWidth = Tileset.TileWidth;
@@ -302,28 +304,34 @@ namespace ZA6
         {
             return new Vector2(ConvertTileX(tileX), ConvertTileY(tileY));
         }
+        
+        public void LoadAlternativeTiles(string alternativeLayerName)
+        {
+            int index = Array.FindIndex<TiledLayer>(_map.Layers, (TiledLayer l) => l.name == alternativeLayerName);
+
+            if (index == -1)
+                throw new Exception("No layer '" + alternativeLayerName + "' found");
+            
+            Tile[] tileLayer = GroundTiles;
+
+            for (var i = 0; i < _map.Layers[index].data.Length; i++)
+            {
+                int gid = _map.Layers[index].data[i];
+
+                // Empty tile, do nothing
+                if (gid == 0)
+                    continue;
+
+                //if (tileLayer[i] != null)
+                //    DisposeTile(tileLayer[i]);
+
+                tileLayer[i] = LoadTile(i, gid);
+            }
+        }
 
         private Tile[] LoadTiles(TiledCS.TiledMap map, int layerIndex, int[] alternativeIndexes = null)
         {
             var tiles = new Tile[map.Layers[layerIndex].data.Length];
-
-            if (alternativeIndexes != null)
-            {
-                foreach (var alternativeIndex in alternativeIndexes)
-                {
-                    for (var i = 0; i < map.Layers[alternativeIndex].data.Length; i++)
-                    {
-                        int gid = map.Layers[alternativeIndex].data[i];
-
-                        // Empty tile, do nothing
-                        if (gid == 0)
-                            continue;
-                        
-                        // Replace in main layer
-                        map.Layers[layerIndex].data[i] = gid;
-                    }
-                }
-            }
 
             for (var i = 0; i < map.Layers[layerIndex].data.Length; i++)
             {
@@ -333,68 +341,74 @@ namespace ZA6
                 if (gid == 0)
                     continue;
 
-                var tiledTile = map.GetTiledTile(map.Tilesets[0], Tileset, gid);
-                Rectangle sourceRectangle = TileFrameToSourceRectangle(gid - 1);
+                tiles[i] = LoadTile(i, gid);
+            }
 
-                float x = (i % Width) * TileWidth;
-                float y = (float)Math.Floor(i / (double)Width) * TileHeight;
+            return tiles;
+        }
 
-                Tile tile = new Tile()
+        private Tile LoadTile(int tileIndex, int gid)
+        {
+            Rectangle sourceRectangle = TileFrameToSourceRectangle(gid - 1);
+
+            float x = (tileIndex % Width) * TileWidth;
+            float y = (float)Math.Floor(tileIndex / (double)Width) * TileHeight;
+
+            Tile tile = new Tile()
+            {
+                Position = new Vector2((int)x, (int)y),
+                DrawRectangle = new Rectangle((int)x, (int)y, TileWidth, TileHeight),
+                SourceRectangle = sourceRectangle
+            };
+
+            var tiledTile = _map.GetTiledTile(_map.Tilesets[0], Tileset, gid);
+
+            if (tiledTile != null)
+            {
+                // Process Tiled custom properties
+                foreach(var item in tiledTile.properties)
                 {
-                    Position = new Vector2((int)x, (int)y),
-                    DrawRectangle = new Rectangle((int)x, (int)y, TileWidth, TileHeight),
-                    SourceRectangle = sourceRectangle
-                };
-
-                tiles[i] = tile;
-
-                if (tiledTile != null)
-                {
-                    // Process Tiled custom properties
-                    foreach(var item in tiledTile.properties)
+                    /*if (item.name == "IsBlocking" && item.value == "true")
                     {
-                        /*if (item.name == "IsBlocking" && item.value == "true")
-                        {
-                            tile.IsBlocking = true;
-                        }*/
-                        if (item.name == "CollisionShape")
-                        {
-                            tile.CollisionShape = (CollisionType)Int16.Parse(item.value);
-                            tile.CollisionTileRectangle = _collisionTypeRectangles[tile.CollisionShape];
-                        }
+                        tile.IsBlocking = true;
+                    }*/
+                    if (item.name == "CollisionShape")
+                    {
+                        tile.CollisionShape = (CollisionType)Int16.Parse(item.value);
+                        tile.CollisionTileRectangle = _collisionTypeRectangles[tile.CollisionShape];
                     }
+                }
 
-                    // Process Tiled animations
-                    if (tiledTile.animation.Length != 0)
+                // Process Tiled animations
+                if (tiledTile.animation.Length != 0)
+                {
+                    if (!_tileAnimations.ContainsKey(gid))
                     {
-                        if (!_tileAnimations.ContainsKey(gid))
-                        {
-                            // Create new animation
-                            var frames = new List<Rectangle>();
+                        // Create new animation
+                        var frames = new List<Rectangle>();
 
-                            foreach (var item in tiledTile.animation)
-                            {
-                                frames.Add(TileFrameToSourceRectangle(item.tileid));
-                            }
-
-                            var tileAnimation = new TileAnimation()
-                            {
-                                FrameDuration = (float)tiledTile.animation[0].duration / 1000,
-                                AnimatedTileIndexes = new List<int>() { i },
-                                Frames = frames
-                            };
-                            _tileAnimations[gid] = tileAnimation;
-                        }
-                        else
+                        foreach (var item in tiledTile.animation)
                         {
-                            // Add tile index to previous animation
-                            _tileAnimations[gid].AnimatedTileIndexes.Add(i);
+                            frames.Add(TileFrameToSourceRectangle(item.tileid));
                         }
+
+                        var tileAnimation = new TileAnimation()
+                        {
+                            FrameDuration = (float)tiledTile.animation[0].duration / 1000,
+                            AnimatedTileIndexes = new List<int>() { tileIndex },
+                            Frames = frames
+                        };
+                        _tileAnimations[gid] = tileAnimation;
+                    }
+                    else
+                    {
+                        // Add tile index to previous animation
+                        _tileAnimations[gid].AnimatedTileIndexes.Add(tileIndex);
                     }
                 }
             }
 
-            return tiles;
+            return tile;
         }
 
         private Object[] LoadObjects(TiledCS.TiledMap map, int layerIndex)

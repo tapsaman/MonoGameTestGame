@@ -38,14 +38,15 @@ namespace ZA6
         public string[] ScenarioList =
         {
             null,
-            "hole",
-            "crispy",
-            "mushroom",
-            "noise",
-            "arrows",
-            "scrambled",
-            "tape",
-            "end"
+            "Hole",
+            "Crispy",
+            "Mushroom",
+            "Noise",
+            "Arrows",
+            "Scrambled",
+            "Tape",
+            "TripleA",
+            "End"
         };
         private bool _askingNumber;
         private Func<int, string> _onNumberAnswer;
@@ -250,7 +251,8 @@ namespace ZA6
 
             var scenario = ScenarioList[index];
 
-            Static.GameData.Save("scenario", scenario);
+            Static.Scenarios.TransitionTo(scenario);
+            //Static.GameData.Save("scenario", scenario);
 
             return "Set scenario to '" + scenario + "'";
         }

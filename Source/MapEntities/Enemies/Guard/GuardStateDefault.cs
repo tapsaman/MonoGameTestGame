@@ -38,7 +38,7 @@ namespace ZA6.Models
 
             if (_guard.DetectingPlayer())
             {
-                stateMachine.TransitionTo("NoticedPlayer");
+                StateMachine.TransitionTo("NoticedPlayer");
             }
             else if (_turning)
             {
@@ -67,7 +67,7 @@ namespace ZA6.Models
 
                 if (_elapsedWalkTime > _walkTime)
                 {
-                    stateMachine.TransitionTo("LookAround");
+                    StateMachine.TransitionTo("LookAround");
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace ZA6.Models
 
         public override void Enter(StateArgs _)
         {
-            _previousStateKey = stateMachine.CurrentStateKey;
+            _previousStateKey = StateMachine.CurrentStateKey;
             _menu = new GameMenu(ResumeGame);
             UIManager.Add(_menu);
             LifeHUD.LowHPSound.Stop();
@@ -61,7 +61,7 @@ namespace ZA6.Models
 
         private void ResumeGame(object sender, EventArgs e)
         {
-            stateMachine.TransitionTo(_previousStateKey);
+            StateMachine.TransitionTo(_previousStateKey);
         }
 
         public override void Exit()

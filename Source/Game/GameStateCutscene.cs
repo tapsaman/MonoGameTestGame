@@ -29,10 +29,10 @@ namespace ZA6.Models
             _game.Hud.Update(gameTime);
 
             if (Input.P1.IsPressed(Input.P1.Start) || Input.P1.IsPressed(Input.P1.Select))
-                stateMachine.TransitionTo("MainMenu");
+                StateMachine.TransitionTo("MainMenu");
             // To access main menu easily
             else if (Input.P1.JustReleasedMouseLeft())
-                stateMachine.TransitionTo("MainMenu");
+                StateMachine.TransitionTo("MainMenu");
         }
 
         public override void Draw(SpriteBatch spriteBatch)

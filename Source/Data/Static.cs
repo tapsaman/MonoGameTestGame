@@ -15,8 +15,9 @@ namespace ZA6
         public const bool PauseOnWindowDeactive = !Debug;
         public static ZeldaAdventure666 Game;
         public static Player Player;
-        public static SaveData LoadedGame;
+        public static ScenarioManager Scenarios = new ScenarioManager();
         public static TiledWorld World;
+        public static SaveData LoadedGame;
         public static GameTime GameTime;
         public static bool GameStarted;
         public static int NativeWidth = 256;

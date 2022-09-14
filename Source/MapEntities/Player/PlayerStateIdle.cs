@@ -20,11 +20,11 @@ namespace ZA6.Models
 
             if (Player.Hitting)
             {
-                stateMachine.TransitionTo("SwordHit");
+                StateMachine.TransitionTo("SwordHit");
             }
             else if (Player.Velocity.X != 0 || Player.Velocity.Y != 0)
             {
-                stateMachine.TransitionTo("Walking");
+                StateMachine.TransitionTo("Walking");
             }
         }
 

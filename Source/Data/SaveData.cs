@@ -14,62 +14,64 @@ namespace ZA6
     [Serializable]
     public class SaveData : IXmlSerializable
     {
-        public DataStore GameData;
-        public float PlayTimeSeconds;
-        public int Rupees;
+        public DataStore GameData { get; private set; }
+        public float PlayTimeSeconds { get; private set; }
+        public int Rupees { get; private set; }
+        public string Scenario { get; private set; }
 
         private static SaveFileManager<SaveData> _saveFileManager = new SaveFileManager<SaveData>()
         {
             Directory = "ZA6_GameSave"
         };
 
-        public static void CreateAndSave()
+        public static SaveData Empty { get; } = new SaveData()
         {
-            SaveData saving = new SaveData()
-            {
-                GameData = Static.GameData,
-                PlayTimeSeconds = Static.PlayTimeTimer.Seconds,
-                Rupees = Static.Player.Rupees
-            };
+            GameData = new DataStore(),
+            PlayTimeSeconds = 0f,
+            Rupees = 0,
+            Scenario = "None"
+        };
 
-            _saveFileManager.Save(saving, "SAVE_FILE.xml");
+        public void Apply()
+        {
+            Static.PlayTimeTimer.Seconds = PlayTimeSeconds;
+            Static.GameData = GameData;
+            Static.Player.Rupees = Rupees;
+            Static.Scenarios.TransitionTo(Scenario);
+        }
 
-            Static.LoadedGame = saving;
-
+        public void Save()
+        {
+            _saveFileManager.Save(this, "SAVE_FILE.xml");
             Static.DevUtils.SetMessage("Progress saved");
         }
 
         public static SaveData Load()
         {
             SaveData loaded = _saveFileManager.Load("SAVE_FILE.xml");
-            Static.LoadedGame = loaded;
             
+            if (loaded == null)
+                return Empty;
+
             return loaded;
         }
 
-        public static void LoadAndApply()
+        public static SaveData Create()
         {
-            SaveData loaded = Load();
-
-            if (loaded == null)
+            SaveData saveData = new SaveData()
             {
-                Static.Game.StateMachine.TransitionTo("Intro");
-            }
-            else
-            {
-                Static.PlayTimeTimer.Seconds = loaded.PlayTimeSeconds;
-                Static.GameData = loaded.GameData;
-                Static.Player.Rupees = loaded.Rupees;
+                GameData = Static.GameData,
+                PlayTimeSeconds = Static.PlayTimeTimer.Seconds,
+                Rupees = Static.Player.Rupees,
+                Scenario = Static.Scenarios.CurrentStateKey
+            };
 
-                Static.Game.StateMachine.TransitionTo("StartOver");
-            }
+            return saveData;
         }
 
         public static void Clear()
         {
             _saveFileManager.Delete("SAVE_FILE.xml");
-            Static.LoadedGame = null;
-
             Static.DevUtils.SetMessage("Progress deleted");
         }
 

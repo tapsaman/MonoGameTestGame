@@ -155,9 +155,24 @@ namespace ZA6
 
             StateMachine = new RenderStateMachine(states, "StartMenu");
 
-            if (false && Static.Debug)
+            if (Static.Debug)
             {
-                SaveData.LoadAndApply();
+                StartGame();
+            }
+        }
+
+        public void StartGame()
+        {
+            Static.LoadedGame = SaveData.Load();
+            Static.LoadedGame.Apply();
+
+            if (Static.LoadedGame == SaveData.Empty)
+            {
+                Static.Game.StateMachine.TransitionTo("Intro");
+            }
+            else
+            {
+                Static.Game.StateMachine.TransitionTo("StartOver");   
             }
         }
 

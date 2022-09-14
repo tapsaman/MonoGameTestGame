@@ -33,7 +33,7 @@ namespace ZA6.Models
         {
             if (_guard.DetectingPlayer(_lookDirection))
             {
-                stateMachine.TransitionTo("NoticedPlayer");
+                StateMachine.TransitionTo("NoticedPlayer");
             }
             else
             {
@@ -62,7 +62,7 @@ namespace ZA6.Models
                     else
                     {
                         Character.Facing = Utility.RandomDirection();
-                        stateMachine.TransitionTo("Default");
+                        StateMachine.TransitionTo("Default");
                     }
                 }
             }

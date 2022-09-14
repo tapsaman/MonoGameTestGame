@@ -78,6 +78,21 @@ namespace ZA6
             Player = player;
             Add(Player);
 
+            LoadMapObjects();
+            Load();
+            Static.Scenarios.CurrentScenario.Apply(this);
+
+            foreach (var exitKeyValue in TileMap.Exits)
+            {
+                if (ExitTransitions.ContainsKey(exitKeyValue.Key))
+                {
+                    exitKeyValue.Value.TransitionType = ExitTransitions[exitKeyValue.Key];
+                }
+            }
+        }
+
+        private void LoadMapObjects()
+        {
             foreach(var obj in TileMap.Objects)
             {
                 switch (obj.TypeName)
@@ -124,16 +139,6 @@ namespace ZA6
                     case "RedBari":
                         Add(new RedBari() { Position = obj.Position });
                         break;
-                }
-            }
-
-            Load();
-
-            foreach (var exitKeyValue in TileMap.Exits)
-            {
-                if (ExitTransitions.ContainsKey(exitKeyValue.Key))
-                {
-                    exitKeyValue.Value.TransitionType = ExitTransitions[exitKeyValue.Key];
                 }
             }
         }

@@ -32,6 +32,7 @@ log:
 * 2.9. - 1ST DEMO VER - real owl animation, music scrambler, new map AB1, mushroom, etc. tbd.
 * 5.9. - collectible hearts, growing hole, cartoon, go to game state devutil, dynamic tilemap layers + alternative layers, content files reorganized, text shaders set/unset with codes, set scenario devutil, updatable effects (TapsasEngine.Shader), touchtriggers use Intersects for collision instead of 'side is touching'
 * 13.9. - ui render layer, vhs shader, tape scenario (bone rattlers, paused tape, japan level/taalasmaa), msgothic for japanese bitmapfont, evaporate shader/animation, do event, camera class, tilemap only draws tiles on screen, void seppo, infinite void map, looping events, auto detect controller
+* 15.9. - scenario manager init, tilemap alternative layers can be loaded after init, savedata revamp
 
 roadmap:
 * fuck shit up -> every death from falling to hole should break something in the game

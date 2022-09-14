@@ -32,7 +32,7 @@ namespace ZA6.Models
 
                 if (Player.Hitting)
                 {
-                    stateMachine.TransitionTo("SwordHit");
+                    StateMachine.TransitionTo("SwordHit");
                     return;
                 }
             }
@@ -40,7 +40,7 @@ namespace ZA6.Models
             if (_elapsedHitTime > HitTime)
             {
                 Player.SwordHitbox.EndHit();
-                stateMachine.TransitionTo("Idle");
+                StateMachine.TransitionTo("Idle");
             }
         }
 

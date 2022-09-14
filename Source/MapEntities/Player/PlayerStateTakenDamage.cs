@@ -34,7 +34,7 @@ namespace ZA6.Models
             if (_elapsedTime > _FLY_TIME)
             {
                 _elapsedTime = 0f;
-                stateMachine.TransitionTo("Idle");
+                StateMachine.TransitionTo("Idle");
             }
         }
 

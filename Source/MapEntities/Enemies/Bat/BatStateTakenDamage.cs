@@ -45,7 +45,7 @@ namespace ZA6.Models
             {
                 if (_bat.Health > 0)
                 {
-                    stateMachine.TransitionTo("Default");
+                    StateMachine.TransitionTo("Default");
                     _bat.IsInvincible = false;
                 }
                 else

@@ -50,7 +50,7 @@ namespace ZA6.Models
             {
                 if (_enemy.Health > 0)
                 {
-                    stateMachine.TransitionTo("Attacking");
+                    StateMachine.TransitionTo("Attacking");
                     _enemy.IsInvincible = false;
                 }
                 else

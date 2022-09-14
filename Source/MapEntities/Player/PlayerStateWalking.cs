@@ -19,11 +19,11 @@ namespace ZA6.Models
 
             if (Player.Hitting)
             {
-                stateMachine.TransitionTo("SwordHit");
+                StateMachine.TransitionTo("SwordHit");
             }
             else if (Player.Velocity == Vector2.Zero)
             {
-                stateMachine.TransitionTo("Idle");
+                StateMachine.TransitionTo("Idle");
             }
             else
             {

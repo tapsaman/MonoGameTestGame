@@ -26,38 +26,25 @@ namespace ZA6
 
         protected override void Load()
         {
+            _bunny = new Bunny() { Position = TileMap.ConvertTileXY(31, 25) };
+            Add(_bunny);
+
             if (Static.GameData.GetString("scenario") == "mushroom")
             {
                 Add(new Items.Mushroom() { Position = TileMap.ConvertTileXY(30, 15) });
             }
             else if (Static.GameData.GetString("scenario") == "noise")
             {
-                Add(new Text() { Position = TileMap.ConvertTileXY(57, 15), Message = "FUCK YOU" });
-                Add(new Doorway(new Vector2(31 * 8, 27 * 8 + 4), "Void"));
+                //Add(new Text() { Position = TileMap.ConvertTileXY(57, 15), Message = "FUCK YOU" });
+                //Add(new Doorway(new Vector2(31 * 8, 27 * 8 + 4), "Void"));
             }
             else
             {
-                _bunny = new Bunny() { Position = TileMap.ConvertTileXY(31, 25) };
-                Add(_bunny);
+                
 
                 if (Static.GameData.GetString("scenario") == "tape")
                 {
-                    var frog1 = new FrogGuy() { Position = TileMap.ConvertTileXY(24, 12) };
-                    var frog2 = new FrogGuy() { Position = TileMap.ConvertTileXY(36, 18) };
-                    Add(frog1);
-                    Add(frog2);
-                    Static.EventSystem.Load(
-                        new AnimateEvent(new Animations.RunAround(frog1)),
-                        Managers.EventSystem.Settings.Parallel
-                    );
-                    Static.EventSystem.Load(
-                        new AnimateEvent(new Animations.RunAround(frog2)),
-                        Managers.EventSystem.Settings.Parallel
-                    );
-                    var rattler1 = new Rattler() { Position = TileMap.ConvertTileXY(23, 4) };
-                    var rattler2 = new Rattler() { Position = TileMap.ConvertTileXY(39, 4) };
-                    Add(rattler1);
-                    Add(rattler2);
+                    
                 }
             }
         }

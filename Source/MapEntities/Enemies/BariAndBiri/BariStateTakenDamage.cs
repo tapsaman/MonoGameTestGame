@@ -45,7 +45,7 @@ namespace ZA6.Models
             {
                 if (_enemy.Health > 0)
                 {
-                    stateMachine.TransitionTo("Default");
+                    StateMachine.TransitionTo("Default");
                     _enemy.IsInvincible = false;
                 }
                 else

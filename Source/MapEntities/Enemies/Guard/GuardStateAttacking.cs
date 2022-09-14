@@ -51,7 +51,7 @@ namespace ZA6.Models
                 }
                 else
                 {
-                    stateMachine.TransitionTo("LookAround");
+                    StateMachine.TransitionTo("LookAround");
                 }
             }
         }

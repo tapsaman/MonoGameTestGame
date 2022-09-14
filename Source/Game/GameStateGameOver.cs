@@ -88,7 +88,7 @@ namespace ZA6.Models
                 {
                     _dialogManager = new DialogManager() { Borderless = true };
                     _dialogManager.Load(new Dialog(
-                        new DialogAsk(_args.Question ?? "Continue?", "Save And Continue", "Save And Quit"/*, "Do Not Save And Continue"*/)
+                        new DialogAsk(_args.Question ?? "Continue?", "Save And Continue", "Save And Quit", "Do Not Save And Continue")
                     ));
                 }
                 else if (!_dialogManager.IsDone)
@@ -104,12 +104,15 @@ namespace ZA6.Models
                     {
                         if (_dialogManager.AnswerIndex == 0)
                         {
-                            SaveData.CreateAndSave();
+                            Static.LoadedGame = SaveData.Create();
+                            Static.LoadedGame.Save();
+                            
                             _game.StateMachine.TransitionTo("StartOver");
                         }
                         else if (_dialogManager.AnswerIndex == 1)
                         {
-                            SaveData.CreateAndSave();
+                            Static.LoadedGame = SaveData.Create();
+                            Static.LoadedGame.Save();
                             _game.StateMachine.TransitionTo("StartMenu");
                         }  
                         else

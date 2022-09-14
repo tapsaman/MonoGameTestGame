@@ -10,7 +10,7 @@ namespace ZA6.Managers
     {
         public string CurrentStateKey { get; private set; } = null;
         public State CurrentState { get; private set; }
-        public virtual Dictionary<string, State> States
+        public Dictionary<string, State> States
         {
             get { return _states; }
             private set
@@ -19,11 +19,11 @@ namespace ZA6.Managers
                 
                 foreach (State state in _states.Values)
                 {
-                    state.stateMachine = this;
+                    state.StateMachine = this;
                 }
             }
         }
-        public Dictionary<string, State> _states;
+        private Dictionary<string, State> _states;
 
         public StateMachine(Dictionary<string, State> states, string initialStateName)
         {
@@ -43,7 +43,7 @@ namespace ZA6.Managers
             CurrentState.Update(gameTime);
         }
 
-        public void TransitionTo(string newStateName, StateArgs args = null)
+        public virtual void TransitionTo(string newStateName, StateArgs args = null)
         {
             if (!States.ContainsKey(newStateName))
             {

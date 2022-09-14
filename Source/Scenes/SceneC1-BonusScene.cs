@@ -96,7 +96,7 @@ namespace ZA6
                     IfOption2 = new Event[]
                     {
                         new TextEvent(new Dialog("Um... Ok.", "I'll just wait for...\nother hero guys wandering\nhere."), _moogle),
-                        new AnimateEvent(new Animations.Walk.To(Player, TileMap.PlayerStartPosition)),
+                        //new AnimateEvent(new Animations.Walk.To(Player, TileMap.PlayerStartPosition)),
                     }
                 }
             });
@@ -190,18 +190,5 @@ namespace ZA6
                 }
             });
         }
-
-       /* public override void DrawOverlay(SpriteBatch spriteBatch)
-        {
-            // Reduce native size for panning
-            var overlayPosition = OverlayOffset + DrawOffset * 0.5f - Static.NativeSize;
-            
-            spriteBatch.Draw(
-                _overlay,
-                overlayPosition,
-                new Rectangle(0, 0, Width * 3, Height * 2),
-                new Color(255, 255, 255, 0.5f)
-            );
-        }*/
     }
 }

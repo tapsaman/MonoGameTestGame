@@ -40,7 +40,6 @@ namespace ZA6.Models
             if (Static.Scene != null)
                 Static.Scene.Exit();
             
-            // Static.GameData = new DataStore();
             Static.EventSystem.Clear();
             Static.GameStarted = false;
             SaveData.Load();
@@ -106,7 +105,7 @@ namespace ZA6.Models
             }
             else if (Music.Scrambler == null || Music.Scrambler.IsDone)
             {
-                SaveData.LoadAndApply();
+                _game.StartGame();
             }
         }
 

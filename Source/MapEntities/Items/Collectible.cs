@@ -47,7 +47,7 @@ namespace ZA6
         {
             if (character == Static.Player)
             {
-                if (CollectCount == 0)
+                if (true ||  CollectCount == 0)
                     CollectEvent();
                 else
                     Collect();
@@ -61,19 +61,20 @@ namespace ZA6
             CollectCount += 1;
         }
 
-        protected void CollectEvent()
+        private void CollectEvent()
         {
-            Music.Pause(this);
-            SFX.ItemGet.Play();
-            Position = Static.Player.Position + new Vector2(7, -25);
-            Static.Player.AnimatedSprite.SetAnimation("GotItem");
-
             Static.EventSystem.Load(
                 new Event[]
                 {
-                    /*new RunEvent(
-                        () => { Static.Player.AnimatedSprite.SetAnimation("GotItem"); }
-                    ),*/
+                    new RunEvent(
+                        () => {
+                            Music.Pause(this);
+                            SFX.ItemGet.Play();
+                            Position = Static.Player.Position + new Vector2(8, -10 - Hitbox.Rectangle.Height);
+                            Static.Player.Moving = false;
+                            Static.Player.AnimatedSprite.SetAnimation("GotItem");
+                        }
+                    ),
                     new WaitEvent(2f),
                     new TextEvent(new Dialog(CollectText), this),
                     new RunEvent(Collect),

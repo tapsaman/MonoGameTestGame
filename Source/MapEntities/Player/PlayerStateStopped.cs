@@ -9,6 +9,7 @@ namespace ZA6.Models
         public override void Enter(StateArgs _)
         {
             //Player.AnimatedSprite.SetAnimation("Idle" + Player.Direction);
+            //Player.Velocity = Vector2.Zero;
         }
 
         public override void Update(GameTime gameTime)

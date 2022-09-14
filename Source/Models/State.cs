@@ -6,7 +6,7 @@ namespace ZA6.Models
 {
     public abstract class State
     {
-        public StateMachine stateMachine;
+        public StateMachine StateMachine;
         public virtual bool CanReEnter { get; protected set; } = true;
         public abstract void Enter(StateArgs args);
         public abstract void Update(GameTime gameTime);

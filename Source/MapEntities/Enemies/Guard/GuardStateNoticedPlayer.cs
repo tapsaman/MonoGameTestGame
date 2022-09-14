@@ -41,7 +41,7 @@ namespace ZA6.Models
 
             if (_elapsedTime > _LOOK_TIME)
             {
-                stateMachine.TransitionTo("Attacking");
+                StateMachine.TransitionTo("Attacking");
             }
         }
 
